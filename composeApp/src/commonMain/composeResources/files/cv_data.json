@@ -1,3 +1,220 @@
 {
-  "placeholder": "CV data will be added in Phase 2"
+  "personalInfo": {
+    "name": "Denys Honcharenko",
+    "location": "Genk, Belgium",
+    "email": "aidevmugi@gmail.com",
+    "phone": "+32 470 383 388",
+    "linkedin": "https://www.linkedin.com/in/denyshoncharenko/",
+    "github": "https://github.com/devmugi",
+    "portfolio": "https://devmugi.github.io/devmugi/"
+  },
+  "summary": "Result-oriented Software Engineer with 15+ years of experience building apps that reach 100M+ users across 60+ countries. Specializing in Kotlin Multiplatform, Jetpack Compose, IoT solutions, and AI-powered development. Creator of open-source KMM libraries.",
+  "skills": [
+    {
+      "id": "skills.ai-dev",
+      "category": "AI-Powered Development",
+      "level": "Power User",
+      "skills": ["Claude Code", "MCP Server", "Superpowers", "spec-kit", "Claude Cowork", "Koog", "AI Prompting"]
+    },
+    {
+      "id": "skills.kmp",
+      "category": "Kotlin Multiplatform",
+      "level": "Specialist",
+      "skills": ["KMM", "Compose Multiplatform", "Coroutines", "Ktor"]
+    },
+    {
+      "id": "skills.android",
+      "category": "Android Development",
+      "level": null,
+      "skills": ["Android SDK", "Kotlin", "Java", "Jetpack Compose", "Android TV"]
+    },
+    {
+      "id": "skills.architecture",
+      "category": "Architecture Patterns",
+      "level": null,
+      "skills": ["MVVM", "MVP", "MVI", "Clean Architecture"]
+    },
+    {
+      "id": "skills.iot",
+      "category": "IoT & Smart Home",
+      "level": null,
+      "skills": ["Bluetooth/BLE", "MQTT", "OpenHab", "Alexa Skills", "AWS IoT"]
+    },
+    {
+      "id": "skills.enterprise",
+      "category": "Enterprise & MDM",
+      "level": null,
+      "skills": ["Kiosk Mode", "Samsung Knox", "Android Enterprise", "Custom ROM"]
+    },
+    {
+      "id": "skills.backend",
+      "category": "Backend Development",
+      "level": null,
+      "skills": ["Spring Boot", "Kafka", "REST API", "Node.js", "Ktor", "Kubernetes"]
+    },
+    {
+      "id": "skills.cloud",
+      "category": "Cloud & DevOps",
+      "level": null,
+      "skills": ["AWS", "Firebase", "CI/CD", "Docker", "Kubernetes"]
+    }
+  ],
+  "experience": [
+    {
+      "id": "experience.geosatis",
+      "title": "Android Developer / Backend Developer",
+      "company": "GEOSATIS",
+      "period": "Oct 2022 - Jan 2025",
+      "description": "Secured IoT solution based on Samsung Knox and Android application to protect victims. Full-stack development including new Backend with Spring Boot, REST, Kafka, and Kubernetes.",
+      "highlights": ["Victim Protection IoT system", "Samsung Knox integration", "Full-stack development"],
+      "technologies": ["IoT", "Samsung Knox", "Spring Boot", "Kafka", "K8s", "Android"],
+      "featured": false
+    },
+    {
+      "id": "experience.mcdonalds",
+      "title": "Android Engineer",
+      "company": "McDonald's",
+      "period": "Aug 2021 - Oct 2022",
+      "description": "Developed features for the global McDonald's app. Led Kotlin Multiplatform Mobile development, created PoCs and MVPs, presented demos for new features. Organized Android Talks to align team and solve technical issues.",
+      "highlights": ["100M+ Downloads", "60+ Countries", "KMM architecture lead"],
+      "technologies": ["KMM", "Kotlin", "Coroutines", "RxJava", "Koin"],
+      "featured": true
+    },
+    {
+      "id": "experience.epam-discovery",
+      "title": "Lead Android Engineer",
+      "company": "EPAM Systems - Food Network Kitchen (Discovery)",
+      "period": "Oct 2020 - Sep 2021",
+      "description": "Led Android development for 30+ person team. Migrated CI/CD from Bitbucket to GitHub, integrated with Jira, SonarCube, Slack. Mentored 2 junior developers to middle level.",
+      "highlights": ["30+ person team lead", "CI/CD migration", "Mentorship"],
+      "technologies": ["Android TV", "ExoPlayer", "GraphQL", "Dagger2"],
+      "featured": false
+    },
+    {
+      "id": "experience.adidas-gmr",
+      "title": "Lead Software Engineer",
+      "company": "EPAM Systems - Adidas GMR",
+      "period": "Feb 2020 - Jun 2020",
+      "description": "Led mobile team for Adidas GMR - innovative product with Jacquard tag by Google. Built custom Bluetooth Tag emulator for QA. Participated in high-level meetings with Google, Adidas, and Electronic Arts stakeholders.",
+      "highlights": ["Google Jacquard integration", "FIFA Integration", "Collaboration with Google, Adidas, EA"],
+      "technologies": ["Bluetooth", "IoT", "Team Lead", "CI/CD"],
+      "featured": true
+    },
+    {
+      "id": "experience.adomi",
+      "title": "Lead Software Engineer",
+      "company": "Team Technologies (Temy) - Adomi Smart Home",
+      "period": "May 2018 - Feb 2020",
+      "description": "Built smart home solution from scratch for luxury Silicon Valley houses. Developed Android mobile app, Kiosk Mode tablet app, AWS IoT infrastructure, and Alexa/Google Assistant integrations.",
+      "highlights": ["Smart home from scratch", "AWS IoT infrastructure", "Voice assistant integration"],
+      "technologies": ["Smart Home", "AWS IoT", "Alexa Skills", "Kiosk Mode", "MQTT"],
+      "featured": false
+    },
+    {
+      "id": "experience.lesara",
+      "title": "Senior Android Engineer",
+      "company": "Team Technologies (Temy) - Lesara",
+      "period": "Sep 2017 - May 2018",
+      "description": "Fashion e-commerce app for Europe's fastest-growing tech company (2016). Introduced MVP architecture, initiated Clean Architecture discussions.",
+      "highlights": ["1M+ Downloads", "4.4 Rating", "Architecture improvements"],
+      "technologies": ["MVP", "RxJava", "Dagger"],
+      "featured": false
+    }
+  ],
+  "projects": [
+    {
+      "id": "project.mtg-deckbuilder",
+      "name": "MTG DeckBuilder",
+      "type": "Open Source",
+      "description": "Commander deck builder for Magic: The Gathering. Features card search, mana curve analysis, price tracking, and deck export.",
+      "technologies": ["Kotlin/JS", "Compose Web", "Scryfall API", "Coroutines", "Claude Cowork"],
+      "links": {
+        "demo": "https://devmugi.github.io/mtg-deckbuilder-web/",
+        "source": "https://github.com/devmugi/mtg-deckbuilder-web"
+      },
+      "featured": true
+    },
+    {
+      "id": "project.scryfall-api",
+      "name": "scryfall-api",
+      "type": "Open Source",
+      "description": "Kotlin Multiplatform library for the Scryfall API (Magic: The Gathering). Supports JVM, Android, iOS, and JavaScript platforms.",
+      "technologies": ["Kotlin Multiplatform", "Ktor", "spec-kit", "Claude"],
+      "links": {
+        "source": "https://github.com/devmugi/scryfall-api"
+      },
+      "featured": false
+    },
+    {
+      "id": "project.wizards-api",
+      "name": "wizards-api",
+      "type": "Open Source",
+      "description": "Kotlin Multiplatform library for Wizards of the Coast APIs. Cross-platform support for MTG-related applications.",
+      "technologies": ["Kotlin Multiplatform", "Ktor", "Coroutines"],
+      "links": {
+        "source": "https://github.com/devmugi/wizards-api"
+      },
+      "featured": false
+    },
+    {
+      "id": "project.pokedex",
+      "name": "AndroidLabPokedex",
+      "type": "Personal",
+      "description": "Showcasing modern Android development practices with Kotlin, MVVM architecture, and Jetpack components.",
+      "technologies": ["Kotlin", "MVVM", "Jetpack", "Coroutines"],
+      "links": {
+        "source": "https://github.com/devmugi/AndroidLabPokedex"
+      },
+      "featured": false
+    }
+  ],
+  "achievements": [
+    {
+      "id": "achievement.claude-power-user",
+      "title": "Claude Code Power User",
+      "organization": null,
+      "year": "2025",
+      "description": "Building production apps with spec-kit, Superpowers, and Cowork"
+    },
+    {
+      "id": "achievement.mcp-developer",
+      "title": "MCP Server Developer",
+      "organization": null,
+      "year": "2025",
+      "description": "Building AI automation tools for internal usage"
+    },
+    {
+      "id": "achievement.google-prompting",
+      "title": "Google Prompting Essentials",
+      "organization": "Google",
+      "year": "2024",
+      "description": "Certified in AI prompting techniques"
+    },
+    {
+      "id": "achievement.android-school-creator",
+      "title": "Android School Creator",
+      "organization": "EPAM Systems",
+      "year": "2020-2021",
+      "description": "Created and launched Android School education course. 14 of 16 attendees were hired by the company."
+    },
+    {
+      "id": "achievement.android-school-instructor",
+      "title": "Android School Instructor",
+      "organization": "EPAM Systems",
+      "year": "2021",
+      "description": "2nd course of Android School. 6 of 10 students hired by company."
+    },
+    {
+      "id": "achievement.engineering-manager",
+      "title": "Engineering Manager",
+      "organization": "EPAM Systems",
+      "year": "2020-2021",
+      "description": "Managed team of 4-6 engineers. Completed Software Engineering Manager School."
+    }
+  ],
+  "education": {
+    "degree": "Master's Degree",
+    "field": "Computer Science",
+    "institution": "Kherson National Technical University"
+  }
 }
