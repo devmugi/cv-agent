@@ -184,6 +184,55 @@ class ChatViewModelTest {
         assertTrue(error is ChatError.Api)
         assertEquals("Server error", (error as ChatError.Api).message)
     }
+
+    @Test
+    fun streamingUpdatesContentProgressively() = runTest {
+        fakeApiClient.responseChunks = listOf("Hello", " ", "World")
+        fakeApiClient.delayBetweenChunks = true
+        viewModel.sendMessage("Hi")
+
+        // Advance partially to catch streaming state
+        testDispatcher.scheduler.advanceTimeBy(15)
+        assertTrue(viewModel.state.value.isStreaming)
+        assertTrue(viewModel.state.value.streamingContent.isNotEmpty())
+
+        advanceUntilIdle()
+        assertFalse(viewModel.state.value.isStreaming)
+        assertEquals("", viewModel.state.value.streamingContent)
+    }
+
+    @Test
+    fun messageHistoryTruncatedToMaxHistory() = runTest {
+        // Send 12 messages to exceed MAX_HISTORY of 10
+        repeat(12) { i ->
+            fakeApiClient.responseChunks = listOf("Response $i")
+            viewModel.sendMessage("Message $i")
+            advanceUntilIdle()
+        }
+
+        // The last API call should only include the last 10 messages (not all 24)
+        // capturedMessages includes system prompt + conversation messages
+        val conversationMessages = fakeApiClient.capturedMessages.filter { it.role != "system" }
+        assertTrue(conversationMessages.size <= 10, "Expected at most 10 messages, got ${conversationMessages.size}")
+    }
+
+    @Test
+    fun systemPromptIncludedWhenCVDataAvailable() = runTest {
+        val viewModelWithData = ChatViewModel(
+            apiClient = fakeApiClient,
+            repository = fakeRepository,
+            promptBuilder = SystemPromptBuilder(),
+            referenceExtractor = ReferenceExtractor(fakeRepository),
+            cvDataProvider = { minimalCVData }
+        )
+
+        viewModelWithData.sendMessage("Hi")
+        advanceUntilIdle()
+
+        val systemMessage = fakeApiClient.capturedMessages.find { it.role == "system" }
+        assertNotNull(systemMessage)
+        assertTrue(systemMessage.content.contains("Test")) // Contains name from minimalCVData
+    }
 }
 
 // Test doubles
@@ -194,6 +243,8 @@ class FakeGroqApiClient : GroqApiClient(
     var responseChunks: List<String> = listOf("Test response")
     var shouldFail: GroqApiException? = null
     var delayResponse = false
+    var delayBetweenChunks = false
+    var capturedMessages: List<ChatMessage> = emptyList()
 
     override suspend fun streamChatCompletion(
         messages: List<ChatMessage>,
@@ -201,6 +252,7 @@ class FakeGroqApiClient : GroqApiClient(
         onComplete: () -> Unit,
         onError: (GroqApiException) -> Unit
     ) {
+        capturedMessages = messages
         if (delayResponse) {
             kotlinx.coroutines.delay(100)
         }
@@ -208,7 +260,12 @@ class FakeGroqApiClient : GroqApiClient(
             onError(it)
             return
         }
-        responseChunks.forEach { onChunk(it) }
+        responseChunks.forEach { chunk ->
+            if (delayBetweenChunks) {
+                kotlinx.coroutines.delay(10)
+            }
+            onChunk(chunk)
+        }
         onComplete()
     }
 }
