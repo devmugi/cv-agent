@@ -24,7 +24,7 @@ val appModule = module {
                 json(Json { ignoreUnknownKeys = true })
             }
             install(Logging) {
-                level = LogLevel.BODY
+                level = LogLevel.INFO
             }
         }
     }
