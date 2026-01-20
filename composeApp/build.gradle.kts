@@ -125,8 +125,8 @@ android {
 
 dependencies {
     debugImplementation(compose.uiTooling)
-    androidTestImplementation("androidx.compose.ui:ui-test-junit4-android:1.7.0")
-    debugImplementation("androidx.compose.ui:ui-test-manifest:1.7.0")
-    androidTestImplementation("androidx.test.ext:junit:1.2.1")
+    androidTestImplementation(libs.androidx.compose.ui.test.junit4)
+    debugImplementation(libs.androidx.compose.ui.test.manifest)
+    androidTestImplementation(libs.androidx.testExt.junit)
 }
 
