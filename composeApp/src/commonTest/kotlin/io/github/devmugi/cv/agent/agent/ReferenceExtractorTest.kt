@@ -14,6 +14,8 @@ class ReferenceExtractorTest {
                 "experience.geosatis" -> CVReference("experience.geosatis", "experience", "GEOSATIS")
                 "project.mtg-deckbuilder" -> CVReference("project.mtg-deckbuilder", "project", "MTG DeckBuilder")
                 "skills.ai-dev" -> CVReference("skills.ai-dev", "skill", "AI Development")
+                "achievement.android-school" -> CVReference("achievement.android-school", "achievement", "Android School Creator")
+                "education.masters" -> CVReference("education.masters", "education", "Master's Degree")
                 else -> null
             }
         }
@@ -74,5 +76,25 @@ class ReferenceExtractorTest {
 
         assertEquals(input, result.cleanedContent)
         assertTrue(result.references.isEmpty())
+    }
+
+    @Test
+    fun extractsAchievementTypeReferences() {
+        val input = "He earned [Achievement: achievement.android-school] recognition."
+        val result = extractor.extract(input)
+
+        assertEquals("He earned Android School Creator recognition.", result.cleanedContent)
+        assertEquals(1, result.references.size)
+        assertEquals("achievement.android-school", result.references.first().id)
+    }
+
+    @Test
+    fun extractsEducationTypeReferences() {
+        val input = "Denys holds a [Education: education.masters] in Computer Science."
+        val result = extractor.extract(input)
+
+        assertEquals("Denys holds a Master's Degree in Computer Science.", result.cleanedContent)
+        assertEquals(1, result.references.size)
+        assertEquals("education.masters", result.references.first().id)
     }
 }
