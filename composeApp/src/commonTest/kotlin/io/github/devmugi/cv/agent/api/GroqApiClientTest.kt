@@ -32,6 +32,17 @@ class GroqApiClientTest {
         }
     }
 
+    private fun createThrowingMockClient(exception: Exception): HttpClient {
+        return HttpClient(MockEngine) {
+            engine {
+                addHandler {
+                    throw exception
+                }
+            }
+            install(ContentNegotiation) { json() }
+        }
+    }
+
     @Test
     fun streamsContentFromSuccessfulResponse() = runTest {
         val sseResponse = """data: {"choices":[{"delta":{"content":"Hello"},"index":0}]}
@@ -180,5 +191,39 @@ data: [DONE]
         )
 
         assertEquals(listOf("Hello", " World"), chunks)
+    }
+
+    @Test
+    fun handlesForbiddenAsAuthError() = runTest {
+        val client = GroqApiClient(createMockClient("Forbidden", HttpStatusCode.Forbidden), "test-key")
+        var error: GroqApiException? = null
+
+        client.streamChatCompletion(
+            messages = listOf(ChatMessage("user", "Hi")),
+            onChunk = {},
+            onComplete = {},
+            onError = { e -> error = e }
+        )
+
+        assertTrue(error is GroqApiException.AuthError)
+        assertEquals(403, (error as GroqApiException.AuthError).code)
+    }
+
+    @Test
+    fun handlesNetworkException() = runTest {
+        val client = GroqApiClient(
+            createThrowingMockClient(Exception("Connection refused")),
+            "test-key"
+        )
+        var error: GroqApiException? = null
+
+        client.streamChatCompletion(
+            messages = listOf(ChatMessage("user", "Hi")),
+            onChunk = {},
+            onComplete = {},
+            onError = { e -> error = e }
+        )
+
+        assertTrue(error is GroqApiException.NetworkError)
     }
 }
