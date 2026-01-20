@@ -15,6 +15,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import com.mikepenz.markdown.m3.Markdown
 import io.github.devmugi.cv.agent.agent.Message
@@ -58,9 +59,13 @@ fun MessageBubble(
     } else {
         MaterialTheme.colorScheme.onSurface
     }
+    val roleTag = if (isUser) "user" else "assistant"
 
     Box(
-        modifier = modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 4.dp),
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp, vertical = 4.dp)
+            .testTag("message_${roleTag}_${message.id}"),
         contentAlignment = alignment
     ) {
         Surface(

@@ -7,6 +7,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 
 fun simulateSuggestionChipClick(text: String, onClick: (String) -> Unit) {
@@ -19,11 +20,12 @@ fun getSuggestionChipDisplayText(text: String): String = text
 fun SuggestionChip(
     text: String,
     onClick: (String) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    testTag: String? = null
 ) {
     Surface(
         onClick = { onClick(text) },
-        modifier = modifier,
+        modifier = modifier.then(if (testTag != null) Modifier.testTag(testTag) else Modifier),
         shape = MaterialTheme.shapes.medium,
         color = MaterialTheme.colorScheme.background,
         border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary)

@@ -26,6 +26,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 
@@ -55,7 +56,7 @@ fun MessageInput(
             TextField(
                 value = text,
                 onValueChange = { text = it },
-                modifier = Modifier.weight(1f),
+                modifier = Modifier.weight(1f).testTag("message_input_field"),
                 enabled = !isLoading,
                 placeholder = {
                     Text(
@@ -96,7 +97,8 @@ fun MessageInput(
                 enabled = canSend,
                 modifier = Modifier
                     .padding(start = 8.dp)
-                    .size(48.dp),
+                    .size(48.dp)
+                    .testTag("send_button"),
                 colors = IconButtonDefaults.iconButtonColors(
                     containerColor = MaterialTheme.colorScheme.primary,
                     contentColor = MaterialTheme.colorScheme.onPrimary,
