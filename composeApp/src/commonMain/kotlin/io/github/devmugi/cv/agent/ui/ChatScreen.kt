@@ -8,7 +8,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -75,7 +75,7 @@ private fun ChatScreenContent(
             MessageInput(
                 onSend = onSendMessage,
                 isLoading = state.isLoading || state.isStreaming,
-                modifier = Modifier.navigationBarsPadding()
+                modifier = Modifier.imePadding()
             )
         }
     ) { padding ->
