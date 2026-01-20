@@ -7,7 +7,7 @@ import io.github.devmugi.cv.agent.data.models.Project
 import io.github.devmugi.cv.agent.data.models.SkillCategory
 import io.github.devmugi.cv.agent.data.models.WorkExperience
 
-class CVRepository(
+open class CVRepository(
     private val loader: CVDataLoader = CVDataLoader()
 ) {
     private var cachedData: CVData? = null
@@ -34,7 +34,7 @@ class CVRepository(
         return cachedData?.achievements?.find { it.id == id }
     }
 
-    fun resolveReference(id: String): CVReference? {
+    open fun resolveReference(id: String): CVReference? {
         val type = id.substringBefore(".")
         return when (type) {
             "experience" -> findExperienceById(id)?.let {
