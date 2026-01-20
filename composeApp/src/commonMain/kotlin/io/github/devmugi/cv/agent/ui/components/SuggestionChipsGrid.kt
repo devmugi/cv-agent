@@ -26,15 +26,17 @@ fun SuggestionChipsGrid(
         modifier = modifier,
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        suggestions.chunked(2).forEach { rowItems ->
+        suggestions.chunked(2).forEachIndexed { rowIndex, rowItems ->
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.spacedBy(8.dp, alignment = Alignment.CenterHorizontally)
             ) {
-                rowItems.forEach { suggestion ->
+                rowItems.forEachIndexed { colIndex, suggestion ->
+                    val index = rowIndex * 2 + colIndex
                     SuggestionChip(
                         text = suggestion,
-                        onClick = onSuggestionClick
+                        onClick = onSuggestionClick,
+                        testTag = "suggestion_chip_$index"
                     )
                 }
             }
