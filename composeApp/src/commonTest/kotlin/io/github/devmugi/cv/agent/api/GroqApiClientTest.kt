@@ -102,4 +102,83 @@ data: [DONE]
 
         assertTrue(error is GroqApiException.ApiError)
     }
+
+    @Test
+    fun handlesMalformedSSEChunkGracefully() = runTest {
+        val sseResponse = """data: {"choices":[{"delta":{"content":"Hello"},"index":0}]}
+
+data: {invalid json here}
+
+data: {"choices":[{"delta":{"content":" World"},"index":0}]}
+
+data: [DONE]
+"""
+        val client = GroqApiClient(createMockClient(sseResponse), "test-key")
+        val chunks = mutableListOf<String>()
+        var completed = false
+
+        client.streamChatCompletion(
+            messages = listOf(ChatMessage("user", "Hi")),
+            onChunk = { chunks.add(it) },
+            onComplete = { completed = true },
+            onError = { e -> throw e }
+        )
+
+        // Should skip malformed chunk and continue
+        assertEquals(listOf("Hello", " World"), chunks)
+        assertTrue(completed)
+    }
+
+    @Test
+    fun handlesEmptyLinesInSSEStream() = runTest {
+        val sseResponse = """
+
+data: {"choices":[{"delta":{"content":"Hello"},"index":0}]}
+
+
+
+data: {"choices":[{"delta":{"content":" World"},"index":0}]}
+
+data: [DONE]
+
+"""
+        val client = GroqApiClient(createMockClient(sseResponse), "test-key")
+        val chunks = mutableListOf<String>()
+        var completed = false
+
+        client.streamChatCompletion(
+            messages = listOf(ChatMessage("user", "Hi")),
+            onChunk = { chunks.add(it) },
+            onComplete = { completed = true },
+            onError = { e -> throw e }
+        )
+
+        assertEquals(listOf("Hello", " World"), chunks)
+        assertTrue(completed)
+    }
+
+    @Test
+    fun skipsChunksWithEmptyDeltaContent() = runTest {
+        val sseResponse = """data: {"choices":[{"delta":{"content":"Hello"},"index":0}]}
+
+data: {"choices":[{"delta":{},"index":0}]}
+
+data: {"choices":[{"delta":{"content":null},"index":0}]}
+
+data: {"choices":[{"delta":{"content":" World"},"index":0}]}
+
+data: [DONE]
+"""
+        val client = GroqApiClient(createMockClient(sseResponse), "test-key")
+        val chunks = mutableListOf<String>()
+
+        client.streamChatCompletion(
+            messages = listOf(ChatMessage("user", "Hi")),
+            onChunk = { chunks.add(it) },
+            onComplete = {},
+            onError = { e -> throw e }
+        )
+
+        assertEquals(listOf("Hello", " World"), chunks)
+    }
 }
