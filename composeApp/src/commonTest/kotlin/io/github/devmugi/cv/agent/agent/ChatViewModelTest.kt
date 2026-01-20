@@ -126,6 +126,33 @@ class ChatViewModelTest {
 
         assertTrue(viewModel.state.value.messages.any { it.content == suggestion })
     }
+
+    @Test
+    fun retryResendsLastUserMessage() = runTest {
+        fakeApiClient.shouldFail = GroqApiException.NetworkError("First attempt failed")
+        viewModel.sendMessage("Original question")
+        advanceUntilIdle()
+
+        // Clear the error and fix the API
+        fakeApiClient.shouldFail = null
+        fakeApiClient.responseChunks = listOf("Success response")
+        viewModel.retry()
+        advanceUntilIdle()
+
+        val messages = viewModel.state.value.messages
+        val userMessages = messages.filter { it.role == MessageRole.USER }
+        assertEquals(2, userMessages.size)
+        assertTrue(userMessages.all { it.content == "Original question" })
+    }
+
+    @Test
+    fun retryDoesNothingWhenNoPreviousMessage() = runTest {
+        val initialState = viewModel.state.value
+        viewModel.retry()
+        advanceUntilIdle()
+
+        assertEquals(initialState.messages, viewModel.state.value.messages)
+    }
 }
 
 // Test doubles
