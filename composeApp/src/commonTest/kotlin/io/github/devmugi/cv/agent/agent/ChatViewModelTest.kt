@@ -153,6 +153,37 @@ class ChatViewModelTest {
 
         assertEquals(initialState.messages, viewModel.state.value.messages)
     }
+
+    @Test
+    fun rateLimitErrorMappedToChatErrorRateLimit() = runTest {
+        fakeApiClient.shouldFail = GroqApiException.RateLimitError(retryAfter = 30)
+        viewModel.sendMessage("Hi")
+        advanceUntilIdle()
+
+        assertTrue(viewModel.state.value.error is ChatError.RateLimit)
+    }
+
+    @Test
+    fun authErrorMappedToChatErrorApi() = runTest {
+        fakeApiClient.shouldFail = GroqApiException.AuthError(code = 401)
+        viewModel.sendMessage("Hi")
+        advanceUntilIdle()
+
+        val error = viewModel.state.value.error
+        assertTrue(error is ChatError.Api)
+        assertEquals("Authentication failed", (error as ChatError.Api).message)
+    }
+
+    @Test
+    fun apiErrorMappedToChatErrorApi() = runTest {
+        fakeApiClient.shouldFail = GroqApiException.ApiError(code = 500, message = "Server error")
+        viewModel.sendMessage("Hi")
+        advanceUntilIdle()
+
+        val error = viewModel.state.value.error
+        assertTrue(error is ChatError.Api)
+        assertEquals("Server error", (error as ChatError.Api).message)
+    }
 }
 
 // Test doubles
