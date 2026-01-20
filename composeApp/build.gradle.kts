@@ -14,6 +14,8 @@ kotlin {
         compilerOptions {
             jvmTarget.set(JvmTarget.JVM_11)
         }
+        @OptIn(org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi::class)
+        instrumentedTestVariant.sourceSetTree.set(org.jetbrains.kotlin.gradle.plugin.KotlinSourceSetTree.instrumentedTest)
     }
     
     listOf(
@@ -87,6 +89,7 @@ android {
         targetSdk = libs.versions.android.targetSdk.get().toInt()
         versionCode = 1
         versionName = "1.0"
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
     packaging {
         resources {
@@ -112,5 +115,8 @@ android {
 
 dependencies {
     debugImplementation(compose.uiTooling)
+    androidTestImplementation("androidx.compose.ui:ui-test-junit4-android:1.7.0")
+    debugImplementation("androidx.compose.ui:ui-test-manifest:1.7.0")
+    androidTestImplementation("androidx.test.ext:junit:1.2.1")
 }
 
