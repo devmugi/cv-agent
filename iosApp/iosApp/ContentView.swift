@@ -1,4 +1,3 @@
-import UIKit
 import SwiftUI
 import ComposeApp
 
@@ -13,9 +12,6 @@ struct ComposeView: UIViewControllerRepresentable {
 struct ContentView: View {
     var body: some View {
         ComposeView()
-            .ignoresSafeArea()
+            .ignoresSafeArea(.all)
     }
 }
-
-
-
