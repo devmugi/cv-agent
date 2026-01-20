@@ -1,5 +1,6 @@
 package io.github.devmugi.cv.agent.di
 
+import io.github.devmugi.cv.agent.GroqConfig
 import io.github.devmugi.cv.agent.agent.ChatViewModel
 import io.github.devmugi.cv.agent.agent.ReferenceExtractor
 import io.github.devmugi.cv.agent.agent.SystemPromptBuilder
@@ -15,7 +16,7 @@ import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
 import org.koin.dsl.module
 
-fun appModule(apiKey: String) = module {
+val appModule = module {
     // HTTP Client
     single {
         HttpClient(httpEngineFactory) {
@@ -29,7 +30,7 @@ fun appModule(apiKey: String) = module {
     }
 
     // API Layer
-    single { GroqApiClient(get(), apiKey) }
+    single { GroqApiClient(get(), GroqConfig.apiKey) }
 
     // Data Layer
     single { CVDataLoader() }
