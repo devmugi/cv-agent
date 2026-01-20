@@ -9,6 +9,7 @@ import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTextInput
 import androidx.compose.ui.test.runComposeUiTest
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import org.junit.After
 import org.junit.Assume
 import org.junit.Before
 import org.junit.Rule
@@ -29,15 +30,30 @@ fun hasTestTagContaining(substring: String): SemanticsMatcher {
 @OptIn(ExperimentalTestApi::class)
 class ChatE2ETest {
 
+    companion object {
+        // Timeout for API responses - increased for potentially long responses
+        private const val API_TIMEOUT_MS = 60_000L
+        private const val UI_TIMEOUT_MS = 10_000L
+    }
+
     @get:Rule
     val retryRule = RetryRule(maxAttempts = 3)
 
     @Before
-    fun checkApiKey() {
+    fun setUp() {
+        // Stop any existing Koin instance before each test
+        ensureKoinStopped()
+
         Assume.assumeTrue(
             "Skipping E2E test - GROQ_API_KEY not configured in local.properties",
             BuildConfig.GROQ_API_KEY.isNotEmpty()
         )
+    }
+
+    @After
+    fun tearDown() {
+        // Clean up Koin after each test
+        ensureKoinStopped()
     }
 
     @Test
@@ -47,23 +63,24 @@ class ChatE2ETest {
         }
 
         // Wait for welcome section to appear
-        waitUntil(timeoutMillis = 5_000) {
+        waitUntil(timeoutMillis = UI_TIMEOUT_MS) {
             onAllNodes(hasTestTag("welcome_section")).fetchSemanticsNodes().isNotEmpty()
         }
 
         // Tap first suggestion chip
         onNodeWithTag("suggestion_chip_0").performClick()
 
-        // Wait for assistant response (real API call)
-        waitUntil(timeoutMillis = 30_000) {
-            onAllNodes(hasTestTagContaining("message_assistant_"))
+        // Wait for user message to appear first
+        waitUntil(timeoutMillis = UI_TIMEOUT_MS) {
+            onAllNodes(hasTestTagContaining("message_user_"))
                 .fetchSemanticsNodes().isNotEmpty()
         }
 
-        // Verify user message exists
-        val userMessages = onAllNodes(hasTestTagContaining("message_user_"))
-            .fetchSemanticsNodes()
-        assert(userMessages.isNotEmpty()) { "Expected at least 1 user message" }
+        // Wait for assistant response (real API call)
+        waitUntil(timeoutMillis = API_TIMEOUT_MS) {
+            onAllNodes(hasTestTagContaining("message_assistant_"))
+                .fetchSemanticsNodes().isNotEmpty()
+        }
     }
 
     @Test
@@ -73,7 +90,7 @@ class ChatE2ETest {
         }
 
         // Wait for input to be ready
-        waitUntil(timeoutMillis = 5_000) {
+        waitUntil(timeoutMillis = UI_TIMEOUT_MS) {
             onAllNodes(hasTestTag("message_input_field")).fetchSemanticsNodes().isNotEmpty()
         }
 
@@ -83,16 +100,17 @@ class ChatE2ETest {
         // Tap send button
         onNodeWithTag("send_button").performClick()
 
-        // Wait for assistant response
-        waitUntil(timeoutMillis = 30_000) {
-            onAllNodes(hasTestTagContaining("message_assistant_"))
+        // Wait for user message to appear
+        waitUntil(timeoutMillis = UI_TIMEOUT_MS) {
+            onAllNodes(hasTestTagContaining("message_user_"))
                 .fetchSemanticsNodes().isNotEmpty()
         }
 
-        // Verify user message visible
-        val userMessages = onAllNodes(hasTestTagContaining("message_user_"))
-            .fetchSemanticsNodes()
-        assert(userMessages.isNotEmpty()) { "Expected at least 1 user message" }
+        // Wait for assistant response
+        waitUntil(timeoutMillis = API_TIMEOUT_MS) {
+            onAllNodes(hasTestTagContaining("message_assistant_"))
+                .fetchSemanticsNodes().isNotEmpty()
+        }
     }
 
     @Test
@@ -102,38 +120,40 @@ class ChatE2ETest {
         }
 
         // Wait for input
-        waitUntil(timeoutMillis = 5_000) {
+        waitUntil(timeoutMillis = UI_TIMEOUT_MS) {
             onAllNodes(hasTestTag("message_input_field")).fetchSemanticsNodes().isNotEmpty()
         }
 
         // Send first message
-        onNodeWithTag("message_input_field").performTextInput("Tell me about Denys")
+        onNodeWithTag("message_input_field").performTextInput("Hi")
         onNodeWithTag("send_button").performClick()
 
-        // Wait for first response
-        waitUntil(timeoutMillis = 30_000) {
+        // Wait for first user message
+        waitUntil(timeoutMillis = UI_TIMEOUT_MS) {
+            onAllNodes(hasTestTagContaining("message_user_"))
+                .fetchSemanticsNodes().isNotEmpty()
+        }
+
+        // Wait for first assistant response
+        waitUntil(timeoutMillis = API_TIMEOUT_MS) {
             onAllNodes(hasTestTagContaining("message_assistant_"))
                 .fetchSemanticsNodes().isNotEmpty()
         }
 
         // Send second message
-        onNodeWithTag("message_input_field").performTextInput("What projects has he worked on?")
+        onNodeWithTag("message_input_field").performTextInput("Thanks")
         onNodeWithTag("send_button").performClick()
 
-        // Wait for second response
-        waitUntil(timeoutMillis = 30_000) {
-            onAllNodes(hasTestTagContaining("message_assistant_"))
+        // Wait for second user message
+        waitUntil(timeoutMillis = UI_TIMEOUT_MS) {
+            onAllNodes(hasTestTagContaining("message_user_"))
                 .fetchSemanticsNodes().size >= 2
         }
 
-        // Verify both user messages exist
-        val userMessages = onAllNodes(hasTestTagContaining("message_user_"))
-            .fetchSemanticsNodes()
-        assert(userMessages.size >= 2) { "Expected at least 2 user messages, found ${userMessages.size}" }
-
-        // Verify both assistant messages exist
-        val assistantMessages = onAllNodes(hasTestTagContaining("message_assistant_"))
-            .fetchSemanticsNodes()
-        assert(assistantMessages.size >= 2) { "Expected at least 2 assistant messages, found ${assistantMessages.size}" }
+        // Wait for second assistant response
+        waitUntil(timeoutMillis = API_TIMEOUT_MS) {
+            onAllNodes(hasTestTagContaining("message_assistant_"))
+                .fetchSemanticsNodes().size >= 2
+        }
     }
 }

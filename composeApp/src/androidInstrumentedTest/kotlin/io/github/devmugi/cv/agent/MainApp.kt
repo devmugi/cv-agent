@@ -14,7 +14,19 @@ import io.github.devmugi.cv.agent.di.appModule
 import io.github.devmugi.cv.agent.ui.ChatScreen
 import org.koin.compose.KoinApplication
 import org.koin.compose.koinInject
+import org.koin.core.context.GlobalContext
+import org.koin.core.context.stopKoin
 import org.koin.core.parameter.parametersOf
+
+/**
+ * Ensures Koin is stopped before starting tests.
+ * Call this before each test.
+ */
+fun ensureKoinStopped() {
+    if (GlobalContext.getOrNull() != null) {
+        stopKoin()
+    }
+}
 
 @Composable
 fun MainApp() {

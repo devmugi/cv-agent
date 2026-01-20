@@ -1,5 +1,14 @@
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import java.util.Properties
+
+// Load local.properties
+val localProperties = Properties().apply {
+    val localPropertiesFile = rootProject.file("local.properties")
+    if (localPropertiesFile.exists()) {
+        load(localPropertiesFile.inputStream())
+    }
+}
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
@@ -101,7 +110,8 @@ android {
             isMinifyEnabled = false
         }
         all {
-            buildConfigField("String", "GROQ_API_KEY", "\"${project.findProperty("GROQ_API_KEY") ?: ""}\"")
+            val apiKey = localProperties.getProperty("GROQ_API_KEY") ?: project.findProperty("GROQ_API_KEY")?.toString() ?: ""
+            buildConfigField("String", "GROQ_API_KEY", "\"$apiKey\"")
         }
     }
     compileOptions {
