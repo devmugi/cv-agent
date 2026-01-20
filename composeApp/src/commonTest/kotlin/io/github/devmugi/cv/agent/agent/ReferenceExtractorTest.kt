@@ -97,4 +97,32 @@ class ReferenceExtractorTest {
         assertEquals(1, result.references.size)
         assertEquals("education.masters", result.references.first().id)
     }
+
+    @Test
+    fun handlesWhitespaceAroundIdInBrackets() {
+        val input = "Denys worked at [Experience:   experience.geosatis   ] company."
+        val result = extractor.extract(input)
+
+        assertEquals("Denys worked at GEOSATIS company.", result.cleanedContent)
+        assertEquals(1, result.references.size)
+    }
+
+    @Test
+    fun handlesEmptyContentString() {
+        val result = extractor.extract("")
+
+        assertEquals("", result.cleanedContent)
+        assertTrue(result.references.isEmpty())
+    }
+
+    @Test
+    fun caseSensitiveTypeMatching() {
+        // Lowercase "experience" should NOT match the pattern (which expects "Experience")
+        val input = "Denys worked at [experience: experience.geosatis] company."
+        val result = extractor.extract(input)
+
+        // Should remain unchanged since pattern is case-sensitive
+        assertEquals(input, result.cleanedContent)
+        assertTrue(result.references.isEmpty())
+    }
 }
