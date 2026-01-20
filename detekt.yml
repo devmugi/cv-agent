@@ -1,0 +1,43 @@
+build:
+  maxIssues: 0
+  excludeCorrectable: false
+  weights:
+    complexity: 2
+    LongParameterList: 1
+    style: 1
+    comments: 0
+
+config:
+  validation: true
+  warningsAsErrors: true
+
+complexity:
+  active: true
+  CyclomaticComplexMethod:
+    active: true
+    threshold: 15
+  LongMethod:
+    active: true
+    threshold: 60
+  LongParameterList:
+    active: true
+    functionThreshold: 6
+    constructorThreshold: 7
+  NestedBlockDepth:
+    active: true
+    threshold: 4
+
+naming:
+  active: true
+  FunctionNaming:
+    active: true
+    excludes: ['**/ui/**']
+  PackageNaming:
+    active: true
+
+style:
+  active: true
+  MaxLineLength:
+    active: true
+    maxLineLength: 120
+    excludeCommentStatements: true
