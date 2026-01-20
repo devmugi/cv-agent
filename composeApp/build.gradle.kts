@@ -31,6 +31,7 @@ kotlin {
             implementation(compose.preview)
             implementation(libs.androidx.activity.compose)
             implementation(libs.ktor.client.okhttp)
+            implementation(libs.koin.android)
         }
         iosMain.dependencies {
             implementation(libs.ktor.client.darwin)
@@ -58,9 +59,18 @@ kotlin {
 
             // Markdown
             implementation(libs.multiplatform.markdown.renderer)
+
+            // DI
+            implementation(libs.koin.core)
+            implementation(libs.koin.compose)
+
+            // Logging
+            implementation(libs.ktor.client.logging)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
+            implementation(libs.ktor.client.mock)
+            implementation(libs.kotlinx.coroutines.test)
         }
     }
 }
