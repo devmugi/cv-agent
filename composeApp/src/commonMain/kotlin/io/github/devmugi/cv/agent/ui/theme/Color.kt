@@ -11,6 +11,10 @@ val Gold = Color(0xFFF5A623)
 val GoldBright = Color(0xFFFFC947)
 val White = Color(0xFFFFFFFF)
 val LightGray = Color(0xFFB0B3C1)
+val ErrorContainer = Color(0xFF3D2936)
+val OnErrorContainer = Color(0xFFFFB4AB)
+val ReferenceChipBg = Color(0xFF2A3A5C)
+val CodeBlockBg = Color(0xFF252A3D)
 
 // Material3 Dark Color Scheme
 val CVAgentColorScheme = darkColorScheme(
@@ -32,5 +36,7 @@ val CVAgentColorScheme = darkColorScheme(
     onSurfaceVariant = LightGray,
 
     error = Color(0xFFCF6679),
-    onError = Color(0xFF000000)
+    onError = Color(0xFF000000),
+    errorContainer = ErrorContainer,
+    onErrorContainer = OnErrorContainer
 )
