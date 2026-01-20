@@ -3,6 +3,7 @@ package io.github.devmugi.cv.agent.api.models
 import kotlinx.serialization.json.Json
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertTrue
 
 class ApiModelsTest {
     private val json = Json { ignoreUnknownKeys = true }
@@ -21,9 +22,9 @@ class ApiModelsTest {
             messages = listOf(ChatMessage("user", "Hi"))
         )
         val serialized = json.encodeToString(ChatRequest.serializer(), request)
-        assert(serialized.contains(""""stream":true"""))
-        assert(serialized.contains(""""temperature":0.7"""))
-        assert(serialized.contains(""""max_tokens":1024"""))
+        assertTrue(serialized.contains(""""stream":true"""))
+        assertTrue(serialized.contains(""""temperature":0.7"""))
+        assertTrue(serialized.contains(""""max_tokens":1024"""))
     }
 
     @Test
