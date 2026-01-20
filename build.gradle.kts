@@ -7,6 +7,7 @@ plugins {
     alias(libs.plugins.composeCompiler) apply false
     alias(libs.plugins.kotlinMultiplatform) apply false
     alias(libs.plugins.detekt)
+    alias(libs.plugins.ktlint)
 }
 
 detekt {
@@ -17,4 +18,21 @@ detekt {
 
 dependencies {
     detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.23.7")
+}
+
+ktlint {
+    version.set("1.5.0")
+    android.set(true)
+    verbose.set(true)
+
+    filter {
+        exclude("**/generated/**")
+        exclude("**/build/**")
+    }
+}
+
+tasks.register("qualityCheck") {
+    dependsOn("ktlintCheck", "detekt")
+    group = "verification"
+    description = "Run all quality checks (Ktlint + Detekt)"
 }
