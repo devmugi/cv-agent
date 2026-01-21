@@ -30,7 +30,6 @@ kotlin {
         iosTarget.binaries.framework {
             baseName = "Shared"
             isStatic = true
-            export(projects.sharedDesignSystem)
             export(projects.sharedDomain)
             export(projects.sharedUi)
         }
@@ -38,7 +37,6 @@ kotlin {
 
     sourceSets {
         commonMain.dependencies {
-            api(projects.sharedDesignSystem)
             api(projects.sharedDomain)
             api(projects.sharedUi)
 
