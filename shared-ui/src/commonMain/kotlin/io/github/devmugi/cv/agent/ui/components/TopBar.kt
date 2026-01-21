@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -17,7 +18,7 @@ fun buildTopBarTitle(): String = "<DH/> CV Agent"
 
 @Composable
 fun CVAgentTopBar() {
-    ArcaneSurface(modifier = Modifier.fillMaxWidth()) {
+    ArcaneSurface(modifier = Modifier.fillMaxWidth().statusBarsPadding()) {
         Row(
             modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp),
             verticalAlignment = Alignment.CenterVertically
