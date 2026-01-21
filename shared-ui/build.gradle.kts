@@ -27,8 +27,8 @@ kotlin {
             implementation(projects.sharedDomain)
 
             // Arcane Design System
-            implementation("io.github.devmugi.design.arcane:arcane-foundation:0.1.1")
-            implementation("io.github.devmugi.design.arcane:arcane-components:0.1.1")
+            implementation("io.github.devmugi.design.arcane:arcane-foundation:0.1.2")
+            implementation("io.github.devmugi.design.arcane:arcane-components:0.1.2")
 
             // Compose
             implementation(libs.compose.runtime)
