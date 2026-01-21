@@ -4,7 +4,8 @@ data class ChatState(
     val messages: List<Message> = emptyList(),
     val isLoading: Boolean = false,
     val isStreaming: Boolean = false,
-    val streamingContent: String = "",
+    val streamingMessageId: String? = null,
+    val thinkingStatus: String? = null,
     val error: ChatError? = null,
     val suggestions: List<String> = defaultSuggestions
 )
