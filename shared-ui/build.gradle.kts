@@ -27,8 +27,8 @@ kotlin {
             implementation(projects.sharedDomain)
 
             // Arcane Design System
-            implementation("io.github.devmugi.design.arcane:arcane-foundation:0.1.2")
-            implementation("io.github.devmugi.design.arcane:arcane-components:0.1.2")
+            implementation("io.github.devmugi.design.arcane:arcane-foundation:0.1.4")
+            implementation("io.github.devmugi.design.arcane:arcane-components:0.1.4")
 
             // Compose
             implementation(libs.compose.runtime)
@@ -37,9 +37,8 @@ kotlin {
             implementation(libs.compose.ui)
 
             // Material Icons
-            @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
-            implementation(compose.material3AdaptiveNavigationSuite)
-            implementation(compose.materialIconsExtended)
+            implementation(libs.compose.material3.adaptive.navigation.suite)
+            implementation(libs.compose.material.icons.extended.multiplatform)
 
             // Lifecycle (for collectAsState)
             implementation(libs.androidx.lifecycle.runtime.compose)
@@ -51,7 +50,6 @@ kotlin {
 
         commonTest.dependencies {
             implementation(libs.kotlin.test)
-            @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
             implementation(libs.compose.ui.test)
         }
     }
