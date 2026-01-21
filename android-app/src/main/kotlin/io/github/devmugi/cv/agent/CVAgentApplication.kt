@@ -1,0 +1,22 @@
+package io.github.devmugi.cv.agent
+
+import android.app.Application
+import io.github.devmugi.cv.agent.di.appModule
+import org.koin.android.ext.koin.androidContext
+import org.koin.android.ext.koin.androidLogger
+import org.koin.core.context.startKoin
+
+class CVAgentApplication : Application() {
+    override fun onCreate() {
+        super.onCreate()
+
+        // Initialize the API key for the shared module
+        GroqConfigProvider.initialize(BuildConfig.GROQ_API_KEY)
+
+        startKoin {
+            androidLogger()
+            androidContext(this@CVAgentApplication)
+            modules(appModule)
+        }
+    }
+}
