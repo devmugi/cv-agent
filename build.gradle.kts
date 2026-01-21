@@ -14,6 +14,14 @@ detekt {
     buildUponDefaultConfig = true
     allRules = false
     config.setFrom("$projectDir/detekt.yml")
+    source.setFrom(
+        files(
+            fileTree("$projectDir") {
+                include("**/src/**/*.kt")
+                exclude("**/sharedDesignSystem/**")
+            }
+        )
+    )
 }
 
 dependencies {
@@ -28,6 +36,7 @@ ktlint {
     filter {
         exclude("**/generated/**")
         exclude("**/build/**")
+        exclude("**/sharedDesignSystem/**")
     }
 }
 
