@@ -1,11 +1,18 @@
 plugins {
     alias(libs.plugins.kotlin.multiplatform)
+    alias(libs.plugins.android.kotlin.multiplatform.library)
     alias(libs.plugins.compose.multiplatform)
     alias(libs.plugins.kotlin.compose.compiler)
 }
 
 kotlin {
     jvm()
+
+    androidLibrary {
+        namespace = "io.github.devmugi.cv.agent.ui"
+        compileSdk = libs.versions.android.compileSdk.get().toInt()
+        minSdk = libs.versions.android.minSdk.get().toInt()
+    }
 
     listOf(
         iosArm64(),
