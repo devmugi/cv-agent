@@ -6,8 +6,8 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import io.github.devmugi.arcane.design.foundation.theme.ArcaneTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -31,16 +31,16 @@ fun WelcomeSection(
     ) {
         Text(
             text = "Welcome!",
-            style = MaterialTheme.typography.headlineMedium,
-            color = MaterialTheme.colorScheme.primary
+            style = ArcaneTheme.typography.displaySmall,
+            color = ArcaneTheme.colors.text
         )
 
         Spacer(modifier = Modifier.height(8.dp))
 
         Text(
             text = "I'm Denys's AI assistant. Ask me anything about his professional experience, skills, or projects.",
-            style = MaterialTheme.typography.bodyLarge,
-            color = MaterialTheme.colorScheme.onBackground,
+            style = ArcaneTheme.typography.bodyLarge,
+            color = ArcaneTheme.colors.textSecondary,
             textAlign = TextAlign.Center
         )
 
