@@ -1,7 +1,7 @@
 package io.github.devmugi.cv.agent.ui.components
 
-import io.github.devmugi.cv.agent.data.models.CVData
-import io.github.devmugi.cv.agent.data.models.CVReference
+import io.github.devmugi.cv.agent.domain.models.CVData
+import io.github.devmugi.cv.agent.domain.models.CVReference
 
 fun getTooltipForReference(reference: CVReference, cvData: CVData?): String? {
     if (cvData == null) return null

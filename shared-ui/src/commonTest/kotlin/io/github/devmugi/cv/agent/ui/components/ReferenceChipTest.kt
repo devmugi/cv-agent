@@ -1,6 +1,6 @@
 package io.github.devmugi.cv.agent.ui.components
 
-import io.github.devmugi.cv.agent.data.models.CVReference
+import io.github.devmugi.cv.agent.domain.models.CVReference
 import kotlin.test.Test
 import kotlin.test.assertEquals
 

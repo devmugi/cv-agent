@@ -1,6 +1,6 @@
 package io.github.devmugi.cv.agent.ui.components
 
-import io.github.devmugi.cv.agent.data.models.*
+import io.github.devmugi.cv.agent.domain.models.*
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNull

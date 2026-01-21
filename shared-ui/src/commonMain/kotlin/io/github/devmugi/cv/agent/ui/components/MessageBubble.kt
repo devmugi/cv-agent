@@ -18,9 +18,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import com.mikepenz.markdown.m3.Markdown
-import io.github.devmugi.cv.agent.agent.Message
-import io.github.devmugi.cv.agent.agent.MessageRole
-import io.github.devmugi.cv.agent.data.models.CVData
+import io.github.devmugi.cv.agent.domain.models.CVData
+import io.github.devmugi.cv.agent.domain.models.Message
+import io.github.devmugi.cv.agent.domain.models.MessageRole
 
 enum class MessageAlignment { START, END }
 enum class MessageCornerShape { TOP_RIGHT_SMALL, TOP_LEFT_SMALL }
