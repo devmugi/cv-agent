@@ -3,6 +3,7 @@ package io.github.devmugi.cv.agent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.layout.Box
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -10,9 +11,12 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import cvagent.shared.generated.resources.Res
+import io.github.devmugi.arcane.design.components.feedback.ArcaneToastHost
+import io.github.devmugi.arcane.design.components.feedback.ArcaneToastPosition
+import io.github.devmugi.arcane.design.components.feedback.rememberArcaneToastState
+import io.github.devmugi.arcane.design.foundation.theme.ArcaneTheme
 import io.github.devmugi.cv.agent.agent.ChatViewModel
 import io.github.devmugi.cv.agent.data.repository.CVRepository
-import io.github.devmugi.cv.agent.designsystem.theme.CVAgentTheme
 import io.github.devmugi.cv.agent.domain.models.CVData
 import io.github.devmugi.cv.agent.ui.ChatScreen
 import org.koin.android.ext.android.inject
@@ -26,7 +30,9 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            CVAgentTheme {
+            val toastState = rememberArcaneToastState()
+
+            ArcaneTheme {
                 var cvData by remember { mutableStateOf<CVData?>(null) }
                 var jsonLoaded by remember { mutableStateOf(false) }
 
@@ -42,13 +48,21 @@ class MainActivity : ComponentActivity() {
                 val viewModel: ChatViewModel = koinInject { parametersOf({ cvData }) }
                 val state by viewModel.state.collectAsState()
 
-                ChatScreen(
-                    state = state,
-                    onSendMessage = viewModel::sendMessage,
-                    cvData = cvData,
-                    onSuggestionClick = viewModel::onSuggestionClicked,
-                    onRetry = viewModel::retry
-                )
+                Box {
+                    ChatScreen(
+                        state = state,
+                        toastState = toastState,
+                        onSendMessage = viewModel::sendMessage,
+                        cvData = cvData,
+                        onSuggestionClick = viewModel::onSuggestionClicked,
+                        onRetry = viewModel::retry
+                    )
+
+                    ArcaneToastHost(
+                        state = toastState,
+                        position = ArcaneToastPosition.BottomCenter
+                    )
+                }
             }
         }
     }
