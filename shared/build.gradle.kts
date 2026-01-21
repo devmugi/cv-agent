@@ -6,6 +6,11 @@ plugins {
     alias(libs.plugins.kotlin.serialization)
 }
 
+compose.resources {
+    publicResClass = true
+    packageOfResClass = "cvagent.shared.generated.resources"
+}
+
 kotlin {
     jvm()
 
@@ -60,7 +65,7 @@ kotlin {
             implementation(libs.koin.core)
 
             // Resources
-            implementation(libs.compose.components.resources)
+            api(libs.compose.components.resources)
         }
 
         androidMain.dependencies {
