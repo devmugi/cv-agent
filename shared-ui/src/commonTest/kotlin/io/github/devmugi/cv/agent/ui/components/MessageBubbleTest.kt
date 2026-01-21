@@ -1,6 +1,6 @@
 package io.github.devmugi.cv.agent.ui.components
 
-import io.github.devmugi.cv.agent.agent.MessageRole
+import io.github.devmugi.cv.agent.domain.models.MessageRole
 import kotlin.test.Test
 import kotlin.test.assertEquals
 

@@ -21,8 +21,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
-import io.github.devmugi.cv.agent.agent.ChatState
-import io.github.devmugi.cv.agent.data.models.CVData
+import io.github.devmugi.cv.agent.domain.models.ChatState
+import io.github.devmugi.cv.agent.domain.models.CVData
 import io.github.devmugi.cv.agent.ui.components.CVAgentTopBar
 import io.github.devmugi.cv.agent.ui.components.ErrorMessage
 import io.github.devmugi.cv.agent.ui.components.MessageBubble

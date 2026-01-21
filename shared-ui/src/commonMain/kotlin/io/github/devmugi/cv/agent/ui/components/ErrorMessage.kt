@@ -14,7 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import io.github.devmugi.cv.agent.agent.ChatError
+import io.github.devmugi.cv.agent.domain.models.ChatError
 
 fun getErrorDisplayMessage(error: ChatError): String = when (error) {
     is ChatError.Network -> error.message

@@ -13,7 +13,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Popup
-import io.github.devmugi.cv.agent.data.models.CVReference
+import io.github.devmugi.cv.agent.domain.models.CVReference
 import io.github.devmugi.cv.agent.designsystem.theme.ReferenceChipBg
 
 fun formatReferenceChipText(reference: CVReference): String {
