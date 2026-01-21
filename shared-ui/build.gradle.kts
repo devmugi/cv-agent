@@ -24,8 +24,11 @@ kotlin {
 
     sourceSets {
         commonMain.dependencies {
-            implementation(projects.sharedDesignSystem)
             implementation(projects.sharedDomain)
+
+            // Arcane Design System
+            implementation("io.github.devmugi.design.arcane:arcane-foundation:0.1.1")
+            implementation("io.github.devmugi.design.arcane:arcane-components:0.1.1")
 
             // Compose
             implementation(libs.compose.runtime)

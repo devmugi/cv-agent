@@ -17,6 +17,7 @@ pluginManagement {
 
 dependencyResolutionManagement {
     repositories {
+        mavenLocal()
         google {
             mavenContent {
                 includeGroupAndSubgroups("androidx")
@@ -28,7 +29,6 @@ dependencyResolutionManagement {
     }
 }
 
-include(":shared-design-system")
 include(":shared-domain")
 include(":shared-ui")
 include(":shared")
