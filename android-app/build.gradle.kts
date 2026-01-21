@@ -11,6 +11,7 @@ val localProperties = Properties().apply {
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.compose.multiplatform)
     alias(libs.plugins.kotlin.compose.compiler)
 }
 
@@ -68,6 +69,7 @@ dependencies {
     implementation(libs.androidx.activity.compose)
     implementation(libs.koin.android)
     implementation(libs.koin.compose)
+    implementation(libs.compose.components.resources)
 
     debugImplementation(libs.compose.ui.tooling)
     androidTestImplementation(libs.androidx.compose.ui.test.junit4)
