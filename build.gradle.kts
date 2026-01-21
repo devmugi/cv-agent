@@ -20,9 +20,9 @@ detekt {
         files(
             fileTree("$projectDir") {
                 include("**/src/**/*.kt")
-                exclude("**/sharedDesignSystem/**")
-            }
-        )
+                exclude("**/shared-design-system/**")
+            },
+        ),
     )
 }
 
@@ -38,7 +38,7 @@ ktlint {
     filter {
         exclude("**/generated/**")
         exclude("**/build/**")
-        exclude("**/sharedDesignSystem/**")
+        exclude("**/shared-design-system/**")
     }
 }
 
