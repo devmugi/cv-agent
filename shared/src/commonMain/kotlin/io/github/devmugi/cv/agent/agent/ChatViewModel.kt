@@ -5,7 +5,11 @@ import androidx.lifecycle.viewModelScope
 import io.github.devmugi.cv.agent.api.GroqApiClient
 import io.github.devmugi.cv.agent.api.GroqApiException
 import io.github.devmugi.cv.agent.api.models.ChatMessage
-import io.github.devmugi.cv.agent.data.models.CVData
+import io.github.devmugi.cv.agent.domain.models.CVData
+import io.github.devmugi.cv.agent.domain.models.ChatError
+import io.github.devmugi.cv.agent.domain.models.ChatState
+import io.github.devmugi.cv.agent.domain.models.Message
+import io.github.devmugi.cv.agent.domain.models.MessageRole
 import io.github.devmugi.cv.agent.data.repository.CVRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

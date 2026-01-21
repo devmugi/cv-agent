@@ -1,6 +1,6 @@
 package io.github.devmugi.cv.agent.data.repository
 
-import io.github.devmugi.cv.agent.data.models.CVData
+import io.github.devmugi.cv.agent.domain.models.CVData
 import kotlinx.serialization.json.Json
 
 class CVDataLoader {

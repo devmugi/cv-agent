@@ -1,6 +1,9 @@
 package io.github.devmugi.cv.agent.agent
 
-import io.github.devmugi.cv.agent.data.models.CVReference
+import io.github.devmugi.cv.agent.domain.currentTimeMillis
+import io.github.devmugi.cv.agent.domain.models.CVReference
+import io.github.devmugi.cv.agent.domain.models.Message
+import io.github.devmugi.cv.agent.domain.models.MessageRole
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNotEquals

@@ -27,13 +27,17 @@ kotlin {
         iosTarget.binaries.framework {
             baseName = "Shared"
             isStatic = true
-            export(project(":shared-design-system"))
+            export(projects.sharedDesignSystem)
+            export(projects.sharedDomain)
+            export(projects.sharedUi)
         }
     }
 
     sourceSets {
         commonMain.dependencies {
-            api(project(":shared-design-system"))
+            api(projects.sharedDesignSystem)
+            api(projects.sharedDomain)
+            api(projects.sharedUi)
 
             // Compose (for ViewModel)
             implementation(libs.compose.runtime)
