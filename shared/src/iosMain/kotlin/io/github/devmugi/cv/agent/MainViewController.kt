@@ -56,8 +56,7 @@ object ViewControllerFactory : KoinComponent {
                     toastState = toastState,
                     onSendMessage = { message -> viewModel.sendMessage(message) },
                     cvData = cvData,
-                    onSuggestionClick = { suggestion -> viewModel.onSuggestionClicked(suggestion) },
-                    onRetry = { viewModel.retry() }
+                    onSuggestionClick = { suggestion -> viewModel.onSuggestionClicked(suggestion) }
                 )
                 ArcaneToastHost(
                     state = toastState,
