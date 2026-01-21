@@ -15,6 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import com.mikepenz.markdown.m3.Markdown
+import com.mikepenz.markdown.m3.markdownColor
 import io.github.devmugi.arcane.design.foundation.primitives.ArcaneSurface
 import io.github.devmugi.arcane.design.foundation.primitives.SurfaceVariant
 import io.github.devmugi.arcane.design.foundation.theme.ArcaneTheme
@@ -61,6 +62,7 @@ fun MessageBubble(
     ) {
         ArcaneSurface(
             variant = variant,
+            showBorder = false,
             modifier = Modifier.widthIn(max = 300.dp)
         ) {
             Column(modifier = Modifier.padding(12.dp)) {
@@ -73,6 +75,7 @@ fun MessageBubble(
                 } else {
                     Markdown(
                         content = message.content,
+                        colors = markdownColor(text = ArcaneTheme.colors.text),
                         modifier = Modifier
                     )
                 }
@@ -107,10 +110,12 @@ fun StreamingMessageBubble(
     ) {
         ArcaneSurface(
             variant = SurfaceVariant.Raised,
+            showBorder = false,
             modifier = Modifier.widthIn(max = 300.dp)
         ) {
             Markdown(
                 content = content,
+                colors = markdownColor(text = ArcaneTheme.colors.text),
                 modifier = Modifier.padding(12.dp)
             )
         }
