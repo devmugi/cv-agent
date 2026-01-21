@@ -21,6 +21,7 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import io.github.devmugi.arcane.design.components.feedback.ArcaneToastState
 import io.github.devmugi.arcane.design.components.feedback.ArcaneToastStyle
+import io.github.devmugi.arcane.design.foundation.theme.ArcaneTheme
 import io.github.devmugi.cv.agent.domain.models.ChatError
 import io.github.devmugi.cv.agent.domain.models.ChatState
 import io.github.devmugi.cv.agent.domain.models.CVData
@@ -65,6 +66,7 @@ fun ChatScreen(
 
     Scaffold(
         modifier = modifier,
+        containerColor = ArcaneTheme.colors.surface,
         topBar = { CVAgentTopBar() },
         bottomBar = {
             MessageInput(
