@@ -37,8 +37,7 @@ fun ChatScreen(
     onSendMessage: (String) -> Unit,
     modifier: Modifier = Modifier,
     cvData: CVData? = null,
-    onSuggestionClick: (String) -> Unit = onSendMessage,
-    onRetry: () -> Unit = {}
+    onSuggestionClick: (String) -> Unit = onSendMessage
 ) {
     val listState = rememberLazyListState()
     val showWelcome = state.messages.isEmpty() && !state.isLoading && !state.isStreaming

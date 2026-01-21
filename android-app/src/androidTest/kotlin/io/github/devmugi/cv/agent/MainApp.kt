@@ -8,9 +8,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import cvagent.shared.generated.resources.Res
+import io.github.devmugi.arcane.design.components.feedback.rememberArcaneToastState
+import io.github.devmugi.arcane.design.foundation.theme.ArcaneTheme
 import io.github.devmugi.cv.agent.agent.ChatViewModel
 import io.github.devmugi.cv.agent.data.repository.CVRepository
-import io.github.devmugi.cv.agent.designsystem.theme.CVAgentTheme
 import io.github.devmugi.cv.agent.di.appModule
 import io.github.devmugi.cv.agent.domain.models.CVData
 import io.github.devmugi.cv.agent.ui.ChatScreen
@@ -36,7 +37,8 @@ fun MainApp() {
     GroqConfigProvider.initialize(BuildConfig.GROQ_API_KEY)
 
     KoinApplication(application = { modules(appModule) }) {
-        CVAgentTheme {
+        ArcaneTheme {
+            val toastState = rememberArcaneToastState()
             var cvData by remember { mutableStateOf<CVData?>(null) }
             var jsonLoaded by remember { mutableStateOf(false) }
             val repository: CVRepository = koinInject()
@@ -55,10 +57,10 @@ fun MainApp() {
 
             ChatScreen(
                 state = state,
+                toastState = toastState,
                 onSendMessage = viewModel::sendMessage,
                 cvData = cvData,
-                onSuggestionClick = viewModel::onSuggestionClicked,
-                onRetry = viewModel::retry
+                onSuggestionClick = viewModel::onSuggestionClicked
             )
         }
     }

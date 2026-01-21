@@ -54,8 +54,7 @@ class MainActivity : ComponentActivity() {
                         toastState = toastState,
                         onSendMessage = viewModel::sendMessage,
                         cvData = cvData,
-                        onSuggestionClick = viewModel::onSuggestionClicked,
-                        onRetry = viewModel::retry
+                        onSuggestionClick = viewModel::onSuggestionClicked
                     )
 
                     ArcaneToastHost(
