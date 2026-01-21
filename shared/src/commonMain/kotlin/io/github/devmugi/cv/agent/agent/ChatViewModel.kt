@@ -19,10 +19,10 @@ import kotlinx.coroutines.launch
 
 class ChatViewModel(
     private val apiClient: GroqApiClient,
-    private val repository: CVRepository,
+    @Suppress("UnusedPrivateProperty") private val repository: CVRepository,
     private val promptBuilder: SystemPromptBuilder,
     private val referenceExtractor: ReferenceExtractor,
-    private val cvDataProvider: () -> CVData? = { null }
+    private val cvDataProvider: () -> CVData? = { null },
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(ChatState())

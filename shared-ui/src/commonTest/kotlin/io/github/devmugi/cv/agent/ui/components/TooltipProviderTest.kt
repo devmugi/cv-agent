@@ -1,6 +1,13 @@
 package io.github.devmugi.cv.agent.ui.components
 
-import io.github.devmugi.cv.agent.domain.models.*
+import io.github.devmugi.cv.agent.domain.models.Achievement
+import io.github.devmugi.cv.agent.domain.models.CVData
+import io.github.devmugi.cv.agent.domain.models.CVReference
+import io.github.devmugi.cv.agent.domain.models.Education
+import io.github.devmugi.cv.agent.domain.models.PersonalInfo
+import io.github.devmugi.cv.agent.domain.models.Project
+import io.github.devmugi.cv.agent.domain.models.SkillCategory
+import io.github.devmugi.cv.agent.domain.models.WorkExperience
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNull
