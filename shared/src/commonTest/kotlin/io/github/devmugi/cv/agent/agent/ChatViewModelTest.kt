@@ -197,11 +197,17 @@ class ChatViewModelTest {
         // Advance partially to catch streaming state
         testDispatcher.scheduler.advanceTimeBy(15)
         assertTrue(viewModel.state.value.isStreaming)
-        assertTrue(viewModel.state.value.streamingContent.isNotEmpty())
+
+        // Check that streamingMessageId is set and the message exists with partial content
+        val streamingId = viewModel.state.value.streamingMessageId
+        assertNotNull(streamingId)
+        val streamingMessage = viewModel.state.value.messages.find { it.id == streamingId }
+        assertNotNull(streamingMessage)
+        assertTrue(streamingMessage.content.isNotEmpty())
 
         advanceUntilIdle()
         assertFalse(viewModel.state.value.isStreaming)
-        assertEquals("", viewModel.state.value.streamingContent)
+        assertEquals(null, viewModel.state.value.streamingMessageId)
     }
 
     @Test
