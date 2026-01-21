@@ -11,6 +11,8 @@ import io.github.devmugi.cv.agent.domain.models.ChatState
 import io.github.devmugi.cv.agent.domain.models.Message
 import io.github.devmugi.cv.agent.domain.models.MessageRole
 import io.github.devmugi.cv.agent.data.repository.CVRepository
+import kotlin.uuid.ExperimentalUuidApi
+import kotlin.uuid.Uuid
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -42,6 +44,7 @@ class ChatViewModel(
             current.copy(
                 messages = current.messages + userMessage,
                 isLoading = true,
+                thinkingStatus = "Crafting personalized response.",
                 error = null,
                 suggestions = emptyList()
             )
@@ -64,33 +67,73 @@ class ChatViewModel(
         _state.update { it.copy(error = null) }
     }
 
+    fun clearHistory() {
+        _state.update { ChatState() }
+        lastUserMessage = null
+    }
+
+    @OptIn(ExperimentalUuidApi::class)
     private suspend fun streamResponse() {
         val cvData = cvDataProvider()
         val systemPrompt = cvData?.let { promptBuilder.build(it) } ?: ""
 
         val apiMessages = buildApiMessages(systemPrompt)
-        var streamedContent = ""
+        val assistantMessageId = Uuid.random().toString()
 
-        _state.update { it.copy(isLoading = false, isStreaming = true, streamingContent = "") }
+        // Create assistant message at start with empty content
+        val assistantMessage = Message(
+            id = assistantMessageId,
+            role = MessageRole.ASSISTANT,
+            content = "",
+            references = emptyList()
+        )
+
+        _state.update { current ->
+            current.copy(
+                messages = current.messages + assistantMessage,
+                isLoading = false,
+                isStreaming = true,
+                streamingMessageId = assistantMessageId,
+                thinkingStatus = null
+            )
+        }
+
+        var streamedContent = ""
 
         apiClient.streamChatCompletion(
             messages = apiMessages,
             onChunk = { chunk ->
                 streamedContent += chunk
-                _state.update { it.copy(streamingContent = streamedContent) }
+                // Update the assistant message content in-place
+                _state.update { current ->
+                    current.copy(
+                        messages = current.messages.map { msg ->
+                            if (msg.id == assistantMessageId) {
+                                msg.copy(content = streamedContent)
+                            } else {
+                                msg
+                            }
+                        }
+                    )
+                }
             },
             onComplete = {
                 val extractionResult = referenceExtractor.extract(streamedContent)
-                val assistantMessage = Message(
-                    role = MessageRole.ASSISTANT,
-                    content = extractionResult.cleanedContent,
-                    references = extractionResult.references
-                )
+                // Finalize the message with cleaned content and references
                 _state.update { current ->
                     current.copy(
-                        messages = current.messages + assistantMessage,
+                        messages = current.messages.map { msg ->
+                            if (msg.id == assistantMessageId) {
+                                msg.copy(
+                                    content = extractionResult.cleanedContent,
+                                    references = extractionResult.references
+                                )
+                            } else {
+                                msg
+                            }
+                        },
                         isStreaming = false,
-                        streamingContent = ""
+                        streamingMessageId = null
                     )
                 }
             },
@@ -101,7 +144,16 @@ class ChatViewModel(
                     is GroqApiException.AuthError -> ChatError.Api("Authentication failed")
                     is GroqApiException.ApiError -> ChatError.Api(exception.message)
                 }
-                _state.update { it.copy(isLoading = false, isStreaming = false, error = error) }
+                // Remove the incomplete assistant message on error
+                _state.update { current ->
+                    current.copy(
+                        messages = current.messages.filter { it.id != assistantMessageId },
+                        isLoading = false,
+                        isStreaming = false,
+                        streamingMessageId = null,
+                        error = error
+                    )
+                }
             }
         )
     }
