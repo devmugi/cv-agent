@@ -7,6 +7,8 @@ plugins {
 }
 
 kotlin {
+    jvm()
+
     androidLibrary {
         namespace = "io.github.devmugi.cv.agent.shared"
         compileSdk = libs.versions.android.compileSdk.get().toInt()
@@ -25,13 +27,13 @@ kotlin {
         iosTarget.binaries.framework {
             baseName = "Shared"
             isStatic = true
-            export(project(":sharedDesignSystem"))
+            export(project(":shared-design-system"))
         }
     }
 
     sourceSets {
         commonMain.dependencies {
-            api(project(":sharedDesignSystem"))
+            api(project(":shared-design-system"))
 
             // Compose (for ViewModel)
             implementation(libs.compose.runtime)
@@ -60,6 +62,10 @@ kotlin {
         androidMain.dependencies {
             implementation(libs.ktor.client.okhttp)
             implementation(libs.koin.android)
+        }
+
+        jvmMain.dependencies {
+            implementation(libs.ktor.client.okhttp)
         }
 
         iosMain.dependencies {
