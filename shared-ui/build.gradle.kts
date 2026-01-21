@@ -19,7 +19,7 @@ kotlin {
 
     sourceSets {
         commonMain.dependencies {
-            implementation(project(":sharedDesignSystem"))
+            implementation(project(":shared-design-system"))
             implementation(project(":shared"))
 
             // Compose
