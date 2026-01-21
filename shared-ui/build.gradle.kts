@@ -6,8 +6,6 @@ plugins {
 }
 
 kotlin {
-    jvm()
-
     androidLibrary {
         namespace = "io.github.devmugi.cv.agent.ui"
         compileSdk = libs.versions.android.compileSdk.get().toInt()
@@ -33,9 +31,12 @@ kotlin {
             implementation(libs.compose.runtime)
             implementation(libs.compose.foundation)
             implementation(libs.compose.material3)
-            @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
-            implementation(compose.materialIconsExtended)
             implementation(libs.compose.ui)
+
+            // Material Icons
+            @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
+            implementation(compose.material3AdaptiveNavigationSuite)
+            implementation(compose.materialIconsExtended)
 
             // Lifecycle (for collectAsState)
             implementation(libs.androidx.lifecycle.runtime.compose)
