@@ -8,9 +8,6 @@ import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.widthIn
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -18,6 +15,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import com.mikepenz.markdown.m3.Markdown
+import io.github.devmugi.arcane.design.foundation.primitives.ArcaneSurface
+import io.github.devmugi.arcane.design.foundation.primitives.SurfaceVariant
+import io.github.devmugi.arcane.design.foundation.theme.ArcaneTheme
 import io.github.devmugi.cv.agent.domain.models.CVData
 import io.github.devmugi.cv.agent.domain.models.Message
 import io.github.devmugi.cv.agent.domain.models.MessageRole
@@ -44,21 +44,12 @@ fun MessageBubble(
 ) {
     val isUser = message.role == MessageRole.USER
     val alignment = if (isUser) Alignment.CenterEnd else Alignment.CenterStart
-    val shape = if (isUser) {
-        RoundedCornerShape(16.dp, 4.dp, 16.dp, 16.dp)
+    val variant = if (isUser) {
+        SurfaceVariant.Base
     } else {
-        RoundedCornerShape(4.dp, 16.dp, 16.dp, 16.dp)
+        SurfaceVariant.Raised
     }
-    val backgroundColor = if (isUser) {
-        MaterialTheme.colorScheme.primary
-    } else {
-        MaterialTheme.colorScheme.surface
-    }
-    val textColor = if (isUser) {
-        MaterialTheme.colorScheme.onPrimary
-    } else {
-        MaterialTheme.colorScheme.onSurface
-    }
+    val textColor = ArcaneTheme.colors.text
     val roleTag = if (isUser) "user" else "assistant"
 
     Box(
@@ -68,16 +59,15 @@ fun MessageBubble(
             .testTag("message_${roleTag}_${message.id}"),
         contentAlignment = alignment
     ) {
-        Surface(
-            shape = shape,
-            color = backgroundColor,
+        ArcaneSurface(
+            variant = variant,
             modifier = Modifier.widthIn(max = 300.dp)
         ) {
             Column(modifier = Modifier.padding(12.dp)) {
                 if (isUser) {
                     Text(
                         text = message.content,
-                        style = MaterialTheme.typography.bodyMedium,
+                        style = ArcaneTheme.typography.bodyMedium,
                         color = textColor
                     )
                 } else {
@@ -115,9 +105,8 @@ fun StreamingMessageBubble(
         modifier = modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 4.dp),
         contentAlignment = Alignment.CenterStart
     ) {
-        Surface(
-            shape = RoundedCornerShape(4.dp, 16.dp, 16.dp, 16.dp),
-            color = MaterialTheme.colorScheme.surface,
+        ArcaneSurface(
+            variant = SurfaceVariant.Raised,
             modifier = Modifier.widthIn(max = 300.dp)
         ) {
             Markdown(
