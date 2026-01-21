@@ -19,10 +19,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
+import io.github.devmugi.arcane.design.components.feedback.ArcaneToastState
+import io.github.devmugi.arcane.design.components.feedback.ArcaneToastStyle
+import io.github.devmugi.cv.agent.domain.models.ChatError
 import io.github.devmugi.cv.agent.domain.models.ChatState
 import io.github.devmugi.cv.agent.domain.models.CVData
 import io.github.devmugi.cv.agent.ui.components.CVAgentTopBar
-import io.github.devmugi.cv.agent.ui.components.ErrorMessage
 import io.github.devmugi.cv.agent.ui.components.MessageBubble
 import io.github.devmugi.cv.agent.ui.components.MessageInput
 import io.github.devmugi.cv.agent.ui.components.StreamingMessageBubble
@@ -31,6 +33,7 @@ import io.github.devmugi.cv.agent.ui.components.WelcomeSection
 @Composable
 fun ChatScreen(
     state: ChatState,
+    toastState: ArcaneToastState,
     onSendMessage: (String) -> Unit,
     modifier: Modifier = Modifier,
     cvData: CVData? = null,
@@ -44,6 +47,20 @@ fun ChatScreen(
     LaunchedEffect(state.messages.size, state.streamingContent) {
         if (state.messages.isNotEmpty() || state.isStreaming) {
             listState.animateScrollToItem(0)
+        }
+    }
+
+    // Show errors as toasts
+    LaunchedEffect(state.error) {
+        state.error?.let { error ->
+            toastState.show(
+                message = when (error) {
+                    is ChatError.Network -> error.message
+                    is ChatError.Api -> error.message
+                    ChatError.RateLimit -> "Too many requests. Please wait a moment."
+                },
+                style = ArcaneToastStyle.Error
+            )
         }
     }
 
@@ -76,22 +93,6 @@ fun ChatScreen(
                     reverseLayout = true,
                     contentPadding = PaddingValues(vertical = 8.dp)
                 ) {
-                    // Error message at top (bottom visually due to reverse)
-                    state.error?.let { error ->
-                        item(key = "error") {
-                            AnimatedVisibility(
-                                visible = true,
-                                enter = fadeIn() + slideInVertically()
-                            ) {
-                                ErrorMessage(
-                                    error = error,
-                                    onRetry = onRetry,
-                                    modifier = Modifier.padding(vertical = 8.dp)
-                                )
-                            }
-                        }
-                    }
-
                     // Streaming message (appears at bottom, first in reversed list)
                     if (state.isStreaming && state.streamingContent.isNotEmpty()) {
                         item(key = "streaming") {
