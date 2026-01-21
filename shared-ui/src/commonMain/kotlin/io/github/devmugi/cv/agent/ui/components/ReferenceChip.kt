@@ -1,9 +1,8 @@
 package io.github.devmugi.cv.agent.ui.components
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -13,8 +12,10 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Popup
+import io.github.devmugi.arcane.design.foundation.primitives.ArcaneSurface
+import io.github.devmugi.arcane.design.foundation.primitives.SurfaceVariant
+import io.github.devmugi.arcane.design.foundation.theme.ArcaneTheme
 import io.github.devmugi.cv.agent.domain.models.CVReference
-import io.github.devmugi.cv.agent.designsystem.theme.ReferenceChipBg
 
 fun formatReferenceChipText(reference: CVReference): String {
     return if (reference.label.isNotEmpty()) {
@@ -33,16 +34,19 @@ fun ReferenceChip(
     var showTooltip by remember { mutableStateOf(false) }
 
     Box(modifier = modifier) {
-        Surface(
-            onClick = { if (tooltipContent != null) showTooltip = !showTooltip },
-            shape = MaterialTheme.shapes.small,
-            color = ReferenceChipBg
+        ArcaneSurface(
+            variant = SurfaceVariant.Raised,
+            modifier = if (tooltipContent != null) {
+                Modifier.clickable { showTooltip = !showTooltip }
+            } else {
+                Modifier
+            }
         ) {
             Text(
                 text = formatReferenceChipText(reference),
                 modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
-                style = MaterialTheme.typography.labelSmall,
-                color = MaterialTheme.colorScheme.onSurface
+                style = ArcaneTheme.typography.labelSmall,
+                color = ArcaneTheme.colors.text
             )
         }
 
@@ -50,16 +54,14 @@ fun ReferenceChip(
             Popup(
                 onDismissRequest = { showTooltip = false }
             ) {
-                Surface(
-                    shape = MaterialTheme.shapes.medium,
-                    color = MaterialTheme.colorScheme.surface,
-                    shadowElevation = 4.dp
+                ArcaneSurface(
+                    variant = SurfaceVariant.Raised
                 ) {
                     Text(
                         text = tooltipContent,
                         modifier = Modifier.padding(12.dp),
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurface
+                        style = ArcaneTheme.typography.bodySmall,
+                        color = ArcaneTheme.colors.text
                     )
                 }
             }
