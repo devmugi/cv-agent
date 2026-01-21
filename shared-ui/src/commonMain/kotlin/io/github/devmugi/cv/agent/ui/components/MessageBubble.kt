@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.widthIn
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -63,13 +62,13 @@ fun MessageBubble(
         ArcaneSurface(
             variant = variant,
             showBorder = false,
-            modifier = Modifier.widthIn(max = 300.dp)
+            modifier = Modifier.fillMaxWidth(0.8f)
         ) {
             Column(modifier = Modifier.padding(12.dp)) {
                 if (isUser) {
                     Text(
                         text = message.content,
-                        style = ArcaneTheme.typography.bodyMedium,
+                        style = ArcaneTheme.typography.bodySmall,
                         color = textColor
                     )
                 } else {
@@ -111,7 +110,7 @@ fun StreamingMessageBubble(
         ArcaneSurface(
             variant = SurfaceVariant.Raised,
             showBorder = false,
-            modifier = Modifier.widthIn(max = 300.dp)
+            modifier = Modifier.fillMaxWidth(0.8f)
         ) {
             Markdown(
                 content = content,
