@@ -1,14 +1,12 @@
 package io.github.devmugi.cv.agent.ui.components
 
-import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
-import androidx.compose.ui.unit.dp
+import io.github.devmugi.arcane.design.components.controls.ArcaneButton
+import io.github.devmugi.arcane.design.components.controls.ArcaneButtonStyle
+import io.github.devmugi.arcane.design.foundation.theme.ArcaneTheme
 
 fun simulateSuggestionChipClick(text: String, onClick: (String) -> Unit) {
     onClick(text)
@@ -23,18 +21,14 @@ fun SuggestionChip(
     modifier: Modifier = Modifier,
     testTag: String? = null
 ) {
-    Surface(
+    ArcaneButton(
         onClick = { onClick(text) },
-        modifier = modifier.then(if (testTag != null) Modifier.testTag(testTag) else Modifier),
-        shape = MaterialTheme.shapes.medium,
-        color = MaterialTheme.colorScheme.background,
-        border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary)
+        style = ArcaneButtonStyle.Outlined(),
+        modifier = modifier.then(if (testTag != null) Modifier.testTag(testTag) else Modifier)
     ) {
         Text(
             text = text,
-            modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
-            style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.primary
+            style = ArcaneTheme.typography.bodyMedium
         )
     }
 }
