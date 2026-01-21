@@ -5,7 +5,7 @@ import io.github.devmugi.cv.agent.agent.ChatViewModel
 import io.github.devmugi.cv.agent.agent.ReferenceExtractor
 import io.github.devmugi.cv.agent.agent.SystemPromptBuilder
 import io.github.devmugi.cv.agent.api.GroqApiClient
-import io.github.devmugi.cv.agent.data.models.CVData
+import io.github.devmugi.cv.agent.domain.models.CVData
 import io.github.devmugi.cv.agent.data.repository.CVDataLoader
 import io.github.devmugi.cv.agent.data.repository.CVRepository
 import io.ktor.client.HttpClient

@@ -3,10 +3,13 @@ package io.github.devmugi.cv.agent.agent
 import io.github.devmugi.cv.agent.api.GroqApiClient
 import io.github.devmugi.cv.agent.api.GroqApiException
 import io.github.devmugi.cv.agent.api.models.ChatMessage
-import io.github.devmugi.cv.agent.data.models.CVData
-import io.github.devmugi.cv.agent.data.models.CVReference
-import io.github.devmugi.cv.agent.data.models.Education
-import io.github.devmugi.cv.agent.data.models.PersonalInfo
+import io.github.devmugi.cv.agent.domain.models.CVData
+import io.github.devmugi.cv.agent.domain.models.CVReference
+import io.github.devmugi.cv.agent.domain.models.ChatError
+import io.github.devmugi.cv.agent.domain.models.Education
+import io.github.devmugi.cv.agent.domain.models.MessageRole
+import io.github.devmugi.cv.agent.domain.models.PersonalInfo
+import io.github.devmugi.cv.agent.domain.models.defaultSuggestions
 import io.github.devmugi.cv.agent.data.repository.CVRepository
 import io.ktor.client.HttpClient
 import kotlinx.coroutines.Dispatchers

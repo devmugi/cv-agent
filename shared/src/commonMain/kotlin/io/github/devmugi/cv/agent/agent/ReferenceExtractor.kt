@@ -1,6 +1,6 @@
 package io.github.devmugi.cv.agent.agent
 
-import io.github.devmugi.cv.agent.data.models.CVReference
+import io.github.devmugi.cv.agent.domain.models.CVReference
 import io.github.devmugi.cv.agent.data.repository.CVRepository
 
 data class ExtractionResult(

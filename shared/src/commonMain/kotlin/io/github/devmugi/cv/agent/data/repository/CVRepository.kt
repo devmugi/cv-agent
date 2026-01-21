@@ -1,11 +1,11 @@
 package io.github.devmugi.cv.agent.data.repository
 
-import io.github.devmugi.cv.agent.data.models.Achievement
-import io.github.devmugi.cv.agent.data.models.CVData
-import io.github.devmugi.cv.agent.data.models.CVReference
-import io.github.devmugi.cv.agent.data.models.Project
-import io.github.devmugi.cv.agent.data.models.SkillCategory
-import io.github.devmugi.cv.agent.data.models.WorkExperience
+import io.github.devmugi.cv.agent.domain.models.Achievement
+import io.github.devmugi.cv.agent.domain.models.CVData
+import io.github.devmugi.cv.agent.domain.models.CVReference
+import io.github.devmugi.cv.agent.domain.models.Project
+import io.github.devmugi.cv.agent.domain.models.SkillCategory
+import io.github.devmugi.cv.agent.domain.models.WorkExperience
 
 open class CVRepository(
     private val loader: CVDataLoader = CVDataLoader()

@@ -1,6 +1,6 @@
 package io.github.devmugi.cv.agent.agent
 
-import io.github.devmugi.cv.agent.data.models.CVData
+import io.github.devmugi.cv.agent.domain.models.CVData
 
 class SystemPromptBuilder {
 
