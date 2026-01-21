@@ -12,8 +12,6 @@ compose.resources {
 }
 
 kotlin {
-    jvm()
-
     androidLibrary {
         namespace = "io.github.devmugi.cv.agent.shared"
         compileSdk = libs.versions.android.compileSdk.get().toInt()
@@ -71,10 +69,6 @@ kotlin {
         androidMain.dependencies {
             implementation(libs.ktor.client.okhttp)
             implementation(libs.koin.android)
-        }
-
-        jvmMain.dependencies {
-            implementation(libs.ktor.client.okhttp)
         }
 
         iosMain.dependencies {

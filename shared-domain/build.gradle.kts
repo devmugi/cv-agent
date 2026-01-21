@@ -5,8 +5,6 @@ plugins {
 }
 
 kotlin {
-    jvm()
-
     androidLibrary {
         namespace = "io.github.devmugi.cv.agent.domain"
         compileSdk = libs.versions.android.compileSdk.get().toInt()

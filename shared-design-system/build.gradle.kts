@@ -6,8 +6,6 @@ plugins {
 }
 
 kotlin {
-    jvm()
-
     androidLibrary {
         namespace = "io.github.devmugi.cv.agent.designsystem"
         compileSdk = libs.versions.android.compileSdk.get().toInt()
