@@ -108,7 +108,9 @@ fun ChatScreen(
                     },
                     activeItemsContent = if (state.messages.isNotEmpty() && onClearHistory != null) {
                         { ContextChip(onDismiss = onClearHistory) }
-                    } else null,
+                    } else {
+                        null
+                    },
                     modifier = Modifier
                         .padding(horizontal = 16.dp)
                         .testTag("chat_input")
@@ -154,11 +156,12 @@ fun ChatScreen(
     }
 }
 
+@Suppress("UnusedParameter")
 @Composable
 private fun MessageItem(
     message: Message,
     state: ChatState,
-    cvData: CVData?,
+    @Suppress("UNUSED_PARAMETER") cvData: CVData?,
     onShowMore: () -> Unit,
     onCopyMessage: (String) -> Unit,
     onShareMessage: (String) -> Unit,
@@ -196,7 +199,9 @@ private fun MessageItem(
                                 feedbackState = FeedbackState.NONE
                             )
                         }
-                    } else null
+                    } else {
+                        null
+                    }
                 ) {
                     if (isThinking) {
                         Text(
