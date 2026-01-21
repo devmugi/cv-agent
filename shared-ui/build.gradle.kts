@@ -37,7 +37,6 @@ kotlin {
             implementation(libs.compose.ui)
 
             // Material Icons
-            implementation(libs.compose.material3.adaptive.navigation.suite)
             implementation(libs.compose.material.icons.extended.multiplatform)
 
             // Lifecycle (for collectAsState)

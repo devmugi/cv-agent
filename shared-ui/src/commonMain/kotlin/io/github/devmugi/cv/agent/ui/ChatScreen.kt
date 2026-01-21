@@ -1,34 +1,43 @@
 package io.github.devmugi.cv.agent.ui
 
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.slideInVertically
-import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.ui.Alignment
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
+import com.mikepenz.markdown.m3.Markdown
+import com.mikepenz.markdown.m3.markdownColor
+import io.github.devmugi.arcane.design.components.controls.ArcaneAgentChatInput
+import io.github.devmugi.arcane.design.components.controls.ArcaneAssistantMessageBlock
+import io.github.devmugi.arcane.design.components.controls.ArcaneChatMessageList
+import io.github.devmugi.arcane.design.components.controls.ArcaneChatScreenScaffold
+import io.github.devmugi.arcane.design.components.controls.ArcaneUserMessageBlock
 import io.github.devmugi.arcane.design.components.feedback.ArcaneToastState
 import io.github.devmugi.arcane.design.components.feedback.ArcaneToastStyle
 import io.github.devmugi.arcane.design.foundation.theme.ArcaneTheme
 import io.github.devmugi.cv.agent.domain.models.ChatError
 import io.github.devmugi.cv.agent.domain.models.ChatState
 import io.github.devmugi.cv.agent.domain.models.CVData
+import io.github.devmugi.cv.agent.domain.models.Message
+import io.github.devmugi.cv.agent.domain.models.MessageRole
 import io.github.devmugi.cv.agent.ui.components.CVAgentTopBar
-import io.github.devmugi.cv.agent.ui.components.MessageBubble
-import io.github.devmugi.cv.agent.ui.components.MessageInput
-import io.github.devmugi.cv.agent.ui.components.StreamingMessageBubble
+import io.github.devmugi.cv.agent.ui.components.ContextChip
+import io.github.devmugi.cv.agent.ui.components.Disclaimer
+import io.github.devmugi.cv.agent.ui.components.FeedbackState
+import io.github.devmugi.cv.agent.ui.components.MessageActions
+import io.github.devmugi.cv.agent.ui.components.MessagePopupDialog
 import io.github.devmugi.cv.agent.ui.components.WelcomeSection
 
 @Composable
@@ -38,17 +47,18 @@ fun ChatScreen(
     onSendMessage: (String) -> Unit,
     modifier: Modifier = Modifier,
     cvData: CVData? = null,
-    onSuggestionClick: (String) -> Unit = onSendMessage
+    onSuggestionClick: (String) -> Unit = onSendMessage,
+    onCopyMessage: (String) -> Unit = {},
+    onShareMessage: (String) -> Unit = {},
+    onLikeMessage: (String) -> Unit = {},
+    onDislikeMessage: (String) -> Unit = {},
+    onRegenerateMessage: (String) -> Unit = {},
+    onClearHistory: (() -> Unit)? = null
 ) {
-    val listState = rememberLazyListState()
-    val showWelcome = state.messages.isEmpty() && !state.isLoading && !state.isStreaming
+    var inputText by remember { mutableStateOf("") }
+    var popupMessage by remember { mutableStateOf<Message?>(null) }
 
-    // Auto-scroll to bottom when new messages arrive
-    LaunchedEffect(state.messages.size, state.streamingContent) {
-        if (state.messages.isNotEmpty() || state.isStreaming) {
-            listState.animateScrollToItem(0)
-        }
-    }
+    val showWelcome = state.messages.isEmpty() && !state.isLoading && !state.isStreaming
 
     // Show errors as toasts
     LaunchedEffect(state.error) {
@@ -64,60 +74,145 @@ fun ChatScreen(
         }
     }
 
+    // Message popup dialog
+    popupMessage?.let { message ->
+        MessagePopupDialog(
+            content = message.content,
+            onDismiss = { popupMessage = null }
+        )
+    }
+
     Scaffold(
         modifier = modifier,
         containerColor = ArcaneTheme.colors.surface,
         topBar = { CVAgentTopBar() },
         bottomBar = {
-            MessageInput(
-                onSend = onSendMessage,
-                isLoading = state.isLoading || state.isStreaming,
-                modifier = Modifier.navigationBarsPadding().imePadding()
-            )
+            Column(modifier = Modifier.navigationBarsPadding().imePadding()) {
+                Disclaimer()
+                ArcaneAgentChatInput(
+                    value = inputText,
+                    onValueChange = { inputText = it },
+                    onSend = {
+                        if (inputText.isNotBlank()) {
+                            onSendMessage(inputText)
+                            inputText = ""
+                        }
+                    },
+                    placeholder = "Ask about my experience...",
+                    enabled = !(state.isLoading || state.isStreaming),
+                    onVoiceToTextClick = {
+                        toastState.show("Voice to text not implemented yet")
+                    },
+                    onAudioRecordClick = {
+                        toastState.show("Voice conversation not implemented yet")
+                    },
+                    activeItemsContent = if (state.messages.isNotEmpty() && onClearHistory != null) {
+                        { ContextChip(onDismiss = onClearHistory) }
+                    } else null,
+                    modifier = Modifier
+                        .padding(horizontal = 16.dp)
+                        .testTag("chat_input")
+                )
+            }
         }
     ) { padding ->
-        Box(
+        ArcaneChatScreenScaffold(
+            isEmpty = showWelcome,
             modifier = Modifier
                 .fillMaxSize()
-                .padding(padding)
-        ) {
-            if (showWelcome) {
+                .padding(padding),
+            emptyState = {
                 WelcomeSection(
                     suggestions = state.suggestions,
-                    onSuggestionClick = onSuggestionClick,
-                    modifier = Modifier.align(Alignment.Center)
+                    onSuggestionClick = onSuggestionClick
                 )
-            } else {
-                LazyColumn(
+            },
+            content = {
+                ArcaneChatMessageList(
+                    messages = state.messages.reversed(),
                     modifier = Modifier.fillMaxSize().testTag("chat_messages_list"),
-                    state = listState,
                     reverseLayout = true,
-                    contentPadding = PaddingValues(vertical = 8.dp)
-                ) {
-                    // Streaming message (appears at bottom, first in reversed list)
-                    if (state.isStreaming && state.streamingContent.isNotEmpty()) {
-                        item(key = "streaming") {
-                            StreamingMessageBubble(content = state.streamingContent)
-                        }
+                    contentPadding = PaddingValues(vertical = 8.dp),
+                    showScrollToBottom = true,
+                    messageKey = { it.id },
+                    messageContent = { message ->
+                        MessageItem(
+                            message = message,
+                            state = state,
+                            cvData = cvData,
+                            onShowMore = { popupMessage = message },
+                            onCopyMessage = onCopyMessage,
+                            onShareMessage = onShareMessage,
+                            onLikeMessage = onLikeMessage,
+                            onDislikeMessage = onDislikeMessage,
+                            onRegenerateMessage = onRegenerateMessage
+                        )
                     }
+                )
+            }
+        )
+    }
+}
 
-                    // Messages in reverse order (newest first in list = bottom visually)
-                    items(
-                        items = state.messages.reversed(),
-                        key = { it.id }
-                    ) { message ->
-                        AnimatedVisibility(
-                            visible = true,
-                            enter = fadeIn() + slideInVertically { it / 2 }
-                        ) {
-                            MessageBubble(
-                                message = message,
-                                cvData = cvData
+@Composable
+private fun MessageItem(
+    message: Message,
+    state: ChatState,
+    cvData: CVData?,
+    onShowMore: () -> Unit,
+    onCopyMessage: (String) -> Unit,
+    onShareMessage: (String) -> Unit,
+    onLikeMessage: (String) -> Unit,
+    onDislikeMessage: (String) -> Unit,
+    onRegenerateMessage: (String) -> Unit
+) {
+    when (message.role) {
+        MessageRole.USER -> {
+            ArcaneUserMessageBlock(
+                text = message.content,
+                modifier = Modifier.padding(horizontal = 16.dp, vertical = 4.dp),
+                backgroundColor = ArcaneTheme.colors.surface,
+                textStyle = ArcaneTheme.typography.bodySmall
+            )
+        }
+        MessageRole.ASSISTANT -> {
+            val isStreaming = message.id == state.streamingMessageId
+            val isThinking = isStreaming && message.content.isEmpty()
+
+            Column(modifier = Modifier.padding(horizontal = 16.dp, vertical = 4.dp)) {
+                ArcaneAssistantMessageBlock(
+                    title = if (isThinking) "Thinking..." else "Assistant",
+                    isLoading = isStreaming,
+                    enableTruncation = true,
+                    onShowMoreClick = onShowMore,
+                    bottomActions = if (!isStreaming) {
+                        {
+                            MessageActions(
+                                onCopy = { onCopyMessage(message.id) },
+                                onShare = { onShareMessage(message.id) },
+                                onLike = { onLikeMessage(message.id) },
+                                onDislike = { onDislikeMessage(message.id) },
+                                onRegenerate = { onRegenerateMessage(message.id) },
+                                feedbackState = FeedbackState.NONE
                             )
                         }
+                    } else null
+                ) {
+                    if (isThinking) {
+                        Text(
+                            text = state.thinkingStatus ?: "...",
+                            style = ArcaneTheme.typography.bodyMedium,
+                            color = ArcaneTheme.colors.textSecondary
+                        )
+                    } else {
+                        Markdown(
+                            content = message.content,
+                            colors = markdownColor(text = ArcaneTheme.colors.text)
+                        )
                     }
                 }
             }
         }
+        MessageRole.SYSTEM -> { /* Skip system messages */ }
     }
 }
