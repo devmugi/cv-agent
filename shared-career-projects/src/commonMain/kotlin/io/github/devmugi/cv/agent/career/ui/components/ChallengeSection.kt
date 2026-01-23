@@ -1,8 +1,7 @@
 package io.github.devmugi.cv.agent.career.ui.components
 
-import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -20,10 +19,11 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import io.github.devmugi.arcane.design.foundation.primitives.ArcaneSurface
+import io.github.devmugi.arcane.design.foundation.primitives.SurfaceVariant
 import io.github.devmugi.arcane.design.foundation.theme.ArcaneTheme
 import io.github.devmugi.cv.agent.career.models.Challenge
 
@@ -42,68 +42,77 @@ fun ChallengeSection(
 
         Spacer(modifier = Modifier.height(12.dp))
 
-        Box(
+        ArcaneSurface(
+            variant = SurfaceVariant.Container,
             modifier = Modifier
                 .fillMaxWidth()
-                .clip(RoundedCornerShape(12.dp))
-                .background(ArcaneTheme.colors.surfaceContainer)
+                .border(1.dp, AmberColor.copy(alpha = 0.3f), RoundedCornerShape(12.dp))
         ) {
-            // Left accent border
-            Box(
-                modifier = Modifier
-                    .width(4.dp)
-                    .matchParentSize()
-                    .background(AmberColor)
-            )
+            Column(modifier = Modifier.padding(16.dp)) {
+                // Header with icon and title
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(12.dp)
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Warning,
+                        contentDescription = null,
+                        tint = AmberColor,
+                        modifier = Modifier.size(24.dp)
+                    )
+                    Text(
+                        text = "Challenge Overview",
+                        style = ArcaneTheme.typography.labelLarge,
+                        color = ArcaneTheme.colors.text,
+                        fontWeight = FontWeight.SemiBold
+                    )
+                }
 
-            Column(
-                modifier = Modifier.padding(start = 20.dp, top = 16.dp, end = 16.dp, bottom = 16.dp)
-            ) {
+                Spacer(modifier = Modifier.height(12.dp))
+
                 // Context
                 challenge.context?.let { context ->
-                    Row {
-                        Text(
-                            text = "Context: ",
-                            style = ArcaneTheme.typography.bodyMedium,
-                            color = AmberColor,
-                            fontWeight = FontWeight.SemiBold
-                        )
-                        Text(
-                            text = context,
-                            style = ArcaneTheme.typography.bodyMedium,
-                            color = ArcaneTheme.colors.text
-                        )
-                    }
+                    Text(
+                        text = "Context:",
+                        style = ArcaneTheme.typography.bodyMedium,
+                        color = AmberColor,
+                        fontWeight = FontWeight.SemiBold,
+                        modifier = Modifier.padding(bottom = 4.dp)
+                    )
+                    Text(
+                        text = context,
+                        style = ArcaneTheme.typography.bodyMedium,
+                        color = ArcaneTheme.colors.textSecondary
+                    )
                     Spacer(modifier = Modifier.height(12.dp))
                 }
 
                 // Response
                 challenge.response?.let { response ->
-                    Row {
-                        Text(
-                            text = "Response: ",
-                            style = ArcaneTheme.typography.bodyMedium,
-                            color = AmberColor,
-                            fontWeight = FontWeight.SemiBold
-                        )
-                        Text(
-                            text = response,
-                            style = ArcaneTheme.typography.bodyMedium,
-                            color = ArcaneTheme.colors.text
-                        )
-                    }
+                    Text(
+                        text = "Response:",
+                        style = ArcaneTheme.typography.bodyMedium,
+                        color = AmberColor,
+                        fontWeight = FontWeight.SemiBold,
+                        modifier = Modifier.padding(bottom = 4.dp)
+                    )
+                    Text(
+                        text = response,
+                        style = ArcaneTheme.typography.bodyMedium,
+                        color = ArcaneTheme.colors.textSecondary
+                    )
                 }
 
                 // Details bullet list
                 challenge.details?.takeIf { it.isNotEmpty() }?.let { details ->
-                    Spacer(modifier = Modifier.height(16.dp))
+                    Spacer(modifier = Modifier.height(12.dp))
                     Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
                         details.forEach { detail ->
                             Row(verticalAlignment = Alignment.Top) {
                                 Icon(
                                     imageVector = Icons.Default.Circle,
                                     contentDescription = null,
-                                    tint = ArcaneTheme.colors.textSecondary,
+                                    tint = AmberColor,
                                     modifier = Modifier
                                         .size(6.dp)
                                         .padding(top = 6.dp)

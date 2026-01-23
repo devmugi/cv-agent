@@ -2,9 +2,10 @@ package io.github.devmugi.cv.agent.career.ui.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
-import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.IntrinsicSize
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -20,7 +21,6 @@ import io.github.devmugi.arcane.design.foundation.primitives.SurfaceVariant
 import io.github.devmugi.arcane.design.foundation.theme.ArcaneTheme
 import io.github.devmugi.cv.agent.career.models.Overview
 
-@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun OverviewSection(
     overview: Overview,
@@ -34,46 +34,49 @@ fun OverviewSection(
 
         Spacer(modifier = Modifier.height(12.dp))
 
-        FlowRow(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(12.dp),
-            verticalArrangement = Arrangement.spacedBy(12.dp)
+        // First row: Company, Product, Role, Period
+        Row(
+            modifier = Modifier.fillMaxWidth().height(IntrinsicSize.Max),
+            horizontalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             overview.company?.let { company ->
                 OverviewCard(
                     label = "COMPANY",
                     value = company,
-                    modifier = Modifier.weight(1f, fill = false)
+                    modifier = Modifier.weight(1f).fillMaxHeight()
                 )
             }
             overview.product?.let { product ->
                 OverviewCard(
                     label = "PRODUCT",
                     value = product,
-                    modifier = Modifier.weight(1f, fill = false)
+                    modifier = Modifier.weight(1f).fillMaxHeight()
                 )
             }
             overview.role?.let { role ->
                 OverviewCard(
                     label = "ROLE",
                     value = role,
-                    modifier = Modifier.weight(1f, fill = false)
+                    modifier = Modifier.weight(1f).fillMaxHeight()
                 )
             }
             overview.period?.displayText?.let { period ->
                 OverviewCard(
                     label = "PERIOD",
                     value = period,
-                    modifier = Modifier.weight(1f, fill = false)
+                    modifier = Modifier.weight(1f).fillMaxHeight()
                 )
             }
-            overview.location?.let { location ->
-                OverviewCard(
-                    label = "LOCATION",
-                    value = location,
-                    modifier = Modifier.weight(1f, fill = false)
-                )
-            }
+        }
+
+        // Second row: Location (if present)
+        overview.location?.let { location ->
+            Spacer(modifier = Modifier.height(12.dp))
+            OverviewCard(
+                label = "LOCATION",
+                value = location,
+                modifier = Modifier.fillMaxWidth()
+            )
         }
     }
 }

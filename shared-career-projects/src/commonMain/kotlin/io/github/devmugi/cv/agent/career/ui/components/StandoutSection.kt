@@ -3,9 +3,8 @@ package io.github.devmugi.cv.agent.career.ui.components
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
-import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -33,7 +32,6 @@ import io.github.devmugi.cv.agent.career.models.Standout
 
 private val AmberColor = Color(0xFFFFC107)
 
-@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun StandoutSection(
     standout: Standout,
@@ -47,15 +45,15 @@ fun StandoutSection(
 
         Spacer(modifier = Modifier.height(12.dp))
 
-        FlowRow(
-            horizontalArrangement = Arrangement.spacedBy(12.dp),
+        Column(
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             standout.items?.forEach { item ->
                 StandoutCard(
                     icon = getStandoutIcon(item.icon),
                     title = item.title ?: "",
-                    description = item.description ?: ""
+                    description = item.description ?: "",
+                    modifier = Modifier.fillMaxWidth()
                 )
             }
         }
@@ -89,14 +87,16 @@ private fun StandoutCard(
                 style = ArcaneTheme.typography.labelLarge,
                 color = AmberColor,
                 fontWeight = FontWeight.SemiBold,
-                textAlign = TextAlign.Center
+                textAlign = TextAlign.Center,
+                modifier = Modifier.fillMaxWidth()
             )
             Spacer(modifier = Modifier.height(4.dp))
             Text(
                 text = description,
                 style = ArcaneTheme.typography.bodySmall,
                 color = ArcaneTheme.colors.textSecondary,
-                textAlign = TextAlign.Center
+                textAlign = TextAlign.Center,
+                modifier = Modifier.fillMaxWidth()
             )
         }
     }

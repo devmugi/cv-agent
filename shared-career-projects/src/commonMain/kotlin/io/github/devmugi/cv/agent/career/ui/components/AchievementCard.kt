@@ -114,7 +114,7 @@ fun AchievementCard(
                             Icon(
                                 imageVector = Icons.Default.Circle,
                                 contentDescription = null,
-                                tint = ArcaneTheme.colors.textSecondary,
+                                tint = AmberColor,
                                 modifier = Modifier
                                     .size(6.dp)
                                     .padding(top = 6.dp)
