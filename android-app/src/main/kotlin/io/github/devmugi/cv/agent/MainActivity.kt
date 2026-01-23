@@ -19,6 +19,7 @@ import org.jetbrains.compose.resources.ExperimentalResourceApi
 import io.github.devmugi.arcane.design.components.feedback.ArcaneToastHost
 import io.github.devmugi.arcane.design.components.feedback.ArcaneToastPosition
 import io.github.devmugi.arcane.design.components.feedback.rememberArcaneToastState
+import io.github.devmugi.arcane.design.foundation.theme.ArcaneColors
 import io.github.devmugi.arcane.design.foundation.theme.ArcaneTheme
 import io.github.devmugi.cv.agent.agent.ChatViewModel
 import io.github.devmugi.cv.agent.career.data.CareerProjectDataLoader
@@ -65,7 +66,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             val toastState = rememberArcaneToastState()
 
-            ArcaneTheme {
+            ArcaneTheme(colors = ArcaneColors.perplexity()) {
                 var cvData by remember { mutableStateOf<CVData?>(null) }
                 var jsonLoaded by remember { mutableStateOf(false) }
                 var currentScreen by remember { mutableStateOf(Screen.Chat) }

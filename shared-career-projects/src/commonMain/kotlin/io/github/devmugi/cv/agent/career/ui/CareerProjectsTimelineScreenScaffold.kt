@@ -63,6 +63,14 @@ fun CareerProjectsTimelineScreenScaffold(
             contentPadding = PaddingValues(16.dp),
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
+            item {
+                Text(
+                    text = "From System Administrator to Lead Android Developer & AI Agent Engineer",
+                    style = ArcaneTheme.typography.bodyLarge,
+                    color = ArcaneTheme.colors.textSecondary,
+                    modifier = Modifier.padding(bottom = 8.dp)
+                )
+            }
             items(projects, key = { it.id }) { project ->
                 CareerProjectTimelineInfo(
                     project = project,
