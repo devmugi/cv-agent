@@ -31,6 +31,12 @@ CV Agent is a Kotlin Multiplatform (KMP) Compose Multiplatform mobile app that p
 ./gradlew ktlintFormat
 ```
 
+## Build Rules
+
+**Do NOT build iOS targets.** Reason: iOS tooling sucks, Xcode takes infinity time to build. Use Android-specific tasks instead:
+- `./gradlew :shared-ui:compileKotlinAndroid` instead of `./gradlew :shared-ui:build`
+- `./gradlew :shared:compileKotlinAndroid` instead of `./gradlew :shared:build`
+
 ## Module Architecture
 
 ```

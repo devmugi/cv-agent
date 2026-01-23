@@ -47,7 +47,7 @@ fun MessagePopupDialog(
                     .verticalScroll(rememberScrollState())
             )
         },
-        containerColor = ArcaneTheme.colors.surface,
+        containerColor = ArcaneTheme.colors.surfaceContainerLow,
         modifier = modifier
     )
 }

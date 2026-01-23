@@ -19,11 +19,12 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import com.mikepenz.markdown.m3.Markdown
 import com.mikepenz.markdown.m3.markdownColor
-import io.github.devmugi.arcane.design.components.controls.ArcaneAgentChatInput
-import io.github.devmugi.arcane.design.components.controls.ArcaneAssistantMessageBlock
-import io.github.devmugi.arcane.design.components.controls.ArcaneChatMessageList
-import io.github.devmugi.arcane.design.components.controls.ArcaneChatScreenScaffold
-import io.github.devmugi.arcane.design.components.controls.ArcaneUserMessageBlock
+import io.github.devmugi.arcane.chat.components.input.ArcaneAgentChatInput
+import io.github.devmugi.arcane.chat.components.messages.ArcaneAssistantMessageBlock
+import io.github.devmugi.arcane.chat.components.messages.ArcaneChatMessageList
+import io.github.devmugi.arcane.chat.components.messages.ArcaneUserMessageBlock
+import io.github.devmugi.arcane.chat.components.scaffold.ArcaneChatScreenScaffold
+import io.github.devmugi.arcane.chat.models.MessageBlock
 import io.github.devmugi.arcane.design.components.feedback.ArcaneToastState
 import io.github.devmugi.arcane.design.components.feedback.ArcaneToastStyle
 import io.github.devmugi.arcane.design.foundation.theme.ArcaneTheme
@@ -84,7 +85,7 @@ fun ChatScreen(
 
     Scaffold(
         modifier = modifier,
-        containerColor = ArcaneTheme.colors.surface,
+        containerColor = ArcaneTheme.colors.surfaceContainerLow,
         topBar = { CVAgentTopBar() },
         bottomBar = {
             Column(modifier = Modifier.navigationBarsPadding().imePadding()) {
@@ -172,10 +173,14 @@ private fun MessageItem(
     when (message.role) {
         MessageRole.USER -> {
             ArcaneUserMessageBlock(
-                text = message.content,
+                blocks = listOf(
+                    MessageBlock.Text(
+                        id = "${message.id}-text",
+                        content = message.content
+                    )
+                ),
                 modifier = Modifier.padding(horizontal = 16.dp, vertical = 4.dp),
-                backgroundColor = ArcaneTheme.colors.surface,
-                textStyle = ArcaneTheme.typography.bodySmall
+                backgroundColor = ArcaneTheme.colors.surfaceContainerLow
             )
         }
         MessageRole.ASSISTANT -> {
@@ -184,6 +189,25 @@ private fun MessageItem(
 
             Column(modifier = Modifier.padding(horizontal = 16.dp, vertical = 4.dp)) {
                 ArcaneAssistantMessageBlock(
+                    blocks = listOf(
+                        MessageBlock.Custom(
+                            id = "${message.id}-content",
+                            content = {
+                                if (isThinking) {
+                                    Text(
+                                        text = state.thinkingStatus ?: "...",
+                                        style = ArcaneTheme.typography.bodyMedium,
+                                        color = ArcaneTheme.colors.textSecondary
+                                    )
+                                } else {
+                                    Markdown(
+                                        content = message.content,
+                                        colors = markdownColor(text = ArcaneTheme.colors.text)
+                                    )
+                                }
+                            }
+                        )
+                    ),
                     title = if (isThinking) "Thinking..." else "Assistant",
                     isLoading = isStreaming,
                     enableTruncation = true,
@@ -202,20 +226,7 @@ private fun MessageItem(
                     } else {
                         null
                     }
-                ) {
-                    if (isThinking) {
-                        Text(
-                            text = state.thinkingStatus ?: "...",
-                            style = ArcaneTheme.typography.bodyMedium,
-                            color = ArcaneTheme.colors.textSecondary
-                        )
-                    } else {
-                        Markdown(
-                            content = message.content,
-                            colors = markdownColor(text = ArcaneTheme.colors.text)
-                        )
-                    }
-                }
+                )
             }
         }
         MessageRole.SYSTEM -> { /* Skip system messages */ }
