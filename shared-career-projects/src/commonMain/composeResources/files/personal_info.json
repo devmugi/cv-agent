@@ -1,0 +1,20 @@
+{
+  "name": "Denys Honcharenko",
+  "title": "Senior Android Engineer",
+  "location": "Genk, Belgium",
+  "email": "aidevmugi@gmail.com",
+  "linkedin": "https://www.linkedin.com/in/denyshoncharenko/",
+  "github": "https://github.com/devmugi",
+  "portfolio": "https://devmugi.github.io/devmugi/",
+  "summary": "Result-oriented Software Engineer with 15+ years of experience building apps that reach 100M+ users across 60+ countries. Specializing in Kotlin Multiplatform, Jetpack Compose, IoT solutions, and AI-powered development.",
+  "skills": [
+    { "category": "AI-Powered Development", "items": ["Claude Code", "MCP Server", "Superpowers", "spec-kit", "Koog", "AI Prompting"] },
+    { "category": "Kotlin Multiplatform", "items": ["KMM", "Compose Multiplatform", "Coroutines", "Ktor"] },
+    { "category": "Android Development", "items": ["Android SDK", "Kotlin", "Java", "Jetpack Compose", "Android TV"] },
+    { "category": "Architecture", "items": ["MVVM", "MVP", "MVI", "Clean Architecture"] },
+    { "category": "IoT & Hardware", "items": ["Bluetooth/BLE", "MQTT", "OpenHab", "Alexa Skills", "AWS IoT"] },
+    { "category": "Enterprise & MDM", "items": ["Kiosk Mode", "Samsung Knox", "Android Enterprise"] },
+    { "category": "Backend", "items": ["Spring Boot", "Kafka", "REST API", "Ktor", "Kubernetes"] },
+    { "category": "Cloud & DevOps", "items": ["AWS", "Firebase", "CI/CD", "Docker"] }
+  ]
+}
