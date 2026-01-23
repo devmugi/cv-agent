@@ -65,13 +65,11 @@ object ViewControllerFactory : KoinComponent {
                 // Load career projects
                 val loader = CareerProjectDataLoader()
                 val fullProjects = projectJsonFiles.mapNotNull { path ->
-                    try {
+                    runCatching {
                         val bytes = CareerRes.readBytes(path)
                         val jsonString = bytes.decodeToString()
                         loader.loadCareerProject(jsonString)
-                    } catch (e: Exception) {
-                        null
-                    }
+                    }.getOrNull()
                 }
 
                 // Create AgentDataProvider
