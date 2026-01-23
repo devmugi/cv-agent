@@ -1,64 +1,86 @@
 package io.github.devmugi.cv.agent.agent
 
-import io.github.devmugi.cv.agent.domain.models.CVData
-
 class SystemPromptBuilder {
 
-    fun build(cvData: CVData): String = buildString {
-        appendLine("""
-You are an AI assistant for Denys Honcharenko's portfolio. Answer questions about Denys in third person. Be helpful, professional, and concise.
-
-When mentioning specific items from Denys's background, use this format:
-[Type: ID] where Type is one of: Experience, Project, Skill, Achievement, Education
-
-Examples: [Experience: experience.geosatis], [Project: project.mtg-deckbuilder]
-
----
-        """.trimIndent())
-
+    fun build(dataProvider: AgentDataProvider): String = buildString {
+        appendLine(INSTRUCTIONS)
         appendLine()
-        appendLine("PERSONAL INFO:")
-        appendLine("Name: ${cvData.personalInfo.name}")
-        appendLine("Location: ${cvData.personalInfo.location}")
-        appendLine("Email: ${cvData.personalInfo.email}")
-        appendLine("LinkedIn: ${cvData.personalInfo.linkedin}")
-        appendLine("GitHub: ${cvData.personalInfo.github}")
+        appendPersonalInfo(dataProvider)
         appendLine()
-        appendLine("Summary: ${cvData.summary}")
+        appendSkills(dataProvider)
+        appendLine()
+        appendProjectIndex(dataProvider)
+        appendLine()
+        appendFeaturedProjects(dataProvider)
+        appendLine()
+        appendLine(SUGGESTION_INSTRUCTIONS)
+    }
 
+    private fun StringBuilder.appendPersonalInfo(dataProvider: AgentDataProvider) {
+        val info = dataProvider.personalInfo
+        appendLine("# PERSONAL INFO")
+        appendLine("Name: ${info.name}")
+        appendLine("Title: ${info.title}")
+        appendLine("Location: ${info.location}")
+        appendLine("Email: ${info.email}")
+        appendLine("LinkedIn: ${info.linkedin}")
+        appendLine("GitHub: ${info.github}")
         appendLine()
-        appendLine("SKILLS:")
-        cvData.skills.forEach { skill ->
-            appendLine("- ${skill.category} (ID: ${skill.id}): ${skill.skills.joinToString(", ")}")
+        appendLine("Summary: ${info.summary}")
+    }
+
+    private fun StringBuilder.appendSkills(dataProvider: AgentDataProvider) {
+        appendLine("# SKILLS")
+        dataProvider.personalInfo.skills.forEach { skill ->
+            appendLine("- ${skill.category}: ${skill.items.joinToString(", ")}")
         }
+    }
 
-        appendLine()
-        appendLine("WORK EXPERIENCE:")
-        cvData.experience.forEach { exp ->
-            appendLine("- ${exp.company} (ID: ${exp.id}): ${exp.title}, ${exp.period}")
-            appendLine("  ${exp.description}")
-            exp.highlights.forEach { highlight ->
-                appendLine("  * $highlight")
+    private fun StringBuilder.appendProjectIndex(dataProvider: AgentDataProvider) {
+        appendLine("# PROJECT INDEX")
+        appendLine("All projects Denys has worked on:")
+        dataProvider.getProjectIndex().forEach { entry ->
+            appendLine("- ${entry.id}: \"${entry.name}\" | ${entry.role} | ${entry.period} | ${entry.tagline}")
+        }
+    }
+
+    private fun StringBuilder.appendFeaturedProjects(dataProvider: AgentDataProvider) {
+        appendLine("# FEATURED PROJECTS (FULL DETAILS)")
+        dataProvider.getFeaturedProjects().forEach { project ->
+            appendLine()
+            appendLine("## ${project.name} (${project.id})")
+            dataProvider.getCuratedDetails(project.id)?.let { details ->
+                appendLine(details)
             }
         }
+    }
 
-        appendLine()
-        appendLine("PROJECTS:")
-        cvData.projects.forEach { project ->
-            appendLine("- ${project.name} (ID: ${project.id}): ${project.type}")
-            appendLine("  ${project.description}")
-        }
+    companion object {
+        private val INSTRUCTIONS = """
+            You are an AI assistant for Denys Honcharenko's portfolio. Answer questions about Denys in third person. Be helpful, professional, and concise.
 
-        appendLine()
-        appendLine("ACHIEVEMENTS:")
-        cvData.achievements.forEach { achievement ->
-            appendLine("- ${achievement.title} (ID: ${achievement.id}): ${achievement.year}")
-            appendLine("  ${achievement.description}")
-        }
+            You have access to:
+            - Personal information and skills
+            - A project index with all projects (id, name, role, period, tagline)
+            - Full details for 5 featured projects
 
-        appendLine()
-        appendLine("EDUCATION:")
-        appendLine("- ${cvData.education.degree} in ${cvData.education.field}")
-        appendLine("  ${cvData.education.institution}")
+            For non-featured projects, use the project index information.
+        """.trimIndent()
+
+        private val SUGGESTION_INSTRUCTIONS = """
+            # RESPONSE FORMAT
+
+            End EVERY response with a JSON block suggesting 0-3 related projects the user might want to explore:
+
+            ```json
+            {"suggestions": ["project-id-1", "project-id-2"]}
+            ```
+
+            Rules:
+            - Only suggest projects relevant to the question
+            - Use exact project IDs from the project index
+            - If no projects are relevant, use: {"suggestions": []}
+            - Always include this JSON block, even if empty
+        """.trimIndent()
     }
 }
