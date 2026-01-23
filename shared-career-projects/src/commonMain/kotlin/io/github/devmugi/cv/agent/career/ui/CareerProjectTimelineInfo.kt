@@ -91,7 +91,7 @@ fun CareerProjectTimelineInfo(
                 }
 
                 // Description (always visible)
-                project.description?.medium?.let { desc ->
+                project.description?.short?.let { desc ->
                     Text(
                         text = desc,
                         style = ArcaneTheme.typography.bodyMedium,
