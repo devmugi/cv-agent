@@ -20,12 +20,36 @@ import io.github.devmugi.arcane.design.components.feedback.ArcaneToastPosition
 import io.github.devmugi.arcane.design.components.feedback.rememberArcaneToastState
 import io.github.devmugi.arcane.design.foundation.theme.ArcaneTheme
 import io.github.devmugi.cv.agent.agent.ChatViewModel
+import io.github.devmugi.cv.agent.career.models.CareerProject
 import io.github.devmugi.cv.agent.data.repository.CVRepository
 import io.github.devmugi.cv.agent.domain.models.CVData
+import io.github.devmugi.cv.agent.ui.CareerProjectDetailsScreen
+import io.github.devmugi.cv.agent.ui.CareerProjectsTimelineScreen
 import io.github.devmugi.cv.agent.ui.ChatScreen
 import org.koin.android.ext.android.inject
 import org.koin.compose.koinInject
 import org.koin.core.parameter.parametersOf
+
+private enum class Screen {
+    Chat,
+    CareerTimeline,
+    ProjectDetails
+}
+
+private val mockProjects = listOf(
+    CareerProject(
+        id = "1",
+        name = "CV Agent App",
+        description = "AI-powered mobile app for exploring CV data with chat interface",
+        companyName = "Personal Project"
+    ),
+    CareerProject(
+        id = "2",
+        name = "E-Commerce Platform",
+        description = "Full-stack marketplace with payment integration and real-time inventory",
+        companyName = "TechCorp Inc"
+    )
+)
 
 @OptIn(ExperimentalResourceApi::class)
 class MainActivity : ComponentActivity() {
@@ -40,6 +64,8 @@ class MainActivity : ComponentActivity() {
             ArcaneTheme {
                 var cvData by remember { mutableStateOf<CVData?>(null) }
                 var jsonLoaded by remember { mutableStateOf(false) }
+                var currentScreen by remember { mutableStateOf(Screen.Chat) }
+                var selectedProject by remember { mutableStateOf<CareerProject?>(null) }
 
                 LaunchedEffect(Unit) {
                     if (!jsonLoaded) {
@@ -54,14 +80,37 @@ class MainActivity : ComponentActivity() {
                 val state by viewModel.state.collectAsState()
 
                 Box {
-                    ChatScreen(
-                        state = state,
-                        toastState = toastState,
-                        onSendMessage = viewModel::sendMessage,
-                        cvData = cvData,
-                        onSuggestionClick = viewModel::onSuggestionClicked,
-                        onClearHistory = viewModel::clearHistory
-                    )
+                    when (currentScreen) {
+                        Screen.Chat -> {
+                            ChatScreen(
+                                state = state,
+                                toastState = toastState,
+                                onSendMessage = viewModel::sendMessage,
+                                cvData = cvData,
+                                onSuggestionClick = viewModel::onSuggestionClicked,
+                                onClearHistory = viewModel::clearHistory,
+                                onNavigateToCareerTimeline = { currentScreen = Screen.CareerTimeline }
+                            )
+                        }
+                        Screen.CareerTimeline -> {
+                            CareerProjectsTimelineScreen(
+                                projects = mockProjects,
+                                onProjectClick = { project ->
+                                    selectedProject = project
+                                    currentScreen = Screen.ProjectDetails
+                                },
+                                onBackClick = { currentScreen = Screen.Chat }
+                            )
+                        }
+                        Screen.ProjectDetails -> {
+                            selectedProject?.let { project ->
+                                CareerProjectDetailsScreen(
+                                    project = project,
+                                    onBackClick = { currentScreen = Screen.CareerTimeline }
+                                )
+                            }
+                        }
+                    }
 
                     ArcaneToastHost(
                         state = toastState,

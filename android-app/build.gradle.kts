@@ -65,10 +65,11 @@ android {
 
 dependencies {
     implementation(projects.shared)
+    implementation(projects.sharedCareerProjects)
 
     // Arcane Design System (needed for ArcaneTheme and ArcaneToastHost in MainActivity)
-    implementation("io.github.devmugi.design.arcane:arcane-foundation:0.1.4")
-    implementation("io.github.devmugi.design.arcane:arcane-components:0.1.4")
+    implementation(libs.arcane.foundation)
+    implementation(libs.arcane.components)
 
     implementation(libs.androidx.activity.compose)
     implementation(libs.compose.foundation)
