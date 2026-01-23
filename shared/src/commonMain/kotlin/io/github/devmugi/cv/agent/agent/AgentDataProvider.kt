@@ -38,41 +38,51 @@ class AgentDataProvider(
         }
     }
 
+    @Suppress("CyclomaticComplexMethod", "ReturnCount")
     fun getCuratedDetails(projectId: String): String? {
         if (projectId !in featuredProjectIds) return null
-
         val project = allProjects.find { it.id == projectId } ?: return null
+        return formatProjectDetails(project)
+    }
 
-        return buildString {
-            // Overview
-            project.overview?.let { overview ->
-                overview.company?.let { appendLine("Company: $it") }
-                overview.client?.let { appendLine("Client: $it") }
-                overview.product?.let { appendLine("Product: $it") }
-                overview.role?.let { appendLine("Role: $it") }
-                overview.period?.displayText?.let { appendLine("Period: $it") }
-            }
+    private fun formatProjectDetails(project: CareerProject): String = buildString {
+        appendOverview(project)
+        appendDescription(project)
+        appendTechnologies(project)
+        appendChallenge(project)
+    }
 
-            // Description
-            appendLine()
-            project.description?.short?.let { appendLine(it) }
-            project.description?.full?.let { appendLine(it) }
+    private fun StringBuilder.appendOverview(project: CareerProject) {
+        project.overview?.let { overview ->
+            overview.company?.let { appendLine("Company: $it") }
+            overview.client?.let { appendLine("Client: $it") }
+            overview.product?.let { appendLine("Product: $it") }
+            overview.role?.let { appendLine("Role: $it") }
+            overview.period?.displayText?.let { appendLine("Period: $it") }
+        }
+    }
 
-            // Technologies
-            project.technologies?.primary?.let { techs ->
-                if (techs.isNotEmpty()) {
-                    appendLine()
-                    append("Technologies: ")
-                    appendLine(techs.mapNotNull { it.name }.joinToString(", "))
-                }
-            }
+    private fun StringBuilder.appendDescription(project: CareerProject) {
+        appendLine()
+        project.description?.short?.let { appendLine(it) }
+        project.description?.full?.let { appendLine(it) }
+    }
 
-            // Challenge
-            project.challenge?.let { challenge ->
+    private fun StringBuilder.appendTechnologies(project: CareerProject) {
+        project.technologies?.primary?.let { techs ->
+            if (techs.isNotEmpty()) {
                 appendLine()
-                challenge.context?.let { appendLine("Challenge: $it") }
-                challenge.response?.let { appendLine("Response: $it") }
+                append("Technologies: ")
+                appendLine(techs.mapNotNull { it.name }.joinToString(", "))
             }
+        }
+    }
+
+    private fun StringBuilder.appendChallenge(project: CareerProject) {
+        project.challenge?.let { challenge ->
+            appendLine()
+            challenge.context?.let { appendLine("Challenge: $it") }
+            challenge.response?.let { appendLine("Response: $it") }
         }
     }
 
