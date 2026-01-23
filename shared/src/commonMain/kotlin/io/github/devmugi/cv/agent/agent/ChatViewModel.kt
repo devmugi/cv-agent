@@ -24,7 +24,13 @@ class ChatViewModel(
     private val dataProvider: AgentDataProvider?,
 ) : ViewModel() {
 
-    private val _state = MutableStateFlow(ChatState())
+    private val _state = MutableStateFlow(
+        ChatState(
+            projectNames = dataProvider?.getProjectIndex()
+                ?.associate { it.id to it.name }
+                ?: emptyMap()
+        )
+    )
     val state: StateFlow<ChatState> = _state.asStateFlow()
 
     private var lastUserMessage: String? = null
@@ -65,7 +71,7 @@ class ChatViewModel(
     }
 
     fun clearHistory() {
-        _state.update { ChatState() }
+        _state.update { current -> ChatState(projectNames = current.projectNames) }
         lastUserMessage = null
     }
 

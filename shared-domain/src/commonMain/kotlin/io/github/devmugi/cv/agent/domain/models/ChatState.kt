@@ -7,7 +7,8 @@ data class ChatState(
     val streamingMessageId: String? = null,
     val thinkingStatus: String? = null,
     val error: ChatError? = null,
-    val suggestions: List<String> = defaultSuggestions
+    val suggestions: List<String> = defaultSuggestions,
+    val projectNames: Map<String, String> = emptyMap()
 )
 
 sealed class ChatError {

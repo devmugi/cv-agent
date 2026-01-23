@@ -165,7 +165,13 @@ private fun AppContent(
                 onSendMessage = viewModel::sendMessage,
                 onSuggestionClick = viewModel::onSuggestionClicked,
                 onClearHistory = viewModel::clearHistory,
-                onNavigateToCareerTimeline = { onScreenChange(Screen.CareerTimeline) }
+                onNavigateToCareerTimeline = { onScreenChange(Screen.CareerTimeline) },
+                onNavigateToProject = { projectId ->
+                    careerProjectsMap[projectId]?.let { project ->
+                        onProjectSelect(project)
+                        onScreenChange(Screen.ProjectDetails)
+                    }
+                }
             )
             Screen.CareerTimeline -> CareerProjectsTimelineScreen(
                 projects = careerProjects,
