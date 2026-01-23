@@ -30,7 +30,6 @@ import io.github.devmugi.arcane.design.components.feedback.ArcaneToastStyle
 import io.github.devmugi.arcane.design.foundation.theme.ArcaneTheme
 import io.github.devmugi.cv.agent.domain.models.ChatError
 import io.github.devmugi.cv.agent.domain.models.ChatState
-import io.github.devmugi.cv.agent.domain.models.CVData
 import io.github.devmugi.cv.agent.domain.models.Message
 import io.github.devmugi.cv.agent.domain.models.MessageRole
 import io.github.devmugi.cv.agent.ui.components.CVAgentTopBar
@@ -47,7 +46,6 @@ fun ChatScreen(
     toastState: ArcaneToastState,
     onSendMessage: (String) -> Unit,
     modifier: Modifier = Modifier,
-    cvData: CVData? = null,
     onSuggestionClick: (String) -> Unit = onSendMessage,
     onCopyMessage: (String) -> Unit = {},
     onShareMessage: (String) -> Unit = {},
@@ -145,7 +143,6 @@ fun ChatScreen(
                         MessageItem(
                             message = message,
                             state = state,
-                            cvData = cvData,
                             onShowMore = { popupMessage = message },
                             onCopyMessage = onCopyMessage,
                             onShareMessage = onShareMessage,
@@ -160,12 +157,10 @@ fun ChatScreen(
     }
 }
 
-@Suppress("UnusedParameter")
 @Composable
 private fun MessageItem(
     message: Message,
     state: ChatState,
-    @Suppress("UNUSED_PARAMETER") cvData: CVData?,
     onShowMore: () -> Unit,
     onCopyMessage: (String) -> Unit,
     onShareMessage: (String) -> Unit,
