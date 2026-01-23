@@ -48,7 +48,7 @@
 
   "description": {
     "short": "Created and launched 'Android School' education course at EPAM Systems.",
-    "full": "Android School was an internal education program I created and taught at EPAM Systems during 2020-2021. The program was designed to train junior developers and career changers in Android development, preparing them for employment at EPAM. Over two course iterations, the program achieved a remarkable 77% hiring rate - 20 of 26 total students were hired by the company."
+    "full": "Android School was an internal education program I created and taught at EPAM Systems during 2020-2021. The program was designed to train junior developers and career changers in Android development, preparing them for employment at EPAM. Over two course iterations, the program achieved a 70% hiring rate - 14 of 20 total students were hired by the company."
   },
 
   "team": {
@@ -81,7 +81,7 @@
       },
       {
         "name": "Denys Honcharenko",
-        "github": null,
+        "github": "https://github.com/devmugi",
         "linkedin": "https://ua.linkedin.com/in/denyshoncharenko",
         "note": null
       }
@@ -97,8 +97,8 @@
       "endDate": "2020-11-01",
       "role": "Creator & Lead Instructor",
       "students": {
-        "enrolled": 16,
-        "hired": 14,
+        "enrolled": 10,
+        "hired": 8,
         "list": [
           {
             "name": "Vladyslav Dovhal",
@@ -113,7 +113,8 @@
             "linkedin": null,
             "zoominfo": "https://www.zoominfo.com/p/Taras-Havryliak/6823966777",
             "currentRole": "Android Developer at SoftServe",
-            "previousRole": "Android Engineer at EPAM Systems"
+            "previousRole": "Android Engineer at EPAM Systems",
+            "graduationWorkUrl": "https://github.com/THavryliak/Pokedex"
           },
           {
             "name": "Oleksandr Ryumin",
@@ -136,8 +137,13 @@
           }
         ]
       },
-      "hiringRate": "87.5%",
+      "hiringRate": "80%",
       "description": "Inaugural course of the Android School program. Designed curriculum from scratch, created learning materials, and mentored students through practical projects including a demo app with PokeAPI.",
+      "exampleProject": {
+        "name": "AndroidLabPokedex",
+        "url": "https://github.com/devmugi/AndroidLabPokedex",
+        "description": "Example project that students were building"
+      },
       "timeline": [
         { "duration": "2 weeks", "topic": "Kotlin Koans" },
         { "duration": "3 weeks", "topic": "Kotlin Android (Udacity)" },
@@ -171,6 +177,11 @@
       },
       "hiringRate": "60%",
       "description": "Second iteration of the program with refined curriculum based on feedback from the first course. Introduced more advanced topics including Jetpack Compose and Clean Architecture.",
+      "exampleProject": {
+        "name": "AndroidLabPokedex2",
+        "url": "https://github.com/devmugi/AndroidLabPokedex2",
+        "description": "Example project for Course 2"
+      },
       "timeline": [
         { "duration": "2 weeks", "topic": "Kotlin Advanced" },
         { "duration": "3 weeks", "topic": "Jetpack Components" },
@@ -190,9 +201,9 @@
   ],
 
   "totals": {
-    "studentsEnrolled": 26,
-    "studentsHired": 20,
-    "overallHiringRate": "77%",
+    "studentsEnrolled": 20,
+    "studentsHired": 14,
+    "overallHiringRate": "70%",
     "coursesDelivered": 2
   },
 
@@ -255,8 +266,8 @@
     {
       "id": "hiring-rate",
       "icon": "fas fa-trophy",
-      "title": "77% Hiring Rate",
-      "description": "20 of 26 students were hired by EPAM Systems",
+      "title": "70% Hiring Rate",
+      "description": "14 of 20 students were hired by EPAM Systems",
       "category": "outcome",
       "highlight": true
     },
@@ -292,19 +303,19 @@
     "launch": [
       {
         "icon": "fas fa-trophy",
-        "value": "77%",
+        "value": "70%",
         "label": "Hiring Rate",
         "highlight": true
       },
       {
         "icon": "fas fa-user-graduate",
-        "value": "20",
+        "value": "14",
         "label": "Students Hired",
         "highlight": true
       },
       {
         "icon": "fas fa-users",
-        "value": "26",
+        "value": "20",
         "label": "Total Students",
         "highlight": false
       }
@@ -419,11 +430,11 @@
 
   "seo": {
     "title": "Android School - Education Program | Denys Honcharenko",
-    "description": "Created and taught Android School at EPAM Systems. 77% hiring rate - 20 of 26 students hired. Comprehensive Android development training program.",
+    "description": "Created and taught Android School at EPAM Systems. 70% hiring rate - 14 of 20 students hired. Comprehensive Android development training program.",
     "keywords": ["Android School", "EPAM", "Android Training", "Education", "Mentorship", "Kotlin", "Mobile Development"]
   },
 
   "relatedProjects": [],
 
-  "lastUpdated": "2025-01-22"
+  "lastUpdated": "2026-01-23"
 }

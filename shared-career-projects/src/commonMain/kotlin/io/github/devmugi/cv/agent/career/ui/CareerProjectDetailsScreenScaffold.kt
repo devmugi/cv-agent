@@ -23,6 +23,7 @@ import io.github.devmugi.arcane.design.foundation.theme.ArcaneTheme
 import io.github.devmugi.cv.agent.career.models.CareerProject
 import io.github.devmugi.cv.agent.career.ui.components.AchievementCard
 import io.github.devmugi.cv.agent.career.ui.components.ChallengeSection
+import io.github.devmugi.cv.agent.career.ui.components.CoursesSection
 import io.github.devmugi.cv.agent.career.ui.components.DescriptionSection
 import io.github.devmugi.cv.agent.career.ui.components.LifecycleTimeline
 import io.github.devmugi.cv.agent.career.ui.components.LinksSection
@@ -40,6 +41,7 @@ import io.github.devmugi.cv.agent.career.ui.components.TechnologiesSection
 fun CareerProjectDetailsScreenScaffold(
     project: CareerProject,
     onBackClick: () -> Unit,
+    onLinkClick: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Scaffold(
@@ -111,6 +113,17 @@ fun CareerProjectDetailsScreenScaffold(
                 }
             }
 
+            // Courses Section (only shown if courses data exists, e.g., Android School)
+            item {
+                project.courses?.takeIf { it.isNotEmpty() }?.let { courses ->
+                    CoursesSection(
+                        courses = courses,
+                        onLinkClick = onLinkClick,
+                        modifier = Modifier.padding(horizontal = 16.dp)
+                    )
+                }
+            }
+
             // Challenge Section
             item {
                 project.challenge?.let { challenge ->
@@ -156,6 +169,7 @@ fun CareerProjectDetailsScreenScaffold(
                 project.team?.let { team ->
                     TeamStructureSection(
                         team = team,
+                        onLinkClick = onLinkClick,
                         modifier = Modifier.padding(horizontal = 16.dp)
                     )
                 }

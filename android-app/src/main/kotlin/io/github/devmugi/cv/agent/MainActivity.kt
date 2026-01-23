@@ -1,5 +1,7 @@
 package io.github.devmugi.cv.agent
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -132,7 +134,11 @@ class MainActivity : ComponentActivity() {
                             selectedProject?.let { project ->
                                 CareerProjectDetailsScreen(
                                     project = project,
-                                    onBackClick = { currentScreen = Screen.CareerTimeline }
+                                    onBackClick = { currentScreen = Screen.CareerTimeline },
+                                    onLinkClick = { url ->
+                                        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+                                        startActivity(intent)
+                                    }
                                 )
                             }
                         }
