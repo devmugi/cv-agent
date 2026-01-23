@@ -1,79 +1,115 @@
 package io.github.devmugi.cv.agent.agent
 
-import io.github.devmugi.cv.agent.domain.models.Achievement
-import io.github.devmugi.cv.agent.domain.models.CVData
-import io.github.devmugi.cv.agent.domain.models.Education
-import io.github.devmugi.cv.agent.domain.models.PersonalInfo
-import io.github.devmugi.cv.agent.domain.models.Project
-import io.github.devmugi.cv.agent.domain.models.SkillCategory
-import io.github.devmugi.cv.agent.domain.models.WorkExperience
+import io.github.devmugi.cv.agent.career.models.CareerProject
+import io.github.devmugi.cv.agent.career.models.Description
+import io.github.devmugi.cv.agent.career.models.Overview
+import io.github.devmugi.cv.agent.career.models.Period
+import io.github.devmugi.cv.agent.career.models.PersonalInfo
+import io.github.devmugi.cv.agent.career.models.SkillCategory
+import io.github.devmugi.cv.agent.career.models.Technologies
+import io.github.devmugi.cv.agent.career.models.Technology
 import kotlin.test.Test
 import kotlin.test.assertTrue
 
 class SystemPromptBuilderTest {
 
-    private val testCVData = CVData(
-        personalInfo = PersonalInfo(
-            name = "Denys Honcharenko",
-            location = "Lausanne, Switzerland",
-            email = "test@example.com",
-            phone = "+1234567890",
-            linkedin = "linkedin.com/in/test",
-            github = "github.com/test",
-            portfolio = "portfolio.test"
+    private val testPersonalInfo = PersonalInfo(
+        name = "Test Name",
+        title = "Test Title",
+        location = "Test Location",
+        email = "test@test.com",
+        linkedin = "https://linkedin.com",
+        github = "https://github.com",
+        portfolio = "https://portfolio.com",
+        summary = "Test summary",
+        skills = listOf(SkillCategory("Languages", listOf("Kotlin", "Java")))
+    )
+
+    private val testProject = CareerProject(
+        id = "test-project",
+        name = "Test Project",
+        slug = "test-project",
+        tagline = "Test tagline",
+        overview = Overview(
+            company = "Test Company",
+            role = "Test Role",
+            period = Period(displayText = "2020")
         ),
-        summary = "Experienced Software Engineer",
-        skills = listOf(
-            SkillCategory("skills.ai-dev", "AI Development", "Advanced", listOf("Claude API", "MCP"))
-        ),
-        experience = listOf(
-            WorkExperience(
-                "experience.geosatis", "Senior Dev", "GEOSATIS", "2023-Present",
-                "Built apps", listOf("Led team"), listOf("Kotlin"), true
-            )
-        ),
-        projects = listOf(
-            Project("project.mtg", "MTG App", "Mobile", "Card app", listOf("KMP"), null, true)
-        ),
-        achievements = listOf(
-            Achievement("achievement.claude", "Claude Power User", "Anthropic", "2024", "Certified")
-        ),
-        education = Education("BSc", "Computer Science", "University")
+        description = Description(short = "Short desc", full = "Full desc"),
+        technologies = Technologies(primary = listOf(Technology(name = "Kotlin")))
     )
 
     private val builder = SystemPromptBuilder()
 
     @Test
-    fun promptContainsPersonaInstructions() {
-        val prompt = builder.build(testCVData)
-        assertTrue(prompt.contains("Denys Honcharenko"))
-        assertTrue(prompt.contains("third person"))
+    fun includesPersonalInfo() {
+        val dataProvider = AgentDataProvider(
+            personalInfo = testPersonalInfo,
+            allProjects = listOf(testProject),
+            featuredProjectIds = emptyList()
+        )
+
+        val prompt = builder.build(dataProvider)
+
+        assertTrue(prompt.contains("Test Name"))
+        assertTrue(prompt.contains("Test Title"))
+        assertTrue(prompt.contains("Test Location"))
     }
 
     @Test
-    fun promptContainsReferenceFormatInstructions() {
-        val prompt = builder.build(testCVData)
-        assertTrue(prompt.contains("[Experience:"))
-        assertTrue(prompt.contains("[Project:"))
+    fun includesSkills() {
+        val dataProvider = AgentDataProvider(
+            personalInfo = testPersonalInfo,
+            allProjects = listOf(testProject),
+            featuredProjectIds = emptyList()
+        )
+
+        val prompt = builder.build(dataProvider)
+
+        assertTrue(prompt.contains("Languages"))
+        assertTrue(prompt.contains("Kotlin"))
+        assertTrue(prompt.contains("Java"))
     }
 
     @Test
-    fun promptContainsAllCVSections() {
-        val prompt = builder.build(testCVData)
-        assertTrue(prompt.contains("PERSONAL INFO"))
-        assertTrue(prompt.contains("SKILLS"))
-        assertTrue(prompt.contains("WORK EXPERIENCE"))
-        assertTrue(prompt.contains("PROJECTS"))
-        assertTrue(prompt.contains("ACHIEVEMENTS"))
-        assertTrue(prompt.contains("EDUCATION"))
+    fun includesProjectIndex() {
+        val dataProvider = AgentDataProvider(
+            personalInfo = testPersonalInfo,
+            allProjects = listOf(testProject),
+            featuredProjectIds = emptyList()
+        )
+
+        val prompt = builder.build(dataProvider)
+
+        assertTrue(prompt.contains("test-project"))
+        assertTrue(prompt.contains("Test Project"))
     }
 
     @Test
-    fun promptContainsActualCVData() {
-        val prompt = builder.build(testCVData)
-        assertTrue(prompt.contains("GEOSATIS"))
-        assertTrue(prompt.contains("experience.geosatis"))
-        assertTrue(prompt.contains("AI Development"))
-        assertTrue(prompt.contains("Claude Power User"))
+    fun includesFeaturedProjectDetails() {
+        val dataProvider = AgentDataProvider(
+            personalInfo = testPersonalInfo,
+            allProjects = listOf(testProject),
+            featuredProjectIds = listOf("test-project")
+        )
+
+        val prompt = builder.build(dataProvider)
+
+        assertTrue(prompt.contains("Test Company"))
+        assertTrue(prompt.contains("Full desc"))
+    }
+
+    @Test
+    fun includesSuggestionInstructions() {
+        val dataProvider = AgentDataProvider(
+            personalInfo = testPersonalInfo,
+            allProjects = listOf(testProject),
+            featuredProjectIds = emptyList()
+        )
+
+        val prompt = builder.build(dataProvider)
+
+        assertTrue(prompt.contains("suggestions"))
+        assertTrue(prompt.contains("json"))
     }
 }
