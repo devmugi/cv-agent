@@ -32,6 +32,7 @@ kotlin {
             isStatic = true
             export(projects.sharedDomain)
             export(projects.sharedUi)
+            export(projects.sharedCareerProjects)
         }
     }
 
@@ -39,6 +40,7 @@ kotlin {
         commonMain.dependencies {
             api(projects.sharedDomain)
             api(projects.sharedUi)
+            api(projects.sharedCareerProjects)
 
             // Compose (for ViewModel)
             implementation(libs.compose.runtime)
