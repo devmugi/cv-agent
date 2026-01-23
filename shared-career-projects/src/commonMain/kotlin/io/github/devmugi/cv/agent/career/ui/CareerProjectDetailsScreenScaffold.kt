@@ -79,7 +79,8 @@ fun CareerProjectDetailsScreenScaffold(
                     role = project.overview?.role,
                     period = project.overview?.period?.displayText,
                     gradientColors = project.hero?.gradientColors,
-                    featured = project.meta?.featured == true
+                    featured = project.meta?.featured == true,
+                    onClick = {} // Already on details screen
                 )
             }
 
