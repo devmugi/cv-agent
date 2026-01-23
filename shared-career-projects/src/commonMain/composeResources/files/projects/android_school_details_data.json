@@ -1,0 +1,429 @@
+{
+  "$comment": "Full project details - comprehensive data for dedicated project page",
+
+  "id": "android-school",
+  "name": "Android School",
+  "slug": "android-school",
+  "tagline": "EPAM Internal Education Program",
+
+  "hero": {
+    "bannerStyle": "gradient",
+    "gradientColors": ["#1e88e5", "#43a047"],
+    "icon": "fas fa-chalkboard-teacher",
+    "backgroundPattern": true
+  },
+
+  "meta": {
+    "featured": true,
+    "status": "completed",
+    "visibility": "public"
+  },
+
+  "overview": {
+    "company": "EPAM Systems",
+    "client": null,
+    "product": "Android School",
+    "role": "Creator & Lead Instructor",
+    "roleDetails": "Curriculum Designer, Lead Trainer, Mentor",
+    "period": {
+      "startDate": "2020-08-03",
+      "endDate": "2021-06-30",
+      "displayText": "Aug 2020 - Jun 2021",
+      "durationMonths": 11
+    },
+    "location": "Remote / Ukraine",
+    "courseDuration": "3 months per course",
+    "studentLoad": "40 hours/week"
+  },
+
+  "companies": [
+    {
+      "name": "EPAM Systems",
+      "role": "employer",
+      "description": "Global IT services company",
+      "logo": null,
+      "website": "https://www.epam.com/"
+    }
+  ],
+
+  "description": {
+    "short": "Created and launched 'Android School' education course at EPAM Systems.",
+    "full": "Android School was an internal education program I created and taught at EPAM Systems during 2020-2021. The program was designed to train junior developers and career changers in Android development, preparing them for employment at EPAM. Over two course iterations, the program achieved a remarkable 77% hiring rate - 20 of 26 total students were hired by the company."
+  },
+
+  "team": {
+    "myRole": "Creator & Lead Instructor",
+    "trainers": [
+      {
+        "name": "Denys Mokhrin",
+        "github": "https://github.com/DenysMokhrin",
+        "linkedin": "https://www.linkedin.com/in/denysmokhrin/",
+        "note": "Currently at Quadcode"
+      },
+      {
+        "name": "Halyna Sadova",
+        "github": null,
+        "linkedin": null,
+        "note": "Android Software Engineer"
+      },
+      {
+        "name": "Volodymyr Shevchuk",
+        "github": "https://github.com/dosandk",
+        "linkedin": "https://ua.linkedin.com/in/volodymyr-shevchuk",
+        "note": null
+      },
+      {
+        "name": "Roman Heshten",
+        "github": "https://github.com/gloding",
+        "linkedin": null,
+        "zoominfo": "https://www.zoominfo.com/p/Roman-Heshten/2506341862",
+        "note": "Lead Android Engineer at EPAM, Lviv Polytechnics graduate"
+      },
+      {
+        "name": "Denys Honcharenko",
+        "github": null,
+        "linkedin": "https://ua.linkedin.com/in/denyshoncharenko",
+        "note": null
+      }
+    ]
+  },
+
+  "courses": [
+    {
+      "id": "course-1",
+      "name": "Mobile Android 2020",
+      "period": "Aug 2020 - Nov 2020",
+      "startDate": "2020-08-03",
+      "endDate": "2020-11-01",
+      "role": "Creator & Lead Instructor",
+      "students": {
+        "enrolled": 16,
+        "hired": 14,
+        "list": [
+          {
+            "name": "Vladyslav Dovhal",
+            "github": "https://github.com/vladdovgal",
+            "linkedin": "https://www.linkedin.com/in/vladyslav-dovhal-517734164/",
+            "currentRole": "Android Software Engineer at Genesis Tech",
+            "education": "Lviv Polytechnic"
+          },
+          {
+            "name": "Taras Havryliak",
+            "github": null,
+            "linkedin": null,
+            "zoominfo": "https://www.zoominfo.com/p/Taras-Havryliak/6823966777",
+            "currentRole": "Android Developer at SoftServe",
+            "previousRole": "Android Engineer at EPAM Systems"
+          },
+          {
+            "name": "Oleksandr Ryumin",
+            "github": null,
+            "linkedin": null,
+            "currentRole": null
+          },
+          {
+            "name": "Yaroslav Hnativ",
+            "github": null,
+            "linkedin": "https://www.linkedin.com/in/yaroslav-hnativ-a560131bb/",
+            "currentRole": "Android Software Engineer at EPAM Systems",
+            "location": "Lviv"
+          },
+          {
+            "name": "Mariia Mohylska",
+            "github": null,
+            "linkedin": null,
+            "currentRole": null
+          }
+        ]
+      },
+      "hiringRate": "87.5%",
+      "description": "Inaugural course of the Android School program. Designed curriculum from scratch, created learning materials, and mentored students through practical projects including a demo app with PokeAPI.",
+      "timeline": [
+        { "duration": "2 weeks", "topic": "Kotlin Koans" },
+        { "duration": "3 weeks", "topic": "Kotlin Android (Udacity)" },
+        { "duration": "3 weeks", "topic": "Android SDK fundamentals" },
+        { "duration": "1 month", "topic": "Demo project (bug tracker, GitFlow, libs)" }
+      ],
+      "topics": [
+        "Kotlin fundamentals (Kotlin Koans)",
+        "Android SDK basics",
+        "UI development (XML layouts)",
+        "Architecture patterns (MVP, MVVM)",
+        "REST API integration",
+        "Git workflow (GitFlow)",
+        "Bug tracker workflow (Jira)",
+        "Code review practices",
+        "Popular Android libraries"
+      ],
+      "highlight": true
+    },
+    {
+      "id": "course-2",
+      "name": "Android School - Course 2",
+      "period": "Mar 2021 - Jun 2021",
+      "startDate": "2021-03-01",
+      "endDate": "2021-06-30",
+      "role": "Lead Instructor",
+      "students": {
+        "enrolled": 10,
+        "hired": 6,
+        "list": []
+      },
+      "hiringRate": "60%",
+      "description": "Second iteration of the program with refined curriculum based on feedback from the first course. Introduced more advanced topics including Jetpack Compose and Clean Architecture.",
+      "timeline": [
+        { "duration": "2 weeks", "topic": "Kotlin Advanced" },
+        { "duration": "3 weeks", "topic": "Jetpack Components" },
+        { "duration": "3 weeks", "topic": "Clean Architecture & Testing" },
+        { "duration": "1 month", "topic": "Final project with CI/CD" }
+      ],
+      "topics": [
+        "Kotlin advanced features",
+        "Jetpack components",
+        "Clean Architecture",
+        "Testing (Unit, UI)",
+        "CI/CD basics",
+        "Career preparation"
+      ],
+      "highlight": false
+    }
+  ],
+
+  "totals": {
+    "studentsEnrolled": 26,
+    "studentsHired": 20,
+    "overallHiringRate": "77%",
+    "coursesDelivered": 2
+  },
+
+  "successStories": [
+    {
+      "student": "Taras Havryliak",
+      "journey": "Course 1 Graduate → EPAM Android Engineer → SoftServe Android Developer"
+    },
+    {
+      "student": "Yaroslav Hnativ",
+      "journey": "Course 1 Graduate → Android Software Engineer at EPAM Systems (still employed)"
+    },
+    {
+      "student": "Vladyslav Dovhal",
+      "journey": "Course 1 Graduate → Android Software Engineer at Genesis Tech"
+    }
+  ],
+
+  "curriculum": {
+    "title": "Curriculum Highlights",
+    "structure": {
+      "duration": "10-12 weeks",
+      "studentLoad": "40 hours/week",
+      "phases": [
+        { "week": "1-2", "focus": "Kotlin Koans", "description": "Language fundamentals via interactive exercises" },
+        { "week": "3-5", "focus": "Kotlin Android", "description": "Udacity course + Google codelabs" },
+        { "week": "6-8", "focus": "Android SDK", "description": "Core components, lifecycle, UI" },
+        { "week": "9-12", "focus": "Demo Project", "description": "Full app with GitFlow, Jira, code reviews" }
+      ]
+    },
+    "modules": [
+      {
+        "name": "Kotlin Fundamentals",
+        "icon": "fab fa-android",
+        "topics": ["Syntax & basics", "Null safety", "Collections", "Coroutines intro"],
+        "resources": ["Kotlin Koans (2 weeks)", "Udacity Kotlin Bootcamp"]
+      },
+      {
+        "name": "Android SDK",
+        "icon": "fas fa-mobile-alt",
+        "topics": ["Activities & Fragments", "RecyclerView", "Navigation", "Lifecycle"],
+        "resources": ["Google Android Fundamentals", "Android Kotlin Fundamentals Codelabs"]
+      },
+      {
+        "name": "Architecture",
+        "icon": "fas fa-sitemap",
+        "topics": ["MVP pattern", "MVVM + LiveData", "Repository pattern", "Clean Architecture"],
+        "resources": ["Udacity Developing Android Apps with Kotlin"]
+      },
+      {
+        "name": "Practical Skills",
+        "icon": "fas fa-wrench",
+        "topics": ["REST API / Retrofit", "Room database", "Git workflow (GitFlow)", "Bug tracker (Jira)", "Code review"],
+        "resources": ["PokeAPI demo project", "Android Developer Roadmap"]
+      }
+    ]
+  },
+
+  "achievements": [
+    {
+      "id": "hiring-rate",
+      "icon": "fas fa-trophy",
+      "title": "77% Hiring Rate",
+      "description": "20 of 26 students were hired by EPAM Systems",
+      "category": "outcome",
+      "highlight": true
+    },
+    {
+      "id": "curriculum",
+      "icon": "fas fa-book",
+      "title": "Full Curriculum Design",
+      "description": "Created comprehensive Android training program from scratch",
+      "category": "creation",
+      "highlight": true
+    },
+    {
+      "id": "mentorship",
+      "icon": "fas fa-users",
+      "title": "Hands-on Mentoring",
+      "description": "Provided direct mentorship and code review for all students",
+      "category": "leadership",
+      "highlight": false
+    },
+    {
+      "id": "career-launch",
+      "icon": "fas fa-rocket",
+      "title": "Career Transformation",
+      "description": "Helped career changers break into Android development",
+      "category": "impact",
+      "highlight": true
+    }
+  ],
+
+  "testimonials": [],
+
+  "metrics": {
+    "launch": [
+      {
+        "icon": "fas fa-trophy",
+        "value": "77%",
+        "label": "Hiring Rate",
+        "highlight": true
+      },
+      {
+        "icon": "fas fa-user-graduate",
+        "value": "20",
+        "label": "Students Hired",
+        "highlight": true
+      },
+      {
+        "icon": "fas fa-users",
+        "value": "26",
+        "label": "Total Students",
+        "highlight": false
+      }
+    ],
+    "quickStats": [
+      {
+        "icon": "fas fa-calendar-alt",
+        "value": "Aug 2020 - Jun 2021",
+        "label": "Duration"
+      },
+      {
+        "icon": "fas fa-chalkboard-teacher",
+        "value": "Lead Instructor",
+        "label": "Role"
+      },
+      {
+        "icon": "fas fa-book-open",
+        "value": "2",
+        "label": "Courses Delivered"
+      }
+    ]
+  },
+
+  "technologies": {
+    "primary": [
+      { "name": "Kotlin", "category": "language", "proficiency": "expert" },
+      { "name": "Android SDK", "category": "framework", "proficiency": "expert" },
+      { "name": "Jetpack", "category": "library", "proficiency": "expert" }
+    ],
+    "secondary": [
+      { "name": "MVP", "category": "architecture" },
+      { "name": "MVVM", "category": "architecture" },
+      { "name": "Retrofit", "category": "library" },
+      { "name": "Room", "category": "library" },
+      { "name": "Git", "category": "tool" }
+    ],
+    "tools": ["Android Studio", "Git", "Jira", "GitFlow"]
+  },
+
+  "relatedAchievements": [
+    {
+      "title": "Engineering Manager",
+      "period": "2020 - 2021",
+      "description": "Managed team of 4-6 engineers at EPAM. Completed Software Engineering Manager School."
+    }
+  ],
+
+  "links": [
+    {
+      "type": "company",
+      "icon": "fas fa-building",
+      "label": "EPAM Systems",
+      "url": "https://www.epam.com/",
+      "active": true
+    },
+    {
+      "type": "resource",
+      "icon": "fas fa-graduation-cap",
+      "label": "EPAM Training Portal",
+      "url": "https://www.training.epam.ua/",
+      "active": true
+    }
+  ],
+
+  "learningResources": [
+    {
+      "name": "Kotlin Koans",
+      "url": "https://kotlinlang.org/docs/tutorials/koans.html",
+      "type": "interactive"
+    },
+    {
+      "name": "Kotlin Koans Online",
+      "url": "https://play.kotlinlang.org/koans/",
+      "type": "interactive"
+    },
+    {
+      "name": "Udacity: Kotlin Bootcamp",
+      "url": "https://www.udacity.com/course/kotlin-bootcamp-for-programmers--ud9011",
+      "type": "course"
+    },
+    {
+      "name": "Udacity: Developing Android Apps with Kotlin",
+      "url": "https://www.udacity.com/course/developing-android-apps-with-kotlin--ud9012",
+      "type": "course"
+    },
+    {
+      "name": "Android Kotlin Fundamentals",
+      "url": "https://codelabs.developers.google.com/android-kotlin-fundamentals/",
+      "type": "codelabs"
+    },
+    {
+      "name": "Android Developer Guide",
+      "url": "https://developer.android.com/guide",
+      "type": "documentation"
+    },
+    {
+      "name": "Android Developer Roadmap",
+      "url": "https://roadmap.sh/android",
+      "type": "roadmap"
+    },
+    {
+      "name": "PokeAPI (Demo Project)",
+      "url": "https://pokeapi.co/",
+      "type": "api"
+    },
+    {
+      "name": "Pokedex Sample App",
+      "url": "https://github.com/skydoves/Pokedex",
+      "type": "github"
+    }
+  ],
+
+  "seo": {
+    "title": "Android School - Education Program | Denys Honcharenko",
+    "description": "Created and taught Android School at EPAM Systems. 77% hiring rate - 20 of 26 students hired. Comprehensive Android development training program.",
+    "keywords": ["Android School", "EPAM", "Android Training", "Education", "Mentorship", "Kotlin", "Mobile Development"]
+  },
+
+  "relatedProjects": [],
+
+  "lastUpdated": "2025-01-22"
+}

@@ -1,0 +1,95 @@
+{
+  "$comment": "Timeline card data - compact view shown on main Career Timeline page",
+
+  "id": "android-school",
+  "name": "Android School",
+  "slug": "android-school",
+
+  "hero": {
+    "bannerStyle": "gradient",
+    "gradientColors": ["#1e88e5", "#43a047"],
+    "icon": "fas fa-chalkboard-teacher",
+    "iconColor": "rgba(255, 255, 255, 0.2)"
+  },
+
+  "featured": true,
+  "featuredBadgeText": "Education",
+
+  "role": {
+    "title": "Creator & Lead Instructor",
+    "shortTitle": "Lead Instructor"
+  },
+
+  "period": {
+    "startDate": "2020-08-03",
+    "endDate": "2021-06-30",
+    "displayText": "Aug 2020 - Jun 2021"
+  },
+
+  "companies": [
+    {
+      "name": "EPAM Systems",
+      "role": "employer",
+      "logo": null
+    }
+  ],
+
+  "description": {
+    "short": "Created and launched 'Android School' education program at EPAM Systems with 77% hiring rate.",
+    "medium": "Internal education program designed to train junior developers and career changers in Android development. Over two course iterations, 20 of 26 students were hired by EPAM - a 77% success rate."
+  },
+
+  "impactBadges": [
+    {
+      "icon": "fas fa-trophy",
+      "text": "77% Hiring Rate",
+      "highlight": true
+    },
+    {
+      "icon": "fas fa-users",
+      "text": "26 Students Trained",
+      "highlight": true
+    },
+    {
+      "icon": "fas fa-graduation-cap",
+      "text": "2 Courses Delivered",
+      "highlight": false
+    }
+  ],
+
+  "tags": [
+    {
+      "text": "Kotlin",
+      "category": "language"
+    },
+    {
+      "text": "Education",
+      "category": "type"
+    },
+    {
+      "text": "Mentorship",
+      "category": "skill"
+    },
+    {
+      "text": "Android SDK",
+      "category": "technology"
+    }
+  ],
+
+  "achievements": {
+    "preview": [
+      "77% hiring rate - 20 of 26 students hired by EPAM",
+      "Designed comprehensive Android curriculum from scratch",
+      "Mentored career changers into professional Android developers"
+    ]
+  },
+
+  "detailsUrl": "projects/android-school.html",
+  "detailsDataUrl": "projects/android_school_details_data.json",
+
+  "sortOrder": 5,
+  "timelinePosition": {
+    "year": 2020,
+    "quarter": 3
+  }
+}

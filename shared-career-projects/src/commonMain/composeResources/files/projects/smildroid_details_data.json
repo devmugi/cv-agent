@@ -1,0 +1,383 @@
+{
+  "id": "smildroid",
+  "name": "SMILdroid (Storesign 7)",
+  "slug": "smildroid",
+  "tagline": "SMIL 3.0 Digital Signage Platform",
+
+  "hero": {
+    "bannerStyle": "gradient",
+    "gradientColors": ["#673ab7", "#9c27b0"],
+    "icon": "fas fa-ad",
+    "backgroundPattern": true
+  },
+
+  "meta": {
+    "featured": true,
+    "status": "completed",
+    "visibility": "public"
+  },
+
+  "overview": {
+    "company": "DSconnect UG",
+    "client": "Light Alliance Europe AG",
+    "product": "SMILdroid (Storesign 7)",
+    "role": "Android Developer",
+    "roleDetails": "Solo Android developer - app development, custom Rockchip ROM building, SMIL implementation",
+    "period": {
+      "startDate": "2012-08-01",
+      "endDate": "2014-08-31",
+      "displayText": "August 2012 - August 2014",
+      "durationMonths": 24
+    },
+    "location": "Ukraine",
+    "launchDate": "2012",
+    "productPrice": null
+  },
+
+  "companies": [
+    {
+      "name": "DSconnect UG",
+      "role": "employer",
+      "description": "Software development company",
+      "logo": null,
+      "website": null
+    },
+    {
+      "name": "Light Alliance Europe AG",
+      "role": "client",
+      "description": "German company specializing in affordable digital signage solutions. Pioneered SMIL-based playback on Android hardware.",
+      "logo": null,
+      "website": "https://www.lightalliance.com/"
+    }
+  ],
+
+  "description": {
+    "short": "Android-based SMIL 3.0 media player for digital signage with custom Rockchip ROM and miX-L CMS integration.",
+    "full": "SMILdroid was an Android-based media player application designed to handle SMIL (Synchronized Multimedia Integration Language) files for digital signage displays. The app enabled synchronized playback of multiple media types (video, images, text) across different screen zones following the SMIL 3.0 standard. As the solo Android developer, I built the application and custom Rockchip Android ROMs for low-cost Android tablets and TV boxes, providing an affordable alternative to expensive dedicated PCs for digital signage. SMILdroid was the playback client for the miX-L Content Management System, allowing central management of remote screens. Introduced in 2012-2013, it was one of the early players to bring open-standard SMIL playback to the Android ecosystem.",
+    "howItWorked": [
+      {
+        "step": 1,
+        "title": "Custom Hardware",
+        "description": "Low-cost Rockchip Android tablets/TV boxes with custom ROM pre-installed"
+      },
+      {
+        "step": 2,
+        "title": "miX-L CMS",
+        "description": "Content managers push updates and schedule content via central web interface"
+      },
+      {
+        "step": 3,
+        "title": "SMIL Playback",
+        "description": "SMILdroid renders synchronized multimedia across screen zones"
+      },
+      {
+        "step": 4,
+        "title": "Retail Display",
+        "description": "24/7 digital signage in retail environments with remote management"
+      }
+    ]
+  },
+
+  "challenge": {
+    "context": "Building affordable digital signage required custom ROM development for Rockchip hardware and implementing the SMIL 3.0 multimedia standard on Android - a platform with limited native SMIL support.",
+    "response": "As the sole Android developer, built custom Rockchip ROMs with pre-installed signage software and implemented SMIL 3.0 multimedia rendering through extensive R&D.",
+    "details": [
+      "Solo Android developer responsible for entire mobile stack",
+      "Custom Rockchip ROM building for tablets and TV boxes",
+      "SMIL 3.0 standard implementation with multi-zone rendering",
+      "Integration with miX-L Content Management System",
+      "Reliable 24/7 operation for retail environments"
+    ]
+  },
+
+  "achievements": [
+    {
+      "id": "custom-rockchip-rom",
+      "title": "Custom Rockchip Android ROM Development",
+      "category": "technical",
+      "icon": "fas fa-microchip",
+      "problem": "Retail signage needed affordable, locked-down hardware with pre-installed software that couldn't be tampered with.",
+      "solution": "Built custom Android ROMs using Rockchip ROM builder for low-cost tablets and TV boxes as alternative to expensive dedicated PCs.",
+      "details": [
+        "Rockchip ROM builder for custom firmware",
+        "Support for tablets and Android TV boxes",
+        "Pre-installed SMILdroid application",
+        "Locked kiosk mode configuration",
+        "Auto-start on boot, recovery mechanisms",
+        "OTA update support for remote firmware updates"
+      ],
+      "impact": {
+        "text": "Affordable digital signage hardware solution",
+        "metric": null,
+        "metricType": null
+      },
+      "highlight": true
+    },
+    {
+      "id": "smil-player",
+      "title": "SMIL 3.0 Multimedia Player",
+      "category": "technical",
+      "icon": "fas fa-photo-video",
+      "problem": "Digital signage content used SMIL standard for synchronized multimedia, but Android had no native support.",
+      "solution": "Implemented SMIL 3.0 player with multi-zone rendering for synchronized video, images, and text display.",
+      "details": [
+        "SMIL 3.0 (Synchronized Multimedia Integration Language) parser",
+        "Multi-zone screen layout support",
+        "Synchronized video, image, and text playback",
+        "Evaluated libraries: Batik, mobile-smil, svg-android",
+        "Browser-based rendering research (Chrome/WebView)",
+        "Open standard alternative to proprietary formats"
+      ],
+      "impact": {
+        "text": "Early SMIL playback on Android ecosystem",
+        "metric": null,
+        "metricType": null
+      },
+      "highlight": true
+    },
+    {
+      "id": "cms-integration",
+      "title": "miX-L CMS Integration",
+      "category": "technical",
+      "icon": "fas fa-cloud",
+      "problem": "Retail managers needed to remotely manage content across multiple signage screens.",
+      "solution": "Integrated SMILdroid as playback client for miX-L Content Management System.",
+      "details": [
+        "Remote content push and scheduling",
+        "Central web interface management",
+        "Offline content caching",
+        "Screen status reporting",
+        "Multi-screen synchronization"
+      ],
+      "impact": {
+        "text": "Centralized signage management",
+        "metric": null,
+        "metricType": null
+      },
+      "highlight": false
+    }
+  ],
+
+  "standout": {
+    "title": "Why This Project Stands Out",
+    "items": [
+      {
+        "icon": "fas fa-microchip",
+        "title": "Custom Rockchip ROM",
+        "description": "Built custom Android firmware for signage hardware"
+      },
+      {
+        "icon": "fas fa-user",
+        "title": "Solo Developer",
+        "description": "Entire Android stack built by one developer"
+      },
+      {
+        "icon": "fas fa-code",
+        "title": "SMIL 3.0 Pioneer",
+        "description": "Early SMIL implementation on Android"
+      },
+      {
+        "icon": "fas fa-store",
+        "title": "Retail Deployment",
+        "description": "Production hardware in retail stores"
+      }
+    ]
+  },
+
+  "team": {
+    "totalSize": 10,
+    "structure": [
+      {
+        "team": "Android Development",
+        "size": 1,
+        "notes": "Solo developer - app + custom ROM",
+        "myRole": true
+      },
+      {
+        "team": "Backend/CMS",
+        "size": 3,
+        "notes": "miX-L Content Management System",
+        "myRole": false
+      },
+      {
+        "team": "Hardware",
+        "size": 2,
+        "notes": "Tablet hardware coordination",
+        "myRole": false
+      },
+      {
+        "team": "QA/Deployment",
+        "size": 3,
+        "notes": "Testing and retail deployment",
+        "myRole": false
+      }
+    ],
+    "methodology": "Agile",
+    "collaboration": "Coordination with Light Alliance (Germany) and hardware team"
+  },
+
+  "metrics": {
+    "launch": [
+      {
+        "icon": "fas fa-user",
+        "value": "Solo",
+        "label": "Android Developer",
+        "highlight": true
+      },
+      {
+        "icon": "fas fa-calendar-alt",
+        "value": "24",
+        "label": "Months Duration",
+        "highlight": false
+      },
+      {
+        "icon": "fas fa-microchip",
+        "value": "Rockchip",
+        "label": "Custom ROM",
+        "highlight": true
+      },
+      {
+        "icon": "fas fa-android",
+        "value": "2.3+",
+        "label": "Android Support",
+        "highlight": false
+      }
+    ],
+    "quickStats": [
+      {
+        "icon": "fas fa-calendar-alt",
+        "value": "Aug 2012 - Aug 2014",
+        "label": "Duration"
+      },
+      {
+        "icon": "fas fa-user-tie",
+        "value": "Solo Android Dev",
+        "label": "Role"
+      },
+      {
+        "icon": "fas fa-microchip",
+        "value": "Rockchip ROM",
+        "label": "Specialty"
+      },
+      {
+        "icon": "fas fa-building",
+        "value": "DSconnect",
+        "label": "Company"
+      }
+    ]
+  },
+
+  "technologies": {
+    "primary": [
+      {
+        "name": "Java",
+        "category": "language",
+        "proficiency": "expert"
+      },
+      {
+        "name": "Android SDK",
+        "category": "platform",
+        "proficiency": "expert"
+      },
+      {
+        "name": "Rockchip ROM Builder",
+        "category": "firmware",
+        "proficiency": "advanced"
+      },
+      {
+        "name": "SMIL 3.0",
+        "category": "multimedia",
+        "proficiency": "advanced"
+      }
+    ],
+    "secondary": [
+      {
+        "name": "EventBus",
+        "category": "messaging"
+      },
+      {
+        "name": "OkHttp",
+        "category": "networking"
+      },
+      {
+        "name": "Gson",
+        "category": "serialization"
+      },
+      {
+        "name": "ButterKnife",
+        "category": "views"
+      },
+      {
+        "name": "Picasso",
+        "category": "images"
+      },
+      {
+        "name": "Crashlytics",
+        "category": "monitoring"
+      },
+      {
+        "name": "SVG",
+        "category": "graphics"
+      }
+    ],
+    "tools": ["Android Studio", "Rockchip ROM Builder", "Git"]
+  },
+
+  "lifecycle": {
+    "events": [
+      {
+        "date": "2012-08-01",
+        "displayDate": "August 2012",
+        "event": "Joined as solo Android developer",
+        "status": "active"
+      },
+      {
+        "date": "2013-01-01",
+        "displayDate": "2012-2013",
+        "event": "SMILdroid launched - early SMIL player on Android",
+        "status": "active"
+      },
+      {
+        "date": "2014-08-31",
+        "displayDate": "August 2014",
+        "event": "Completed engagement",
+        "status": "active"
+      },
+      {
+        "date": "2020-01-01",
+        "displayDate": "~2020",
+        "event": "SMILdroid became legacy, replaced by HTML5 players",
+        "status": "discontinued"
+      }
+    ],
+    "discontinuationReason": "SMILdroid is now considered a legacy application. Modern signage solutions have transitioned to HTML5-based players (like Disign, ScreenCloud) with deeper cloud integration.",
+    "currentStatus": "legacy"
+  },
+
+  "links": [
+    {
+      "type": "company",
+      "icon": "fas fa-building",
+      "label": "Light Alliance Europe AG",
+      "url": "https://www.lightalliance.com/",
+      "source": "Light Alliance",
+      "active": true
+    }
+  ],
+
+  "media": {
+    "screenshots": [],
+    "videos": [],
+    "logos": []
+  },
+
+  "seo": {
+    "title": "SMILdroid - Android Developer & Custom Rockchip ROM | Denys Honcharenko",
+    "description": "Solo Android Developer for SMILdroid digital signage platform. Built custom Rockchip Android ROMs and SMIL 3.0 multimedia player for Light Alliance Europe AG retail displays.",
+    "keywords": ["SMILdroid", "Storesign 7", "Digital Signage", "Custom ROM", "Rockchip", "Android", "SMIL 3.0", "Light Alliance", "miX-L CMS", "Retail Advertisement"]
+  },
+
+  "relatedProjects": ["rifl-media", "stoamigo"],
+
+  "lastUpdated": "2025-01-22"
+}

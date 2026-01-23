@@ -1,0 +1,45 @@
+{
+  "id": "rifl-media",
+  "name": "Take It To (Rifl Media)",
+  "slug": "rifl-media",
+
+  "hero": {
+    "bannerStyle": "gradient",
+    "gradientColors": ["#ff6f00", "#ff8f00"],
+    "icon": "fas fa-share-alt",
+    "backgroundPattern": true
+  },
+
+  "featured": true,
+  "featuredBadgeText": "NYC Startup",
+
+  "role": {
+    "title": "Android Developer",
+    "shortTitle": "Android Developer"
+  },
+
+  "period": {
+    "startDate": "2015-01-01",
+    "endDate": "2016-12-31",
+    "displayText": "2015 - 2016"
+  },
+
+  "location": "Kherson, Ukraine",
+
+  "description": {
+    "short": "Multi-media platform for presenting and sharing creative content (NYC startup).",
+    "tagline": "Creative Content Sharing Platform"
+  },
+
+  "highlights": [
+    "Built Android app from scratch",
+    "First Android developer on team",
+    "Grew team to 3 Android devs"
+  ],
+
+  "technologies": ["Java", "Android SDK", "Media APIs", "REST APIs"],
+
+  "links": {
+    "details": "projects/rifl-media.html"
+  }
+}

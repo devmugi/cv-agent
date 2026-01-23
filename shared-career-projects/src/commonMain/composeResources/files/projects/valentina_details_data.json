@@ -1,0 +1,328 @@
+{
+  "id": "valentina",
+  "name": "Valentina for PHP ADK",
+  "slug": "valentina",
+  "tagline": "Database PHP Extension Development",
+
+  "hero": {
+    "bannerStyle": "gradient",
+    "gradientColors": ["#1565c0", "#0d47a1"],
+    "icon": "fas fa-database",
+    "backgroundPattern": true
+  },
+
+  "meta": {
+    "featured": false,
+    "status": "completed",
+    "visibility": "public"
+  },
+
+  "overview": {
+    "company": "Contract",
+    "client": "Paradigma Software (Valentina DB)",
+    "product": "Valentina for PHP ADK",
+    "role": "C/C++ Developer",
+    "roleDetails": "PHP extension development for Valentina DB database engine",
+    "period": {
+      "startDate": "2011-01-01",
+      "endDate": "2011-12-31",
+      "displayText": "2011",
+      "durationMonths": 12
+    },
+    "location": "Ukraine",
+    "launchDate": "2011-08-08",
+    "productPrice": null
+  },
+
+  "companies": [
+    {
+      "name": "Paradigma Software",
+      "role": "client",
+      "description": "Developer of Valentina DB - a cross-platform database engine with object-relational capabilities",
+      "logo": null,
+      "website": "https://www.valentina-db.com/en/"
+    }
+  ],
+
+  "description": {
+    "short": "C/C++ PHP extension development for Valentina DB database engine integration.",
+    "full": "Contracted to develop C/C++ extensions for Valentina DB's PHP integration (Valentina for PHP ADK). The work involved building PHP extensions that allowed developers to use Valentina DB from PHP applications through both native API and PDO interface. A key milestone was the August 2011 release (v4.9.1) which transitioned to 'standalone' archives - embedding the local Valentina engine directly in the PHP extension, eliminating the need for a separate server installation.",
+    "howItWorked": [
+      {
+        "step": 1,
+        "title": "PHP Extension",
+        "description": "Load Valentina extension (.dll/.so) via php.ini configuration"
+      },
+      {
+        "step": 2,
+        "title": "Native API",
+        "description": "Use valentina_connect(), valentina_query(), valentina_fetch_array() functions"
+      },
+      {
+        "step": 3,
+        "title": "PDO Interface",
+        "description": "Standard PDO abstraction: new PDO('valentina:host=localhost;dbname=test')"
+      },
+      {
+        "step": 4,
+        "title": "Local Database",
+        "description": "Work with local .vdb files directly without separate server"
+      }
+    ]
+  },
+
+  "challenge": {
+    "context": "Valentina DB needed PHP integration through native extensions to allow PHP developers to use the database engine in their applications.",
+    "response": "Developed C/C++ PHP extensions providing both native Valentina API and standard PDO interface for database access.",
+    "details": [
+      "C/C++ extension development for PHP",
+      "Native Valentina API implementation",
+      "PDO driver implementation",
+      "Cross-platform support (Windows DLL, Linux/Mac .so)",
+      "Standalone mode - embedded database engine"
+    ]
+  },
+
+  "achievements": [
+    {
+      "id": "php-extension",
+      "title": "PHP Extension Development (C/C++)",
+      "category": "technical",
+      "icon": "fas fa-code",
+      "problem": "PHP developers needed native access to Valentina DB database engine.",
+      "solution": "Built C/C++ PHP extension (php5_valentina) providing native database API.",
+      "details": [
+        "C/C++ PHP extension development",
+        "Native functions: valentina_connect(), valentina_query(), valentina_fetch_array()",
+        "Dynamic library loading via php.ini",
+        "Cross-platform: .dll (Windows), .so (Linux/Mac)",
+        "Memory management and error handling"
+      ],
+      "impact": {
+        "text": "Native PHP integration for Valentina DB",
+        "metric": null,
+        "metricType": null
+      },
+      "highlight": true
+    },
+    {
+      "id": "pdo-driver",
+      "title": "PDO Driver Implementation",
+      "category": "technical",
+      "icon": "fas fa-plug",
+      "problem": "Developers expected standard PDO interface for database abstraction.",
+      "solution": "Implemented PDO driver (pdo_valentina) for standard PHP database access patterns.",
+      "details": [
+        "PDO driver implementation in C/C++",
+        "Standard PDO interface support",
+        "Prepared statements support",
+        "Connection string: valentina:host=localhost;dbname=test"
+      ],
+      "impact": {
+        "text": "Standard PDO interface for Valentina DB",
+        "metric": null,
+        "metricType": null
+      },
+      "highlight": true
+    },
+    {
+      "id": "standalone-mode",
+      "title": "Standalone Architecture (v4.9.1)",
+      "category": "architecture",
+      "icon": "fas fa-box",
+      "problem": "Previous architecture required separate Valentina Server installation.",
+      "solution": "Contributed to standalone architecture embedding local Valentina engine in PHP extension.",
+      "details": [
+        "Embedded local Valentina engine",
+        "No separate server installation required",
+        "Direct local .vdb file access",
+        "Simplified deployment for PHP applications",
+        "Released August 8, 2011 (v4.9.1)"
+      ],
+      "impact": {
+        "text": "Simplified deployment without server dependency",
+        "metric": null,
+        "metricType": null
+      },
+      "highlight": false
+    }
+  ],
+
+  "standout": {
+    "title": "Why This Project Stands Out",
+    "items": [
+      {
+        "icon": "fas fa-code",
+        "title": "Low-Level C/C++",
+        "description": "PHP extension development in C/C++"
+      },
+      {
+        "icon": "fas fa-database",
+        "title": "Database Integration",
+        "description": "Native database engine embedding"
+      },
+      {
+        "icon": "fas fa-plug",
+        "title": "PDO Driver",
+        "description": "Standard PHP database abstraction"
+      }
+    ]
+  },
+
+  "team": {
+    "totalSize": 2,
+    "structure": [
+      {
+        "team": "Extension Development",
+        "size": 1,
+        "notes": "Me - C/C++ PHP extension",
+        "myRole": true
+      },
+      {
+        "team": "Valentina DB Lead",
+        "size": 1,
+        "notes": "Lead Valentina DB developer - coordination",
+        "myRole": false
+      }
+    ],
+    "methodology": "Contract",
+    "collaboration": "Direct coordination with lead Valentina DB developer"
+  },
+
+  "metrics": {
+    "launch": [
+      {
+        "icon": "fas fa-calendar-alt",
+        "value": "2011",
+        "label": "Year",
+        "highlight": false
+      },
+      {
+        "icon": "fas fa-code-branch",
+        "value": "4.9.1",
+        "label": "Version Released",
+        "highlight": true
+      },
+      {
+        "icon": "fas fa-desktop",
+        "value": "3",
+        "label": "Platforms",
+        "highlight": false
+      }
+    ],
+    "quickStats": [
+      {
+        "icon": "fas fa-calendar-alt",
+        "value": "2011",
+        "label": "Year"
+      },
+      {
+        "icon": "fas fa-user-tie",
+        "value": "C/C++ Developer",
+        "label": "Role"
+      },
+      {
+        "icon": "fas fa-file-contract",
+        "value": "Contract",
+        "label": "Type"
+      },
+      {
+        "icon": "fas fa-database",
+        "value": "Valentina DB",
+        "label": "Product"
+      }
+    ]
+  },
+
+  "technologies": {
+    "primary": [
+      {
+        "name": "C",
+        "category": "language",
+        "proficiency": "advanced"
+      },
+      {
+        "name": "C++",
+        "category": "language",
+        "proficiency": "advanced"
+      },
+      {
+        "name": "PHP Extension API",
+        "category": "framework",
+        "proficiency": "advanced"
+      },
+      {
+        "name": "Valentina DB",
+        "category": "database",
+        "proficiency": "advanced"
+      }
+    ],
+    "secondary": [
+      {
+        "name": "PDO",
+        "category": "database"
+      },
+      {
+        "name": "PHP 5",
+        "category": "language"
+      },
+      {
+        "name": "Dynamic Libraries",
+        "category": "platform"
+      }
+    ],
+    "tools": ["Visual Studio", "GCC", "Make"]
+  },
+
+  "lifecycle": {
+    "events": [
+      {
+        "date": "2011-01-01",
+        "displayDate": "2011",
+        "event": "Contracted for PHP extension development",
+        "status": "active"
+      },
+      {
+        "date": "2011-08-08",
+        "displayDate": "August 8, 2011",
+        "event": "Valentina 4.9.1 released with standalone PHP ADK",
+        "status": "active"
+      },
+      {
+        "date": "2011-12-31",
+        "displayDate": "Late 2011",
+        "event": "Completed contract",
+        "status": "active"
+      }
+    ],
+    "discontinuationReason": null,
+    "currentStatus": "completed"
+  },
+
+  "links": [
+    {
+      "type": "company",
+      "icon": "fas fa-building",
+      "label": "Valentina DB",
+      "url": "https://www.valentina-db.com/en/",
+      "source": "Valentina",
+      "active": true
+    }
+  ],
+
+  "media": {
+    "screenshots": [],
+    "videos": [],
+    "logos": []
+  },
+
+  "seo": {
+    "title": "Valentina for PHP ADK - C/C++ Developer | Denys Honcharenko",
+    "description": "C/C++ contract developer for Valentina for PHP ADK. Built PHP extensions and PDO driver for Valentina DB database engine integration.",
+    "keywords": ["Valentina DB", "PHP Extension", "C", "C++", "PDO Driver", "Database", "Paradigma Software"]
+  },
+
+  "relatedProjects": ["smildroid", "stoamigo"],
+
+  "lastUpdated": "2025-01-22"
+}

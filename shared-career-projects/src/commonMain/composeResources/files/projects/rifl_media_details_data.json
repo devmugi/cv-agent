@@ -1,0 +1,373 @@
+{
+  "id": "rifl-media",
+  "name": "Take It To (Rifl Media)",
+  "slug": "rifl-media",
+  "tagline": "Creative Content Sharing Platform",
+
+  "hero": {
+    "bannerStyle": "gradient",
+    "gradientColors": ["#ff6f00", "#ff8f00"],
+    "icon": "fas fa-share-alt",
+    "backgroundPattern": true
+  },
+
+  "meta": {
+    "featured": true,
+    "status": "completed",
+    "visibility": "public"
+  },
+
+  "overview": {
+    "company": "Rifl Media",
+    "client": null,
+    "product": "Take It To (Takeit.to)",
+    "role": "Android Developer",
+    "roleDetails": "First Android developer, built app from scratch, grew team to 3 developers",
+    "period": {
+      "startDate": "2015-01-01",
+      "endDate": "2016-12-31",
+      "displayText": "2015 - 2016",
+      "durationMonths": 24
+    },
+    "location": "Kherson, Ukraine",
+    "launchDate": null,
+    "productPrice": null
+  },
+
+  "companies": [
+    {
+      "name": "Rifl Media",
+      "role": "employer",
+      "description": "NYC-based media and technology company focused on web & mobile applications. Founded 2013, offices in New York, Berlin, and Kherson.",
+      "logo": null,
+      "website": null
+    }
+  ],
+
+  "description": {
+    "short": "Multi-media platform for presenting and sharing creative content, targeting creative industries.",
+    "full": "Take It To (Takeit.to) was an online multi-media platform developed by Rifl Media for presenting and sharing creative content. The platform targeted creative industries, allowing users to share and present their creative work in an engaging way. I joined as the first Android developer and built the Android app from scratch, eventually growing the Android team to 3 developers as the product expanded.",
+    "howItWorked": [
+      {
+        "step": 1,
+        "title": "Create Content",
+        "description": "Users create multi-media presentations with photos, videos, and text"
+      },
+      {
+        "step": 2,
+        "title": "Design Layout",
+        "description": "Arrange content in visually appealing layouts for presentation"
+      },
+      {
+        "step": 3,
+        "title": "Share & Present",
+        "description": "Share creative work with others or present to audiences"
+      },
+      {
+        "step": 4,
+        "title": "Engage",
+        "description": "Viewers interact with and discover creative content"
+      }
+    ]
+  },
+
+  "challenge": {
+    "context": "Rifl Media needed an Android app for their creative content platform. There was no Android team or existing codebase.",
+    "response": "Joined as the first and only Android developer, built the entire Android app from scratch, and later helped grow the team to 3 Android developers.",
+    "details": [
+      "No existing Android codebase or team",
+      "Built app architecture from ground up",
+      "Multi-media content handling (photos, videos)",
+      "Complex content presentation UI",
+      "Team growth and onboarding"
+    ]
+  },
+
+  "achievements": [
+    {
+      "id": "android-app",
+      "title": "Built Android App from Scratch",
+      "category": "technical",
+      "icon": "fas fa-mobile-alt",
+      "problem": "Company needed an Android app for their creative content platform but had no Android team.",
+      "solution": "Joined as first Android developer and built the entire app from scratch.",
+      "details": [
+        "Established Android project architecture",
+        "Built multi-media content viewer",
+        "Implemented content creation features",
+        "Developed sharing and presentation functionality",
+        "Integrated with backend APIs"
+      ],
+      "impact": {
+        "text": "Launched Android app for creative platform",
+        "metric": null,
+        "metricType": null
+      },
+      "highlight": true
+    },
+    {
+      "id": "team-growth",
+      "title": "Team Growth & Leadership",
+      "category": "leadership",
+      "icon": "fas fa-users",
+      "problem": "As product grew, single developer couldn't keep up with feature demands.",
+      "solution": "Helped grow Android team from 1 to 3 developers, onboarded new team members.",
+      "details": [
+        "Started as sole Android developer",
+        "Participated in hiring process",
+        "Onboarded 2 new Android developers",
+        "Established coding standards and practices",
+        "Coordinated with iOS team (3 developers)"
+      ],
+      "impact": {
+        "text": "Grew team from 1 to 3 developers",
+        "metric": "3x",
+        "metricType": "growth"
+      },
+      "highlight": true
+    },
+    {
+      "id": "media-handling",
+      "title": "Multi-Media Content Handling",
+      "category": "technical",
+      "icon": "fas fa-photo-video",
+      "problem": "Platform needed to handle various media types for creative content presentation.",
+      "solution": "Implemented robust media handling for photos, videos, and mixed content layouts.",
+      "details": [
+        "Photo gallery and viewer",
+        "Video playback integration",
+        "Mixed media layouts",
+        "Content caching and optimization"
+      ],
+      "impact": {
+        "text": "Rich media experience on Android",
+        "metric": null,
+        "metricType": null
+      },
+      "highlight": false
+    }
+  ],
+
+  "standout": {
+    "title": "Why This Project Stands Out",
+    "items": [
+      {
+        "icon": "fas fa-rocket",
+        "title": "First Developer",
+        "description": "Built Android app from scratch as sole developer"
+      },
+      {
+        "icon": "fas fa-users",
+        "title": "Team Growth",
+        "description": "Grew Android team from 1 to 3 developers"
+      },
+      {
+        "icon": "fas fa-globe-americas",
+        "title": "NYC Startup",
+        "description": "International team across US, Germany, Ukraine"
+      },
+      {
+        "icon": "fas fa-palette",
+        "title": "Creative Industry",
+        "description": "Platform for creative professionals"
+      }
+    ]
+  },
+
+  "team": {
+    "totalSize": 24,
+    "structure": [
+      {
+        "team": "Android Development",
+        "size": 3,
+        "notes": "Started as 1 (me), grew to 3",
+        "myRole": true
+      },
+      {
+        "team": "iOS Development",
+        "size": 3,
+        "notes": "iOS app development",
+        "myRole": false
+      },
+      {
+        "team": "Frontend/Backend",
+        "size": 6,
+        "notes": "Web platform and APIs",
+        "myRole": false
+      },
+      {
+        "team": "QA",
+        "size": 5,
+        "notes": "Testing across platforms",
+        "myRole": false
+      },
+      {
+        "team": "Design",
+        "size": 5,
+        "notes": "UI/UX design",
+        "myRole": false
+      },
+      {
+        "team": "Management",
+        "size": 2,
+        "notes": "Project management",
+        "myRole": false
+      }
+    ],
+    "methodology": "Agile",
+    "collaboration": "International team coordination across New York, Berlin, and Kherson offices"
+  },
+
+  "metrics": {
+    "launch": [
+      {
+        "icon": "fas fa-users",
+        "value": "1→3",
+        "label": "Android Team Growth",
+        "highlight": true
+      },
+      {
+        "icon": "fas fa-calendar-alt",
+        "value": "24",
+        "label": "Months Duration",
+        "highlight": false
+      },
+      {
+        "icon": "fas fa-globe",
+        "value": "3",
+        "label": "Office Locations",
+        "highlight": false
+      },
+      {
+        "icon": "fas fa-user-friends",
+        "value": "~24",
+        "label": "Team Size",
+        "highlight": false
+      }
+    ],
+    "quickStats": [
+      {
+        "icon": "fas fa-calendar-alt",
+        "value": "2015 - 2016",
+        "label": "Duration"
+      },
+      {
+        "icon": "fas fa-user-tie",
+        "value": "Android Developer",
+        "label": "Role"
+      },
+      {
+        "icon": "fas fa-users",
+        "value": "1→3",
+        "label": "Team Growth"
+      },
+      {
+        "icon": "fas fa-building",
+        "value": "Rifl Media",
+        "label": "Company"
+      }
+    ]
+  },
+
+  "technologies": {
+    "primary": [
+      {
+        "name": "Java",
+        "category": "language",
+        "proficiency": "expert"
+      },
+      {
+        "name": "Android SDK",
+        "category": "platform",
+        "proficiency": "expert"
+      },
+      {
+        "name": "Media APIs",
+        "category": "media",
+        "proficiency": "advanced"
+      },
+      {
+        "name": "REST APIs",
+        "category": "networking",
+        "proficiency": "advanced"
+      }
+    ],
+    "secondary": [
+      {
+        "name": "SQLite",
+        "category": "database"
+      },
+      {
+        "name": "Retrofit",
+        "category": "networking"
+      },
+      {
+        "name": "Picasso/Glide",
+        "category": "images"
+      },
+      {
+        "name": "ExoPlayer",
+        "category": "video"
+      }
+    ],
+    "tools": ["Android Studio", "Git", "Jira"]
+  },
+
+  "lifecycle": {
+    "events": [
+      {
+        "date": "2013-01-01",
+        "displayDate": "2013",
+        "event": "Rifl Media founded in NYC",
+        "status": "active"
+      },
+      {
+        "date": "2015-01-01",
+        "displayDate": "2015",
+        "event": "Joined as first Android developer",
+        "status": "active"
+      },
+      {
+        "date": "2016-12-31",
+        "displayDate": "2016",
+        "event": "Completed engagement, team at 3 Android devs",
+        "status": "active"
+      },
+      {
+        "date": "2018-01-01",
+        "displayDate": "~2018",
+        "event": "Rifl Media closed operations",
+        "status": "discontinued"
+      }
+    ],
+    "discontinuationReason": "Rifl Media closed operations around 2018. The Take It To platform was discontinued.",
+    "currentStatus": "discontinued"
+  },
+
+  "links": [
+    {
+      "type": "company",
+      "icon": "fas fa-building",
+      "label": "Rifl Media (Crunchbase)",
+      "url": "https://www.crunchbase.com/organization/rifl-media-llc",
+      "source": "Crunchbase",
+      "active": true
+    }
+  ],
+
+  "media": {
+    "screenshots": [],
+    "videos": [],
+    "logos": []
+  },
+
+  "seo": {
+    "title": "Rifl Media - Android Developer | Denys Honcharenko",
+    "description": "First Android developer at Rifl Media (NYC startup). Built Take It To creative content platform from scratch and grew Android team from 1 to 3 developers.",
+    "keywords": ["Rifl Media", "Take It To", "Android", "NYC Startup", "Creative Platform", "Media Sharing", "Content Sharing"]
+  },
+
+  "relatedProjects": ["stoamigo", "lesara"],
+
+  "lastUpdated": "2025-01-22"
+}

@@ -1,0 +1,45 @@
+{
+  "id": "valentina",
+  "name": "Valentina for PHP ADK",
+  "slug": "valentina",
+
+  "hero": {
+    "bannerStyle": "gradient",
+    "gradientColors": ["#1565c0", "#0d47a1"],
+    "icon": "fas fa-database",
+    "backgroundPattern": true
+  },
+
+  "featured": false,
+  "featuredBadgeText": "C/C++ Extension",
+
+  "role": {
+    "title": "C/C++ Developer",
+    "shortTitle": "C/C++ Developer"
+  },
+
+  "period": {
+    "startDate": "2011-01-01",
+    "endDate": "2011-12-31",
+    "displayText": "2011"
+  },
+
+  "location": "Ukraine",
+
+  "description": {
+    "short": "PHP extension development for Valentina DB database engine in C/C++.",
+    "tagline": "Database PHP Extension Development"
+  },
+
+  "highlights": [
+    "C/C++ PHP extension development",
+    "Valentina DB integration",
+    "PDO driver implementation"
+  ],
+
+  "technologies": ["C", "C++", "PHP Extension", "Valentina DB", "PDO"],
+
+  "links": {
+    "details": "projects/valentina.html"
+  }
+}

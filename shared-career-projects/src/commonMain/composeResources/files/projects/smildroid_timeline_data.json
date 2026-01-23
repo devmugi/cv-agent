@@ -1,0 +1,45 @@
+{
+  "id": "smildroid",
+  "name": "SMILdroid (Storesign 7)",
+  "slug": "smildroid",
+
+  "hero": {
+    "bannerStyle": "gradient",
+    "gradientColors": ["#673ab7", "#9c27b0"],
+    "icon": "fas fa-ad",
+    "backgroundPattern": true
+  },
+
+  "featured": true,
+  "featuredBadgeText": "Digital Signage",
+
+  "role": {
+    "title": "Android Developer",
+    "shortTitle": "Android Developer"
+  },
+
+  "period": {
+    "startDate": "2012-08-01",
+    "endDate": "2014-08-31",
+    "displayText": "Aug 2012 - Aug 2014"
+  },
+
+  "location": "Ukraine",
+
+  "description": {
+    "short": "SMIL-based digital signage player with custom Rockchip Android ROM for retail displays.",
+    "tagline": "SMIL 3.0 Digital Signage Platform"
+  },
+
+  "highlights": [
+    "Custom Rockchip Android ROM",
+    "SMIL 3.0 multimedia player",
+    "miX-L CMS integration"
+  ],
+
+  "technologies": ["Java", "Android SDK", "Rockchip ROM", "SMIL 3.0", "Digital Signage"],
+
+  "links": {
+    "details": "projects/smildroid.html"
+  }
+}

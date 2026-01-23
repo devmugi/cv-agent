@@ -1,0 +1,389 @@
+{
+  "id": "food-network-kitchen",
+  "name": "Food Network Kitchen",
+  "slug": "food-network-kitchen",
+  "tagline": "Live Cooking Classes & Smart Kitchen Integration",
+
+  "hero": {
+    "bannerStyle": "gradient",
+    "gradientColors": ["#d32f2f", "#ff5722"],
+    "icon": "fas fa-utensils",
+    "backgroundPattern": true
+  },
+
+  "meta": {
+    "featured": true,
+    "status": "completed",
+    "visibility": "public"
+  },
+
+  "overview": {
+    "company": "EPAM",
+    "client": "Discovery, Inc. / Food Network",
+    "product": "Food Network Kitchen",
+    "role": "Android Developer",
+    "roleDetails": "Android TV & Fire TV development, Smart kitchen integrations",
+    "period": {
+      "startDate": "2020-10-01",
+      "endDate": "2021-09-30",
+      "displayText": "October 2020 - September 2021",
+      "durationMonths": 12
+    },
+    "location": "Ukraine (Remote)",
+    "launchDate": "2019-10-30",
+    "productPrice": "$6.99/month"
+  },
+
+  "companies": [
+    {
+      "name": "EPAM",
+      "role": "employer",
+      "description": "Global technology services company",
+      "logo": null,
+      "website": "https://www.epam.com"
+    },
+    {
+      "name": "Discovery, Inc.",
+      "role": "client",
+      "description": "Global media company, owner of Food Network, HGTV, TLC, and other brands",
+      "logo": null,
+      "website": "https://www.discovery.com"
+    },
+    {
+      "name": "Food Network",
+      "role": "brand",
+      "description": "American cable channel featuring food and cooking programming",
+      "logo": null,
+      "website": "https://www.foodnetwork.com"
+    }
+  ],
+
+  "description": {
+    "short": "Cooking app with live classes, recipes, and smart kitchen device integration for Food Network.",
+    "full": "Food Network Kitchen was a subscription-based cooking app featuring live and on-demand cooking classes from Food Network stars, step-by-step recipes, and integration with smart kitchen appliances. The app allowed users to watch celebrity chefs cook in real-time, follow along with interactive recipes, and control compatible smart ovens and displays directly from the app. Available on iOS, Android, Fire TV, and web.",
+    "howItWorked": [
+      {
+        "step": 1,
+        "title": "Live Classes",
+        "description": "Users join live cooking classes hosted by Food Network celebrity chefs"
+      },
+      {
+        "step": 2,
+        "title": "Interactive Recipes",
+        "description": "Step-by-step guided cooking with timers and ingredient lists"
+      },
+      {
+        "step": 3,
+        "title": "Smart Integration",
+        "description": "Connect to GE, June Oven, and other smart kitchen devices"
+      },
+      {
+        "step": 4,
+        "title": "Cast to TV",
+        "description": "Stream classes to Amazon Fire TV or Chromecast while cooking"
+      }
+    ]
+  },
+
+  "challenge": {
+    "context": "Building TV apps with complex video streaming and smart device integrations required specialized expertise.",
+    "response": "Improved Fire TV application with smarter image caching capabilities and fixed Amazon Fire TV integration for long videos.",
+    "details": [
+      "Fire TV app development with TV-optimized UI",
+      "Live streaming video player implementation",
+      "Cross-device synchronization between mobile and TV",
+      "Chromecast casting functionality"
+    ]
+  },
+
+  "achievements": [
+    {
+      "id": "fire-tv-app",
+      "title": "Amazon Fire TV Application",
+      "category": "technical",
+      "icon": "fas fa-tv",
+      "problem": "Users needed to follow cooking classes on a large screen while working in the kitchen.",
+      "solution": "Improved dedicated Fire TV app with TV-optimized navigation and video playback. (RecyclerView view holder architecture re-work)",
+      "details": [
+        "Fire TV app with D-pad navigation optimized for remote control",
+        "Live streaming video player with DVR-like controls",
+        "Browse recipes, classes, and chef profiles on big screen",
+        "Integration with mobile app for seamless experience"
+      ],
+      "impact": {
+        "text": "Fire TV app launched successfully",
+        "metric": null,
+        "metricType": null
+      },
+      "highlight": true
+    },
+    {
+      "id": "chromecast",
+      "title": "Chromecast Integration",
+      "category": "technical",
+      "icon": "fas fa-cast",
+      "problem": "Users without Fire TV needed a way to watch on their TV.",
+      "solution": "Implemented Chromecast casting from mobile app to any Chromecast-enabled TV.",
+      "details": [
+        "Google Cast SDK integration",
+        "Cast live and on-demand video content",
+        "Mini controller and expanded controller UI",
+        "Seamless handoff between mobile and TV"
+      ],
+      "impact": {
+        "text": "Expanded TV viewing options",
+        "metric": null,
+        "metricType": null
+      },
+      "highlight": false
+    },
+    {
+      "id": "video-player",
+      "title": "Live Streaming Video Player",
+      "category": "technical",
+      "icon": "fas fa-play-circle",
+      "problem": "Live cooking classes required reliable, low-latency video streaming.",
+      "solution": "Built custom video player with live streaming support and interactive overlays.",
+      "details": [
+        "ExoPlayer-based video implementation",
+        "HLS live streaming support",
+        "Interactive recipe overlays during playback",
+        "Picture-in-picture support on Android"
+      ],
+      "impact": {
+        "text": "Smooth live streaming experience",
+        "metric": null,
+        "metricType": null
+      },
+      "highlight": false
+    }
+  ],
+
+  "standout": {
+    "title": "Why This Project Stands Out",
+    "items": [
+      {
+        "icon": "fas fa-star",
+        "title": "Major Brand",
+        "description": "Food Network - one of the most recognized culinary brands"
+      },
+      {
+        "icon": "fas fa-tv",
+        "title": "Multi-Platform",
+        "description": "Android mobile, Fire TV, and Chromecast"
+      },
+      {
+        "icon": "fas fa-video",
+        "title": "Live Streaming",
+        "description": "Real-time cooking classes with celebrity chefs"
+      }
+    ]
+  },
+
+  "team": {
+    "totalSize": 30,
+    "structure": [
+      {
+        "team": "Android Development",
+        "size": 4,
+        "notes": "Mobile and TV apps",
+        "myRole": true
+      },
+      {
+        "team": "iOS Development",
+        "size": 4,
+        "notes": "iOS and tvOS apps",
+        "myRole": false
+      },
+      {
+        "team": "Backend",
+        "size": 6,
+        "notes": "APIs and streaming infrastructure",
+        "myRole": false
+      },
+      {
+        "team": "QA",
+        "size": 4,
+        "notes": "Testing across all platforms",
+        "myRole": false
+      },
+      {
+        "team": "Design & Product",
+        "size": 6,
+        "notes": "UX/UI and product management",
+        "myRole": false
+      }
+    ],
+    "methodology": "Agile/Scrum",
+    "collaboration": "Daily standups, bi-weekly sprints, cross-platform coordination"
+  },
+
+  "metrics": {
+    "launch": [
+      {
+        "icon": "fas fa-download",
+        "value": "100K+",
+        "label": "Downloads at Launch",
+        "highlight": true
+      },
+      {
+        "icon": "fas fa-star",
+        "value": "4.5+",
+        "label": "App Store Rating",
+        "highlight": false
+      },
+      {
+        "icon": "fas fa-tv",
+        "value": "3",
+        "label": "TV Platforms",
+        "highlight": false
+      },
+      {
+        "icon": "fas fa-code",
+        "value": "RecyclerView",
+        "label": "Architecture Rework",
+        "highlight": true
+      }
+    ],
+    "quickStats": [
+      {
+        "icon": "fas fa-calendar-alt",
+        "value": "Oct 2020 - Sep 2021",
+        "label": "Duration"
+      },
+      {
+        "icon": "fas fa-user-tie",
+        "value": "Android Developer",
+        "label": "Role"
+      },
+      {
+        "icon": "fas fa-users",
+        "value": "~30",
+        "label": "Team Size"
+      },
+      {
+        "icon": "fas fa-building",
+        "value": "EPAM",
+        "label": "Company"
+      }
+    ]
+  },
+
+  "technologies": {
+    "primary": [
+      {
+        "name": "Kotlin",
+        "category": "language",
+        "proficiency": "expert"
+      },
+      {
+        "name": "Android TV",
+        "category": "platform",
+        "proficiency": "advanced"
+      },
+      {
+        "name": "Amazon Fire TV",
+        "category": "platform",
+        "proficiency": "advanced"
+      },
+      {
+        "name": "ExoPlayer",
+        "category": "media",
+        "proficiency": "expert"
+      },
+      {
+        "name": "Google Cast SDK",
+        "category": "casting",
+        "proficiency": "advanced"
+      }
+    ],
+    "secondary": [
+      {
+        "name": "HLS Streaming",
+        "category": "video"
+      },
+      {
+        "name": "Leanback Library",
+        "category": "tv"
+      },
+      {
+        "name": "RxJava",
+        "category": "reactive"
+      },
+      {
+        "name": "Retrofit",
+        "category": "networking"
+      },
+      {
+        "name": "Dagger",
+        "category": "di"
+      }
+    ],
+    "tools": ["Android Studio", "Git", "Jira", "Confluence", "Firebase"]
+  },
+
+  "lifecycle": {
+    "events": [
+      {
+        "date": "2019-10-01",
+        "displayDate": "October 2019",
+        "event": "Joined project for Fire TV development",
+        "status": "active"
+      },
+      {
+        "date": "2019-10-30",
+        "displayDate": "October 2019",
+        "event": "Food Network Kitchen app launched",
+        "status": "active"
+      },
+      {
+        "date": "2020-03-31",
+        "displayDate": "March 2020",
+        "event": "Completed engagement",
+        "status": "active"
+      },
+      {
+        "date": "2021-03-01",
+        "displayDate": "March 2021",
+        "event": "App discontinued by Discovery",
+        "status": "discontinued"
+      }
+    ],
+    "discontinuationReason": "Discovery discontinued the Food Network Kitchen app in March 2021, shifting focus to other digital products. The app's features were partially integrated into the main Food Network app.",
+    "currentStatus": "discontinued"
+  },
+
+  "links": [
+    {
+      "type": "company",
+      "icon": "fas fa-building",
+      "label": "Food Network",
+      "url": "https://www.foodnetwork.com",
+      "active": true
+    },
+    {
+      "type": "article",
+      "icon": "fas fa-newspaper",
+      "label": "Launch Announcement (TechCrunch)",
+      "url": "https://techcrunch.com/2019/10/30/discovery-launches-food-network-kitchen/",
+      "source": "TechCrunch",
+      "active": true
+    }
+  ],
+
+  "media": {
+    "screenshots": [],
+    "videos": [],
+    "logos": []
+  },
+
+  "seo": {
+    "title": "Food Network Kitchen - Android & Fire TV Development | Denys Honcharenko",
+    "description": "Developed Food Network Kitchen app for Android and Fire TV with live cooking classes, smart kitchen device integrations (GE, June Oven), and Chromecast support.",
+    "keywords": ["Food Network", "Discovery", "Android TV", "Fire TV", "Chromecast", "Smart Kitchen", "IoT", "Live Streaming", "Cooking App"]
+  },
+
+  "relatedProjects": ["adidas-gmr", "mcdonalds"],
+
+  "lastUpdated": "2025-01-22"
+}

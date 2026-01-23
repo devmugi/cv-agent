@@ -1,0 +1,360 @@
+{
+  "id": "stoamigo",
+  "name": "StoAmigo",
+  "slug": "stoamigo",
+  "tagline": "Cross-Device File Sharing Platform",
+
+  "hero": {
+    "bannerStyle": "gradient",
+    "gradientColors": ["#2196f3", "#03a9f4"],
+    "icon": "fas fa-cloud",
+    "backgroundPattern": true
+  },
+
+  "meta": {
+    "featured": true,
+    "status": "completed",
+    "visibility": "public"
+  },
+
+  "overview": {
+    "company": "StoAmigo",
+    "client": null,
+    "product": "StoAmigo Android App",
+    "role": "Android Developer",
+    "roleDetails": "File system architecture, Google Drive integration, WebRTC prototype",
+    "period": {
+      "startDate": "2016-01-01",
+      "endDate": "2017-12-31",
+      "displayText": "2016 - 2017",
+      "durationMonths": 24
+    },
+    "location": "Ukraine",
+    "launchDate": null,
+    "productPrice": null
+  },
+
+  "companies": [
+    {
+      "name": "StoAmigo",
+      "role": "employer",
+      "description": "File sharing and cloud storage company, later rebranded to AXEL in 2018. Over 2 million users across platforms.",
+      "logo": null,
+      "website": null
+    }
+  ],
+
+  "description": {
+    "short": "Cloud storage and file sharing app with cross-device access, Google Drive integration, and WebRTC technology.",
+    "full": "StoAmigo was a file sharing and cloud storage platform that allowed users to access files stored on any device from their phone, without upload times or size limits. The company started with CloudLocker, a crowdfunded physical private cloud storage device, and evolved into a cross-platform file sharing solution. I worked on the Android app, developing a new architecture for the file system, integrating Google Drive, and creating a WebRTC prototype for real-time peer-to-peer file sharing. The company later rebranded to AXEL in 2018 with a focus on blockchain technology.",
+    "howItWorked": [
+      {
+        "step": 1,
+        "title": "Connect Devices",
+        "description": "Link multiple devices (PC, phone, tablet) to StoAmigo account"
+      },
+      {
+        "step": 2,
+        "title": "Access Anywhere",
+        "description": "Browse and access files on any connected device from your phone"
+      },
+      {
+        "step": 3,
+        "title": "Cloud Integration",
+        "description": "Connect Google Drive and other cloud services for unified access"
+      },
+      {
+        "step": 4,
+        "title": "Share & Transfer",
+        "description": "Share files directly between devices without size limits"
+      }
+    ]
+  },
+
+  "challenge": {
+    "context": "Building a cross-device file access system required a robust architecture to handle different file sources and real-time synchronization.",
+    "response": "Designed and implemented new file system architecture, integrated Google Drive API, and prototyped WebRTC for peer-to-peer transfers.",
+    "details": [
+      "Complex file system with multiple sources (local, cloud, remote devices)",
+      "Google Drive API integration for cloud storage access",
+      "WebRTC prototype for real-time peer-to-peer file transfers",
+      "Cross-device synchronization challenges"
+    ]
+  },
+
+  "achievements": [
+    {
+      "id": "file-system-architecture",
+      "title": "New File System Architecture",
+      "category": "architecture",
+      "icon": "fas fa-folder-tree",
+      "problem": "App needed to handle files from multiple sources - local storage, cloud services, and remote devices.",
+      "solution": "Designed and implemented new architecture for unified file system access across all sources.",
+      "details": [
+        "Unified file browser for multiple sources",
+        "Abstraction layer for different storage providers",
+        "Efficient file metadata caching",
+        "Seamless navigation between local and remote files"
+      ],
+      "impact": {
+        "text": "Unified file access across devices",
+        "metric": null,
+        "metricType": null
+      },
+      "highlight": true
+    },
+    {
+      "id": "google-drive",
+      "title": "Google Drive Integration",
+      "category": "technical",
+      "icon": "fab fa-google-drive",
+      "problem": "Users wanted to access their Google Drive files alongside local and device files.",
+      "solution": "Integrated Google Drive API for seamless cloud storage access within the app.",
+      "details": [
+        "Google Drive API integration",
+        "OAuth authentication flow",
+        "File browsing and download",
+        "Upload and sync capabilities"
+      ],
+      "impact": {
+        "text": "Cloud storage integration",
+        "metric": null,
+        "metricType": null
+      },
+      "highlight": true
+    },
+    {
+      "id": "webrtc-prototype",
+      "title": "WebRTC Prototype",
+      "category": "innovation",
+      "icon": "fas fa-exchange-alt",
+      "problem": "Traditional file transfer methods had limitations for real-time peer-to-peer sharing.",
+      "solution": "Developed WebRTC prototype for direct device-to-device file transfers.",
+      "details": [
+        "WebRTC implementation for Android",
+        "Peer-to-peer connection establishment",
+        "Real-time file transfer protocol",
+        "NAT traversal handling"
+      ],
+      "impact": {
+        "text": "Real-time P2P file sharing prototype",
+        "metric": null,
+        "metricType": null
+      },
+      "highlight": true
+    }
+  ],
+
+  "standout": {
+    "title": "Why This Project Stands Out",
+    "items": [
+      {
+        "icon": "fas fa-users",
+        "title": "2M+ Users",
+        "description": "Platform grew to over 2 million users"
+      },
+      {
+        "icon": "fas fa-folder-tree",
+        "title": "Architecture",
+        "description": "Designed new file system architecture"
+      },
+      {
+        "icon": "fas fa-exchange-alt",
+        "title": "WebRTC Pioneer",
+        "description": "Early WebRTC implementation on Android"
+      },
+      {
+        "icon": "fas fa-cloud",
+        "title": "Cloud Integration",
+        "description": "Google Drive API integration"
+      }
+    ]
+  },
+
+  "team": {
+    "totalSize": 10,
+    "structure": [
+      {
+        "team": "Android Development",
+        "size": 2,
+        "notes": "Mobile app development",
+        "myRole": true
+      },
+      {
+        "team": "iOS Development",
+        "size": 2,
+        "notes": "iOS app development",
+        "myRole": false
+      },
+      {
+        "team": "Backend/Desktop",
+        "size": 4,
+        "notes": "Server and desktop clients",
+        "myRole": false
+      },
+      {
+        "team": "QA",
+        "size": 2,
+        "notes": "Testing across platforms",
+        "myRole": false
+      }
+    ],
+    "methodology": "Agile",
+    "collaboration": "Cross-platform coordination for file sharing features"
+  },
+
+  "metrics": {
+    "launch": [
+      {
+        "icon": "fas fa-users",
+        "value": "2M+",
+        "label": "Platform Users",
+        "highlight": true
+      },
+      {
+        "icon": "fas fa-calendar-alt",
+        "value": "24",
+        "label": "Months Duration",
+        "highlight": false
+      },
+      {
+        "icon": "fas fa-desktop",
+        "value": "5",
+        "label": "Platforms Supported",
+        "highlight": false
+      }
+    ],
+    "quickStats": [
+      {
+        "icon": "fas fa-calendar-alt",
+        "value": "2016 - 2017",
+        "label": "Duration"
+      },
+      {
+        "icon": "fas fa-user-tie",
+        "value": "Android Developer",
+        "label": "Role"
+      },
+      {
+        "icon": "fas fa-users",
+        "value": "2M+",
+        "label": "Platform Users"
+      },
+      {
+        "icon": "fas fa-building",
+        "value": "StoAmigo",
+        "label": "Company"
+      }
+    ]
+  },
+
+  "technologies": {
+    "primary": [
+      {
+        "name": "Java",
+        "category": "language",
+        "proficiency": "expert"
+      },
+      {
+        "name": "Android SDK",
+        "category": "platform",
+        "proficiency": "expert"
+      },
+      {
+        "name": "WebRTC",
+        "category": "communication",
+        "proficiency": "advanced"
+      },
+      {
+        "name": "Google Drive API",
+        "category": "cloud",
+        "proficiency": "advanced"
+      }
+    ],
+    "secondary": [
+      {
+        "name": "SQLite",
+        "category": "database"
+      },
+      {
+        "name": "Retrofit",
+        "category": "networking"
+      },
+      {
+        "name": "RxJava",
+        "category": "reactive"
+      },
+      {
+        "name": "File I/O",
+        "category": "storage"
+      }
+    ],
+    "tools": ["Android Studio", "Git"]
+  },
+
+  "lifecycle": {
+    "events": [
+      {
+        "date": "2012-01-01",
+        "displayDate": "2012",
+        "event": "StoAmigo founded, launched CloudLocker",
+        "status": "active"
+      },
+      {
+        "date": "2016-01-01",
+        "displayDate": "2016",
+        "event": "Joined project",
+        "status": "active"
+      },
+      {
+        "date": "2017-12-31",
+        "displayDate": "2017",
+        "event": "Completed engagement",
+        "status": "active"
+      },
+      {
+        "date": "2018-01-01",
+        "displayDate": "2018",
+        "event": "Company rebranded to AXEL with blockchain focus",
+        "status": "active"
+      }
+    ],
+    "discontinuationReason": null,
+    "currentStatus": "rebranded"
+  },
+
+  "links": [
+    {
+      "type": "code",
+      "icon": "fab fa-github",
+      "label": "WebRTC Prototype (GitHub)",
+      "url": "https://github.com/devmugi/androidWebRtc",
+      "source": "GitHub",
+      "active": true
+    },
+    {
+      "type": "company",
+      "icon": "fas fa-building",
+      "label": "AXEL (formerly StoAmigo)",
+      "url": "https://stoamigointernational.github.io/stoamigo.app/about",
+      "source": "AXEL",
+      "active": true
+    }
+  ],
+
+  "media": {
+    "screenshots": [],
+    "videos": [],
+    "logos": []
+  },
+
+  "seo": {
+    "title": "StoAmigo - Android Developer | Denys Honcharenko",
+    "description": "Android Developer at StoAmigo - cloud storage and file sharing platform (2M+ users). Built new file system architecture, Google Drive integration, and WebRTC prototype for P2P file transfers.",
+    "keywords": ["StoAmigo", "AXEL", "Cloud Storage", "File Sharing", "Android", "WebRTC", "Google Drive API", "P2P"]
+  },
+
+  "relatedProjects": ["lesara", "veev"],
+
+  "lastUpdated": "2025-01-22"
+}

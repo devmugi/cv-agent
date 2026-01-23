@@ -1,0 +1,788 @@
+{
+  "id": "mcdonalds",
+  "name": "McDonald's Global App",
+  "slug": "mcdonalds",
+  "tagline": "GMAL - World's Most Downloaded Food & Beverage App",
+
+  "hero": {
+    "bannerStyle": "gradient",
+    "gradientColors": ["#DA291C", "#FFC72C"],
+    "icon": "fas fa-hamburger",
+    "backgroundPattern": true
+  },
+
+  "meta": {
+    "featured": true,
+    "status": "completed",
+    "visibility": "public"
+  },
+
+  "overview": {
+    "company": "Developers Shore",
+    "client": "McDonald's (GMAL - Global Mobile App)",
+    "via": "Umain (main contractor)",
+    "product": "McDonald's Global Mobile App",
+    "role": "Lead Android Engineer / KMM Developer",
+    "roleDetails": "Team Lead, Android Developer, Kotlin Multiplatform Developer, Scrum Master responsibilities",
+    "period": {
+      "startDate": "2021-08-01",
+      "endDate": "2022-10-31",
+      "displayText": "August 2021 - October 2022",
+      "durationMonths": 14
+    },
+    "location": "Remote",
+    "launchDate": null,
+    "productPrice": null
+  },
+
+  "companies": [
+    {
+      "name": "Developers Shore",
+      "role": "employer",
+      "description": "Bodyshop providing developers",
+      "logo": null,
+      "website": null
+    },
+    {
+      "name": "Umain",
+      "role": "contractor",
+      "description": "Main contractor for McDonald's",
+      "logo": null,
+      "website": null
+    },
+    {
+      "name": "McDonald's",
+      "role": "client",
+      "description": "End client - GMAL team",
+      "logo": null,
+      "website": "https://mcdonalds.com"
+    }
+  ],
+
+  "markets": {
+    "description": "Markets I worked with directly for delivery feature",
+    "primary": [
+      {
+        "country": "Malaysia",
+        "code": "MY",
+        "testStore": "1010001",
+        "features": ["Delivery", "Loginext tracking"]
+      },
+      {
+        "country": "United Arab Emirates",
+        "code": "UAE",
+        "testStore": "1840001",
+        "testAddress": "Al Barsha 1, Dubai",
+        "features": ["Delivery", "Loginext tracking"]
+      }
+    ]
+  },
+
+  "featureStreams": {
+    "description": "Development organized into feature streams with 2-week sprints",
+    "streams": [
+      {
+        "name": "MDS",
+        "fullName": "McDonald's Delivery Service",
+        "description": "Delivery features: address management, order tracking, Loginext integration",
+        "myRole": true
+      },
+      {
+        "name": "Payments",
+        "fullName": "Payment Integration",
+        "description": "Multi-PSP integration: Adyen, Mastercard, Cybersource (CYBS)",
+        "myRole": true
+      },
+      {
+        "name": "Core",
+        "fullName": "Core Features",
+        "description": "Menu, ordering, loyalty, promotions",
+        "myRole": false
+      },
+      {
+        "name": "KTLO",
+        "fullName": "Keep The Lights On",
+        "description": "Bug fixes, maintenance, tech debt (Kanban)",
+        "myRole": false
+      }
+    ]
+  },
+
+  "order2": {
+    "title": "Order 2.0 Backend API",
+    "description": "New backend API for menu with advanced choice hierarchy",
+    "features": [
+      "Hierarchical Choices - 5 levels deep (vs 1-2 in Order 1.0)",
+      "Static Choice - pre-selected quantities (Happy Meal with pre-selected fries)",
+      "Nested Choices - unresolved child choices (fries selected, but sauce not)",
+      "Product Restriction Choice - EVM products with conditional options"
+    ],
+    "vocabulary": {
+      "RFM": "Legacy text-based database for restaurant/menu configuration",
+      "EVM": "Extra Value Meal - 'Make it a meal' button in PDP",
+      "mcm": "Shared library for menu parsing and business logic"
+    }
+  },
+
+  "orderStatusStates": {
+    "title": "Delivery Order Status States",
+    "description": "11 distinct states for tracking delivery order lifecycle",
+    "states": [
+      { "id": 1, "name": "Initial", "description": "Order created in app, not yet submitted" },
+      { "id": 2, "name": "Created", "description": "Order submitted to backend" },
+      { "id": 3, "name": "EnRouteRestaurant", "description": "Driver heading to restaurant" },
+      { "id": 4, "name": "Released", "description": "Order released for preparation" },
+      { "id": 5, "name": "AtRestaurant", "description": "Driver arrived at restaurant" },
+      { "id": 6, "name": "EnRouteDropoff", "description": "Driver heading to customer" },
+      { "id": 7, "name": "AtDropoff", "description": "Driver arrived at delivery address" },
+      { "id": 8, "name": "Completed", "description": "Order successfully delivered" },
+      { "id": 9, "name": "Failed", "description": "Delivery failed" },
+      { "id": 10, "name": "Refund", "description": "Order refunded" },
+      { "id": 11, "name": "Cancelled", "description": "Order cancelled" }
+    ]
+  },
+
+  "deliveryFeatures": {
+    "title": "MDS Delivery Features",
+    "features": [
+      {
+        "name": "Minimum Order Amount",
+        "description": "Market-specific minimum order value for delivery",
+        "remoteConfig": "delivery.minOrderAmount"
+      },
+      {
+        "name": "Large Order Limits",
+        "description": "Maximum items per order for delivery",
+        "remoteConfig": "delivery.maxItems"
+      },
+      {
+        "name": "Scheduled Delivery",
+        "description": "Future delivery time selection",
+        "format": "ISO 8601",
+        "remoteConfig": "delivery.scheduledEnabled"
+      },
+      {
+        "name": "Address Management",
+        "description": "Up to 5 saved delivery addresses",
+        "remoteConfig": "delivery.maxAddresses"
+      },
+      {
+        "name": "Distance Warning",
+        "description": "Far Away dialog when distance exceeds threshold",
+        "remoteConfig": "order.distanceWarningRadiusInMeters.delivery",
+        "default": "10000 meters"
+      },
+      {
+        "name": "Address Provider",
+        "description": "Google Maps Places API with country filtering",
+        "remoteConfig": "delivery.addressProvider.filterCountry"
+      }
+    ]
+  },
+
+  "description": {
+    "short": "World's most downloaded food & beverage app serving 100M+ users across 60+ countries.",
+    "full": "The McDonald's Global Mobile App (GMAL) serves customers worldwide with ordering, payments, delivery, and loyalty features. I worked on MDS (Delivery) and Payments feature streams, implementing KMP shared libraries for both Android and iOS. Designed architecture for 20+ payment providers (Adyen, Mastercard, Cybersource) and delivery integrations (Loginext). Led ViewBinding migration using IntelliJ SSR tooling, created Android Talks initiative, and established gmal-lite-rc Slack channel for improved release process.",
+    "howItWorked": null
+  },
+
+  "challenge": {
+    "context": "Backend team located in India with timezone and communication barriers.",
+    "response": "Required creative workarounds on client side due to difficulty getting backend issues fixed quickly.",
+    "details": [
+      "Backend team located in India",
+      "Timezone and communication barriers",
+      "Impossible to get backend issues fixed quickly",
+      "Required workarounds on client side"
+    ]
+  },
+
+  "achievements": [
+    {
+      "id": "payments-architecture",
+      "title": "Payments System Architecture & Implementation",
+      "category": "architecture",
+      "icon": "fas fa-credit-card",
+      "problem": "Need to support 20+ different payment providers across multiple countries.",
+      "solution": "Designed flexible architecture and implemented shared KMP library for business logic with Adyen, Mastercard, and Cybersource PSP integrations.",
+      "details": [
+        "Designed architecture for 20+ payment provider integrations",
+        "Shared KMP (Kotlin Multiplatform) library for business logic (Android + iOS)",
+        "PSP integrations: Adyen, Mastercard, Cybersource (CYBS)",
+        "Android app integration with shared library",
+        "First 5 payment integrations implemented",
+        "Comprehensive documentation for iOS team",
+        "Full test coverage with QA team (Ann Humeniuk)"
+      ],
+      "impact": {
+        "text": "5 countries, 17 payment providers integrated",
+        "metric": "17",
+        "metricType": "count"
+      },
+      "highlight": true
+    },
+    {
+      "id": "delivery-architecture",
+      "title": "MDS (Delivery) Feature Architecture",
+      "category": "architecture",
+      "icon": "fas fa-truck",
+      "problem": "Different countries require different maps, address formats, delivery tracking providers.",
+      "solution": "Designed flexible architecture for 20+ market variations with Loginext delivery tracking integration.",
+      "details": [
+        "MDS (McDonald's Delivery Service) feature stream",
+        "Designed flexible architecture for 20+ market variations",
+        "Implemented shared KMP library for delivery logic (Android + iOS)",
+        "Loginext integration for delivery tracking (UAE, Malaysia)",
+        "Address management with Firebase Remote Config per market",
+        "Google Maps Places API integration for address search",
+        "Firestore for address repository",
+        "Country-specific address fields configuration"
+      ],
+      "impact": {
+        "text": "Complex multi-market delivery integration",
+        "metric": "20+",
+        "metricType": "markets"
+      },
+      "highlight": true
+    },
+    {
+      "id": "android-talks",
+      "title": "Android Talks Initiative",
+      "category": "leadership",
+      "icon": "fas fa-comments",
+      "problem": "Need for cross-team communication and technical alignment.",
+      "solution": "Created and organized weekly knowledge-sharing meetings for Android teams.",
+      "details": [
+        "Created dedicated Slack channel for issues, findings, and Android development topics",
+        "Weekly calls to discuss issues, plan migrations, library updates",
+        "Tracked all decisions made during meetings",
+        "Weekly email reports to entire team (including iOS and management)"
+      ],
+      "impact": {
+        "text": "14 documented sessions (Nov 2021 - Nov 2022)",
+        "metric": "14",
+        "metricType": "sessions"
+      },
+      "highlight": true
+    },
+    {
+      "id": "compose-integration",
+      "title": "Jetpack Compose Integration",
+      "category": "technical",
+      "icon": "fas fa-palette",
+      "problem": "Team needed to modernize UI development approach.",
+      "solution": "Presented Jetpack Compose during Android Talks and initiated adoption.",
+      "details": [
+        "Presented Jetpack Compose during Android Talks",
+        "One month after presentation, team started Compose integration",
+        "Small screens rewritten from Android Views to Compose"
+      ],
+      "impact": {
+        "text": "MVP became production code",
+        "metric": null,
+        "metricType": null
+      },
+      "highlight": false
+    },
+    {
+      "id": "viewbinding-migration",
+      "title": "ViewBinding Migration with IntelliJ SSR",
+      "category": "technical",
+      "icon": "fas fa-code",
+      "problem": "Kotlin Synthetics deprecated, mandatory migration to ViewBinding before Kotlin 1.8.",
+      "solution": "Led migration using IntelliJ Structural Search Replace (SSR) tooling for automated refactoring of AdapterDelegates and ViewHolders.",
+      "details": [
+        "Created SSR templates for automated ViewBinding migration",
+        "Migrated AdapterDelegates library patterns",
+        "onCreateViewHolder refactoring with binding inflation",
+        "ViewHolder constructor migration (rootView → binding)",
+        "Custom Inspection from Template for lint suggestions",
+        "Documented migration process for team"
+      ],
+      "impact": {
+        "text": "Automated migration of 100+ delegates",
+        "metric": null,
+        "metricType": null
+      },
+      "highlight": false
+    },
+    {
+      "id": "rc-process",
+      "title": "Release Candidate Process Improvement",
+      "category": "process",
+      "icon": "fas fa-rocket",
+      "problem": "Too many RC builds per sprint, release re-schedules, extra load on QA testing.",
+      "solution": "Established gmal-lite-rc Slack channel and standardized RC lifecycle with Thursday builds and Fix Version tracking.",
+      "details": [
+        "Created gmal-lite-rc Slack channel for release transparency",
+        "Standardized RC creation: every 2nd Thursday",
+        "Established Fix Version workflow in Jira",
+        "Wednesday readiness checks (👍/👎 voting)",
+        "RC announcement templates with build IDs and release notes",
+        "Hotfix vs RC clarification and branching strategy",
+        "Calendar integration for RC schedule"
+      ],
+      "impact": {
+        "text": "Reduced RC chaos, improved release transparency",
+        "metric": null,
+        "metricType": null
+      },
+      "highlight": false
+    },
+    {
+      "id": "process-innovation",
+      "title": "Process Innovation & Team Practices",
+      "category": "leadership",
+      "icon": "fas fa-lightbulb",
+      "problem": "Team needed standardized processes for estimation, meetings, and release management.",
+      "solution": "Introduced and documented team practices that improved productivity and release quality.",
+      "details": [
+        "T-shirt sizing estimation (S, M, L, XL) for sprint planning",
+        "No-Meeting Friday practice for focused development",
+        "3 RC types: Hotfix RC, Standard RC, Feature RC",
+        "Wednesday readiness checks before Thursday RC builds",
+        "Fix Version workflow in Jira for release tracking",
+        "Comprehensive documentation authorship for MDS features",
+        "Remote Config documentation for delivery configurations"
+      ],
+      "impact": {
+        "text": "Improved team velocity and release quality",
+        "metric": null,
+        "metricType": null
+      },
+      "highlight": false
+    }
+  ],
+
+  "androidTalks": {
+    "description": "Weekly knowledge-sharing meetings for Android teams across the organization",
+    "duration": "14 documented sessions (November 2021 - November 2022)",
+    "topics": [
+      {
+        "category": "App Architecture",
+        "items": ["GMAL2 planning", "module-by-module delivery", "UI business logic sharing", "KMM"]
+      },
+      {
+        "category": "Jetpack Compose",
+        "items": ["Migration strategy", "Compose 1.0 adoption", "re-composition patterns", "Figma-to-Compose tooling"]
+      },
+      {
+        "category": "Kotlin Upgrades",
+        "items": ["Synthetics deprecation", "migration 1.5.30 → 1.6.20 → 1.7.x"]
+      },
+      {
+        "category": "View System",
+        "items": ["View Bindings migration (replacing Kotlin synthetics)", "Data Bindings"]
+      },
+      {
+        "category": "Android SDK",
+        "items": ["Android 11→12→13 migration", "android:exported requirements"]
+      },
+      {
+        "category": "Legacy Tech Debt",
+        "items": ["Removing Volley", "Realm evaluation", "RxJava removal (favoring Coroutines)"]
+      },
+      {
+        "category": "Localization",
+        "items": ["String translations override system", "Firebase Remote Config"]
+      },
+      {
+        "category": "Developer Tools",
+        "items": ["Chucker integration for network logging", "CircleCI build issues"]
+      },
+      {
+        "category": "Analytics",
+        "items": ["Kochava tracking bug (Android data sent as iOS)"]
+      },
+      {
+        "category": "Naming Conventions",
+        "items": ["ViewModel wrapper patterns", "semantic dimension naming"]
+      }
+    ],
+    "keyDecisions": [
+      {
+        "decision": "Kotlin Synthetics → View Bindings",
+        "rationale": "mandatory migration before Kotlin 1.8"
+      },
+      {
+        "decision": "Jetpack Compose Adoption",
+        "rationale": "incremental approach, one module at a time"
+      },
+      {
+        "decision": "RxJava Elimination",
+        "rationale": "new app uses native Kotlin Coroutines"
+      },
+      {
+        "decision": "Volley Removal",
+        "rationale": "replaced with modern networking"
+      },
+      {
+        "decision": "ViewModel Naming",
+        "rationale": "\"Wrapper\" postfix convention for KMM ViewModels"
+      }
+    ]
+  },
+
+  "standout": {
+    "title": "Why This Project Stands Out",
+    "items": [
+      {
+        "icon": "fas fa-layer-group",
+        "title": "Massive Scale KMM",
+        "description": "One of largest KMM implementations in production"
+      },
+      {
+        "icon": "fas fa-users",
+        "title": "100M+ Users",
+        "description": "Serving users across 60+ countries"
+      },
+      {
+        "icon": "fas fa-credit-card",
+        "title": "Complex Payments",
+        "description": "Multi-market payment architecture"
+      },
+      {
+        "icon": "fas fa-comments",
+        "title": "Team Leadership",
+        "description": "Created Android Talks initiative"
+      },
+      {
+        "icon": "fas fa-palette",
+        "title": "Tech Innovation",
+        "description": "Initiated Jetpack Compose adoption"
+      }
+    ]
+  },
+
+  "kmmWork": {
+    "role": "Lead Android Developer + Kotlin Multiplatform Developer",
+    "modules": [
+      "Shared login module",
+      "Payments integration (designed & implemented)",
+      "Delivery integration (designed & implemented)"
+    ],
+    "architecturePattern": "Android provides \"wrapper\" ViewModels around KMM ViewModels (e.g., MarketPickerViewModelWrapper)",
+    "mcmLibrary": {
+      "name": "mcm",
+      "description": "Shared library for menu parsing and business logic",
+      "versioning": {
+        "minimumSupported": "1.19+",
+        "versions": ["1.41.1", "1.42.0"],
+        "note": "Version compatibility maintained across Android and iOS"
+      }
+    }
+  },
+
+  "team": {
+    "totalSize": 35,
+    "featureTeams": "5-7 feature teams",
+    "structure": [
+      {
+        "team": "Android Developers",
+        "size": "2-3 per team",
+        "notes": null,
+        "myRole": true
+      },
+      {
+        "team": "iOS Developers",
+        "size": "3-4 per team",
+        "notes": null,
+        "myRole": false
+      },
+      {
+        "team": "KMP Library Developers",
+        "size": "1-2 per team",
+        "notes": null,
+        "myRole": true
+      },
+      {
+        "team": "QA Engineers",
+        "size": "1-2 per team",
+        "notes": null,
+        "myRole": false
+      }
+    ],
+    "collaborators": [
+      {
+        "name": "Jackson Mafra",
+        "role": "Android Developer",
+        "company": "Umain",
+        "location": "Sweden"
+      },
+      {
+        "name": "Ove",
+        "role": "Android Developer",
+        "company": "Umain",
+        "location": "Sweden"
+      },
+      {
+        "name": "Ann Humeniuk",
+        "role": "QA Engineer",
+        "company": "Developers Shore",
+        "location": "Ukraine",
+        "focus": "CYBS (Cybersource) Payment testing"
+      },
+      {
+        "name": "Chintamani Kulkarni",
+        "role": "Android Developer",
+        "company": "Extentia",
+        "location": "India",
+        "focus": "CYBS (Cybersource) Payment integration"
+      },
+      {
+        "name": "Ankit",
+        "role": "iOS Developer",
+        "company": null,
+        "location": null
+      },
+      {
+        "name": "Yuma",
+        "role": "iOS Developer",
+        "company": null,
+        "location": null
+      }
+    ],
+    "methodology": "Agile/Scrum",
+    "scrumProcess": {
+      "sprintDuration": "2 weeks",
+      "estimation": "T-shirt sizing (S, M, L, XL)",
+      "practices": [
+        "No-Meeting Friday",
+        "Wednesday readiness checks for RC",
+        "Bi-weekly RC builds (every 2nd Thursday)",
+        "Fix Version workflow in Jira"
+      ]
+    },
+    "collaboration": "Cross-functional feature teams with shared KMP library"
+  },
+
+  "metrics": {
+    "launch": [
+      {
+        "icon": "fas fa-download",
+        "value": "100M+",
+        "label": "Downloads",
+        "highlight": true
+      },
+      {
+        "icon": "fas fa-globe",
+        "value": "60+",
+        "label": "Countries",
+        "highlight": true
+      },
+      {
+        "icon": "fas fa-credit-card",
+        "value": "17",
+        "label": "Payment Providers",
+        "highlight": false
+      },
+      {
+        "icon": "fas fa-comments",
+        "value": "14",
+        "label": "Android Talks Sessions",
+        "highlight": false
+      }
+    ],
+    "quickStats": [
+      {
+        "icon": "fas fa-download",
+        "value": "100M+",
+        "label": "Downloads"
+      },
+      {
+        "icon": "fas fa-globe",
+        "value": "60+",
+        "label": "Countries"
+      },
+      {
+        "icon": "fas fa-calendar-alt",
+        "value": "14 months",
+        "label": "Duration"
+      },
+      {
+        "icon": "fas fa-credit-card",
+        "value": "17",
+        "label": "Payment Providers"
+      }
+    ]
+  },
+
+  "technologies": {
+    "primary": [
+      {
+        "name": "Kotlin",
+        "category": "language",
+        "proficiency": "expert"
+      },
+      {
+        "name": "Kotlin Multiplatform (KMM)",
+        "category": "technology",
+        "proficiency": "expert"
+      },
+      {
+        "name": "Jetpack Compose",
+        "category": "ui",
+        "proficiency": "advanced"
+      },
+      {
+        "name": "Coroutines",
+        "category": "concurrency",
+        "proficiency": "expert"
+      }
+    ],
+    "secondary": [
+      {
+        "name": "RxJava",
+        "category": "concurrency",
+        "note": "legacy, migrating away"
+      },
+      {
+        "name": "Koin",
+        "category": "di"
+      },
+      {
+        "name": "View Bindings",
+        "category": "ui"
+      },
+      {
+        "name": "AdapterDelegates",
+        "category": "ui"
+      },
+      {
+        "name": "Firebase Remote Config",
+        "category": "config"
+      },
+      {
+        "name": "Firestore",
+        "category": "database"
+      },
+      {
+        "name": "CircleCI",
+        "category": "ci"
+      },
+      {
+        "name": "Kochava",
+        "category": "analytics"
+      },
+      {
+        "name": "Chucker",
+        "category": "debugging"
+      },
+      {
+        "name": "Google Maps Places API",
+        "category": "maps"
+      },
+      {
+        "name": "Adyen SDK",
+        "category": "payments"
+      },
+      {
+        "name": "Vipps",
+        "category": "payments",
+        "note": "Scandinavian payment via Adyen"
+      },
+      {
+        "name": "Phrase",
+        "category": "localization",
+        "note": "Localization management tool"
+      },
+      {
+        "name": "Swagger",
+        "category": "api",
+        "note": "API documentation"
+      },
+      {
+        "name": "Loginext",
+        "category": "delivery",
+        "note": "Delivery tracking provider"
+      },
+      {
+        "name": "mcm (shared library)",
+        "category": "architecture"
+      }
+    ],
+    "tools": ["Android Studio", "Git", "Jira", "Slack", "Figma", "IntelliJ SSR", "GitHub", "Phrase", "Swagger"]
+  },
+
+  "lifecycle": {
+    "events": [
+      {
+        "date": "2021-08-01",
+        "displayDate": "August 2021",
+        "event": "Joined the project (MDS & Payments streams)",
+        "status": "active"
+      },
+      {
+        "date": "2021-11-01",
+        "displayDate": "November 2021",
+        "event": "Started Android Talks initiative",
+        "status": "active"
+      },
+      {
+        "date": "2022-06-29",
+        "displayDate": "June 2022",
+        "event": "Established gmal-lite-rc Slack channel for RC process",
+        "status": "active"
+      },
+      {
+        "date": "2022-10-31",
+        "displayDate": "October 2022",
+        "event": "Left the project",
+        "status": "completed"
+      }
+    ],
+    "discontinuationReason": "Team reorganization due to geopolitical situation (Ukraine war). Company restructured teams and decided not to keep key developers in lead roles from affected regions for business continuity concerns.",
+    "departureContext": "Professional departure with proper handover. Comprehensive documentation left for team continuation.",
+    "currentStatus": "completed"
+  },
+
+  "links": [
+    {
+      "type": "article",
+      "icon": "fab fa-medium",
+      "label": "Medium - KMM Success Story",
+      "url": "https://medium.com/mcdonalds-technical-blog/mobile-multiplatform-development-at-mcdonalds-3b72c8d44ebc",
+      "source": "McDonald's Technical Blog",
+      "active": true
+    },
+    {
+      "type": "article",
+      "icon": "fab fa-medium",
+      "label": "Medium - OpenTest (Open Source)",
+      "url": "https://medium.com/mcdonalds-technical-blog/opentest-mcdonalds-debut-into-open-source-software-487def26019",
+      "source": "McDonald's Technical Blog",
+      "active": true
+    },
+    {
+      "type": "github",
+      "icon": "fab fa-github",
+      "label": "OpenTest (Open Source)",
+      "url": "https://github.com/mcdcorp/opentest",
+      "source": "GitHub",
+      "active": true
+    },
+    {
+      "type": "playstore",
+      "icon": "fab fa-google-play",
+      "label": "Play Store",
+      "url": "https://play.google.com/store/apps/details?id=com.mcdonalds.app",
+      "active": true
+    }
+  ],
+
+  "media": {
+    "screenshots": [],
+    "videos": [],
+    "logos": []
+  },
+
+  "seo": {
+    "title": "McDonald's Global App - Android Engineer & KMM Developer | Denys Honcharenko",
+    "description": "Developed features for the global McDonald's app serving 100M+ users. Led KMM development, designed payments architecture for 17 providers, created Android Talks initiative.",
+    "keywords": ["McDonald's", "KMM", "Kotlin Multiplatform", "Android", "Jetpack Compose", "100M users"]
+  },
+
+  "relatedProjects": ["food-network-kitchen", "geosatis"],
+
+  "lastUpdated": "2025-01-21"
+}
