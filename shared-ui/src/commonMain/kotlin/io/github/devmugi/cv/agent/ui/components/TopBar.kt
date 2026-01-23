@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
+import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -20,10 +21,12 @@ import androidx.compose.ui.unit.dp
 import io.github.devmugi.arcane.design.foundation.primitives.ArcaneSurface
 import io.github.devmugi.arcane.design.foundation.theme.ArcaneTheme
 
-fun buildTopBarTitle(): String = "<DH/> CV Agent"
+fun buildTopBarTitle(): String = "<DH/> Denys Honcharenko CV"
 
 @Composable
-fun CVAgentTopBar() {
+fun CVAgentTopBar(
+    onCareerClick: () -> Unit = {}
+) {
     Column(modifier = Modifier.fillMaxWidth()) {
         ArcaneSurface(
             modifier = Modifier.fillMaxWidth().statusBarsPadding(),
@@ -40,10 +43,14 @@ fun CVAgentTopBar() {
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
-                    text = "CV Agent",
+                    text = "Denys Honcharenko CV",
                     style = ArcaneTheme.typography.headlineLarge,
                     color = ArcaneTheme.colors.text
                 )
+                Spacer(modifier = Modifier.weight(1f))
+                FilledTonalButton(onClick = onCareerClick) {
+                    Text(text = "Career")
+                }
             }
         }
         Box(

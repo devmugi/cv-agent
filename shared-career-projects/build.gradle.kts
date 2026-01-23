@@ -3,6 +3,12 @@ plugins {
     alias(libs.plugins.android.kotlin.multiplatform.library)
     alias(libs.plugins.compose.multiplatform)
     alias(libs.plugins.kotlin.compose.compiler)
+    alias(libs.plugins.kotlin.serialization)
+}
+
+compose.resources {
+    publicResClass = true
+    packageOfResClass = "cvagent.career.generated.resources"
 }
 
 kotlin {
@@ -10,16 +16,6 @@ kotlin {
         namespace = "io.github.devmugi.cv.agent.career"
         compileSdk = libs.versions.android.compileSdk.get().toInt()
         minSdk = libs.versions.android.minSdk.get().toInt()
-    }
-
-    listOf(
-        iosArm64(),
-        iosSimulatorArm64()
-    ).forEach { iosTarget ->
-        iosTarget.binaries.framework {
-            baseName = "SharedCareerProjects"
-            isStatic = true
-        }
     }
 
     sourceSets {
@@ -36,6 +32,12 @@ kotlin {
 
             // Material Icons
             implementation(libs.compose.material.icons.extended.multiplatform)
+
+            // Serialization
+            implementation(libs.kotlinx.serialization.json)
+
+            // Compose Resources
+            implementation(libs.compose.components.resources)
         }
 
         commonTest.dependencies {

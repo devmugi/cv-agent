@@ -1,18 +1,11 @@
 package io.github.devmugi.cv.agent.ui
 
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Menu
-import androidx.compose.material3.DropdownMenu
-import androidx.compose.material3.DropdownMenuItem
-import androidx.compose.material3.FloatingActionButton
-import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -66,7 +59,6 @@ fun ChatScreen(
 ) {
     var inputText by remember { mutableStateOf("") }
     var popupMessage by remember { mutableStateOf<Message?>(null) }
-    var showMenu by remember { mutableStateOf(false) }
 
     val showWelcome = state.messages.isEmpty() && !state.isLoading && !state.isStreaming
 
@@ -96,33 +88,7 @@ fun ChatScreen(
         modifier = modifier,
         containerColor = ArcaneTheme.colors.surfaceContainerLow,
         topBar = {
-            Column {
-                CVAgentTopBar()
-                Box(modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)) {
-                    FloatingActionButton(
-                        onClick = { showMenu = true },
-                        containerColor = ArcaneTheme.colors.primary,
-                        contentColor = ArcaneTheme.colors.onPrimary
-                    ) {
-                        Icon(
-                            imageVector = Icons.Default.Menu,
-                            contentDescription = "Menu"
-                        )
-                    }
-                    DropdownMenu(
-                        expanded = showMenu,
-                        onDismissRequest = { showMenu = false }
-                    ) {
-                        DropdownMenuItem(
-                            text = { Text("Career Timeline") },
-                            onClick = {
-                                showMenu = false
-                                onNavigateToCareerTimeline()
-                            }
-                        )
-                    }
-                }
-            }
+            CVAgentTopBar(onCareerClick = onNavigateToCareerTimeline)
         },
         bottomBar = {
             Column(modifier = Modifier.navigationBarsPadding().imePadding()) {

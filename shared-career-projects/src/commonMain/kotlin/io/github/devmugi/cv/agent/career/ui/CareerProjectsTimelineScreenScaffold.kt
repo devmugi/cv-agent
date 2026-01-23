@@ -19,13 +19,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import io.github.devmugi.arcane.design.foundation.theme.ArcaneTheme
-import io.github.devmugi.cv.agent.career.models.CareerProject
+import io.github.devmugi.cv.agent.career.models.ProjectDataTimeline
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CareerProjectsTimelineScreenScaffold(
-    projects: List<CareerProject>,
-    onProjectDetailsClick: (CareerProject) -> Unit,
+    projects: List<ProjectDataTimeline>,
+    onProjectDetailsClick: (ProjectDataTimeline) -> Unit,
     onBackClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
