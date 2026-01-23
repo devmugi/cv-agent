@@ -5,12 +5,10 @@ import androidx.lifecycle.viewModelScope
 import io.github.devmugi.cv.agent.api.GroqApiClient
 import io.github.devmugi.cv.agent.api.GroqApiException
 import io.github.devmugi.cv.agent.api.models.ChatMessage
-import io.github.devmugi.cv.agent.domain.models.CVData
 import io.github.devmugi.cv.agent.domain.models.ChatError
 import io.github.devmugi.cv.agent.domain.models.ChatState
 import io.github.devmugi.cv.agent.domain.models.Message
 import io.github.devmugi.cv.agent.domain.models.MessageRole
-import io.github.devmugi.cv.agent.data.repository.CVRepository
 import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -21,10 +19,9 @@ import kotlinx.coroutines.launch
 
 class ChatViewModel(
     private val apiClient: GroqApiClient,
-    @Suppress("UnusedPrivateProperty") private val repository: CVRepository,
     private val promptBuilder: SystemPromptBuilder,
-    private val referenceExtractor: ReferenceExtractor,
-    private val cvDataProvider: () -> CVData? = { null },
+    private val suggestionExtractor: SuggestionExtractor,
+    private val dataProvider: AgentDataProvider?,
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(ChatState())
@@ -74,18 +71,16 @@ class ChatViewModel(
 
     @OptIn(ExperimentalUuidApi::class)
     private suspend fun streamResponse() {
-        val cvData = cvDataProvider()
-        val systemPrompt = cvData?.let { promptBuilder.build(it) } ?: ""
+        val systemPrompt = dataProvider?.let { promptBuilder.build(it) } ?: ""
 
         val apiMessages = buildApiMessages(systemPrompt)
         val assistantMessageId = Uuid.random().toString()
 
-        // Create assistant message at start with empty content
         val assistantMessage = Message(
             id = assistantMessageId,
             role = MessageRole.ASSISTANT,
             content = "",
-            references = emptyList()
+            suggestions = emptyList()
         )
 
         _state.update { current ->
@@ -104,7 +99,6 @@ class ChatViewModel(
             messages = apiMessages,
             onChunk = { chunk ->
                 streamedContent += chunk
-                // Update the assistant message content in-place
                 _state.update { current ->
                     current.copy(
                         messages = current.messages.map { msg ->
@@ -118,15 +112,14 @@ class ChatViewModel(
                 }
             },
             onComplete = {
-                val extractionResult = referenceExtractor.extract(streamedContent)
-                // Finalize the message with cleaned content and references
+                val extractionResult = suggestionExtractor.extract(streamedContent)
                 _state.update { current ->
                     current.copy(
                         messages = current.messages.map { msg ->
                             if (msg.id == assistantMessageId) {
                                 msg.copy(
                                     content = extractionResult.cleanedContent,
-                                    references = extractionResult.references
+                                    suggestions = extractionResult.suggestions
                                 )
                             } else {
                                 msg
@@ -144,7 +137,6 @@ class ChatViewModel(
                     is GroqApiException.AuthError -> ChatError.Api("Authentication failed")
                     is GroqApiException.ApiError -> ChatError.Api(exception.message)
                 }
-                // Remove the incomplete assistant message on error
                 _state.update { current ->
                     current.copy(
                         messages = current.messages.filter { it.id != assistantMessageId },
