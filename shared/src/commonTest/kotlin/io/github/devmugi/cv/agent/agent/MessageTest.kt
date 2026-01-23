@@ -1,7 +1,6 @@
 package io.github.devmugi.cv.agent.agent
 
 import io.github.devmugi.cv.agent.domain.currentTimeMillis
-import io.github.devmugi.cv.agent.domain.models.CVReference
 import io.github.devmugi.cv.agent.domain.models.Message
 import io.github.devmugi.cv.agent.domain.models.MessageRole
 import kotlin.test.Test
@@ -27,15 +26,14 @@ class MessageTest {
     }
 
     @Test
-    fun messageStoresReferences() {
-        val ref = CVReference(id = "experience.test", type = "experience", label = "Test")
+    fun messageStoresSuggestions() {
         val msg = Message(
             role = MessageRole.ASSISTANT,
             content = "Test content",
-            references = listOf(ref)
+            suggestions = listOf("geosatis", "adidas-gmr")
         )
-        assertEquals(1, msg.references.size)
-        assertEquals("experience.test", msg.references.first().id)
+        assertEquals(2, msg.suggestions.size)
+        assertEquals("geosatis", msg.suggestions.first())
     }
 
     @Test
