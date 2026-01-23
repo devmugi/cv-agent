@@ -17,6 +17,7 @@ data class CareerProject(
     val achievements: List<Achievement>? = null,
     val standout: Standout? = null,
     val team: Team? = null,
+    val courses: List<Course>? = null,
     val metrics: Metrics? = null,
     val technologies: Technologies? = null,
     val lifecycle: Lifecycle? = null,
@@ -130,8 +131,19 @@ data class StandoutItem(
 data class Team(
     val totalSize: Int? = null,
     val structure: List<TeamStructure>? = null,
+    val trainers: List<Trainer>? = null,
+    val myRole: String? = null,
     val methodology: String? = null,
     val collaboration: String? = null
+)
+
+@Serializable
+data class Trainer(
+    val name: String? = null,
+    val github: String? = null,
+    val linkedin: String? = null,
+    val zoominfo: String? = null,
+    val note: String? = null
 )
 
 @Serializable
@@ -140,6 +152,56 @@ data class TeamStructure(
     val size: kotlinx.serialization.json.JsonElement? = null,
     val notes: String? = null,
     val myRole: Boolean? = null
+)
+
+@Serializable
+data class Course(
+    val id: String? = null,
+    val name: String? = null,
+    val period: String? = null,
+    val startDate: String? = null,
+    val endDate: String? = null,
+    val role: String? = null,
+    val students: CourseStudents? = null,
+    val hiringRate: String? = null,
+    val description: String? = null,
+    val exampleProject: ExampleProject? = null,
+    val timeline: List<CourseTimelineItem>? = null,
+    val topics: List<String>? = null,
+    val highlight: Boolean? = null
+)
+
+@Serializable
+data class CourseStudents(
+    val enrolled: Int? = null,
+    val hired: Int? = null,
+    val list: List<CourseStudent>? = null
+)
+
+@Serializable
+data class CourseStudent(
+    val name: String? = null,
+    val github: String? = null,
+    val linkedin: String? = null,
+    val zoominfo: String? = null,
+    val currentRole: String? = null,
+    val previousRole: String? = null,
+    val education: String? = null,
+    val location: String? = null,
+    val graduationWorkUrl: String? = null
+)
+
+@Serializable
+data class ExampleProject(
+    val name: String? = null,
+    val url: String? = null,
+    val description: String? = null
+)
+
+@Serializable
+data class CourseTimelineItem(
+    val duration: String? = null,
+    val topic: String? = null
 )
 
 @Serializable

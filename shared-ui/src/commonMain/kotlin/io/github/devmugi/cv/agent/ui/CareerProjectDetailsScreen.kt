@@ -9,11 +9,13 @@ import io.github.devmugi.cv.agent.career.ui.CareerProjectDetailsScreenScaffold
 fun CareerProjectDetailsScreen(
     project: CareerProject,
     onBackClick: () -> Unit,
+    onLinkClick: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
     CareerProjectDetailsScreenScaffold(
         project = project,
         onBackClick = onBackClick,
+        onLinkClick = onLinkClick,
         modifier = modifier
     )
 }

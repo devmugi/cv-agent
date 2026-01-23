@@ -35,19 +35,19 @@
   ],
 
   "description": {
-    "short": "Created and launched 'Android School' education program at EPAM Systems with 77% hiring rate.",
-    "medium": "Internal education program designed to train junior developers and career changers in Android development. Over two course iterations, 20 of 26 students were hired by EPAM - a 77% success rate."
+    "short": "Created and launched 'Android School' education program at EPAM Systems with 70% hiring rate.",
+    "medium": "Internal education program designed to train junior developers and career changers in Android development. Over two course iterations, 14 of 20 students were hired by EPAM - a 70% success rate."
   },
 
   "impactBadges": [
     {
       "icon": "fas fa-trophy",
-      "text": "77% Hiring Rate",
+      "text": "70% Hiring Rate",
       "highlight": true
     },
     {
       "icon": "fas fa-users",
-      "text": "26 Students Trained",
+      "text": "20 Students Trained",
       "highlight": true
     },
     {
@@ -78,7 +78,7 @@
 
   "achievements": {
     "preview": [
-      "77% hiring rate - 20 of 26 students hired by EPAM",
+      "70% hiring rate - 14 of 20 students hired by EPAM",
       "Designed comprehensive Android curriculum from scratch",
       "Mentored career changers into professional Android developers"
     ]
