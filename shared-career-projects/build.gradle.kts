@@ -16,6 +16,11 @@ kotlin {
         namespace = "io.github.devmugi.cv.agent.career"
         compileSdk = libs.versions.android.compileSdk.get().toInt()
         minSdk = libs.versions.android.minSdk.get().toInt()
+
+        withHostTestBuilder {
+            compilationName = "unitTest"
+            defaultSourceSetName = "androidUnitTest"
+        }
     }
 
     sourceSets {
