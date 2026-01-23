@@ -1,8 +1,13 @@
 package io.github.devmugi.cv.agent.ui
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
@@ -37,7 +42,7 @@ import io.github.devmugi.cv.agent.ui.components.ContextChip
 import io.github.devmugi.cv.agent.ui.components.Disclaimer
 import io.github.devmugi.cv.agent.ui.components.FeedbackState
 import io.github.devmugi.cv.agent.ui.components.MessageActions
-import io.github.devmugi.cv.agent.ui.components.MessagePopupDialog
+import io.github.devmugi.cv.agent.ui.components.SuggestionChip
 import io.github.devmugi.cv.agent.ui.components.WelcomeSection
 
 @Composable
@@ -53,10 +58,10 @@ fun ChatScreen(
     onDislikeMessage: (String) -> Unit = {},
     onRegenerateMessage: (String) -> Unit = {},
     onClearHistory: (() -> Unit)? = null,
-    onNavigateToCareerTimeline: () -> Unit = {}
+    onNavigateToCareerTimeline: () -> Unit = {},
+    onNavigateToProject: (String) -> Unit = {}
 ) {
     var inputText by remember { mutableStateOf("") }
-    var popupMessage by remember { mutableStateOf<Message?>(null) }
 
     val showWelcome = state.messages.isEmpty() && !state.isLoading && !state.isStreaming
 
@@ -72,14 +77,6 @@ fun ChatScreen(
                 style = ArcaneToastStyle.Error
             )
         }
-    }
-
-    // Message popup dialog
-    popupMessage?.let { message ->
-        MessagePopupDialog(
-            content = message.content,
-            onDismiss = { popupMessage = null }
-        )
     }
 
     Scaffold(
@@ -143,7 +140,7 @@ fun ChatScreen(
                         MessageItem(
                             message = message,
                             state = state,
-                            onShowMore = { popupMessage = message },
+                            onNavigateToProject = onNavigateToProject,
                             onCopyMessage = onCopyMessage,
                             onShareMessage = onShareMessage,
                             onLikeMessage = onLikeMessage,
@@ -157,11 +154,12 @@ fun ChatScreen(
     }
 }
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun MessageItem(
     message: Message,
     state: ChatState,
-    onShowMore: () -> Unit,
+    onNavigateToProject: (String) -> Unit,
     onCopyMessage: (String) -> Unit,
     onShareMessage: (String) -> Unit,
     onLikeMessage: (String) -> Unit,
@@ -208,8 +206,7 @@ private fun MessageItem(
                     ),
                     title = if (isThinking) "Thinking..." else "Assistant",
                     isLoading = isStreaming,
-                    enableTruncation = true,
-                    onShowMoreClick = onShowMore,
+                    enableTruncation = false,
                     bottomActions = if (!isStreaming) {
                         {
                             MessageActions(
@@ -225,6 +222,21 @@ private fun MessageItem(
                         null
                     }
                 )
+                if (!isStreaming && message.suggestions.isNotEmpty()) {
+                    Spacer(modifier = Modifier.height(8.dp))
+                    FlowRow(
+                        horizontalArrangement = Arrangement.spacedBy(8.dp),
+                        verticalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        message.suggestions.forEach { projectId ->
+                            val projectName = state.projectNames[projectId] ?: projectId
+                            SuggestionChip(
+                                text = projectName,
+                                onClick = { onNavigateToProject(projectId) }
+                            )
+                        }
+                    }
+                }
             }
         }
         MessageRole.SYSTEM -> { /* Skip system messages */ }
