@@ -80,6 +80,7 @@ dependencies {
     implementation(libs.koin.android)
     implementation(libs.koin.compose)
     implementation(libs.compose.components.resources)
+    implementation(libs.kotlinx.serialization.json)
 
     debugImplementation(libs.compose.ui.tooling)
     androidTestImplementation(libs.androidx.compose.ui.test.junit4)
