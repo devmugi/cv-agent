@@ -34,14 +34,14 @@ fun ContextChip(
         Icon(
             imageVector = Icons.Default.Schedule,
             contentDescription = "Conversation history",
-            tint = ArcaneTheme.colors.surface,
+            tint = ArcaneTheme.colors.surfaceContainerLow,
             modifier = Modifier.size(18.dp)
         )
 
         Icon(
             imageVector = Icons.Default.Close,
             contentDescription = "Clear history",
-            tint = ArcaneTheme.colors.surface,
+            tint = ArcaneTheme.colors.surfaceContainerLow,
             modifier = Modifier
                 .padding(start = 8.dp)
                 .size(18.dp)

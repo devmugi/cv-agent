@@ -35,7 +35,7 @@ fun ReferenceChip(
 
     Box(modifier = modifier) {
         ArcaneSurface(
-            variant = SurfaceVariant.Raised,
+            variant = SurfaceVariant.Container,
             modifier = if (tooltipContent != null) {
                 Modifier.clickable { showTooltip = !showTooltip }
             } else {
@@ -55,7 +55,7 @@ fun ReferenceChip(
                 onDismissRequest = { showTooltip = false }
             ) {
                 ArcaneSurface(
-                    variant = SurfaceVariant.Raised
+                    variant = SurfaceVariant.Container
                 ) {
                     Text(
                         text = tooltipContent,

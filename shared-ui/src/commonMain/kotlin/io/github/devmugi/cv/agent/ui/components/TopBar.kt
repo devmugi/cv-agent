@@ -53,7 +53,7 @@ fun CVAgentTopBar() {
                 .background(
                     Brush.verticalGradient(
                         colors = listOf(
-                            ArcaneTheme.colors.surface.copy(alpha = 0.8f),
+                            ArcaneTheme.colors.surfaceContainerLow.copy(alpha = 0.8f),
                             Color.Transparent
                         )
                     )
