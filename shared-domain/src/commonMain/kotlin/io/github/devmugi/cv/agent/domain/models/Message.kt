@@ -13,6 +13,6 @@ data class Message(
     val id: String = Uuid.random().toString(),
     val role: MessageRole,
     val content: String,
-    val references: List<CVReference> = emptyList(),
+    val suggestions: List<String> = emptyList(),
     val timestamp: Long = currentTimeMillis()
 )
