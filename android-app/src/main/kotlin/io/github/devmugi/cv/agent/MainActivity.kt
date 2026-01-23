@@ -75,24 +75,21 @@ class MainActivity : ComponentActivity() {
 @Composable
 private fun CVAgentApp(onOpenUrl: (String) -> Unit) {
     val toastState = rememberArcaneToastState()
-    var dataProvider by remember { mutableStateOf<AgentDataProvider?>(null) }
-    var jsonLoaded by remember { mutableStateOf(false) }
+    var agentDataResult by remember { mutableStateOf<AgentDataResult?>(null) }
     var currentScreen by remember { mutableStateOf(Screen.Chat) }
     var selectedProject by remember { mutableStateOf<CareerProject?>(null) }
-    var careerProjects by remember { mutableStateOf<List<ProjectDataTimeline>>(emptyList()) }
-    var careerProjectsMap by remember { mutableStateOf<Map<String, CareerProject>>(emptyMap()) }
 
     LaunchedEffect(Unit) {
-        if (!jsonLoaded) {
-            val result = loadAgentData()
-            dataProvider = result.dataProvider
-            careerProjects = result.timelineProjects
-            careerProjectsMap = result.projectsMap
-            jsonLoaded = true
+        if (agentDataResult == null) {
+            agentDataResult = loadAgentData()
         }
     }
 
-    val viewModel: ChatViewModel = koinInject { parametersOf(dataProvider) }
+    // Wait for data to load before creating ViewModel
+    val dataResult = agentDataResult ?: return
+
+    // ViewModel is only created after dataProvider is available
+    val viewModel: ChatViewModel = koinInject { parametersOf(dataResult.dataProvider) }
     val state by viewModel.state.collectAsState()
 
     AppContent(
@@ -100,8 +97,8 @@ private fun CVAgentApp(onOpenUrl: (String) -> Unit) {
         state = state,
         toastState = toastState,
         viewModel = viewModel,
-        careerProjects = careerProjects,
-        careerProjectsMap = careerProjectsMap,
+        careerProjects = dataResult.timelineProjects,
+        careerProjectsMap = dataResult.projectsMap,
         selectedProject = selectedProject,
         onScreenChange = { currentScreen = it },
         onProjectSelect = { selectedProject = it },

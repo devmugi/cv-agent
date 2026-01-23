@@ -72,7 +72,6 @@ class ChatViewModel(
     @OptIn(ExperimentalUuidApi::class)
     private suspend fun streamResponse() {
         val systemPrompt = dataProvider?.let { promptBuilder.build(it) } ?: ""
-
         val apiMessages = buildApiMessages(systemPrompt)
         val assistantMessageId = Uuid.random().toString()
 
