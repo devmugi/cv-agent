@@ -9,10 +9,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Circle
 import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -108,22 +106,7 @@ fun ChallengeSection(
                     Spacer(modifier = Modifier.height(12.dp))
                     Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
                         details.forEach { detail ->
-                            Row(verticalAlignment = Alignment.Top) {
-                                Icon(
-                                    imageVector = Icons.Default.Circle,
-                                    contentDescription = null,
-                                    tint = AmberColor,
-                                    modifier = Modifier
-                                        .size(6.dp)
-                                        .padding(top = 6.dp)
-                                )
-                                Spacer(modifier = Modifier.width(8.dp))
-                                Text(
-                                    text = detail,
-                                    style = ArcaneTheme.typography.bodySmall,
-                                    color = ArcaneTheme.colors.textSecondary
-                                )
-                            }
+                            BulletListItem(text = detail)
                         }
                     }
                 }
