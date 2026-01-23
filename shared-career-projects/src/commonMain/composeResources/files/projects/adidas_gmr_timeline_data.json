@@ -1,0 +1,112 @@
+{
+  "id": "adidas-gmr",
+  "name": "Adidas GMR",
+  "slug": "adidas-gmr",
+
+  "hero": {
+    "bannerStyle": "gradient",
+    "gradientColors": ["#000000", "#333333"],
+    "icon": "fas fa-running",
+    "iconColor": "rgba(255, 255, 255, 0.2)"
+  },
+
+  "featured": true,
+  "featuredBadgeText": "Featured",
+
+  "role": {
+    "title": "Lead Software Engineer",
+    "shortTitle": "Android Team Lead"
+  },
+
+  "period": {
+    "startDate": "2020-02-01",
+    "endDate": "2020-06-30",
+    "displayText": "Feb 2020 - Jun 2020"
+  },
+
+  "companies": [
+    {
+      "name": "EPAM Systems",
+      "role": "employer",
+      "logo": null
+    },
+    {
+      "name": "Adidas",
+      "role": "client",
+      "logo": null
+    },
+    {
+      "name": "Google",
+      "role": "partner",
+      "logo": null
+    },
+    {
+      "name": "Electronic Arts",
+      "role": "partner",
+      "logo": null
+    }
+  ],
+
+  "description": {
+    "short": "Smart insole with Google Jacquard technology for FIFA Mobile integration.",
+    "medium": "Led mobile team for Adidas GMR - an innovative smart insole product with Google Jacquard technology. The system tracked real-world soccer performance and converted it into rewards in EA SPORTS FIFA Mobile game."
+  },
+
+  "impactBadges": [
+    {
+      "icon": "fab fa-google",
+      "text": "Google Jacquard",
+      "highlight": true
+    },
+    {
+      "icon": "fas fa-futbol",
+      "text": "FIFA Integration",
+      "highlight": true
+    }
+  ],
+
+  "tags": [
+    {
+      "text": "Bluetooth BLE",
+      "category": "technology"
+    },
+    {
+      "text": "IoT",
+      "category": "technology"
+    },
+    {
+      "text": "Kotlin",
+      "category": "language"
+    },
+    {
+      "text": "CI/CD",
+      "category": "devops"
+    },
+    {
+      "text": "Team Lead",
+      "category": "role"
+    },
+    {
+      "text": "Team: 30",
+      "category": "team"
+    }
+  ],
+
+  "achievements": {
+    "preview": [
+      "Built custom Bluetooth Tag emulator - QA testing became 10x faster",
+      "Convinced Google, Adidas, and EA stakeholders to adopt emulator approach",
+      "Led BLE protocol implementation and ML data interpretation",
+      "EPAM team successfully rescued failing project and delivered on time"
+    ]
+  },
+
+  "detailsUrl": "projects/adidas_gmr.html",
+  "detailsDataUrl": "projects/adidas_gmr_details_data.json",
+
+  "sortOrder": 4,
+  "timelinePosition": {
+    "year": 2020,
+    "quarter": 1
+  }
+}

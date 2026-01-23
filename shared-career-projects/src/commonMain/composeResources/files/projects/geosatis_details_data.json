@@ -1,0 +1,670 @@
+{
+  "id": "geosatis",
+  "name": "GEOSATIS Victim App",
+  "slug": "geosatis",
+  "tagline": "Victim Protection System for Domestic Violence Prevention",
+
+  "hero": {
+    "bannerStyle": "gradient",
+    "gradientColors": ["#1e3a5f", "#2d5a87"],
+    "icon": "fas fa-shield-alt",
+    "backgroundPattern": true
+  },
+
+  "meta": {
+    "featured": true,
+    "status": "completed",
+    "visibility": "public"
+  },
+
+  "overview": {
+    "company": "GEOSATIS",
+    "client": null,
+    "product": "GEOSATIS Victim App",
+    "role": "Android Developer / Backend Developer / DevOps",
+    "roleDetails": "Full ownership of Victim App product, Solo Android Developer",
+    "period": {
+      "startDate": "2022-10-01",
+      "endDate": "2025-07-31",
+      "displayText": "October 2022 - July 2025",
+      "durationMonths": 33
+    },
+    "location": "Ukraine (Remote) / Belgium (Remote)",
+    "launchDate": null,
+    "productPrice": null
+  },
+
+  "companies": [
+    {
+      "name": "GEOSATIS",
+      "role": "employer",
+      "description": "Public safety IoT company specializing in electronic monitoring",
+      "logo": null,
+      "website": "https://geo-satis.com"
+    }
+  ],
+
+  "products": {
+    "vap2": {
+      "name": "VAP2 (Victim App 2)",
+      "description": "Cross-platform mobile app for victim protection with KMP",
+      "details": [
+        "Kotlin Multiplatform + Compose Multiplatform (80% shared code)",
+        "Continuous background location tracking with offline caching",
+        "Emergency Video Recording (2.5 minute limit) with S3/MinIO upload",
+        "One-touch Emergency Call functionality",
+        "Kiosk Mode preventing unauthorized app exit",
+        "Restricted inbound calls for victim safety",
+        "Real-time alarm notifications via GraphQL Subscriptions"
+      ]
+    },
+    "vapDss": {
+      "name": "VAP-DSS (Victim App Data and Services System)",
+      "description": "Backend service for victim protection ecosystem",
+      "details": [
+        "Spring Boot (Kotlin) with Kotlin Coroutines",
+        "Dual GraphQL API: Victim API (mobile) + Admin API (tools)",
+        "GraphQL Subscriptions for real-time alarms (1 second latency target)",
+        "Kafka for event-driven communication with GMS",
+        "Firebase Auth with JWT validation",
+        "Ktor Client for GMS BaaS GraphQL API integration",
+        "Kubernetes deployment with 10+ microservices"
+      ]
+    }
+  },
+
+  "description": {
+    "short": "Mobile protection system (VAP2) and backend (VAP-DSS) for domestic violence victims with GPS tracking and proximity alerts.",
+    "full": "GEOSATIS Victim App ecosystem consists of VAP2 (mobile app) and VAP-DSS (backend service). VAP2 is a Kotlin Multiplatform app providing real-time location tracking, emergency video recording (2.5 min, S3 upload), one-touch emergency calls, and alarm notifications via GraphQL Subscriptions. VAP-DSS is a Spring Boot backend with dual GraphQL APIs (Victim + Admin), Kafka event streaming, and Firebase Auth. The system triggers alarms when offenders enter victim proximity zones (configurable, typically 2km). Successfully advocated for GraphQL over the unstable Geonitro binary protocol.",
+    "howItWorked": [
+      {
+        "step": 1,
+        "title": "Victim Device",
+        "description": "Victim carries a Samsung Knox Android device with locked Victim App (Kiosk Mode)"
+      },
+      {
+        "step": 2,
+        "title": "Offender Tracking",
+        "description": "Offender wears a GPS tracking bracelet monitored by the system"
+      },
+      {
+        "step": 3,
+        "title": "Monitoring Center",
+        "description": "Monitoring center receives real-time locations from both victim and offender"
+      },
+      {
+        "step": 4,
+        "title": "Proximity Alert",
+        "description": "System triggers alarm when offender approaches victim's configurable zone"
+      },
+      {
+        "step": 5,
+        "title": "Emergency Response",
+        "description": "Victim can make emergency calls and record video evidence"
+      }
+    ]
+  },
+
+  "challenge": {
+    "context": "Previous Android developer quit. App was not working - location tracking unstable and inaccurate.",
+    "response": "Identified root causes and fixed critical issues in the first month to bring system to production-ready state.",
+    "details": [
+      "Poor location tracking code causing unstable and inaccurate data",
+      "Custom binary protocol issues - data not saved on server",
+      "Socket connection not re-established after server timeout",
+      "Local database saving outdated locations",
+      "Backend only accepted real-time locations, rejected delayed data"
+    ]
+  },
+
+  "achievements": [
+    {
+      "id": "rescue-project",
+      "title": "Rescued Failing Project (Month 1)",
+      "category": "technical",
+      "icon": "fas fa-life-ring",
+      "problem": "Previous developer quit. App non-functional with unstable, inaccurate location tracking.",
+      "solution": "Fixed location tracking, socket reconnection, database handling, and coordinated backend protocol improvements.",
+      "details": [
+        "Fixed location tracking stability and accuracy",
+        "Implemented socket reconnection logic when no server response",
+        "Fixed local database to properly handle real-time vs outdated data",
+        "Coordinated with backend team on protocol improvements"
+      ],
+      "impact": {
+        "text": "System went from non-functional to production-ready",
+        "metric": null,
+        "metricType": null
+      },
+      "highlight": true
+    },
+    {
+      "id": "custom-protocol",
+      "title": "Custom Protocol Engineering (Geosap)",
+      "category": "technical",
+      "icon": "fas fa-network-wired",
+      "problem": "Protocol lacked message delivery confirmation. Data loss was undetectable.",
+      "solution": "Reworked entire client-side protocol with retry mechanism and ACK logic.",
+      "details": [
+        "Reworked entire client-side protocol implementation",
+        "Added retry mechanism for failed transmissions",
+        "Implemented ACK (acknowledgment) logic for delivery confirmation",
+        "Provided specifications to backend team for protocol improvements",
+        "Data: GPS coords (30s), 5 alarm types, health checks, continuous connection"
+      ],
+      "impact": {
+        "text": "Reliable message delivery with confirmation",
+        "metric": null,
+        "metricType": null
+      },
+      "highlight": false
+    },
+    {
+      "id": "victim-app-v2",
+      "title": "VAP2 - Full Rebuild with KMP",
+      "category": "architecture",
+      "icon": "fas fa-layer-group",
+      "problem": "Need for cross-platform app with shared codebase for Android and iOS.",
+      "solution": "Built VAP2 using Kotlin Multiplatform and Compose Multiplatform with new GraphQL backend and real-time subscriptions.",
+      "details": [
+        "80% shared code between Android and iOS (UI + GraphQL API)",
+        "Continuous background location tracking with offline caching",
+        "Emergency Video Recording (2.5 minute limit) with secure S3/MinIO upload",
+        "One-touch Emergency Call functionality",
+        "Real-time alarm notifications via GraphQL Subscriptions (1 second target)",
+        "Kiosk Mode preventing unauthorized app exit",
+        "Platform-specific: Knox Manage, Android Enterprise, Phone Calls (Android only)",
+        "Screens: Main/Home (alarm status), Map (locations), Caller (support calls), Video Recording",
+        "V2 ready for Google Play Store publishing"
+      ],
+      "impact": {
+        "text": "80% shared code across platforms",
+        "metric": "80%",
+        "metricType": "percentage"
+      },
+      "highlight": true
+    },
+    {
+      "id": "knox-integration",
+      "title": "Samsung Knox & Android Enterprise Integration",
+      "category": "technical",
+      "icon": "fas fa-lock",
+      "problem": "Victims must not accidentally close the protection app.",
+      "solution": "Deep Knox Manage integration with Kiosk Mode implementation.",
+      "details": [
+        "Deep Knox Manage integration for device management",
+        "Kiosk Mode implementation - single app locked, user cannot exit",
+        "Knox profile settings for device location tracking",
+        "Set up 5-10 new Knox Manage + Android Enterprise environments",
+        "Migrated to new Knox Manage provider",
+        "Troubleshooting with real customers on Knox/Enterprise issues"
+      ],
+      "impact": {
+        "text": "Secure kiosk deployment for victim protection",
+        "metric": null,
+        "metricType": null
+      },
+      "highlight": false
+    },
+    {
+      "id": "backend-development",
+      "title": "VAP-DSS Backend Architecture",
+      "category": "architecture",
+      "icon": "fas fa-server",
+      "problem": "Need for new backend infrastructure to support V2 app with modern APIs and real-time capabilities.",
+      "solution": "Architected and built VAP-DSS (Victim App Data and Services System) with Spring Boot, Kafka, Kubernetes, and dual GraphQL APIs.",
+      "details": [
+        "Spring Boot (Kotlin) with Kotlin Coroutines for async processing",
+        "Dual GraphQL API: Victim API (mobile clients) + Admin API (tools)",
+        "GraphQL Subscriptions for real-time alarm delivery (1 second latency target)",
+        "Ktor Client for GMS BaaS GraphQL API integration",
+        "API-First, Event-Driven, Cloud-Native architecture",
+        "Kafka for asynchronous event communication with GMS alarms",
+        "Firebase Auth with JWT validation and device registration flow",
+        "Role-Based Access Control (RBAC) for security",
+        "TLS 1.2+ for data encryption",
+        "Jenkins Pipeline for CI/CD, Docker containerization",
+        "Kubernetes deployment (integrated with 10+ existing microservices)",
+        "Stateless services designed for horizontal scaling",
+        "Spring Profiles for environment configuration (Dev/QA/Prod)",
+        "Fixed bugs in legacy Quarkus backend"
+      ],
+      "impact": {
+        "text": "Event-driven backend with 1 second alarm latency",
+        "metric": "1s",
+        "metricType": "latency"
+      },
+      "highlight": true
+    },
+    {
+      "id": "mcp-server",
+      "title": "MCP Server for AI-Powered Operations",
+      "category": "innovation",
+      "icon": "fas fa-robot",
+      "problem": "Need for rapid testing, demos, and system management.",
+      "solution": "Built MCP Server with Claude Code integration for natural language system management.",
+      "details": [
+        "12+ exposed tools: create_victim, create_offender, link entities, GPS emulators",
+        "Query alarms by victim, offender, location, or complex queries",
+        "Generate system reports",
+        "Simulate offender and victim movement for testing",
+        "Enabled rapid testing and demos via natural language"
+      ],
+      "impact": {
+        "text": "Natural language system management",
+        "metric": null,
+        "metricType": null
+      },
+      "highlight": true
+    },
+    {
+      "id": "observability",
+      "title": "Observability Stack",
+      "category": "technical",
+      "icon": "fas fa-chart-line",
+      "problem": "Need for comprehensive monitoring of victim protection system.",
+      "solution": "Built dashboard with ElasticSearch, Kafka, and Logstash.",
+      "details": [
+        "App crashes and logs monitoring",
+        "Location data & GPS accuracy tracking",
+        "Battery status and online status",
+        "Alarm events and emergency calls",
+        "Mobile network connectivity quality"
+      ],
+      "impact": {
+        "text": "Comprehensive system observability",
+        "metric": null,
+        "metricType": null
+      },
+      "highlight": false
+    },
+    {
+      "id": "white-label",
+      "title": "White Label System",
+      "category": "architecture",
+      "icon": "fas fa-palette",
+      "problem": "Each customer required different app versions with unique configurations.",
+      "solution": "Android Build Flavors + Firebase Remote Config for compile-time and runtime customization.",
+      "details": [
+        "Android Build Flavors for compile-time customization",
+        "Firebase Remote Config for runtime configuration",
+        "Per-customer branding, settings, and feature toggles",
+        "Single codebase for multiple customers"
+      ],
+      "impact": {
+        "text": "Streamlined multi-customer deployment",
+        "metric": null,
+        "metricType": null
+      },
+      "highlight": false
+    },
+    {
+      "id": "graphql-advocacy",
+      "title": "GraphQL Architecture Decision",
+      "category": "architecture",
+      "icon": "fas fa-project-diagram",
+      "problem": "Legacy Geonitro binary protocol was unstable and difficult to debug for real-time alarm delivery.",
+      "solution": "Advocated for and implemented GraphQL with Subscriptions, replacing the unstable binary protocol for critical alarm notifications.",
+      "details": [
+        "Drove architectural decision: GraphQL over Geonitro binary protocol",
+        "GraphQL Subscriptions for real-time alarm notifications",
+        "GraphQL Kotlin framework integration",
+        "Clear API documentation and schema",
+        "Improved debuggability and maintainability",
+        "Separation of concerns: Victim API vs Admin API"
+      ],
+      "impact": {
+        "text": "Reliable alarm delivery with clear API contract",
+        "metric": null,
+        "metricType": null
+      },
+      "highlight": false
+    },
+    {
+      "id": "emergency-video",
+      "title": "Emergency Video Recording",
+      "category": "technical",
+      "icon": "fas fa-video",
+      "problem": "Victims needed ability to capture video evidence during emergencies.",
+      "solution": "Implemented emergency video recording with 2.5 minute limit and secure background upload to cloud storage.",
+      "details": [
+        "Emergency Video Recording triggered by victim",
+        "2.5 minute recording limit",
+        "Secure background upload to AWS S3/MinIO",
+        "Continues even when app is backgrounded",
+        "Evidence preservation for legal proceedings"
+      ],
+      "impact": {
+        "text": "Video evidence for victim protection",
+        "metric": null,
+        "metricType": null
+      },
+      "highlight": false
+    }
+  ],
+
+  "standout": {
+    "title": "Why This Project Stands Out",
+    "items": [
+      {
+        "icon": "fas fa-heart",
+        "title": "Real-World Impact",
+        "description": "App prevented domestic violence crime in Seville, Spain (2024)"
+      },
+      {
+        "icon": "fas fa-user",
+        "title": "Solo Android Dev",
+        "description": "Full ownership of entire mobile product"
+      },
+      {
+        "icon": "fas fa-code-branch",
+        "title": "Full Stack",
+        "description": "Built mobile app, backend, DevOps, and AI tools"
+      },
+      {
+        "icon": "fas fa-life-ring",
+        "title": "Rescue Success",
+        "description": "Fixed non-functional app in first month"
+      },
+      {
+        "icon": "fas fa-robot",
+        "title": "AI Innovation",
+        "description": "Created MCP Server for Claude Code integration"
+      }
+    ]
+  },
+
+  "realWorldImpact": {
+    "title": "Crime Prevention - Seville, Spain (2024)",
+    "description": "The Victim App successfully prevented a crime in Seville before summer 2024. A victim detected her abuser at her house door through the app's proximity alert system. The assigned monitoring agent initially said there couldn't be a threat because there was no system alert - but the victim's app had correctly identified the danger, demonstrating the critical importance of mobile proximity detection.",
+    "source": "La Vanguardia",
+    "sourceUrl": "https://www.lavanguardia.com/vida/20240924/11090502/grupos-victimas-pidieron-mejoras-2024-pulseras-telematicas-fallos.html"
+  },
+
+  "team": {
+    "totalSize": 50,
+    "structure": [
+      {
+        "team": "Android Development",
+        "size": 1,
+        "notes": "Solo - Full ownership",
+        "myRole": true
+      },
+      {
+        "team": "Backend/Frontend Team",
+        "size": "5-10",
+        "notes": "Heavy collaboration, great support",
+        "myRole": false
+      },
+      {
+        "team": "DevOps Team",
+        "size": "~10",
+        "notes": "Limited help, mostly self-managed",
+        "myRole": false
+      },
+      {
+        "team": "Management",
+        "size": 3,
+        "notes": "Weekly demos, executive decisions",
+        "myRole": false
+      },
+      {
+        "team": "QA",
+        "size": 2,
+        "notes": "1 manual, 1 automation",
+        "myRole": false
+      },
+      {
+        "team": "Cross-country Teams",
+        "size": "~20",
+        "notes": "International coordination",
+        "myRole": false
+      }
+    ],
+    "methodology": "Agile",
+    "collaboration": "Weekly presentations to top management, coordinated with ~20 teams across multiple countries"
+  },
+
+  "metrics": {
+    "launch": [
+      {
+        "icon": "fas fa-user-shield",
+        "value": "~100",
+        "label": "Victims Protected",
+        "highlight": true
+      },
+      {
+        "icon": "fas fa-calendar-alt",
+        "value": "28",
+        "label": "Months Duration",
+        "highlight": false
+      },
+      {
+        "icon": "fas fa-percent",
+        "value": "80%",
+        "label": "Shared Code (KMP)",
+        "highlight": true
+      },
+      {
+        "icon": "fas fa-server",
+        "value": "10+",
+        "label": "Microservices Integrated",
+        "highlight": false
+      }
+    ],
+    "quickStats": [
+      {
+        "icon": "fas fa-calendar-alt",
+        "value": "Oct 2022 - Jul 2025",
+        "label": "Duration"
+      },
+      {
+        "icon": "fas fa-user-tie",
+        "value": "Full Stack Mobile",
+        "label": "Role"
+      },
+      {
+        "icon": "fas fa-user-shield",
+        "value": "~100",
+        "label": "Victims Protected"
+      },
+      {
+        "icon": "fas fa-code-branch",
+        "value": "Solo",
+        "label": "Android Dev"
+      }
+    ]
+  },
+
+  "technologies": {
+    "primary": [
+      {
+        "name": "Kotlin",
+        "category": "language",
+        "proficiency": "expert"
+      },
+      {
+        "name": "Kotlin Multiplatform (KMP)",
+        "category": "technology",
+        "proficiency": "expert"
+      },
+      {
+        "name": "Compose Multiplatform",
+        "category": "ui",
+        "proficiency": "expert"
+      },
+      {
+        "name": "Samsung Knox",
+        "category": "technology",
+        "proficiency": "expert"
+      },
+      {
+        "name": "Spring Boot",
+        "category": "backend",
+        "proficiency": "advanced"
+      },
+      {
+        "name": "GraphQL",
+        "category": "api",
+        "proficiency": "expert"
+      }
+    ],
+    "secondary": [
+      {
+        "name": "Kafka",
+        "category": "messaging"
+      },
+      {
+        "name": "Kubernetes",
+        "category": "devops"
+      },
+      {
+        "name": "Docker",
+        "category": "devops"
+      },
+      {
+        "name": "ElasticSearch",
+        "category": "observability"
+      },
+      {
+        "name": "Android Enterprise",
+        "category": "technology"
+      },
+      {
+        "name": "Kiosk Mode",
+        "category": "technology"
+      },
+      {
+        "name": "Firebase Remote Config",
+        "category": "config"
+      },
+      {
+        "name": "Firebase Auth",
+        "category": "auth"
+      },
+      {
+        "name": "GraphQL Kotlin",
+        "category": "api"
+      },
+      {
+        "name": "GraphQL Subscriptions",
+        "category": "api"
+      },
+      {
+        "name": "Kotlin Coroutines",
+        "category": "async"
+      },
+      {
+        "name": "Ktor Client",
+        "category": "networking"
+      },
+      {
+        "name": "JWT",
+        "category": "auth"
+      },
+      {
+        "name": "AWS S3",
+        "category": "storage"
+      },
+      {
+        "name": "MinIO",
+        "category": "storage"
+      },
+      {
+        "name": "Jenkins Pipeline",
+        "category": "devops"
+      },
+      {
+        "name": "Custom Binary Protocol (Geosap)",
+        "category": "protocol"
+      },
+      {
+        "name": "MCP Server",
+        "category": "ai"
+      },
+      {
+        "name": "Quarkus",
+        "category": "backend"
+      }
+    ],
+    "tools": ["Android Studio", "IntelliJ IDEA", "Git", "Confluence", "Jira", "Jenkins", "Gradle"]
+  },
+
+  "lifecycle": {
+    "events": [
+      {
+        "date": "2022-10-01",
+        "displayDate": "October 2022",
+        "event": "Joined project, rescued failing app",
+        "status": "active"
+      },
+      {
+        "date": "2023-01-01",
+        "displayDate": "2023",
+        "event": "Custom protocol rework, Knox integration",
+        "status": "active"
+      },
+      {
+        "date": "2024-01-01",
+        "displayDate": "2024",
+        "event": "Victim App V2 development with KMP",
+        "status": "active"
+      },
+      {
+        "date": "2024-06-01",
+        "displayDate": "Summer 2024",
+        "event": "Crime prevented in Seville, Spain",
+        "status": "active"
+      },
+      {
+        "date": "2025-07-31",
+        "displayDate": "July 2025",
+        "event": "Project closed by company decision",
+        "status": "discontinued"
+      }
+    ],
+    "discontinuationReason": "Project closed due to low product popularity in market and high Knox Manage license costs. Technical outcome: successful - all deliverables completed, V2 production-ready.",
+    "currentStatus": "discontinued"
+  },
+
+  "links": [
+    {
+      "type": "company",
+      "icon": "fas fa-building",
+      "label": "GEOSATIS Website",
+      "url": "https://geo-satis.com",
+      "active": true
+    },
+    {
+      "type": "document",
+      "icon": "fas fa-file-pdf",
+      "label": "Product Brochure",
+      "url": "https://geo-satis.com/wp-content/uploads/2025/04/GEOSATIS-Victim-App-Brochure-1.pdf",
+      "active": true
+    },
+    {
+      "type": "article",
+      "icon": "fas fa-newspaper",
+      "label": "Crime Prevention Story (La Vanguardia)",
+      "url": "https://www.lavanguardia.com/vida/20240924/11090502/grupos-victimas-pidieron-mejoras-2024-pulseras-telematicas-fallos.html",
+      "source": "La Vanguardia",
+      "active": true
+    }
+  ],
+
+  "media": {
+    "screenshots": [],
+    "videos": [],
+    "logos": []
+  },
+
+  "seo": {
+    "title": "GEOSATIS Victim App - Domestic Violence Protection | Denys Honcharenko",
+    "description": "Led development of GEOSATIS Victim App - a mobile protection system for domestic violence victims with GPS tracking, Samsung Knox integration, and new backend architecture. Rescued failing project and built V2 with KMP.",
+    "keywords": ["GEOSATIS", "Victim Protection", "Domestic Violence", "Samsung Knox", "KMP", "Spring Boot", "GraphQL", "IoT", "Public Safety"]
+  },
+
+  "relatedProjects": ["adidas-gmr", "veev-smart-home"],
+
+  "lastUpdated": "2025-01-22"
+}

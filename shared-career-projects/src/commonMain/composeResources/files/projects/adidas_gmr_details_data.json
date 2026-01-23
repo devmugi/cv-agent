@@ -1,0 +1,444 @@
+{
+  "id": "adidas-gmr",
+  "name": "Adidas GMR",
+  "slug": "adidas-gmr",
+  "tagline": "Google Jacquard Smart Insole for FIFA Mobile",
+
+  "hero": {
+    "bannerStyle": "gradient",
+    "gradientColors": ["#000000", "#1a1a1a"],
+    "icon": "fas fa-running",
+    "backgroundPattern": true
+  },
+
+  "meta": {
+    "featured": true,
+    "status": "completed",
+    "visibility": "public"
+  },
+
+  "overview": {
+    "company": "EPAM Systems",
+    "client": "Adidas, Google, EA Sports",
+    "product": "Adidas GMR (pronounced \"Gamer\")",
+    "role": "Lead Software Engineer",
+    "roleDetails": "Android Team Lead",
+    "period": {
+      "startDate": "2020-02-01",
+      "endDate": "2020-06-30",
+      "displayText": "February 2020 - June 2020",
+      "durationMonths": 5
+    },
+    "location": "On-site (Adidas HQ, Herzogenaurach, Germany) / Remote (Lviv)",
+    "launchDate": "2020-03-10",
+    "productPrice": "~$35-40 USD / €34.99 / £29.95"
+  },
+
+  "companies": [
+    {
+      "name": "EPAM Systems",
+      "role": "employer",
+      "description": "Primary employer and rescue team provider",
+      "logo": null,
+      "website": "https://epam.com"
+    },
+    {
+      "name": "Adidas",
+      "role": "client",
+      "description": "End client - product owner",
+      "logo": null,
+      "website": "https://adidas.com"
+    },
+    {
+      "name": "Google",
+      "role": "partner",
+      "description": "Jacquard technology provider",
+      "logo": null,
+      "website": "https://google.com"
+    },
+    {
+      "name": "Electronic Arts (EA)",
+      "role": "partner",
+      "description": "FIFA Mobile integration partner",
+      "logo": null,
+      "website": "https://ea.com"
+    }
+  ],
+
+  "description": {
+    "short": "Smart insole with Google Jacquard technology tracking real-world soccer performance for FIFA Mobile rewards.",
+    "full": "Adidas GMR was a smart insole system developed in collaboration between Adidas, Google (Jacquard technology), and EA Sports. It tracked real-world soccer performance and converted it into rewards in EA SPORTS FIFA Mobile game. The product featured shot power measurement, distance & speed tracking, kick detection, FIFA Mobile integration, global leaderboards, and universal fit compatibility with any footwear.",
+    "howItWorked": [
+      {
+        "step": 1,
+        "title": "Hardware",
+        "description": "Small Google Jacquard Tag inserted into specially designed insole (dominant foot)"
+      },
+      {
+        "step": 2,
+        "title": "Tracking",
+        "description": "Machine learning algorithms detected kicks, shot power, distance, speed, and passes"
+      },
+      {
+        "step": 3,
+        "title": "Syncing",
+        "description": "Data transferred via Bluetooth to Adidas GMR app"
+      },
+      {
+        "step": 4,
+        "title": "Gaming",
+        "description": "App connected to FIFA Mobile to unlock rewards and improve Ultimate Team OVR rating"
+      }
+    ]
+  },
+
+  "challenge": {
+    "context": "Initial contractor (Intive) failed to deliver release on time.",
+    "response": "EPAM team assembled in one week and sent to Adidas headquarters in Herzogenaurach, Germany.",
+    "details": [
+      "Team assembled in one week",
+      "Sent to Adidas headquarters in Germany",
+      "Worked closely with Adidas and Intive teams on-site",
+      "Fixed critical issues and delivered release on time"
+    ]
+  },
+
+  "achievements": [
+    {
+      "id": "bluetooth-emulator",
+      "title": "Bluetooth Tag Emulator",
+      "category": "technical",
+      "icon": "fas fa-bluetooth-b",
+      "problem": "QA testing required physical data collection - kicking a football ball hundreds of times daily to generate test data.",
+      "solution": "Built custom Bluetooth Tag emulator that could upload pre-recorded sessions, simulating real Jacquard tag data.",
+      "details": [
+        "Created emulator that simulates real Jacquard tag data",
+        "Enabled uploading pre-recorded sessions",
+        "Removed physical hardware dependency for testing",
+        "Enabled rapid iteration cycles"
+      ],
+      "impact": {
+        "text": "QA testing became 10x faster",
+        "metric": "10x",
+        "metricType": "multiplier"
+      },
+      "highlight": true
+    },
+    {
+      "id": "jacquard-sdk",
+      "title": "Google Jacquard SDK Integration",
+      "category": "technical",
+      "icon": "fas fa-code",
+      "problem": "Complex Bluetooth SDK integration for Jacquard tag communication.",
+      "solution": "Improved BLE protocol integration with Jacquard SDK and ML data interpretation.",
+      "details": [
+        "BLE (Bluetooth Low Energy) protocol implementation fixes",
+        "Machine learning data interpretation (empty data, not valid data)",
+        "Real-time sync with mobile app",
+        "Tag state management (connected, charging, active)"
+      ],
+      "impact": {
+        "text": "Full SDK integration delivered",
+        "metric": null,
+        "metricType": null
+      },
+      "highlight": false
+    },
+    {
+      "id": "rescue-mission",
+      "title": "Rescue Mission Success",
+      "category": "leadership",
+      "icon": "fas fa-life-ring",
+      "problem": "Project was failing under initial contractor with missed deadlines.",
+      "solution": "EPAM team rapidly assembled and deployed to rescue the project.",
+      "details": [
+        "Rapid team assembly (1 week)",
+        "On-site work at Adidas HQ in Germany",
+        "Cross-team collaboration with Intive",
+        "Delivered working release on time"
+      ],
+      "impact": {
+        "text": "Delivered working release on time",
+        "metric": null,
+        "metricType": null
+      },
+      "highlight": true
+    },
+    {
+      "id": "stakeholder-buyin",
+      "title": "Stakeholder Buy-in",
+      "category": "leadership",
+      "icon": "fas fa-handshake",
+      "problem": "Needed approval from multiple enterprise stakeholders for emulator approach.",
+      "solution": "Presented and convinced Google, Adidas, and EA stakeholders in high-level meetings.",
+      "details": [
+        "Participated in high-level meetings with Google, Adidas, and EA",
+        "Presented technical approach for Tag Emulator",
+        "Secured buy-in from all stakeholders",
+        "Influenced technical architecture decisions"
+      ],
+      "impact": {
+        "text": "Emulator approach adopted company-wide",
+        "metric": null,
+        "metricType": null
+      },
+      "highlight": false
+    }
+  ],
+
+  "standout": {
+    "title": "Why This Project Stands Out",
+    "items": [
+      {
+        "icon": "fas fa-handshake",
+        "title": "Triple-A Collaboration",
+        "description": "Worked directly with Google, Adidas, and EA Sports"
+      },
+      {
+        "icon": "fas fa-lightbulb",
+        "title": "Innovation",
+        "description": "Bridged physical sports with mobile gaming"
+      },
+      {
+        "icon": "fas fa-life-ring",
+        "title": "Rescue Success",
+        "description": "Team saved failing project and delivered on time"
+      },
+      {
+        "icon": "fas fa-cogs",
+        "title": "Technical Innovation",
+        "description": "Created BLE emulator that 10x'd QA efficiency"
+      },
+      {
+        "icon": "fas fa-globe",
+        "title": "Global Impact",
+        "description": "7.4M shots tracked, 215M meters covered in first weeks"
+      }
+    ]
+  },
+
+  "team": {
+    "totalSize": 30,
+    "structure": [
+      {
+        "team": "EPAM Android",
+        "size": 6,
+        "notes": "Led by Denys",
+        "myRole": true
+      },
+      {
+        "team": "EPAM iOS",
+        "size": 6,
+        "notes": "Separate lead",
+        "myRole": false
+      },
+      {
+        "team": "EPAM QA",
+        "size": 6,
+        "notes": null,
+        "myRole": false
+      },
+      {
+        "team": "Intive Android",
+        "size": 5,
+        "notes": "2nd contractor",
+        "myRole": false
+      },
+      {
+        "team": "Intive iOS",
+        "size": 5,
+        "notes": null,
+        "myRole": false
+      },
+      {
+        "team": "Intive QA",
+        "size": 2,
+        "notes": null,
+        "myRole": false
+      }
+    ],
+    "methodology": "Agile/Scrum",
+    "collaboration": "Worked on-site at Adidas HQ with both EPAM and Intive teams"
+  },
+
+  "metrics": {
+    "launch": [
+      {
+        "icon": "fas fa-futbol",
+        "value": "7.4M",
+        "label": "Shots & Passes Tracked",
+        "highlight": true
+      },
+      {
+        "icon": "fas fa-route",
+        "value": "215M+",
+        "label": "Meters Covered",
+        "highlight": true
+      },
+      {
+        "icon": "fas fa-calendar-check",
+        "value": "Mar 10, 2020",
+        "label": "Global Launch",
+        "highlight": false
+      }
+    ],
+    "quickStats": [
+      {
+        "icon": "fas fa-calendar-alt",
+        "value": "Feb - Jun 2020",
+        "label": "Duration"
+      },
+      {
+        "icon": "fas fa-user-tie",
+        "value": "Team Lead",
+        "label": "Role"
+      },
+      {
+        "icon": "fas fa-users",
+        "value": "~30",
+        "label": "Team Size"
+      },
+      {
+        "icon": "fas fa-futbol",
+        "value": "7.4M",
+        "label": "Shots Tracked"
+      }
+    ]
+  },
+
+  "technologies": {
+    "primary": [
+      {
+        "name": "Android SDK",
+        "category": "platform",
+        "proficiency": "expert"
+      },
+      {
+        "name": "Kotlin",
+        "category": "language",
+        "proficiency": "expert"
+      },
+      {
+        "name": "Bluetooth Low Energy (BLE)",
+        "category": "technology",
+        "proficiency": "expert"
+      },
+      {
+        "name": "Google Jacquard SDK",
+        "category": "sdk",
+        "proficiency": "expert"
+      }
+    ],
+    "secondary": [
+      {
+        "name": "Custom Tag Emulator",
+        "category": "tooling"
+      },
+      {
+        "name": "CI/CD",
+        "category": "devops"
+      },
+      {
+        "name": "Machine Learning",
+        "category": "technology"
+      },
+      {
+        "name": "IoT",
+        "category": "technology"
+      }
+    ],
+    "tools": ["Android Studio", "Git", "Jira"]
+  },
+
+  "lifecycle": {
+    "events": [
+      {
+        "date": "2020-03-10",
+        "displayDate": "March 10, 2020",
+        "event": "Global launch",
+        "status": "active"
+      },
+      {
+        "date": "2020-03-10",
+        "displayDate": "2020-2021",
+        "event": "Active integration with FIFA Mobile",
+        "status": "active"
+      },
+      {
+        "date": "2021-09-30",
+        "displayDate": "September 30, 2021",
+        "event": "FIFA Mobile integration discontinued",
+        "status": "discontinued"
+      },
+      {
+        "date": "2022-01-01",
+        "displayDate": "2022",
+        "event": "Performance tracking app remained live",
+        "status": "maintenance"
+      },
+      {
+        "date": "2023-01-01",
+        "displayDate": "2023",
+        "event": "Google shut down dedicated Jacquard app",
+        "status": "discontinued"
+      }
+    ],
+    "discontinuationReason": "COVID-19 pandemic made it difficult for players to physically connect and engage as originally intended.",
+    "currentStatus": "discontinued"
+  },
+
+  "links": [
+    {
+      "type": "playstore",
+      "icon": "fab fa-google-play",
+      "label": "Play Store",
+      "url": "https://play.google.com/store/apps/details?id=com.adidas.gmr&hl=en",
+      "active": false
+    },
+    {
+      "type": "article",
+      "icon": "fas fa-newspaper",
+      "label": "T3 Article",
+      "url": "https://www.t3.com/news/adidas-gmr-fifa-ea-sports",
+      "source": "T3",
+      "active": true
+    },
+    {
+      "type": "article",
+      "icon": "fas fa-newspaper",
+      "label": "Wired Article",
+      "url": "https://www.wired.co.uk/article/google-adidas-gmr-insole",
+      "source": "Wired",
+      "active": true
+    },
+    {
+      "type": "video",
+      "icon": "fab fa-youtube",
+      "label": "Video Demo",
+      "url": "https://www.youtube.com/watch?v=QwHD36bhXZA&feature=youtu.be&t=1008",
+      "active": true
+    }
+  ],
+
+  "media": {
+    "screenshots": [],
+    "videos": [
+      {
+        "type": "demo",
+        "url": "https://www.youtube.com/watch?v=QwHD36bhXZA&feature=youtu.be&t=1008",
+        "title": "Adidas GMR Demo"
+      }
+    ],
+    "logos": []
+  },
+
+  "seo": {
+    "title": "Adidas GMR - Google Jacquard Smart Insole | Denys Honcharenko",
+    "description": "Led mobile team for Adidas GMR - an innovative smart insole product with Google Jacquard technology integrating with FIFA Mobile. Built custom BLE emulator that 10x'd QA efficiency.",
+    "keywords": ["Adidas GMR", "Google Jacquard", "Bluetooth BLE", "FIFA Mobile", "IoT", "Android", "EPAM"]
+  },
+
+  "relatedProjects": ["mcdonalds", "food-network-kitchen"],
+
+  "lastUpdated": "2025-01-21"
+}

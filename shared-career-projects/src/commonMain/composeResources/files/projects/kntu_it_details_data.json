@@ -1,0 +1,437 @@
+{
+  "id": "kntu-it",
+  "name": "KNTU IT Infrastructure",
+  "slug": "kntu-it",
+  "tagline": "Enterprise Campus Infrastructure & Private Cloud",
+
+  "hero": {
+    "bannerStyle": "gradient",
+    "gradientColors": ["#1976d2", "#2196f3"],
+    "icon": "fas fa-server",
+    "backgroundPattern": true
+  },
+
+  "meta": {
+    "featured": true,
+    "status": "completed",
+    "visibility": "public"
+  },
+
+  "overview": {
+    "company": "Kherson National Technical University",
+    "client": null,
+    "product": "University IT Infrastructure",
+    "role": "System Administrator / DevOps",
+    "roleDetails": "Enterprise infrastructure, XEN private cloud, network administration, web development",
+    "period": {
+      "startDate": "2006-08-01",
+      "endDate": "2012-08-31",
+      "displayText": "August 2006 - August 2012",
+      "durationMonths": 72
+    },
+    "location": "Kherson, Ukraine",
+    "launchDate": null,
+    "productPrice": null
+  },
+
+  "companies": [
+    {
+      "name": "Kherson National Technical University (KNTU)",
+      "role": "employer",
+      "description": "Level IV accreditation university in Kherson, Ukraine. Department of Information Technologies (Відділ інформаційних технологій).",
+      "logo": null,
+      "website": "https://kntu.net.ua/"
+    }
+  ],
+
+  "description": {
+    "short": "University IT infrastructure: XEN private cloud with 500+ VMs, 100+ mixed-OS servers, 1000+ network users.",
+    "full": "System Administrator and DevOps engineer at Kherson National Technical University's Department of Information Technologies for 6 years. Managed enterprise-scale campus infrastructure including a pioneering XEN-based private cloud with 500+ virtual machines, 100+ physical servers (Windows/Linux/Solaris), and network services for 1000+ users across 7 educational buildings. Responsibilities included maintaining the URAN academic network backbone, VPN infrastructure, developing the university web portal (kntu.net.ua) on eZ Publish CMS, and creating automation tools. This was effectively running a private ISP and cloud for a large campus.",
+    "howItWorked": [
+      {
+        "step": 1,
+        "title": "Physical Infrastructure",
+        "description": "100+ Windows/Linux/Solaris servers across campus buildings"
+      },
+      {
+        "step": 2,
+        "title": "Private Cloud",
+        "description": "XEN hypervisor virtualization hosting 500+ VMs for labs and services"
+      },
+      {
+        "step": 3,
+        "title": "Network Backbone",
+        "description": "URAN academic network, VPN, LAN for 1000+ users"
+      },
+      {
+        "step": 4,
+        "title": "Web & Automation",
+        "description": "University portal, internal tools, monitoring systems"
+      }
+    ]
+  },
+
+  "challenge": {
+    "context": "A Level IV university required enterprise-grade IT infrastructure to support education, research, and administration across multiple buildings with limited budget.",
+    "response": "Built and maintained a comprehensive IT ecosystem including one of the region's early private educational clouds, mixed-OS server infrastructure, and campus-wide networking.",
+    "details": [
+      "Enterprise infrastructure for 1000+ daily users",
+      "Heterogeneous OS environment (Windows/Linux/Solaris)",
+      "Early adoption of virtualization technology (XEN)",
+      "Integration with national academic network (URAN)",
+      "Web portal development and maintenance"
+    ]
+  },
+
+  "achievements": [
+    {
+      "id": "xen-cloud",
+      "title": "XEN Private Cloud (500+ VMs)",
+      "category": "infrastructure",
+      "icon": "fas fa-cloud",
+      "problem": "University needed scalable compute resources for student labs, administrative services, and research.",
+      "solution": "Architected and managed one of the region's early private educational clouds using XEN Hypervisor.",
+      "details": [
+        "XEN hypervisor-based virtualization",
+        "500+ virtual machines",
+        "Student lab environments",
+        "Administrative services hosting",
+        "Research computing resources",
+        "Pioneering for regional university (~2010)"
+      ],
+      "impact": {
+        "text": "500+ VMs in private cloud",
+        "metric": "500+",
+        "metricType": "count"
+      },
+      "highlight": true
+    },
+    {
+      "id": "server-infrastructure",
+      "title": "Mixed-OS Server Infrastructure",
+      "category": "infrastructure",
+      "icon": "fas fa-server",
+      "problem": "Campus required reliable server infrastructure across multiple buildings with various OS requirements.",
+      "solution": "Maintained 100+ physical servers running Windows, Linux, and Solaris in heterogeneous environment.",
+      "details": [
+        "100+ physical servers",
+        "Windows Server administration",
+        "Linux (various distributions)",
+        "Sun Solaris / Sun SPARC stations",
+        "Sun Suite applications",
+        "7 educational buildings coverage"
+      ],
+      "impact": {
+        "text": "100+ servers maintained",
+        "metric": "100+",
+        "metricType": "count"
+      },
+      "highlight": true
+    },
+    {
+      "id": "network-admin",
+      "title": "Campus Network & URAN Backbone",
+      "category": "infrastructure",
+      "icon": "fas fa-network-wired",
+      "problem": "1000+ users needed reliable, high-speed network access with secure remote connectivity.",
+      "solution": "Managed campus-wide LAN, VPN infrastructure, and external connectivity via URAN academic network.",
+      "details": [
+        "1000+ network users supported",
+        "URAN (Ukrainian Research and Academic Network) integration",
+        "LIR (Local Internet Registry) management",
+        "BGP routing configuration",
+        "VPN infrastructure for remote access",
+        "Campus-wide LAN across 7 buildings"
+      ],
+      "impact": {
+        "text": "1000+ users connected",
+        "metric": "1000+",
+        "metricType": "count"
+      },
+      "highlight": true
+    },
+    {
+      "id": "web-portal",
+      "title": "University Web Portal (kntu.net.ua)",
+      "category": "development",
+      "icon": "fas fa-globe",
+      "problem": "University needed professional web presence handling high traffic during admissions.",
+      "solution": "Developed and maintained enterprise web portal on eZ Publish CMS.",
+      "details": [
+        "eZ Publish CMS (version 4.0.x)",
+        "Enterprise-grade PHP application",
+        "High-traffic admissions campaigns",
+        "Content management for departments",
+        "Integration with university systems"
+      ],
+      "impact": {
+        "text": "Enterprise university portal",
+        "metric": null,
+        "metricType": null
+      },
+      "highlight": false
+    },
+    {
+      "id": "automation",
+      "title": "Automation Tools Development",
+      "category": "development",
+      "icon": "fas fa-cogs",
+      "problem": "Manual administration of large infrastructure was time-consuming and error-prone.",
+      "solution": "Developed custom automation tools for internal IT operations.",
+      "details": [
+        "PHP automation scripts",
+        "Java-based tools",
+        "JavaScript utilities",
+        "Monitoring with Cacti",
+        "Issue tracking with Redmine",
+        "Version control with Git"
+      ],
+      "impact": {
+        "text": "Streamlined IT operations",
+        "metric": null,
+        "metricType": null
+      },
+      "highlight": false
+    }
+  ],
+
+  "standout": {
+    "title": "Why This Project Stands Out",
+    "items": [
+      {
+        "icon": "fas fa-cloud",
+        "title": "Private Cloud Pioneer",
+        "description": "500+ VMs on XEN - early adopter ~2010"
+      },
+      {
+        "icon": "fas fa-clock",
+        "title": "6 Years Experience",
+        "description": "Long-term enterprise infrastructure role"
+      },
+      {
+        "icon": "fas fa-server",
+        "title": "Mixed-OS Expert",
+        "description": "Windows, Linux, and Solaris administration"
+      },
+      {
+        "icon": "fas fa-network-wired",
+        "title": "Network Backbone",
+        "description": "URAN academic network, 1000+ users"
+      }
+    ]
+  },
+
+  "team": {
+    "totalSize": 7,
+    "structure": [
+      {
+        "team": "Department Head",
+        "size": 1,
+        "notes": "O.M. Melnychenko - department manager",
+        "myRole": false
+      },
+      {
+        "team": "System Administration",
+        "size": 3,
+        "notes": "Me + 2 engineers - servers, VMs, network",
+        "myRole": true
+      },
+      {
+        "team": "Software Engineering",
+        "size": 2,
+        "notes": "Web development, applications",
+        "myRole": false
+      },
+      {
+        "team": "User Support",
+        "size": 1,
+        "notes": "Helpdesk, workstation support",
+        "myRole": false
+      }
+    ],
+    "methodology": "IT Operations",
+    "collaboration": "Department of Information Technologies (Відділ ІТ)"
+  },
+
+  "metrics": {
+    "launch": [
+      {
+        "icon": "fas fa-cloud",
+        "value": "500+",
+        "label": "Virtual Machines",
+        "highlight": true
+      },
+      {
+        "icon": "fas fa-server",
+        "value": "100+",
+        "label": "Physical Servers",
+        "highlight": true
+      },
+      {
+        "icon": "fas fa-users",
+        "value": "1000+",
+        "label": "Network Users",
+        "highlight": true
+      },
+      {
+        "icon": "fas fa-calendar-alt",
+        "value": "6",
+        "label": "Years Duration",
+        "highlight": false
+      }
+    ],
+    "quickStats": [
+      {
+        "icon": "fas fa-calendar-alt",
+        "value": "Aug 2006 - Aug 2012",
+        "label": "Duration"
+      },
+      {
+        "icon": "fas fa-user-tie",
+        "value": "SysAdmin / DevOps",
+        "label": "Role"
+      },
+      {
+        "icon": "fas fa-cloud",
+        "value": "500+",
+        "label": "VMs"
+      },
+      {
+        "icon": "fas fa-server",
+        "value": "100+",
+        "label": "Servers"
+      }
+    ]
+  },
+
+  "technologies": {
+    "primary": [
+      {
+        "name": "XEN Hypervisor",
+        "category": "virtualization",
+        "proficiency": "expert"
+      },
+      {
+        "name": "Linux",
+        "category": "os",
+        "proficiency": "expert"
+      },
+      {
+        "name": "Windows Server",
+        "category": "os",
+        "proficiency": "advanced"
+      },
+      {
+        "name": "Sun Solaris",
+        "category": "os",
+        "proficiency": "advanced"
+      },
+      {
+        "name": "Networking/VPN",
+        "category": "network",
+        "proficiency": "expert"
+      }
+    ],
+    "secondary": [
+      {
+        "name": "PostgreSQL",
+        "category": "database"
+      },
+      {
+        "name": "MySQL",
+        "category": "database"
+      },
+      {
+        "name": "eZ Publish",
+        "category": "cms"
+      },
+      {
+        "name": "PHP",
+        "category": "language"
+      },
+      {
+        "name": "Java",
+        "category": "language"
+      },
+      {
+        "name": "JavaScript",
+        "category": "language"
+      },
+      {
+        "name": "Cacti",
+        "category": "monitoring"
+      },
+      {
+        "name": "Redmine",
+        "category": "project"
+      },
+      {
+        "name": "Git",
+        "category": "vcs"
+      },
+      {
+        "name": "Sun Suite",
+        "category": "enterprise"
+      }
+    ],
+    "tools": ["VMware", "Cacti", "Redmine", "Git", "SSH", "Bash"]
+  },
+
+  "lifecycle": {
+    "events": [
+      {
+        "date": "2006-08-01",
+        "displayDate": "August 2006",
+        "event": "Joined Department of Information Technologies",
+        "status": "active"
+      },
+      {
+        "date": "2010-01-01",
+        "displayDate": "~2010",
+        "event": "XEN private cloud deployment (500+ VMs)",
+        "status": "active"
+      },
+      {
+        "date": "2011-01-01",
+        "displayDate": "2011",
+        "event": "Founded Aitweb web studio (sub-project)",
+        "status": "active"
+      },
+      {
+        "date": "2012-08-31",
+        "displayDate": "August 2012",
+        "event": "Completed 6-year tenure, transitioned to mobile development",
+        "status": "completed"
+      }
+    ],
+    "discontinuationReason": "Transitioned to mobile development career (SMILdroid project at DSconnect).",
+    "currentStatus": "completed"
+  },
+
+  "links": [
+    {
+      "type": "company",
+      "icon": "fas fa-university",
+      "label": "KNTU Official Website",
+      "url": "https://kntu.net.ua/",
+      "source": "KNTU",
+      "active": true
+    }
+  ],
+
+  "media": {
+    "screenshots": [],
+    "videos": [],
+    "logos": []
+  },
+
+  "seo": {
+    "title": "KNTU IT Infrastructure - System Administrator / DevOps | Denys Honcharenko",
+    "description": "System Administrator and DevOps at Kherson National Technical University (2006-2012). Managed XEN private cloud (500+ VMs), 100+ Windows/Linux/Solaris servers, and network infrastructure for 1000+ users.",
+    "keywords": ["KNTU", "System Administrator", "DevOps", "XEN", "Virtualization", "Private Cloud", "Linux", "Solaris", "Windows Server", "URAN", "University IT"]
+  },
+
+  "relatedProjects": ["aitweb", "smildroid"],
+
+  "lastUpdated": "2025-01-22"
+}

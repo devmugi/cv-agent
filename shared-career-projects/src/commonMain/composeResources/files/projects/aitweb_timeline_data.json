@@ -1,0 +1,45 @@
+{
+  "id": "aitweb",
+  "name": "Aitweb",
+  "slug": "aitweb",
+
+  "hero": {
+    "bannerStyle": "gradient",
+    "gradientColors": ["#43a047", "#66bb6a"],
+    "icon": "fas fa-globe",
+    "backgroundPattern": true
+  },
+
+  "featured": false,
+  "featuredBadgeText": "Web Studio",
+
+  "role": {
+    "title": "Founder / Web Developer",
+    "shortTitle": "Founder"
+  },
+
+  "period": {
+    "startDate": "2011-01-01",
+    "endDate": "2012-12-31",
+    "displayText": "2011 - 2012"
+  },
+
+  "location": "Kherson, Ukraine",
+
+  "description": {
+    "short": "Web studio building 50+ landing pages with eZ Publish CMS for universities and local companies.",
+    "tagline": "EduTech Web Development & Hosting"
+  },
+
+  "highlights": [
+    "Built 50+ landing pages",
+    "eZ Publish CMS specialist",
+    "10-person team owner"
+  ],
+
+  "technologies": ["PHP", "eZ Publish", "MySQL", "HTML/CSS", "Web Hosting"],
+
+  "links": {
+    "details": "projects/aitweb.html"
+  }
+}

@@ -1,0 +1,79 @@
+{
+  "id": "lesara",
+  "name": "Lesara",
+  "slug": "lesara",
+
+  "hero": {
+    "bannerStyle": "gradient",
+    "gradientColors": ["#e91e63", "#9c27b0"],
+    "icon": "fas fa-shopping-bag",
+    "backgroundPattern": true
+  },
+
+  "featured": true,
+  "featuredBadgeText": "Lesara (€85M)",
+
+  "role": {
+    "title": "Senior Android Developer",
+    "shortTitle": "Senior Android"
+  },
+
+  "period": {
+    "startDate": "2017-09-04",
+    "endDate": "2018-04-20",
+    "displayText": "Sep 2017 - Apr 2018"
+  },
+
+  "location": "Ukraine (Remote + Berlin Trip)",
+
+  "impactBadges": [
+    {
+      "icon": "fas fa-calendar-alt",
+      "text": "8 Months"
+    },
+    {
+      "icon": "fas fa-code-branch",
+      "text": "4-Stage Migration"
+    },
+    {
+      "icon": "fas fa-bug",
+      "text": "10% Crash Reduction"
+    }
+  ],
+
+  "description": {
+    "short": "Native Android app for Europe's fastest-growing fashion startup (€85M funded, 2M+ downloads).",
+    "medium": "8-month engagement redesigning architecture: 4-stage migration strategy, Product List rewrite (LAA-1175), Room database integration, and Berlin headquarters presentation.",
+    "tagline": "European Fast-Fashion E-commerce"
+  },
+
+  "achievements": {
+    "preview": [
+      "4-stage architecture migration strategy (Berlin presentation)",
+      "Product List rewrite with MVP (LAA-1175)",
+      "Room database & offline caching",
+      "Code cleanup: 4005+ lines removed"
+    ]
+  },
+
+  "highlights": [
+    "4-stage architecture migration strategy",
+    "Product List rewrite (MVP + Room)",
+    "Berlin HQ presentation (Dec 2017)"
+  ],
+
+  "tags": [
+    { "text": "Kotlin" },
+    { "text": "MVP" },
+    { "text": "Room" },
+    { "text": "Dagger 2" },
+    { "text": "RxJava" },
+    { "text": "Bitrise" }
+  ],
+
+  "technologies": ["Java", "Kotlin", "MVP", "Clean Architecture", "RxJava", "Room", "Dagger 2", "Bitrise"],
+
+  "links": {
+    "details": "projects/lesara.html"
+  }
+}

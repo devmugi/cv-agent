@@ -1,0 +1,550 @@
+{
+  "id": "lesara",
+  "name": "Lesara",
+  "slug": "lesara",
+  "tagline": "European Fast-Fashion E-commerce",
+
+  "hero": {
+    "bannerStyle": "gradient",
+    "gradientColors": ["#e91e63", "#9c27b0"],
+    "icon": "fas fa-shopping-bag",
+    "backgroundPattern": true
+  },
+
+  "meta": {
+    "featured": true,
+    "status": "completed",
+    "visibility": "public"
+  },
+
+  "overview": {
+    "company": "Temy",
+    "client": "Lesara",
+    "product": "Lesara Android App",
+    "role": "Senior Android Developer",
+    "roleDetails": "Architecture leadership, MVP introduction, Product List rewrite, Room database, Berlin business trip",
+    "period": {
+      "startDate": "2017-09-04",
+      "endDate": "2018-04-20",
+      "displayText": "Sep 2017 - Apr 2018",
+      "durationMonths": 8
+    },
+    "location": "Ukraine (Remote) + Berlin business trip",
+    "launchDate": "2017-01-01",
+    "productPrice": null
+  },
+
+  "companies": [
+    {
+      "name": "Temy",
+      "role": "employer",
+      "description": "Software development company",
+      "logo": null,
+      "website": "https://temy.co"
+    },
+    {
+      "name": "Lesara",
+      "role": "client",
+      "description": "Berlin-based fast-fashion e-commerce startup, Europe's fastest-growing tech company. Raised €85M, reached 2M+ app downloads.",
+      "logo": null,
+      "website": null
+    }
+  ],
+
+  "description": {
+    "short": "Native Android app for Europe's fastest-growing fashion startup (€85M funded, 2M+ downloads).",
+    "full": "Lesara was a Berlin-based fast-fashion e-commerce company that pioneered 'agile retail' — getting products from trend identification to market in just 10 days. The company raised €85 million, expanded to 24 European markets, and the mobile apps reached 2M+ downloads with 4.5-star ratings. I joined as Senior Android Developer to fix a codebase with no architecture where 'a simple change could take days of debugging'. I initiated and documented a 4-stage architecture migration strategy (MVP → Clean Architecture → Modules → Kotlin), led the complete Product List rewrite with Sorting/Filtering, introduced Room database for offline caching, and presented Material Design guidelines during Berlin business trip.",
+    "howItWorked": [
+      {
+        "step": 1,
+        "title": "Trend Detection",
+        "description": "Lesara analyzed Google, social media, and blogs to identify emerging fashion trends"
+      },
+      {
+        "step": 2,
+        "title": "Fast Production",
+        "description": "Direct work with Chinese manufacturers, products to market in 10 days"
+      },
+      {
+        "step": 3,
+        "title": "Mobile Shopping",
+        "description": "Native Android app with product catalog, wishlist, cart, and checkout"
+      },
+      {
+        "step": 4,
+        "title": "European Delivery",
+        "description": "Own warehouses in Europe and China for fast delivery across 24 markets"
+      }
+    ]
+  },
+
+  "challenge": {
+    "context": "The Android codebase had no architecture - 'a simple change could take days of debugging for Android team and one hour for iOS team'. There was problematic custom navigation implementation that was 'extremely hard to support', and iOS/Web design patterns forced onto Android.",
+    "response": "Initiated architecture discussions, created comprehensive documentation with migration strategy, led team adoption through presentations and architecture meetings. Also worked extensively with Design team to explain Android-specific constraints.",
+    "details": [
+      "No architecture in existing codebase - days of debugging for simple changes",
+      "Custom navigation implementation 'extremely hard to support'",
+      "iOS/Web elements forced onto Android - 'looks like mobile website, not Android app'",
+      "Created 4-stage migration strategy documentation",
+      "Led architecture meetings and presentations",
+      "Collaborated with Design team on Android-specific constraints"
+    ]
+  },
+
+  "achievements": [
+    {
+      "id": "architecture-migration",
+      "title": "Architecture Migration Strategy",
+      "category": "architecture",
+      "icon": "fas fa-sitemap",
+      "problem": "Codebase had no architecture causing days of debugging for simple changes. Team needed a clear path forward.",
+      "solution": "Created comprehensive 4-stage migration strategy with detailed documentation covering SOLID principles, Clean Architecture, MVP, coding standards.",
+      "details": [
+        "Stage 1: Re-structure code by features into com.lesara.app.feature package",
+        "Stage 2: Split application into modules matching package structure",
+        "Stage 3: Instant App support with unit and UI test coverage",
+        "Stage 4: Kotlin migration",
+        "Documented naming conventions: Item (UI), Entity (Domain), Model (Data)",
+        "Created RxJava coding standards (error handling, disposal, scheduling)",
+        "Led team discussions and got buy-in for migration"
+      ],
+      "impact": {
+        "text": "Established architecture standards for the team",
+        "metric": null,
+        "metricType": null
+      },
+      "highlight": true
+    },
+    {
+      "id": "product-list-rewrite",
+      "title": "Product List Complete Rewrite (LAA-1175)",
+      "category": "technical",
+      "icon": "fas fa-list",
+      "problem": "Product list screens had loading issues and needed Sorting/Filtering features for competitive parity.",
+      "solution": "Complete rewrite of Product List using new architecture with full Sorting and Filtering support across 10+ API endpoints.",
+      "details": [
+        "~2 months of development (October-November 2017)",
+        "Added Sorting support to 10+ API endpoints (Category, Event, Search, AlsoBought, Related, Recommended, Recent, TrendProducts, TopDeal, Emarsys, Preloaded)",
+        "Built custom Filtering dialog with expand/collapse, multi-select",
+        "Sub-categories implementation on ProductList",
+        "Christmas Shop integration",
+        "Analytics updates for all new features",
+        "Applied new MVP architecture pattern"
+      ],
+      "impact": {
+        "text": "Major feature delivery with architectural improvements",
+        "metric": null,
+        "metricType": null
+      },
+      "highlight": true
+    },
+    {
+      "id": "room-caching",
+      "title": "Room Database & Offline Caching",
+      "category": "technical",
+      "icon": "fas fa-database",
+      "problem": "Wishlist and Cart had no offline support, and backend API had numerous bugs causing poor UX.",
+      "solution": "Introduced Room database to the project and built offline-first caching strategy for Wishlist and Cart.",
+      "details": [
+        "First Room database implementation in the project",
+        "Wishlist caching with sync strategy (LAA-1606)",
+        "Cart caching with Repository pattern (LAA-1607)",
+        "Built workarounds for numerous backend API bugs",
+        "Created Swagger API documentation examples for backend team",
+        "QA training sessions on using Charles proxy for API testing"
+      ],
+      "impact": {
+        "text": "Offline-capable Wishlist and Cart",
+        "metric": null,
+        "metricType": null
+      },
+      "highlight": true
+    },
+    {
+      "id": "berlin-presentation",
+      "title": "Berlin Business Trip & Presentation",
+      "category": "leadership",
+      "icon": "fas fa-chalkboard-teacher",
+      "problem": "Design team created iOS/Web-centric designs that were costly to implement on Android.",
+      "solution": "Traveled to Berlin office (Dec 10-17, 2017), presented Material Design guidelines, collaborated with Design team.",
+      "details": [
+        "Week-long business trip to Lesara Berlin headquarters",
+        "Presented Material Design guidelines and Android constraints",
+        "Topics: Material metaphor, colors, shadows, toolbar, navigation",
+        "Introduced Framer and Flutter as prototyping tools",
+        "Improved collaboration between Android and Design teams",
+        "Attended company Christmas party"
+      ],
+      "impact": {
+        "text": "Improved Android-Design team collaboration",
+        "metric": null,
+        "metricType": null
+      },
+      "highlight": true
+    },
+    {
+      "id": "navigation-fixes",
+      "title": "Navigation System Improvements",
+      "category": "technical",
+      "icon": "fas fa-compass",
+      "problem": "Custom navigation implementation was 'extremely hard to support' and caused numerous bugs.",
+      "solution": "Multiple fixes and refactoring attempts to improve navigation stability while migrating incrementally.",
+      "details": [
+        "Toolbar and Bottom Navigation Bar behavior fixes",
+        "View state save/restore implementation (LAA-1489)",
+        "Fixed navigation after checkout flow",
+        "BottomNavigationBarHelper rollback due to instability",
+        "Documented navigation issues and migration strategy"
+      ],
+      "impact": {
+        "text": "Improved navigation stability",
+        "metric": null,
+        "metricType": null
+      },
+      "highlight": false
+    },
+    {
+      "id": "ci-cd",
+      "title": "CI/CD & Release Process",
+      "category": "devops",
+      "icon": "fas fa-sync-alt",
+      "problem": "Manual builds and unclear release process slowed down development.",
+      "solution": "Set up Bitrise CI/CD, nightly builds, and release automation.",
+      "details": [
+        "Bitrise CI/CD configuration",
+        "Nightly builds setup with auto-increment build numbers",
+        "Crashlytics Beta distribution (Nightly vs Release Candidate)",
+        "Added Release Notes automation",
+        "Engineering/Debug menu for QA support"
+      ],
+      "impact": {
+        "text": "Automated build and release process",
+        "metric": null,
+        "metricType": null
+      },
+      "highlight": false
+    },
+    {
+      "id": "code-cleanup",
+      "title": "Codebase Cleanup",
+      "category": "technical",
+      "icon": "fas fa-broom",
+      "problem": "Codebase contained over-engineered code and unused legacy code.",
+      "solution": "Major cleanup removing thousands of lines of dead code.",
+      "details": [
+        "Removed 4005+ lines of unused code in single cleanup session",
+        "Cleaned up unused layouts and images",
+        "Refactored PDP (Product Detail Page)",
+        "Moved DebugMenu to Debug-only build flavor"
+      ],
+      "impact": {
+        "text": "Cleaner, more maintainable codebase",
+        "metric": "4000+",
+        "metricType": "lines removed"
+      },
+      "highlight": false
+    }
+  ],
+
+  "standout": {
+    "title": "Why This Project Stands Out",
+    "items": [
+      {
+        "icon": "fas fa-euro-sign",
+        "title": "€85M Startup",
+        "description": "Europe's fastest-growing tech company"
+      },
+      {
+        "icon": "fas fa-download",
+        "title": "2M+ Downloads",
+        "description": "Massive user base, 4.5-star rating"
+      },
+      {
+        "icon": "fas fa-sitemap",
+        "title": "Architecture Lead",
+        "description": "Created 4-stage migration strategy"
+      },
+      {
+        "icon": "fas fa-plane",
+        "title": "Berlin Trip",
+        "description": "Presented Material Design to team"
+      }
+    ]
+  },
+
+  "team": {
+    "totalSize": 20,
+    "structure": [
+      {
+        "team": "Temy - Android",
+        "size": 5,
+        "notes": "Me as Senior + mix of senior/middle developers",
+        "myRole": true
+      },
+      {
+        "team": "Temy - iOS",
+        "size": 5,
+        "notes": "iOS app development",
+        "myRole": false
+      },
+      {
+        "team": "Temy - QA",
+        "size": 3,
+        "notes": "Testing, trained on Charles proxy usage",
+        "myRole": false
+      },
+      {
+        "team": "Lesara - Android",
+        "size": 2,
+        "notes": "Client-side Android team in Berlin",
+        "myRole": false
+      },
+      {
+        "team": "Lesara - iOS",
+        "size": 2,
+        "notes": "Client-side iOS team",
+        "myRole": false
+      },
+      {
+        "team": "Lesara - Design",
+        "size": 2,
+        "notes": "Collaborated on Material Design adoption",
+        "myRole": false
+      },
+      {
+        "team": "Lesara - Backend",
+        "size": 2,
+        "notes": "API collaboration, Swagger documentation",
+        "myRole": false
+      }
+    ],
+    "methodology": "Agile/Scrum with 2-week sprints",
+    "collaboration": "Daily standups, bi-weekly grooming/planning, sprint demos, API meetings"
+  },
+
+  "learnings": {
+    "title": "Personal Learnings (from 3-month review)",
+    "items": [
+      "Time estimation and importance of showing progress",
+      "Weak points in Android Animation and custom views",
+      "Need to improve English level",
+      "Feature branches for long-term tasks improve visibility"
+    ],
+    "improvements": [
+      "Single source of truth for requirements and documentation",
+      "Give percentage of sprint time for technical debt",
+      "Use story points for less personal estimation",
+      "Better task description and planning"
+    ]
+  },
+
+  "metrics": {
+    "launch": [
+      {
+        "icon": "fas fa-star",
+        "value": "3.5→4.5",
+        "label": "App Rating",
+        "highlight": true
+      },
+      {
+        "icon": "fas fa-download",
+        "value": "2M+",
+        "label": "Downloads",
+        "highlight": true
+      },
+      {
+        "icon": "fas fa-bug",
+        "value": "-10%",
+        "label": "Crash Rate",
+        "highlight": true
+      },
+      {
+        "icon": "fas fa-euro-sign",
+        "value": "€85M",
+        "label": "Funding Raised",
+        "highlight": false
+      }
+    ],
+    "quickStats": [
+      {
+        "icon": "fas fa-calendar-alt",
+        "value": "Sep 2017 - Apr 2018",
+        "label": "Duration"
+      },
+      {
+        "icon": "fas fa-user-tie",
+        "value": "Senior Android",
+        "label": "Role"
+      },
+      {
+        "icon": "fas fa-download",
+        "value": "2M+",
+        "label": "Downloads"
+      },
+      {
+        "icon": "fas fa-building",
+        "value": "Temy",
+        "label": "Company"
+      }
+    ]
+  },
+
+  "technologies": {
+    "primary": [
+      {
+        "name": "Java",
+        "category": "language",
+        "proficiency": "expert"
+      },
+      {
+        "name": "MVP Architecture",
+        "category": "architecture",
+        "proficiency": "expert"
+      },
+      {
+        "name": "Clean Architecture",
+        "category": "architecture",
+        "proficiency": "advanced"
+      },
+      {
+        "name": "RxJava",
+        "category": "reactive",
+        "proficiency": "advanced"
+      },
+      {
+        "name": "Room Database",
+        "category": "database",
+        "proficiency": "advanced"
+      }
+    ],
+    "secondary": [
+      {
+        "name": "Retrofit",
+        "category": "networking"
+      },
+      {
+        "name": "Dagger 2",
+        "category": "di"
+      },
+      {
+        "name": "CoordinatorLayout",
+        "category": "ui"
+      },
+      {
+        "name": "Emarsys",
+        "category": "analytics"
+      },
+      {
+        "name": "Crashlytics",
+        "category": "monitoring"
+      },
+      {
+        "name": "Bitrise",
+        "category": "ci-cd"
+      },
+      {
+        "name": "PushWoosh",
+        "category": "notifications"
+      }
+    ],
+    "tools": ["Android Studio", "Git", "Jira", "Confluence", "Charles Proxy", "Swagger"]
+  },
+
+  "lifecycle": {
+    "events": [
+      {
+        "date": "2013-01-01",
+        "displayDate": "2013",
+        "event": "Lesara founded in Berlin",
+        "status": "active"
+      },
+      {
+        "date": "2016-07-01",
+        "displayDate": "July 2016",
+        "event": "Temy started native app development",
+        "status": "active"
+      },
+      {
+        "date": "2017-01-01",
+        "displayDate": "January 2017",
+        "event": "Native apps launched (3.5→4.5 stars)",
+        "status": "active"
+      },
+      {
+        "date": "2017-09-04",
+        "displayDate": "September 2017",
+        "event": "Joined project as Senior Android Developer",
+        "status": "active"
+      },
+      {
+        "date": "2017-12-10",
+        "displayDate": "December 2017",
+        "event": "Berlin business trip - Material Design presentation",
+        "status": "active"
+      },
+      {
+        "date": "2018-04-20",
+        "displayDate": "April 2018",
+        "event": "Completed engagement (off-boarding)",
+        "status": "active"
+      },
+      {
+        "date": "2018-11-09",
+        "displayDate": "November 2018",
+        "event": "Lesara filed for insolvency",
+        "status": "discontinued"
+      },
+      {
+        "date": "2019-03-01",
+        "displayDate": "March 2019",
+        "event": "Lesara ceased operations",
+        "status": "discontinued"
+      }
+    ],
+    "discontinuationReason": "Lesara filed for insolvency in November 2018 due to costly logistics expansion (€40-45M distribution center), operational problems causing delivery delays, unprofitability despite growth, and a last-minute investor withdrawal.",
+    "currentStatus": "discontinued"
+  },
+
+  "links": [
+    {
+      "type": "article",
+      "icon": "fas fa-newspaper",
+      "label": "Temy Case Study - Lesara",
+      "url": "https://www.temy.co/client/lesara/",
+      "source": "Temy",
+      "active": true
+    },
+    {
+      "type": "article",
+      "icon": "fas fa-newspaper",
+      "label": "How Lesara Hit 2M+ Users",
+      "url": "https://www.temy.co/case-study/lesara-europes-hottest-startups/",
+      "source": "Temy",
+      "active": true
+    },
+    {
+      "type": "article",
+      "icon": "fas fa-newspaper",
+      "label": "What Led to Lesara's Bankruptcy",
+      "url": "https://fashionunited.uk/news/business/what-led-to-lesara-s-bankruptcy/2019031842193",
+      "source": "Fashion United",
+      "active": true
+    }
+  ],
+
+  "media": {
+    "screenshots": [],
+    "videos": [],
+    "logos": []
+  },
+
+  "seo": {
+    "title": "Lesara - Senior Android Developer | Denys Honcharenko",
+    "description": "8-month engagement at Lesara - Europe's fastest-growing fashion startup (€85M funded, 2M+ downloads). Created 4-stage architecture migration strategy, rewrote Product List with Sorting/Filtering, introduced Room database, presented Material Design during Berlin business trip.",
+    "keywords": ["Lesara", "E-commerce", "Android", "Fast Fashion", "MVP Architecture", "Clean Architecture", "Room Database", "Temy", "Berlin", "Senior Android Developer", "RxJava"]
+  },
+
+  "relatedProjects": ["veev", "food-network-kitchen"],
+
+  "lastUpdated": "2025-01-22"
+}

@@ -1,0 +1,98 @@
+{
+  "id": "geosatis",
+  "name": "GEOSATIS Victim App",
+  "slug": "geosatis",
+
+  "hero": {
+    "bannerStyle": "gradient",
+    "gradientColors": ["#1e3a5f", "#2d5a87"],
+    "icon": "fas fa-shield-alt",
+    "iconColor": "rgba(255, 255, 255, 0.2)"
+  },
+
+  "featured": true,
+  "featuredBadgeText": "Featured",
+
+  "role": {
+    "title": "Android Developer / Backend Developer / DevOps",
+    "shortTitle": "Full Stack Mobile"
+  },
+
+  "period": {
+    "startDate": "2022-10-01",
+    "endDate": "2025-07-31",
+    "displayText": "Oct 2022 - Jul 2025"
+  },
+
+  "companies": [
+    {
+      "name": "GEOSATIS",
+      "role": "employer",
+      "logo": null
+    }
+  ],
+
+  "description": {
+    "short": "VAP2 mobile app + VAP-DSS backend for domestic violence victim protection with real-time GPS tracking and proximity alerts.",
+    "medium": "Led development of GEOSATIS Victim App ecosystem: VAP2 (KMP mobile app) and VAP-DSS (Spring Boot backend). Features include real-time alarm notifications via GraphQL Subscriptions (1s latency target), emergency video recording with S3 upload, Kafka event streaming, and Firebase Auth. Advocated for GraphQL over unstable Geonitro binary protocol."
+  },
+
+  "impactBadges": [
+    {
+      "icon": "fas fa-user-shield",
+      "text": "~100 Victims Protected",
+      "highlight": true
+    },
+    {
+      "icon": "fas fa-shield-alt",
+      "text": "Samsung Knox",
+      "highlight": true
+    }
+  ],
+
+  "tags": [
+    {
+      "text": "Kotlin",
+      "category": "language"
+    },
+    {
+      "text": "KMP",
+      "category": "technology"
+    },
+    {
+      "text": "GraphQL Subscriptions",
+      "category": "technology"
+    },
+    {
+      "text": "Spring Boot",
+      "category": "technology"
+    },
+    {
+      "text": "Kafka",
+      "category": "technology"
+    },
+    {
+      "text": "Firebase Auth",
+      "category": "technology"
+    }
+  ],
+
+  "achievements": {
+    "preview": [
+      "VAP2 app: KMP + GraphQL Subscriptions (80% shared code, 1s alarm latency)",
+      "VAP-DSS backend: Dual GraphQL API + Kafka + Firebase Auth",
+      "Drove GraphQL adoption over unstable Geonitro binary protocol",
+      "Emergency video recording with S3/MinIO upload (2.5 min)",
+      "Crime prevention success - Seville, Spain incident"
+    ]
+  },
+
+  "detailsUrl": "projects/geosatis.html",
+  "detailsDataUrl": "projects/geosatis_details_data.json",
+
+  "sortOrder": 1,
+  "timelinePosition": {
+    "year": 2022,
+    "quarter": 4
+  }
+}

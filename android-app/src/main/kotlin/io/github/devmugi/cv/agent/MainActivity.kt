@@ -13,6 +13,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import cvagent.career.generated.resources.Res as CareerRes
 import cvagent.shared.generated.resources.Res
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 import io.github.devmugi.arcane.design.components.feedback.ArcaneToastHost
@@ -20,7 +21,9 @@ import io.github.devmugi.arcane.design.components.feedback.ArcaneToastPosition
 import io.github.devmugi.arcane.design.components.feedback.rememberArcaneToastState
 import io.github.devmugi.arcane.design.foundation.theme.ArcaneTheme
 import io.github.devmugi.cv.agent.agent.ChatViewModel
+import io.github.devmugi.cv.agent.career.data.CareerProjectDataLoader
 import io.github.devmugi.cv.agent.career.models.CareerProject
+import io.github.devmugi.cv.agent.career.models.ProjectDataTimeline
 import io.github.devmugi.cv.agent.data.repository.CVRepository
 import io.github.devmugi.cv.agent.domain.models.CVData
 import io.github.devmugi.cv.agent.ui.CareerProjectDetailsScreen
@@ -36,19 +39,20 @@ private enum class Screen {
     ProjectDetails
 }
 
-private val mockProjects = listOf(
-    CareerProject(
-        id = "1",
-        name = "CV Agent App",
-        description = "AI-powered mobile app for exploring CV data with chat interface",
-        companyName = "Personal Project"
-    ),
-    CareerProject(
-        id = "2",
-        name = "E-Commerce Platform",
-        description = "Full-stack marketplace with payment integration and real-time inventory",
-        companyName = "TechCorp Inc"
-    )
+private val projectJsonFiles = listOf(
+    "files/projects/geosatis_details_data.json",
+    "files/projects/mcdonalds_details_data.json",
+    "files/projects/adidas_gmr_details_data.json",
+    "files/projects/lesara_details_data.json",
+    "files/projects/veev_details_data.json",
+    "files/projects/food_network_kitchen_details_data.json",
+    "files/projects/android_school_details_data.json",
+    "files/projects/stoamigo_details_data.json",
+    "files/projects/rifl_media_details_data.json",
+    "files/projects/smildroid_details_data.json",
+    "files/projects/valentina_details_data.json",
+    "files/projects/aitweb_details_data.json",
+    "files/projects/kntu_it_details_data.json"
 )
 
 @OptIn(ExperimentalResourceApi::class)
@@ -66,12 +70,33 @@ class MainActivity : ComponentActivity() {
                 var jsonLoaded by remember { mutableStateOf(false) }
                 var currentScreen by remember { mutableStateOf(Screen.Chat) }
                 var selectedProject by remember { mutableStateOf<CareerProject?>(null) }
+                var careerProjects by remember { mutableStateOf<List<ProjectDataTimeline>>(emptyList()) }
+                var careerProjectsMap by remember { mutableStateOf<Map<String, CareerProject>>(emptyMap()) }
 
                 LaunchedEffect(Unit) {
                     if (!jsonLoaded) {
+                        // Load CV data
                         val jsonBytes = Res.readBytes("files/cv_data.json")
                         val jsonString = jsonBytes.decodeToString()
                         cvData = repository.getCVData(jsonString)
+
+                        // Load career projects
+                        val loader = CareerProjectDataLoader()
+                        val fullProjects = mutableMapOf<String, CareerProject>()
+                        careerProjects = projectJsonFiles.mapNotNull { path ->
+                            try {
+                                val bytes = CareerRes.readBytes(path)
+                                val jsonString = bytes.decodeToString()
+                                val fullProject = loader.loadCareerProject(jsonString)
+                                fullProjects[fullProject.id] = fullProject
+                                loader.loadProjectTimeline(jsonString)
+                            } catch (e: Exception) {
+                                android.util.Log.e("CareerProjects", "Failed to load $path: ${e.message}", e)
+                                null
+                            }
+                        }.sortedByDescending { it.timelinePosition?.year }
+                        careerProjectsMap = fullProjects
+
                         jsonLoaded = true
                     }
                 }
@@ -94,9 +119,9 @@ class MainActivity : ComponentActivity() {
                         }
                         Screen.CareerTimeline -> {
                             CareerProjectsTimelineScreen(
-                                projects = mockProjects,
-                                onProjectClick = { project ->
-                                    selectedProject = project
+                                projects = careerProjects,
+                                onProjectClick = { timelineProject ->
+                                    selectedProject = careerProjectsMap[timelineProject.id]
                                     currentScreen = Screen.ProjectDetails
                                 },
                                 onBackClick = { currentScreen = Screen.Chat }

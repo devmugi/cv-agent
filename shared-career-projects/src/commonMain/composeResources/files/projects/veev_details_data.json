@@ -1,0 +1,763 @@
+{
+  "id": "veev",
+  "name": "Veev Smart Home",
+  "slug": "veev",
+  "tagline": "Smart Home Platform for Prefab Construction",
+
+  "hero": {
+    "bannerStyle": "gradient",
+    "gradientColors": ["#00897b", "#26a69a"],
+    "icon": "fas fa-home",
+    "backgroundPattern": true
+  },
+
+  "meta": {
+    "featured": true,
+    "status": "completed",
+    "visibility": "public"
+  },
+
+  "overview": {
+    "company": "Temy",
+    "client": "Adomi / Veev",
+    "product": "Veev Digital Home",
+    "role": "Android Developer / Backend Developer",
+    "roleDetails": "Wall Switch Android app, AWS IoT backend, Terraform IaC, Web Admin panel",
+    "period": {
+      "startDate": "2017-10-31",
+      "endDate": "2020-02-29",
+      "displayText": "Oct 2017 - Feb 2020",
+      "durationMonths": 28
+    },
+    "periodDetails": {
+      "partTime": {
+        "startDate": "2017-10-31",
+        "endDate": "2018-04-29",
+        "displayText": "Oct 2017 - Apr 2018",
+        "description": "Part-time architecture consulting, code reviews, team mentoring"
+      },
+      "fullTime": {
+        "startDate": "2018-04-30",
+        "endDate": "2020-02-29",
+        "displayText": "Apr 2018 - Feb 2020",
+        "description": "Full-time development: Android, AWS backend, DevOps"
+      }
+    },
+    "location": "Ukraine (Remote)",
+    "launchDate": null,
+    "productPrice": null
+  },
+
+  "companies": [
+    {
+      "name": "Temy",
+      "role": "employer",
+      "description": "Software development company partnering with Veev since 2017",
+      "logo": null,
+      "website": "https://temy.co"
+    },
+    {
+      "name": "Adomi / Veev",
+      "role": "client",
+      "description": "$1B+ valued prefab smart home construction company (Bay Area). Veev Digital Home was the smart home technology component.",
+      "logo": null,
+      "website": null
+    }
+  ],
+
+  "products": {
+    "wallApp": {
+      "name": "WallApp",
+      "description": "Wall-mounted Android tablets in kiosk mode for smart home control",
+      "details": [
+        "Mounted permanently on walls in every room",
+        "Runs in Device Owner kiosk mode (cannot be closed)",
+        "Ethernet connectivity for reliability",
+        "Heartbeat monitoring every 1 minute via OpenHAB items",
+        "Installation Identifier for device tracking",
+        "Silent APK updates via custom mechanism",
+        "Debug menu with file logging for remote troubleshooting"
+      ]
+    },
+    "mobileApp": {
+      "name": "Mobile App",
+      "description": "iOS/Android app for homeowners to control their smart home remotely",
+      "details": [
+        "Full smart home control from personal devices",
+        "MQTT over WebSocket for real-time state sync",
+        "Cognito authentication with session management",
+        "Push notifications via Firebase and Pinpoint",
+        "AppSync GraphQL for data synchronization"
+      ]
+    }
+  },
+
+  "description": {
+    "short": "Two Android apps (WallApp + Mobile) and AWS IoT backend for $1B+ prefab smart home startup in Silicon Valley.",
+    "full": "Veev Digital Home (originally Adomi) was the smart home technology embedded into Veev's prefab construction homes. The system had two Android applications: WallApp (kiosk tablets mounted on walls) and Mobile App (for homeowners). I developed both Android apps, AWS IoT backend services (Lambda, IoT Core, AppSync), Terraform infrastructure, React/Redux web admin panel, and Amazon Alexa voice integration. Implemented heartbeat monitoring, logging infrastructure (Logz.io ELK), and automated installation tools. The system runs in thousands of homes in the Bay Area.",
+    "howItWorked": [
+      {
+        "step": 1,
+        "title": "WallApp (Kiosk Tablets)",
+        "description": "Android tablets mounted in walls running Device Owner kiosk mode, heartbeat monitoring every 1min, Installation Identifier tracking"
+      },
+      {
+        "step": 2,
+        "title": "Mobile App",
+        "description": "iOS/Android app for homeowners with Cognito auth, MQTT over WebSocket, AppSync sync"
+      },
+      {
+        "step": 3,
+        "title": "OpenHAB Local Hub",
+        "description": "OpenHAB server with Z-Wave and ArtNET DMX controllers, heartbeat items for WallApp monitoring"
+      },
+      {
+        "step": 4,
+        "title": "AWS IoT Cloud",
+        "description": "Lambda functions, IoT Core (MQTT), AppSync (GraphQL), API Gateway - all managed via Terraform"
+      },
+      {
+        "step": 5,
+        "title": "Monitoring & Logging",
+        "description": "Logz.io ELK stack, heartbeat events, Installation Identifier tracking, S3 log storage"
+      },
+      {
+        "step": 6,
+        "title": "Voice Control",
+        "description": "Amazon Alexa Smart Home Skill, Lex bot for NLP, Dialogflow integration"
+      }
+    ]
+  },
+
+  "challenge": {
+    "context": "MQTT authentication with AWS Cognito was a major technical challenge. Standard approaches didn't work for IoT device connections.",
+    "response": "After 2+ months of investigation (ADO-134), including direct calls with AWS Support and cloud consultants, implemented custom solution using STS AssumeRoleWithWebIdentity for Cognito-authenticated MQTT over WebSocket.",
+    "details": [
+      "MQTT over WebSocket authentication with Cognito - 2+ month investigation",
+      "Custom AWS IoT authorizer development attempts",
+      "IAM role permissions debugging for multi-tenant IoT access",
+      "WiFi instability on wall-mounted tablets - solved with Ethernet in new installations",
+      "Kiosk mode implementation for locked-down user experience",
+      "OpenHAB binding development for custom device types"
+    ]
+  },
+
+  "achievements": [
+    {
+      "id": "wall-app",
+      "title": "WallApp - Kiosk Tablets",
+      "category": "technical",
+      "icon": "fas fa-tablet-alt",
+      "problem": "Every room needed a dedicated smart home control interface that couldn't be closed or tampered with.",
+      "solution": "Built Android WallApp running in Device Owner kiosk mode on wall-mounted tablets (Motorola G4, 7-inch devices) with Ethernet connectivity and heartbeat monitoring.",
+      "details": [
+        "Android Device Owner provisioning for locked kiosk mode",
+        "Heartbeat monitoring every 1 minute via OpenHAB items",
+        "Installation Identifier for unique device tracking",
+        "Ethernet connection for reliability (fixed WiFi instability)",
+        "Works offline without cloud connection via local OpenHAB hub",
+        "Full-screen gesture controls for lights, blinds, climate, scenes",
+        "Silent APK installation on 7-inch devices (AMA-256)",
+        "Debug menu with file logging and sharing for troubleshooting",
+        "Screen dimming and technician/control screen modes"
+      ],
+      "impact": {
+        "text": "Deployed in thousands of homes",
+        "metric": "1000+",
+        "metricType": "count"
+      },
+      "highlight": true
+    },
+    {
+      "id": "mobile-app",
+      "title": "Mobile App for Homeowners",
+      "category": "technical",
+      "icon": "fas fa-mobile-alt",
+      "problem": "Homeowners needed remote access to control their smart home from personal devices.",
+      "solution": "Built Android mobile app with Cognito authentication, MQTT real-time sync, and AppSync GraphQL integration.",
+      "details": [
+        "Cognito user session management (expiration handling)",
+        "MQTT over WebSocket with Cognito credentials",
+        "AppSync GraphQL for real-time state synchronization",
+        "Room database for offline caching (AMA-131)",
+        "Clean Architecture layers separation",
+        "Push notifications via Firebase and Pinpoint",
+        "Blind control UI component (AMA-243)",
+        "Doorbell video call notifications",
+        "Environment switching for Dev/QA/Prod"
+      ],
+      "impact": {
+        "text": "Remote home control for all homeowners",
+        "metric": null,
+        "metricType": null
+      },
+      "highlight": true
+    },
+    {
+      "id": "mqtt-auth",
+      "title": "AWS IoT MQTT Authentication",
+      "category": "architecture",
+      "icon": "fas fa-lock",
+      "problem": "Needed secure MQTT connections from mobile apps authenticated via Cognito with proper IAM permissions per user/house.",
+      "solution": "After 2+ months of R&D (ADO-134), implemented MQTT over WebSocket using STS AssumeRoleWithWebIdentity with Cognito tokens.",
+      "details": [
+        "Custom AWS IoT authorizer attempts (Lambda-based)",
+        "STS AssumeRoleWithWebIdentity integration",
+        "Cognito user pools with IoT policy attachment",
+        "Per-house topic permissions via IAM policies",
+        "Direct collaboration with AWS Support and cloud consultants",
+        "Created Java test applications for MQTT debugging"
+      ],
+      "impact": {
+        "text": "Secure multi-tenant IoT messaging",
+        "metric": null,
+        "metricType": null
+      },
+      "highlight": true
+    },
+    {
+      "id": "aws-iot",
+      "title": "AWS IoT Backend Development",
+      "category": "architecture",
+      "icon": "fas fa-cloud",
+      "problem": "Smart home system needed scalable cloud infrastructure for device state sync and remote control.",
+      "solution": "Built serverless backend on AWS with Lambda, IoT Core, AppSync, API Gateway, and DynamoDB - all managed via Terraform.",
+      "details": [
+        "AWS Lambda functions (Node.js) for event processing",
+        "AWS IoT Core for MQTT device messaging",
+        "AWS AppSync (GraphQL) for real-time state sync",
+        "Amazon API Gateway for REST endpoints",
+        "Amazon DynamoDB for device state storage",
+        "Amazon Cognito for user authentication",
+        "Amazon Pinpoint for push notifications",
+        "Amazon Lex for natural language processing"
+      ],
+      "impact": {
+        "text": "Serverless architecture at scale",
+        "metric": null,
+        "metricType": null
+      },
+      "highlight": true
+    },
+    {
+      "id": "terraform",
+      "title": "Terraform Infrastructure as Code",
+      "category": "devops",
+      "icon": "fas fa-cogs",
+      "problem": "Manual AWS setup across Dev/QA/Prod environments was error-prone and time-consuming.",
+      "solution": "Implemented complete infrastructure as code using Terraform for all AWS resources.",
+      "details": [
+        "Terraform modules for Lambda, API Gateway, IoT, Cognito",
+        "AppSync GraphQL API infrastructure",
+        "Multi-environment deployment (Dev, QA, Production)",
+        "Collaboration with AllCloud consultants for best practices",
+        "VPC configuration and security groups",
+        "Automated provisioning with Ansible"
+      ],
+      "impact": {
+        "text": "Reproducible infrastructure deployments",
+        "metric": null,
+        "metricType": null
+      },
+      "highlight": true
+    },
+    {
+      "id": "web-admin",
+      "title": "React/Redux Web Admin Panel",
+      "category": "technical",
+      "icon": "fas fa-desktop",
+      "problem": "Needed admin interface for house configuration, location management, and device setup.",
+      "solution": "Built web admin panel using React and Redux for location import/export and house management.",
+      "details": [
+        "React/Redux frontend application",
+        "Location export/import functionality",
+        "Copy locations between houses",
+        "Lambda backend for admin operations",
+        "AWS API Gateway REST endpoints"
+      ],
+      "impact": {
+        "text": "Streamlined house configuration",
+        "metric": null,
+        "metricType": null
+      },
+      "highlight": false
+    },
+    {
+      "id": "apm-automation",
+      "title": "APM Automation Tool",
+      "category": "tooling",
+      "icon": "fas fa-robot",
+      "problem": "Manual house installation configuration was tedious and error-prone for installers.",
+      "solution": "Created automation tool for generating OpenHAB sitemaps, device groups, and configuration files.",
+      "details": [
+        "Google Sheets-based configuration input",
+        "Automatic sitemap generation for OpenHAB",
+        "Device grouping logic (room-based, type-based)",
+        "Configuration file export for installers",
+        "Desktop UI for editing groups"
+      ],
+      "impact": {
+        "text": "Reduced installation time significantly",
+        "metric": null,
+        "metricType": null
+      },
+      "highlight": false
+    },
+    {
+      "id": "alexa",
+      "title": "Amazon Alexa Integration",
+      "category": "technical",
+      "icon": "fas fa-microphone-alt",
+      "problem": "Users wanted voice control for their smart home devices.",
+      "solution": "Integrated Amazon Alexa Smart Home Skill with full voice control of lights, climate, locks, and more.",
+      "details": [
+        "Alexa Smart Home Skill development",
+        "Voice control for all device types",
+        "Integration with AWS IoT backend",
+        "Amazon Lex for natural language processing"
+      ],
+      "impact": {
+        "text": "Voice control for entire home",
+        "metric": null,
+        "metricType": null
+      },
+      "highlight": true
+    },
+    {
+      "id": "openhab",
+      "title": "OpenHAB Smart Home Server",
+      "category": "technical",
+      "icon": "fas fa-server",
+      "problem": "Needed local hub for device communication that works even when cloud is unavailable.",
+      "solution": "Configured and extended OpenHAB server with custom bindings for Z-Wave and DMX devices.",
+      "details": [
+        "OpenHAB server configuration and deployment",
+        "Custom binding development attempts",
+        "Z-Wave device integration",
+        "ArtNET DMX lighting control",
+        "Sitemap generation for device groups",
+        "Cloud sync via SSE (Server-Sent Events)"
+      ],
+      "impact": {
+        "text": "Reliable local device control",
+        "metric": null,
+        "metricType": null
+      },
+      "highlight": false
+    },
+    {
+      "id": "ci-cd",
+      "title": "CI/CD Pipeline Setup",
+      "category": "devops",
+      "icon": "fas fa-sync-alt",
+      "problem": "Manual builds and deployments slowed down development cycle.",
+      "solution": "Set up Bitbucket Pipelines for Android builds with automatic version incrementing and APK publishing.",
+      "details": [
+        "Bitbucket Pipelines configuration",
+        "Automatic build number incrementing",
+        "APK publishing to Bitbucket downloads",
+        "Nexus repository setup for artifacts",
+        "Firebase project migration to Google Play account"
+      ],
+      "impact": {
+        "text": "Automated build and deploy process",
+        "metric": null,
+        "metricType": null
+      },
+      "highlight": false
+    },
+    {
+      "id": "push-notifications",
+      "title": "Push Notification System",
+      "category": "technical",
+      "icon": "fas fa-bell",
+      "problem": "Users needed real-time alerts for doorbell, security events, and system status.",
+      "solution": "Implemented push notifications using both Firebase Cloud Messaging and AWS Pinpoint.",
+      "details": [
+        "Firebase Cloud Messaging integration",
+        "AWS Pinpoint for iOS and Android",
+        "Android notification channels (8.0+)",
+        "Environment-aware token management",
+        "Doorbell video call notifications"
+      ],
+      "impact": {
+        "text": "Real-time home alerts",
+        "metric": null,
+        "metricType": null
+      },
+      "highlight": false
+    },
+    {
+      "id": "monitoring-logging",
+      "title": "Monitoring & Logging Infrastructure",
+      "category": "devops",
+      "icon": "fas fa-chart-line",
+      "problem": "Needed comprehensive monitoring for thousands of WallApp installations and troubleshooting capabilities.",
+      "solution": "Designed multi-tier logging architecture with heartbeat monitoring, Logz.io ELK stack, and Installation Identifier tracking.",
+      "details": [
+        "Heartbeat system - 1 minute intervals via OpenHAB items",
+        "Installation Identifier for unique device tracking (persists across upgrades)",
+        "Logz.io ELK stack for centralized log analysis",
+        "Multi-tier storage: device → home server → S3 → ELK",
+        "WallApp online status monitoring per house",
+        "Application version tracking across installations",
+        "Sitemap tracking for each installation",
+        "File logging with debug menu sharing"
+      ],
+      "impact": {
+        "text": "Real-time visibility into 1000+ installations",
+        "metric": null,
+        "metricType": null
+      },
+      "highlight": false
+    },
+    {
+      "id": "scenes",
+      "title": "Smart Home Scenes",
+      "category": "technical",
+      "icon": "fas fa-magic",
+      "problem": "Users wanted one-tap automation for complex device combinations (e.g., 'Movie mode').",
+      "solution": "Implemented scenes support allowing grouped device actions triggered by single button.",
+      "details": [
+        "Scene specification design (Dec 2018)",
+        "UI components for scene activation",
+        "Backend integration for scene execution",
+        "OpenHAB scene support"
+      ],
+      "impact": {
+        "text": "One-tap home automation",
+        "metric": null,
+        "metricType": null
+      },
+      "highlight": false
+    }
+  ],
+
+  "standout": {
+    "title": "Why This Project Stands Out",
+    "items": [
+      {
+        "icon": "fas fa-building",
+        "title": "$1B+ Startup",
+        "description": "Part of billion-dollar valued construction tech company"
+      },
+      {
+        "icon": "fas fa-home",
+        "title": "Thousands of Homes",
+        "description": "System deployed at scale in Bay Area"
+      },
+      {
+        "icon": "fas fa-layer-group",
+        "title": "Full Stack IoT",
+        "description": "Android + AWS + Terraform + React + Alexa"
+      },
+      {
+        "icon": "fas fa-clock",
+        "title": "28 Months",
+        "description": "Long-term engagement from architecture to production"
+      }
+    ]
+  },
+
+  "team": {
+    "totalSize": 15,
+    "structure": [
+      {
+        "team": "Temy - Android",
+        "size": 2,
+        "notes": "Me (Android lead + AWS) + 1 Android developer (mentored)",
+        "myRole": true
+      },
+      {
+        "team": "Temy - Backend/Server",
+        "size": 3,
+        "notes": "OpenHAB, Lambda, cloud infrastructure",
+        "myRole": false
+      },
+      {
+        "team": "Temy - ML Team",
+        "size": 3,
+        "notes": "Predictive automation features",
+        "myRole": false
+      },
+      {
+        "team": "Temy - iOS",
+        "size": 1,
+        "notes": "iOS mobile app",
+        "myRole": false
+      },
+      {
+        "team": "Temy - QA",
+        "size": 1,
+        "notes": "Testing across platforms",
+        "myRole": false
+      },
+      {
+        "team": "AllCloud Consultants",
+        "size": 2,
+        "notes": "AWS/Terraform specialists",
+        "myRole": false
+      },
+      {
+        "team": "Veev - Product & Management",
+        "size": 3,
+        "notes": "Israel/US based product team",
+        "myRole": false
+      }
+    ],
+    "methodology": "Agile/Scrum with 2-week sprints",
+    "collaboration": "Bi-weekly demos, direct collaboration with Veev team in Israel and US, regular AllCloud consulting calls"
+  },
+
+  "metrics": {
+    "launch": [
+      {
+        "icon": "fas fa-home",
+        "value": "1000+",
+        "label": "Homes Deployed",
+        "highlight": true
+      },
+      {
+        "icon": "fas fa-calendar-alt",
+        "value": "28",
+        "label": "Months Duration",
+        "highlight": false
+      },
+      {
+        "icon": "fas fa-dollar-sign",
+        "value": "$1B+",
+        "label": "Company Valuation",
+        "highlight": true
+      },
+      {
+        "icon": "fas fa-tablet-alt",
+        "value": "5+",
+        "label": "Tablets per Home",
+        "highlight": false
+      }
+    ],
+    "quickStats": [
+      {
+        "icon": "fas fa-calendar-alt",
+        "value": "Oct 2017 - Feb 2020",
+        "label": "Duration"
+      },
+      {
+        "icon": "fas fa-user-tie",
+        "value": "Android / Backend",
+        "label": "Role"
+      },
+      {
+        "icon": "fas fa-home",
+        "value": "1000+",
+        "label": "Homes Deployed"
+      },
+      {
+        "icon": "fas fa-building",
+        "value": "Temy",
+        "label": "Company"
+      }
+    ]
+  },
+
+  "technologies": {
+    "primary": [
+      {
+        "name": "Kotlin",
+        "category": "language",
+        "proficiency": "expert"
+      },
+      {
+        "name": "AWS Lambda",
+        "category": "backend",
+        "proficiency": "advanced"
+      },
+      {
+        "name": "AWS IoT Core",
+        "category": "iot",
+        "proficiency": "advanced"
+      },
+      {
+        "name": "Terraform",
+        "category": "devops",
+        "proficiency": "advanced"
+      },
+      {
+        "name": "Android Kiosk Mode",
+        "category": "android",
+        "proficiency": "expert"
+      }
+    ],
+    "secondary": [
+      {
+        "name": "AWS AppSync",
+        "category": "backend"
+      },
+      {
+        "name": "Amazon API Gateway",
+        "category": "backend"
+      },
+      {
+        "name": "Amazon DynamoDB",
+        "category": "database"
+      },
+      {
+        "name": "Amazon Cognito",
+        "category": "auth"
+      },
+      {
+        "name": "Amazon Lex",
+        "category": "nlp"
+      },
+      {
+        "name": "Amazon Pinpoint",
+        "category": "notifications"
+      },
+      {
+        "name": "Amazon Alexa SDK",
+        "category": "voice"
+      },
+      {
+        "name": "OpenHAB",
+        "category": "iot"
+      },
+      {
+        "name": "React",
+        "category": "frontend"
+      },
+      {
+        "name": "Redux",
+        "category": "frontend"
+      },
+      {
+        "name": "MQTT",
+        "category": "iot"
+      },
+      {
+        "name": "Z-Wave",
+        "category": "iot"
+      },
+      {
+        "name": "ArtNET DMX",
+        "category": "iot"
+      },
+      {
+        "name": "Room Database",
+        "category": "android"
+      },
+      {
+        "name": "Dagger 2",
+        "category": "android"
+      },
+      {
+        "name": "Dialogflow",
+        "category": "voice"
+      },
+      {
+        "name": "SSE (Server-Sent Events)",
+        "category": "backend"
+      },
+      {
+        "name": "Logz.io",
+        "category": "monitoring"
+      },
+      {
+        "name": "AndroidX",
+        "category": "android"
+      }
+    ],
+    "tools": ["Android Studio", "AWS Console", "Terraform", "Bitbucket Pipelines", "Nexus", "Git", "Jira", "Logz.io", "Clockify", "Eclipse (OpenHAB dev)", "Ansible"]
+  },
+
+  "lifecycle": {
+    "events": [
+      {
+        "date": "2017-10-31",
+        "displayDate": "October 2017",
+        "event": "First call - project started (part-time)",
+        "status": "active"
+      },
+      {
+        "date": "2018-04-30",
+        "displayDate": "April 2018",
+        "event": "Switched to full-time development",
+        "status": "active"
+      },
+      {
+        "date": "2018-08-01",
+        "displayDate": "August 2018",
+        "event": "Production environment deployed",
+        "status": "active"
+      },
+      {
+        "date": "2020-02-29",
+        "displayDate": "February 2020",
+        "event": "Completed engagement",
+        "status": "active"
+      },
+      {
+        "date": "2022-03-01",
+        "displayDate": "March 2022",
+        "event": "Veev raised $400M Series D ($1B+ valuation)",
+        "status": "active"
+      },
+      {
+        "date": "2023-11-27",
+        "displayDate": "November 2023",
+        "event": "Veev collapsed, entered liquidation",
+        "status": "discontinued"
+      },
+      {
+        "date": "2023-12-29",
+        "displayDate": "December 2023",
+        "event": "Lennar acquired Veev assets",
+        "status": "active"
+      }
+    ],
+    "discontinuationReason": "Veev collapsed in November 2023 after a last-minute capital-raising cancellation. Lennar acquired the assets in December 2023. The smart home technology continues to operate in thousands of existing homes.",
+    "currentStatus": "acquired"
+  },
+
+  "links": [
+    {
+      "type": "article",
+      "icon": "fas fa-newspaper",
+      "label": "Temy Case Study - The Veev Series",
+      "url": "https://www.temy.co/case-study/the-veev-series/",
+      "source": "Temy",
+      "active": true
+    },
+    {
+      "type": "article",
+      "icon": "fas fa-newspaper",
+      "label": "Why Did Veev Fail (Builder Online)",
+      "url": "https://www.builderonline.com/money/capital/explainer-why-did-veev-fail-and-what-happens-next_o",
+      "source": "Builder Online",
+      "active": true
+    },
+    {
+      "type": "article",
+      "icon": "fas fa-newspaper",
+      "label": "Lennar Acquires Veev",
+      "url": "https://therealdeal.com/san-francisco/2023/12/29/lennar-acquires-struggling-proptech-veev-at-huge-discount/",
+      "source": "The Real Deal",
+      "active": true
+    }
+  ],
+
+  "media": {
+    "screenshots": [],
+    "videos": [],
+    "logos": []
+  },
+
+  "seo": {
+    "title": "Veev Smart Home - Android Kiosk & AWS IoT Development | Denys Honcharenko",
+    "description": "28-month engagement developing Veev Digital Home smart home system - Android kiosk tablets, AWS IoT backend (Lambda, IoT Core, AppSync), Terraform IaC, React admin panel, and Amazon Alexa integration for $1B+ prefab construction startup. Deployed in 1000+ Bay Area homes.",
+    "keywords": ["Veev", "Smart Home", "AWS IoT", "Lambda", "AppSync", "Terraform", "Alexa", "Android Kiosk", "IoT", "Temy", "Adomi", "OpenHAB", "MQTT"]
+  },
+
+  "relatedProjects": ["geosatis", "food-network-kitchen"],
+
+  "lastUpdated": "2025-01-22"
+}

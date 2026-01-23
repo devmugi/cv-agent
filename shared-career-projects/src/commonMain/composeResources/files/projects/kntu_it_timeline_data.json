@@ -1,0 +1,45 @@
+{
+  "id": "kntu-it",
+  "name": "KNTU IT Infrastructure",
+  "slug": "kntu-it",
+
+  "hero": {
+    "bannerStyle": "gradient",
+    "gradientColors": ["#1976d2", "#2196f3"],
+    "icon": "fas fa-server",
+    "backgroundPattern": true
+  },
+
+  "featured": true,
+  "featuredBadgeText": "6 Years",
+
+  "role": {
+    "title": "System Administrator / DevOps",
+    "shortTitle": "SysAdmin / DevOps"
+  },
+
+  "period": {
+    "startDate": "2006-08-01",
+    "endDate": "2012-08-31",
+    "displayText": "Aug 2006 - Aug 2012"
+  },
+
+  "location": "Kherson, Ukraine",
+
+  "description": {
+    "short": "University IT infrastructure: 500+ VMs on XEN, 100+ servers, 1000+ users, URAN network.",
+    "tagline": "Enterprise Campus Infrastructure & Private Cloud"
+  },
+
+  "highlights": [
+    "500+ VMs on XEN private cloud",
+    "100+ Windows/Linux/Solaris servers",
+    "1000+ network users"
+  ],
+
+  "technologies": ["XEN", "Linux", "Solaris", "Windows Server", "VPN", "PHP"],
+
+  "links": {
+    "details": "projects/kntu-it.html"
+  }
+}

@@ -1,0 +1,45 @@
+{
+  "id": "food-network-kitchen",
+  "name": "Food Network Kitchen",
+  "slug": "food-network-kitchen",
+
+  "hero": {
+    "bannerStyle": "gradient",
+    "gradientColors": ["#d32f2f", "#ff5722"],
+    "icon": "fas fa-utensils",
+    "backgroundPattern": true
+  },
+
+  "featured": true,
+  "featuredBadgeText": "Discovery",
+
+  "role": {
+    "title": "Android Developer",
+    "shortTitle": "Android Developer"
+  },
+
+  "period": {
+    "startDate": "2020-10-01",
+    "endDate": "2021-09-30",
+    "displayText": "Oct 2020 - Sep 2021"
+  },
+
+  "location": "Ukraine (Remote)",
+
+  "description": {
+    "short": "Cooking app with live classes and recipes for Food Network on Fire TV.",
+    "tagline": "Live Cooking Classes & Fire TV Integration"
+  },
+
+  "highlights": [
+    "Fire TV image caching optimization",
+    "Long video playback fixes",
+    "RecyclerView ViewHolder rework"
+  ],
+
+  "technologies": ["Kotlin", "Android TV", "Fire TV", "Chromecast", "ExoPlayer"],
+
+  "links": {
+    "details": "projects/food-network-kitchen.html"
+  }
+}

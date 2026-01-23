@@ -1,0 +1,84 @@
+{
+  "id": "veev",
+  "name": "Veev Smart Home",
+  "slug": "veev",
+
+  "hero": {
+    "bannerStyle": "gradient",
+    "gradientColors": ["#00897b", "#26a69a"],
+    "icon": "fas fa-home",
+    "backgroundPattern": true
+  },
+
+  "featured": true,
+  "featuredBadgeText": "Veev ($1B)",
+
+  "role": {
+    "title": "Android Developer / Backend Developer",
+    "shortTitle": "Android / Backend"
+  },
+
+  "period": {
+    "startDate": "2017-10-31",
+    "endDate": "2020-02-29",
+    "displayText": "Oct 2017 - Feb 2020"
+  },
+
+  "location": "Ukraine (Remote)",
+
+  "companies": [
+    { "name": "Temy" },
+    { "name": "Adomi/Veev" }
+  ],
+
+  "description": {
+    "short": "Two Android apps (WallApp + Mobile), AWS IoT backend (Lambda, IoT Core, AppSync), Terraform IaC for 1000+ Bay Area homes.",
+    "medium": "28-month engagement building smart home platform: WallApp (kiosk tablets), Mobile App (homeowner control), AWS serverless backend, Terraform infrastructure, monitoring/logging (Logz.io), and Alexa integration for $1B+ prefab startup.",
+    "tagline": "Smart Home Platform for Prefab Construction"
+  },
+
+  "impactBadges": [
+    {
+      "icon": "fas fa-home",
+      "text": "1000+ Homes"
+    },
+    {
+      "icon": "fas fa-calendar-alt",
+      "text": "28 Months"
+    },
+    {
+      "icon": "fas fa-dollar-sign",
+      "text": "$1B+ Valuation"
+    }
+  ],
+
+  "tags": [
+    { "text": "Kotlin" },
+    { "text": "AWS IoT" },
+    { "text": "Terraform" },
+    { "text": "AppSync" },
+    { "text": "Logz.io" },
+    { "text": "Room" }
+  ],
+
+  "achievements": {
+    "preview": [
+      "WallApp + Mobile App (two Android products)",
+      "AWS IoT MQTT auth (2+ month R&D challenge)",
+      "Heartbeat monitoring + Logz.io logging",
+      "Terraform IaC for all AWS infrastructure"
+    ]
+  },
+
+  "highlights": [
+    "WallApp + Mobile App for homeowners",
+    "AWS IoT backend (Lambda, AppSync, MQTT)",
+    "Monitoring (Logz.io), Terraform, Alexa"
+  ],
+
+  "technologies": ["Kotlin", "AWS Lambda", "AWS IoT Core", "AppSync", "Terraform", "OpenHAB", "Room", "Logz.io", "Dagger 2"],
+
+  "links": {
+    "details": "projects/veev.html"
+  }
+}

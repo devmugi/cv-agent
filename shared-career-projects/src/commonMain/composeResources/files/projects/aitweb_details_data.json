@@ -1,0 +1,383 @@
+{
+  "id": "aitweb",
+  "name": "Aitweb",
+  "slug": "aitweb",
+  "tagline": "EduTech Web Development & Hosting",
+
+  "hero": {
+    "bannerStyle": "gradient",
+    "gradientColors": ["#43a047", "#66bb6a"],
+    "icon": "fas fa-globe",
+    "backgroundPattern": true
+  },
+
+  "meta": {
+    "featured": false,
+    "status": "completed",
+    "visibility": "public"
+  },
+
+  "overview": {
+    "company": "Aitweb (Own Company)",
+    "client": "KNTU, Local Companies",
+    "product": "Web Development & Hosting Services",
+    "role": "Founder / Web Developer",
+    "roleDetails": "Owner of 10-person web studio, eZ Publish development, hosting services",
+    "period": {
+      "startDate": "2011-01-01",
+      "endDate": "2012-12-31",
+      "displayText": "2011 - 2012",
+      "durationMonths": 24
+    },
+    "location": "Kherson, Ukraine",
+    "launchDate": "2011",
+    "productPrice": null
+  },
+
+  "companies": [
+    {
+      "name": "Aitweb",
+      "role": "owner",
+      "description": "Web studio specializing in eZ Publish CMS development and hosting services for universities and local businesses in Kherson.",
+      "logo": null,
+      "website": null
+    },
+    {
+      "name": "Kherson National Technical University (KNTU)",
+      "role": "primary_client",
+      "description": "Major university in Kherson, primary client for web development and hosting infrastructure.",
+      "logo": null,
+      "website": "https://kntu.net.ua/"
+    }
+  ],
+
+  "description": {
+    "short": "Web studio building 50+ landing pages using eZ Publish CMS for universities and local companies, with hosting services.",
+    "full": "Aitweb was a web studio I founded and operated in Kherson, Ukraine from 2011-2012. With a team of 10 employees, we specialized in developing landing pages and web applications using eZ Publish - an enterprise-grade PHP CMS framework. Our primary client was Kherson National Technical University (KNTU), for whom we maintained the university's web ecosystem and various departmental subdomains. We also provided hosting services through the URAN (Ukrainian Research and Academic Network) infrastructure. The studio built 50+ landing pages for local companies while also supporting the Kherson State Maritime Academy's Moodle e-learning platform.",
+    "howItWorked": [
+      {
+        "step": 1,
+        "title": "Client Consultation",
+        "description": "Meet with local companies and institutions to understand web presence needs"
+      },
+      {
+        "step": 2,
+        "title": "eZ Publish Development",
+        "description": "Build custom landing pages and portals using enterprise eZ Publish CMS"
+      },
+      {
+        "step": 3,
+        "title": "Hosting Setup",
+        "description": "Deploy on URAN academic network infrastructure for high-speed connectivity"
+      },
+      {
+        "step": 4,
+        "title": "Maintenance",
+        "description": "Ongoing support, updates, and hosting management"
+      }
+    ]
+  },
+
+  "challenge": {
+    "context": "Local universities and businesses in Kherson needed professional web presence and reliable hosting, but lacked technical expertise for enterprise-grade solutions.",
+    "response": "Founded web studio with 10 employees, specialized in eZ Publish CMS which was more sophisticated than typical WordPress/Joomla shops, and leveraged academic network infrastructure for hosting.",
+    "details": [
+      "Built and managed 10-person team",
+      "Specialized in enterprise eZ Publish CMS",
+      "Integrated with URAN academic network",
+      "Supported university IT infrastructure",
+      "Provided hosting for e-learning platforms"
+    ]
+  },
+
+  "achievements": [
+    {
+      "id": "landing-pages",
+      "title": "50+ Landing Pages Built",
+      "category": "delivery",
+      "icon": "fas fa-file-code",
+      "problem": "Local companies needed professional web presence but lacked technical resources.",
+      "solution": "Delivered 50+ landing pages using eZ Publish CMS for local businesses and institutions.",
+      "details": [
+        "50+ landing pages for local companies",
+        "eZ Publish CMS implementation",
+        "Custom content architecture",
+        "Responsive design",
+        "SEO optimization"
+      ],
+      "impact": {
+        "text": "50+ websites delivered",
+        "metric": "50+",
+        "metricType": "count"
+      },
+      "highlight": true
+    },
+    {
+      "id": "ez-publish",
+      "title": "eZ Publish CMS Specialization",
+      "category": "technical",
+      "icon": "fas fa-code",
+      "problem": "Most local studios used basic WordPress/Joomla, lacking enterprise capabilities.",
+      "solution": "Specialized in eZ Publish - enterprise PHP framework with advanced content modeling.",
+      "details": [
+        "eZ Publish enterprise CMS",
+        "PHP/Symfony-based architecture",
+        "Complex content model customization",
+        "Extendable application framework",
+        "University portal development (kntu.net.ua)"
+      ],
+      "impact": {
+        "text": "Enterprise-grade web solutions",
+        "metric": null,
+        "metricType": null
+      },
+      "highlight": true
+    },
+    {
+      "id": "team-leadership",
+      "title": "10-Person Team Management",
+      "category": "leadership",
+      "icon": "fas fa-users",
+      "problem": "Scaling web development services required building and managing a team.",
+      "solution": "Built and led a 10-person web studio handling development, design, and hosting.",
+      "details": [
+        "Founded and owned web studio",
+        "Hired and managed 10 employees",
+        "Project management and client relations",
+        "Technical leadership and code review"
+      ],
+      "impact": {
+        "text": "10-person team built",
+        "metric": "10",
+        "metricType": "count"
+      },
+      "highlight": true
+    },
+    {
+      "id": "hosting-infrastructure",
+      "title": "Academic Network Hosting",
+      "category": "infrastructure",
+      "icon": "fas fa-server",
+      "problem": "Universities needed reliable, high-speed hosting for web portals and e-learning.",
+      "solution": "Provided hosting services through URAN academic network with dedicated IP infrastructure.",
+      "details": [
+        "URAN (Ukrainian Research and Academic Network) integration",
+        "Dedicated IP block management",
+        "KNTU web ecosystem hosting",
+        "KSMA Moodle e-learning platform hosting",
+        "High-speed academic backbone connectivity"
+      ],
+      "impact": {
+        "text": "University infrastructure hosting",
+        "metric": null,
+        "metricType": null
+      },
+      "highlight": false
+    }
+  ],
+
+  "standout": {
+    "title": "Why This Project Stands Out",
+    "items": [
+      {
+        "icon": "fas fa-building",
+        "title": "Company Founder",
+        "description": "Founded and owned 10-person web studio"
+      },
+      {
+        "icon": "fas fa-file-code",
+        "title": "50+ Websites",
+        "description": "Delivered 50+ landing pages for clients"
+      },
+      {
+        "icon": "fas fa-graduation-cap",
+        "title": "EduTech Focus",
+        "description": "University web infrastructure specialist"
+      },
+      {
+        "icon": "fas fa-code",
+        "title": "Enterprise CMS",
+        "description": "eZ Publish specialist (not typical WP shop)"
+      }
+    ]
+  },
+
+  "team": {
+    "totalSize": 10,
+    "structure": [
+      {
+        "team": "Leadership",
+        "size": 1,
+        "notes": "Me - Founder, lead developer",
+        "myRole": true
+      },
+      {
+        "team": "Web Development",
+        "size": 5,
+        "notes": "PHP/eZ Publish developers",
+        "myRole": false
+      },
+      {
+        "team": "Design",
+        "size": 2,
+        "notes": "UI/UX and graphic design",
+        "myRole": false
+      },
+      {
+        "team": "Operations",
+        "size": 2,
+        "notes": "Hosting, support, administration",
+        "myRole": false
+      }
+    ],
+    "methodology": "Agency",
+    "collaboration": "Direct client relationships with universities and local businesses"
+  },
+
+  "metrics": {
+    "launch": [
+      {
+        "icon": "fas fa-file-code",
+        "value": "50+",
+        "label": "Landing Pages",
+        "highlight": true
+      },
+      {
+        "icon": "fas fa-users",
+        "value": "10",
+        "label": "Team Size",
+        "highlight": true
+      },
+      {
+        "icon": "fas fa-calendar-alt",
+        "value": "24",
+        "label": "Months Duration",
+        "highlight": false
+      },
+      {
+        "icon": "fas fa-graduation-cap",
+        "value": "2",
+        "label": "Universities Served",
+        "highlight": false
+      }
+    ],
+    "quickStats": [
+      {
+        "icon": "fas fa-calendar-alt",
+        "value": "2011 - 2012",
+        "label": "Duration"
+      },
+      {
+        "icon": "fas fa-user-tie",
+        "value": "Founder",
+        "label": "Role"
+      },
+      {
+        "icon": "fas fa-file-code",
+        "value": "50+",
+        "label": "Websites"
+      },
+      {
+        "icon": "fas fa-users",
+        "value": "10",
+        "label": "Team Size"
+      }
+    ]
+  },
+
+  "technologies": {
+    "primary": [
+      {
+        "name": "PHP",
+        "category": "language",
+        "proficiency": "expert"
+      },
+      {
+        "name": "eZ Publish",
+        "category": "cms",
+        "proficiency": "expert"
+      },
+      {
+        "name": "MySQL",
+        "category": "database",
+        "proficiency": "advanced"
+      },
+      {
+        "name": "HTML/CSS",
+        "category": "frontend",
+        "proficiency": "expert"
+      }
+    ],
+    "secondary": [
+      {
+        "name": "JavaScript",
+        "category": "frontend"
+      },
+      {
+        "name": "Linux",
+        "category": "server"
+      },
+      {
+        "name": "Apache",
+        "category": "server"
+      },
+      {
+        "name": "Moodle",
+        "category": "lms"
+      }
+    ],
+    "tools": ["phpStorm", "Git", "cPanel", "WHM"]
+  },
+
+  "lifecycle": {
+    "events": [
+      {
+        "date": "2011-01-01",
+        "displayDate": "2011",
+        "event": "Founded Aitweb web studio",
+        "status": "active"
+      },
+      {
+        "date": "2011-06-01",
+        "displayDate": "2011",
+        "event": "KNTU partnership established",
+        "status": "active"
+      },
+      {
+        "date": "2012-12-31",
+        "displayDate": "2012",
+        "event": "Studio operations concluded",
+        "status": "completed"
+      }
+    ],
+    "discontinuationReason": "Transitioned to mobile development career opportunities.",
+    "currentStatus": "completed"
+  },
+
+  "links": [
+    {
+      "type": "client",
+      "icon": "fas fa-university",
+      "label": "KNTU (Primary Client)",
+      "url": "https://kntu.net.ua/",
+      "source": "KNTU",
+      "active": true
+    }
+  ],
+
+  "media": {
+    "screenshots": [],
+    "videos": [],
+    "logos": []
+  },
+
+  "seo": {
+    "title": "Aitweb - Founder & Web Developer | Denys Honcharenko",
+    "description": "Founded Aitweb web studio in Kherson (2011-2012). 10-person team building 50+ landing pages using eZ Publish CMS for universities (KNTU) and local companies. Hosting services on URAN academic network.",
+    "keywords": ["Aitweb", "Web Studio", "eZ Publish", "PHP", "KNTU", "Kherson", "Web Development", "Hosting", "EduTech"]
+  },
+
+  "relatedProjects": ["valentina", "smildroid"],
+
+  "lastUpdated": "2025-01-22"
+}

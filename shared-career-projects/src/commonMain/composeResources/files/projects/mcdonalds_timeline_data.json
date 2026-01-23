@@ -1,0 +1,107 @@
+{
+  "id": "mcdonalds",
+  "name": "McDonald's Global App",
+  "slug": "mcdonalds",
+
+  "hero": {
+    "bannerStyle": "gradient",
+    "gradientColors": ["#DA291C", "#FFC72C"],
+    "icon": "fas fa-hamburger",
+    "iconColor": "rgba(255, 255, 255, 0.2)"
+  },
+
+  "featured": true,
+  "featuredBadgeText": "Featured",
+
+  "role": {
+    "title": "Lead Android Engineer / KMM Developer",
+    "shortTitle": "Lead KMM Dev"
+  },
+
+  "period": {
+    "startDate": "2021-08-01",
+    "endDate": "2022-10-31",
+    "displayText": "Aug 2021 - Oct 2022"
+  },
+
+  "companies": [
+    {
+      "name": "McDonald's",
+      "role": "client",
+      "logo": null
+    },
+    {
+      "name": "Umain",
+      "role": "contractor",
+      "logo": null
+    },
+    {
+      "name": "Developers Shore",
+      "role": "employer",
+      "logo": null
+    }
+  ],
+
+  "description": {
+    "short": "World's most downloaded food & beverage app - MDS & Payments feature streams with KMM.",
+    "medium": "Worked on MDS (Delivery) and Payments feature streams for the global McDonald's app. Designed architecture for 17+ payment providers (Adyen, Mastercard, Cybersource) and delivery with Loginext. Led ViewBinding migration with IntelliJ SSR, created Android Talks initiative, and established gmal-lite-rc release process."
+  },
+
+  "impactBadges": [
+    {
+      "icon": "fas fa-download",
+      "text": "100M+ Downloads",
+      "highlight": true
+    },
+    {
+      "icon": "fas fa-globe",
+      "text": "60+ Countries",
+      "highlight": true
+    }
+  ],
+
+  "tags": [
+    {
+      "text": "KMM",
+      "category": "technology"
+    },
+    {
+      "text": "Kotlin",
+      "category": "language"
+    },
+    {
+      "text": "MDS/Delivery",
+      "category": "feature"
+    },
+    {
+      "text": "Payments",
+      "category": "feature"
+    },
+    {
+      "text": "ViewBinding",
+      "category": "technology"
+    },
+    {
+      "text": "Adyen",
+      "category": "integration"
+    }
+  ],
+
+  "achievements": {
+    "preview": [
+      "MDS & Payments streams: Adyen, Mastercard, Cybersource, Loginext",
+      "ViewBinding migration with IntelliJ SSR (100+ delegates)",
+      "Android Talks initiative - 14 sessions, key technical decisions",
+      "gmal-lite-rc Slack channel for improved release process"
+    ]
+  },
+
+  "detailsUrl": "projects/macdonalds.html",
+  "detailsDataUrl": "projects/mcdonalds_details_data.json",
+
+  "sortOrder": 2,
+  "timelinePosition": {
+    "year": 2021,
+    "quarter": 3
+  }
+}

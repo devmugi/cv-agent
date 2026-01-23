@@ -1,0 +1,45 @@
+{
+  "id": "stoamigo",
+  "name": "StoAmigo",
+  "slug": "stoamigo",
+
+  "hero": {
+    "bannerStyle": "gradient",
+    "gradientColors": ["#2196f3", "#03a9f4"],
+    "icon": "fas fa-cloud",
+    "backgroundPattern": true
+  },
+
+  "featured": true,
+  "featuredBadgeText": "StoAmigo",
+
+  "role": {
+    "title": "Android Developer",
+    "shortTitle": "Android Developer"
+  },
+
+  "period": {
+    "startDate": "2016-01-01",
+    "endDate": "2017-12-31",
+    "displayText": "2016 - 2017"
+  },
+
+  "location": "Ukraine",
+
+  "description": {
+    "short": "Cloud storage & file sharing app with Google Drive integration and WebRTC prototype.",
+    "tagline": "Cross-Device File Sharing Platform"
+  },
+
+  "highlights": [
+    "New file system architecture",
+    "Google Drive integration",
+    "WebRTC prototype development"
+  ],
+
+  "technologies": ["Java", "Android SDK", "WebRTC", "Google Drive API", "Cloud Storage"],
+
+  "links": {
+    "details": "projects/stoamigo.html"
+  }
+}
