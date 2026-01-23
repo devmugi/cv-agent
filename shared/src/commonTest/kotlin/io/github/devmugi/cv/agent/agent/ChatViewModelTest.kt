@@ -3,14 +3,12 @@ package io.github.devmugi.cv.agent.agent
 import io.github.devmugi.cv.agent.api.GroqApiClient
 import io.github.devmugi.cv.agent.api.GroqApiException
 import io.github.devmugi.cv.agent.api.models.ChatMessage
-import io.github.devmugi.cv.agent.domain.models.CVData
-import io.github.devmugi.cv.agent.domain.models.CVReference
+import io.github.devmugi.cv.agent.career.models.CareerProject
+import io.github.devmugi.cv.agent.career.models.PersonalInfo
+import io.github.devmugi.cv.agent.career.models.SkillCategory
 import io.github.devmugi.cv.agent.domain.models.ChatError
-import io.github.devmugi.cv.agent.domain.models.Education
 import io.github.devmugi.cv.agent.domain.models.MessageRole
-import io.github.devmugi.cv.agent.domain.models.PersonalInfo
 import io.github.devmugi.cv.agent.domain.models.defaultSuggestions
-import io.github.devmugi.cv.agent.data.repository.CVRepository
 import io.ktor.client.HttpClient
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -32,30 +30,42 @@ class ChatViewModelTest {
 
     private val testDispatcher = StandardTestDispatcher()
 
-    private val minimalCVData = CVData(
-        personalInfo = PersonalInfo("Test", "Location", "email", "phone", "linkedin", "github", "portfolio"),
-        summary = "Summary",
-        skills = emptyList(),
-        experience = emptyList(),
-        projects = emptyList(),
-        achievements = emptyList(),
-        education = Education("BSc", "CS", "Uni")
+    private val testPersonalInfo = PersonalInfo(
+        name = "Test Name",
+        title = "Test Title",
+        location = "Test Location",
+        email = "test@test.com",
+        linkedin = "https://linkedin.com",
+        github = "https://github.com",
+        portfolio = "https://portfolio.com",
+        summary = "Test summary",
+        skills = listOf(SkillCategory("Category", listOf("Skill1", "Skill2")))
+    )
+
+    private val testProject = CareerProject(
+        id = "test-project",
+        name = "Test Project",
+        slug = "test-project"
+    )
+
+    private val testDataProvider = AgentDataProvider(
+        personalInfo = testPersonalInfo,
+        allProjects = listOf(testProject),
+        featuredProjectIds = emptyList()
     )
 
     private lateinit var fakeApiClient: FakeGroqApiClient
-    private lateinit var fakeRepository: FakeCVRepository
     private lateinit var viewModel: ChatViewModel
 
     @BeforeTest
     fun setup() {
         Dispatchers.setMain(testDispatcher)
         fakeApiClient = FakeGroqApiClient()
-        fakeRepository = FakeCVRepository(minimalCVData)
         viewModel = ChatViewModel(
             apiClient = fakeApiClient,
-            repository = fakeRepository,
             promptBuilder = SystemPromptBuilder(),
-            referenceExtractor = ReferenceExtractor(fakeRepository)
+            suggestionExtractor = SuggestionExtractor(),
+            dataProvider = null
         )
     }
 
@@ -226,13 +236,12 @@ class ChatViewModelTest {
     }
 
     @Test
-    fun systemPromptIncludedWhenCVDataAvailable() = runTest {
+    fun systemPromptIncludedWhenDataProviderAvailable() = runTest {
         val viewModelWithData = ChatViewModel(
             apiClient = fakeApiClient,
-            repository = fakeRepository,
             promptBuilder = SystemPromptBuilder(),
-            referenceExtractor = ReferenceExtractor(fakeRepository),
-            cvDataProvider = { minimalCVData }
+            suggestionExtractor = SuggestionExtractor(),
+            dataProvider = testDataProvider
         )
 
         viewModelWithData.sendMessage("Hi")
@@ -240,7 +249,21 @@ class ChatViewModelTest {
 
         val systemMessage = fakeApiClient.capturedMessages.find { it.role == "system" }
         assertNotNull(systemMessage)
-        assertTrue(systemMessage.content.contains("Test")) // Contains name from minimalCVData
+        assertTrue(systemMessage.content.contains("Test Name"))
+    }
+
+    @Test
+    fun suggestionsExtractedFromResponse() = runTest {
+        fakeApiClient.responseChunks = listOf(
+            "Here is some info.\n\n```json\n{\"suggestions\": [\"test-project\"]}\n```"
+        )
+        viewModel.sendMessage("Hi")
+        advanceUntilIdle()
+
+        val assistantMsg = viewModel.state.value.messages.find { it.role == MessageRole.ASSISTANT }
+        assertNotNull(assistantMsg)
+        assertEquals("Here is some info.", assistantMsg.content.trim())
+        assertEquals(listOf("test-project"), assistantMsg.suggestions)
     }
 }
 
@@ -277,9 +300,4 @@ class FakeGroqApiClient : GroqApiClient(
         }
         onComplete()
     }
-}
-
-class FakeCVRepository(private val cvData: CVData) : CVRepository() {
-    fun getCVData(): CVData = cvData
-    override fun resolveReference(id: String): CVReference? = null
 }
