@@ -61,13 +61,14 @@ fun CareerProjectTimelineInfo(
         modifier = modifier.fillMaxWidth()
     ) {
         Column {
-            // Gradient Header (always visible)
+            // Gradient Header (always visible, clickable to view details)
             ProjectGradientHeader(
                 name = project.name,
                 role = project.role?.title,
                 period = project.period?.displayText,
                 gradientColors = project.hero?.gradientColors,
-                featured = project.featured == true
+                featured = project.featured == true,
+                onClick = onDetailsClick
             )
 
             Column(

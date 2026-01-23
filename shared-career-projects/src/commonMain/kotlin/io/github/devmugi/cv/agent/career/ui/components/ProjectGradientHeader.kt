@@ -1,6 +1,7 @@
 package io.github.devmugi.cv.agent.career.ui.components
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -32,6 +33,7 @@ fun ProjectGradientHeader(
     period: String?,
     gradientColors: List<String>?,
     featured: Boolean,
+    onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val colors = gradientColors?.takeIf { it.size >= 2 }?.map { parseHexColor(it) }
@@ -40,6 +42,7 @@ fun ProjectGradientHeader(
     Box(
         modifier = modifier
             .fillMaxWidth()
+            .clickable(onClick = onClick)
             .background(Brush.horizontalGradient(colors))
     ) {
         // Background icon (decorative)
