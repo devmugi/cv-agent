@@ -31,6 +31,7 @@ dependencyResolutionManagement {
 }
 
 include(":shared-domain")
+include(":shared-career-projects")
 include(":shared-ui")
 include(":shared")
 include(":android-app")

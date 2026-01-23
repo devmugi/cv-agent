@@ -7,7 +7,7 @@ plugins {
 
 kotlin {
     androidLibrary {
-        namespace = "io.github.devmugi.cv.agent.ui"
+        namespace = "io.github.devmugi.cv.agent.career"
         compileSdk = libs.versions.android.compileSdk.get().toInt()
         minSdk = libs.versions.android.minSdk.get().toInt()
     }
@@ -17,20 +17,16 @@ kotlin {
         iosSimulatorArm64()
     ).forEach { iosTarget ->
         iosTarget.binaries.framework {
-            baseName = "SharedUi"
+            baseName = "SharedCareerProjects"
             isStatic = true
         }
     }
 
     sourceSets {
         commonMain.dependencies {
-            implementation(projects.sharedDomain)
-            implementation(projects.sharedCareerProjects)
-
             // Arcane Design System
             implementation(libs.arcane.foundation)
             implementation(libs.arcane.components)
-            implementation(libs.arcane.chat)
 
             // Compose
             implementation(libs.compose.runtime)
@@ -40,18 +36,10 @@ kotlin {
 
             // Material Icons
             implementation(libs.compose.material.icons.extended.multiplatform)
-
-            // Lifecycle (for collectAsState)
-            implementation(libs.androidx.lifecycle.runtime.compose)
-
-            // Markdown
-            implementation(libs.multiplatform.markdown.renderer)
-            implementation(libs.multiplatform.markdown.renderer.m3)
         }
 
         commonTest.dependencies {
             implementation(libs.kotlin.test)
-            implementation(libs.compose.ui.test)
         }
     }
 }
