@@ -2,6 +2,7 @@ package io.github.devmugi.cv.agent.agent
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import co.touchlab.kermit.Logger
 import io.github.devmugi.cv.agent.api.GroqApiClient
 import io.github.devmugi.cv.agent.api.GroqApiException
 import io.github.devmugi.cv.agent.api.models.ChatMessage
@@ -36,10 +37,12 @@ class ChatViewModel(
     private var lastUserMessage: String? = null
 
     companion object {
+        private const val TAG = "ChatViewModel"
         private const val MAX_HISTORY = 10
     }
 
     fun sendMessage(content: String) {
+        Logger.d(TAG) { "Sending message - length: ${content.length}" }
         lastUserMessage = content
         val userMessage = Message(role = MessageRole.USER, content = content)
 
@@ -71,6 +74,7 @@ class ChatViewModel(
     }
 
     fun clearHistory() {
+        Logger.d(TAG) { "Clearing chat history" }
         _state.update { current -> ChatState(projectNames = current.projectNames) }
         lastUserMessage = null
     }
@@ -118,6 +122,7 @@ class ChatViewModel(
                 }
             },
             onComplete = {
+                Logger.d(TAG) { "Stream completed - content length: ${streamedContent.length}" }
                 val extractionResult = suggestionExtractor.extract(streamedContent)
                 _state.update { current ->
                     current.copy(
@@ -137,6 +142,7 @@ class ChatViewModel(
                 }
             },
             onError = { exception ->
+                Logger.w(TAG) { "Stream error: ${exception.javaClass.simpleName}" }
                 val error = when (exception) {
                     is GroqApiException.NetworkError -> ChatError.Network(exception.reason)
                     is GroqApiException.RateLimitError -> ChatError.RateLimit

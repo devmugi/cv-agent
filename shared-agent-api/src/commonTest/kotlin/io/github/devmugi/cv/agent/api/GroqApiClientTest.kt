@@ -1,5 +1,7 @@
 package io.github.devmugi.cv.agent.api
 
+import co.touchlab.kermit.Logger
+import co.touchlab.kermit.Severity
 import io.github.devmugi.cv.agent.api.models.ChatMessage
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.mock.MockEngine
@@ -11,11 +13,18 @@ import io.ktor.http.HttpStatusCode
 import io.ktor.http.headersOf
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.coroutines.test.runTest
+import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
 class GroqApiClientTest {
+
+    @BeforeTest
+    fun setup() {
+        // Disable logging in tests to avoid android.util.Log dependency
+        Logger.setMinSeverity(Severity.Assert)
+    }
 
     private fun createMockClient(response: String, status: HttpStatusCode = HttpStatusCode.OK): HttpClient {
         return HttpClient(MockEngine) {

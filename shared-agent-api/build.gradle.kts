@@ -41,6 +41,9 @@ kotlin {
 
             // Coroutines
             implementation(libs.kotlinx.coroutines.core)
+
+            // Logging
+            api(libs.kermit)
         }
 
         androidMain.dependencies {

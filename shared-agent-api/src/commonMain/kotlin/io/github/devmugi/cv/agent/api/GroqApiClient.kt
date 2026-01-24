@@ -1,5 +1,6 @@
 package io.github.devmugi.cv.agent.api
 
+import co.touchlab.kermit.Logger
 import io.github.devmugi.cv.agent.api.models.ChatMessage
 import io.github.devmugi.cv.agent.api.models.ChatRequest
 import io.github.devmugi.cv.agent.api.models.StreamChunk
@@ -26,6 +27,7 @@ open class GroqApiClient(
     private val json = Json { ignoreUnknownKeys = true }
 
     companion object {
+        private const val TAG = "GroqApiClient"
         private const val BASE_URL = "https://api.groq.com/openai/v1/chat/completions"
         const val MODEL = "llama-3.3-70b-versatile"
         private const val DEFAULT_TEMPERATURE = 0.7
@@ -39,6 +41,7 @@ open class GroqApiClient(
         onComplete: () -> Unit,
         onError: (GroqApiException) -> Unit
     ) {
+        Logger.d(TAG) { "Starting chat completion - messages: ${messages.size}" }
         val span = tracer.startLlmSpan(
             model = MODEL,
             systemPrompt = systemPrompt,
@@ -54,25 +57,30 @@ open class GroqApiClient(
                 setBody(ChatRequest(model = MODEL, messages = messages))
             }
 
+            Logger.d(TAG) { "Response status: ${response.status}" }
             when (response.status) {
                 HttpStatusCode.OK -> parseStream(response, span, onChunk, onComplete)
                 HttpStatusCode.Unauthorized, HttpStatusCode.Forbidden -> {
                     val error = GroqApiException.AuthError(response.status.value)
+                    Logger.w(TAG) { "Auth error: ${response.status.value}" }
                     span.error(error)
                     onError(error)
                 }
                 HttpStatusCode.TooManyRequests -> {
                     val error = GroqApiException.RateLimitError(null)
+                    Logger.w(TAG) { "Rate limit exceeded" }
                     span.error(error)
                     onError(error)
                 }
                 else -> {
                     val error = GroqApiException.ApiError(response.status.value, "API error")
+                    Logger.w(TAG) { "API error: ${response.status.value}" }
                     span.error(error)
                     onError(error)
                 }
             }
         } catch (e: Exception) {
+            Logger.e(TAG, e) { "Request failed: ${e.message}" }
             val error = if (e is GroqApiException) e else GroqApiException.NetworkError(e.message ?: "Unknown error")
             span.error(error)
             onError(error)
@@ -93,6 +101,7 @@ open class GroqApiClient(
             if (line.startsWith("data: ")) {
                 val data = line.removePrefix("data: ").trim()
                 if (data == "[DONE]") {
+                    Logger.d(TAG) { "Stream completed - response length: ${fullResponse.length}" }
                     span.complete(fullResponse.toString())
                     onComplete()
                     break

@@ -16,6 +16,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import co.touchlab.kermit.Logger
 import cvagent.career.generated.resources.Res as CareerRes
 import io.github.devmugi.arcane.design.components.feedback.ArcaneToastHost
 import io.github.devmugi.arcane.design.components.feedback.ArcaneToastPosition
@@ -124,7 +125,7 @@ private suspend fun loadAgentData(): AgentDataResult {
             projectsMap[fullProject.id] = fullProject
             loader.loadProjectTimeline(jsonString)
         }.onFailure { e ->
-            android.util.Log.e("CareerProjects", "Failed to load $path: ${e.message}", e)
+            Logger.e("CareerProjects", e) { "Failed to load $path: ${e.message}" }
         }.getOrNull()
     }.sortedByDescending { it.timelinePosition?.year }
 
