@@ -35,6 +35,9 @@ class ChatViewModel(
     val state: StateFlow<ChatState> = _state.asStateFlow()
 
     private var lastUserMessage: String? = null
+    @OptIn(ExperimentalUuidApi::class)
+    private var sessionId: String = Uuid.random().toString()
+    private var turnNumber: Int = 0
 
     companion object {
         private const val TAG = "ChatViewModel"
@@ -73,14 +76,22 @@ class ChatViewModel(
         _state.update { it.copy(error = null) }
     }
 
+    @OptIn(ExperimentalUuidApi::class)
     fun clearHistory() {
         Logger.d(TAG) { "Clearing chat history" }
         _state.update { current -> ChatState(projectNames = current.projectNames) }
         lastUserMessage = null
+        sessionId = Uuid.random().toString()
+        turnNumber = 0
     }
 
     @OptIn(ExperimentalUuidApi::class)
     private suspend fun streamResponse() {
+        turnNumber++
+        val currentTurn = turnNumber
+        val currentSessionId = sessionId
+        Logger.d(TAG) { "Starting turn $currentTurn in session $currentSessionId" }
+
         val systemPrompt = dataProvider?.let { promptBuilder.build(it) } ?: ""
         val apiMessages = buildApiMessages(systemPrompt)
         val assistantMessageId = Uuid.random().toString()
@@ -107,6 +118,8 @@ class ChatViewModel(
         apiClient.streamChatCompletion(
             messages = apiMessages,
             systemPrompt = systemPrompt,
+            sessionId = currentSessionId,
+            turnNumber = currentTurn,
             onChunk = { chunk ->
                 streamedContent += chunk
                 _state.update { current ->

@@ -39,15 +39,21 @@ class OpenTelemetryAgentTracer private constructor(
         systemPrompt: String,
         messages: List<ChatMessage>,
         temperature: Double,
-        maxTokens: Int
+        maxTokens: Int,
+        sessionId: String?,
+        turnNumber: Int?
     ): TracingSpan {
-        Logger.d(TAG) { "Starting LLM span - model: $model, messages: ${messages.size}" }
+        Logger.d(TAG) { "Starting LLM span - model: $model, messages: ${messages.size}, session: $sessionId, turn: $turnNumber" }
         val spanBuilder = tracer.spanBuilder("LLM")
             .setSpanKind(SpanKind.CLIENT)
             // OpenInference semantic conventions
             .setAttribute("openinference.span.kind", "LLM")
             .setAttribute("llm.model_name", model)
             .setAttribute("llm.invocation_parameters", """{"temperature":$temperature,"max_tokens":$maxTokens}""")
+
+        // Session tracking
+        sessionId?.let { spanBuilder.setAttribute("session.id", it) }
+        turnNumber?.let { spanBuilder.setAttribute("llm.turn_number", it.toLong()) }
 
         // Add system prompt as first input message (index 0)
         var messageIndex = 0
@@ -77,24 +83,41 @@ class OpenTelemetryAgentTracer private constructor(
         private val span: Span
     ) : TracingSpan {
         private val responseBuilder = StringBuilder()
+        private val startTimeNanos = System.nanoTime()
+        private var firstTokenRecorded = false
 
         override fun addResponseChunk(chunk: String) {
             responseBuilder.append(chunk)
         }
 
-        override fun complete(fullResponse: String, tokenCount: Int?) {
+        override fun recordFirstToken() {
+            if (!firstTokenRecorded) {
+                firstTokenRecorded = true
+                val ttftMs = (System.nanoTime() - startTimeNanos) / 1_000_000
+                span.setAttribute("llm.latency.time_to_first_token_ms", ttftMs)
+                Logger.d(TAG) { "First token received - TTFT: ${ttftMs}ms" }
+            }
+        }
+
+        override fun complete(fullResponse: String, tokenUsage: TokenUsage?) {
             Logger.d(TAG) { "Completing LLM span - response length: ${fullResponse.length}" }
             // OpenInference semantic conventions for output
             span.setAttribute("llm.output_messages.0.message.role", "assistant")
             span.setAttribute("llm.output_messages.0.message.content", fullResponse.take(MAX_CONTENT_LENGTH))
-            tokenCount?.let { span.setAttribute("llm.token_count.completion", it.toLong()) }
+            tokenUsage?.let { usage ->
+                span.setAttribute("llm.token_count.prompt", usage.promptTokens.toLong())
+                span.setAttribute("llm.token_count.completion", usage.completionTokens.toLong())
+                span.setAttribute("llm.token_count.total", usage.totalTokens.toLong())
+            }
             span.setStatus(StatusCode.OK)
             span.end()
         }
 
-        override fun error(exception: Throwable) {
+        override fun error(exception: Throwable, errorType: String?, retryable: Boolean?) {
             span.setStatus(StatusCode.ERROR, exception.message ?: "Unknown error")
             span.recordException(exception)
+            errorType?.let { span.setAttribute("error.type", it) }
+            retryable?.let { span.setAttribute("error.retryable", it) }
             span.end()
         }
     }

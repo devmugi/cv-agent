@@ -8,7 +8,9 @@ interface AgentTracer {
         systemPrompt: String,
         messages: List<ChatMessage>,
         temperature: Double,
-        maxTokens: Int
+        maxTokens: Int,
+        sessionId: String? = null,
+        turnNumber: Int? = null
     ): TracingSpan
 
     companion object {
@@ -18,9 +20,16 @@ interface AgentTracer {
 
 interface TracingSpan {
     fun addResponseChunk(chunk: String)
-    fun complete(fullResponse: String, tokenCount: Int? = null)
-    fun error(exception: Throwable)
+    fun recordFirstToken()
+    fun complete(fullResponse: String, tokenUsage: TokenUsage? = null)
+    fun error(exception: Throwable, errorType: String? = null, retryable: Boolean? = null)
 }
+
+data class TokenUsage(
+    val promptTokens: Int,
+    val completionTokens: Int,
+    val totalTokens: Int
+)
 
 private class NoOpAgentTracer : AgentTracer {
     override fun startLlmSpan(
@@ -28,13 +37,16 @@ private class NoOpAgentTracer : AgentTracer {
         systemPrompt: String,
         messages: List<ChatMessage>,
         temperature: Double,
-        maxTokens: Int
+        maxTokens: Int,
+        sessionId: String?,
+        turnNumber: Int?
     ): TracingSpan = NoOpTracingSpan
 
     @Suppress("EmptyFunctionBlock")
     private object NoOpTracingSpan : TracingSpan {
         override fun addResponseChunk(chunk: String) {}
-        override fun complete(fullResponse: String, tokenCount: Int?) {}
-        override fun error(exception: Throwable) {}
+        override fun recordFirstToken() {}
+        override fun complete(fullResponse: String, tokenUsage: TokenUsage?) {}
+        override fun error(exception: Throwable, errorType: String?, retryable: Boolean?) {}
     }
 }
