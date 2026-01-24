@@ -139,21 +139,28 @@ curl -s http://localhost:6006/graphql -H "Content-Type: application/json" \
 
 After running evaluation tests, provide a summary table:
 
-| Test | Question (short) | Latency | TTFT | Prompt Tokens | Completion Tokens | Response Analysis |
-|------|------------------|---------|------|---------------|-------------------|-------------------|
-| Q1   | Job title        | 299ms   | 297ms| 1,997         | 36                | ✅ Accurate, concise |
+| Test | Question | Latency | TTFT | Prompt | Comp. | Suggested Projects | Analysis |
+|------|----------|---------|------|--------|-------|-------------------|----------|
+| Q1   | Job title | 299ms | 297ms | 1,997 | 36 | *(none)* | ✅ Accurate |
+| Q3   | McDonald's | 978ms | 964ms | 1,993 | 228 | `mcdonalds`, `android-school` | ✅ Detailed |
 
 **Include for each test:**
 1. **Question** - Short summary of what was asked
 2. **Latency** - Total response time (ms)
 3. **TTFT** - Time to first token (ms) from `llm.latency.time_to_first_token_ms`
 4. **Token counts** - From `llm.token_count.prompt/completion/total`
-5. **Response analysis** - Brief quality assessment:
+5. **Suggested Projects** - Extract from JSON block in response: `{"suggestions": ["project-id"]}`
+6. **Response analysis** - Brief quality assessment:
    - ✅ Accurate and complete
    - ⚠️ Partially correct or verbose
    - ❌ Incorrect or missing info
 
-**Insights to include:**
+**Suggestion Analysis to include:**
+- Count of tests with suggestions vs without
+- Most frequently suggested projects
+- Whether suggestions are contextually relevant
+
+**Performance Insights to include:**
 - Average latency and TTFT
 - Token efficiency (completion/prompt ratio)
 - Prompt variant used (`llm.prompt.variant`: CURATED vs ALL_PROJECTS)
