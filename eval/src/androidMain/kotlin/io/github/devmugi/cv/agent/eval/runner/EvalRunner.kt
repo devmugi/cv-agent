@@ -18,11 +18,18 @@ import io.github.devmugi.cv.agent.eval.questions.Conversation
 import io.github.devmugi.cv.agent.eval.questions.Conversations
 import io.github.devmugi.cv.agent.eval.questions.Question
 import io.github.devmugi.cv.agent.eval.questions.SimpleQuestions
+import io.github.devmugi.cv.agent.eval.report.ConversationResult
+import io.github.devmugi.cv.agent.eval.report.EvalReport
+import io.github.devmugi.cv.agent.eval.report.QuestionResult
+import io.github.devmugi.cv.agent.eval.report.ReportWriter
+import io.github.devmugi.cv.agent.eval.report.RunSummary
+import io.github.devmugi.cv.agent.eval.report.TurnResult
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.okhttp.OkHttp
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.serialization.kotlinx.json.json
 import java.io.File
+import java.time.Instant
 import java.util.Properties
 import java.util.UUID
 import java.util.concurrent.CountDownLatch
@@ -33,10 +40,12 @@ import kotlinx.serialization.json.Json
 /**
  * Orchestrates evaluation runs against the CV Agent.
  */
+@Suppress("TooManyFunctions", "LargeClass")
 class EvalRunner(private val config: EvalConfig) {
 
     companion object {
         private const val TAG = "EvalRunner"
+        private val SUGGESTION_REGEX = """\{"suggestions":\s*\[([^\]]*)\]\}""".toRegex()
     }
 
     private val json = Json { ignoreUnknownKeys = true }
@@ -46,11 +55,11 @@ class EvalRunner(private val config: EvalConfig) {
     private lateinit var apiClient: GroqApiClient
     private lateinit var personalInfo: PersonalInfo
     private lateinit var projects: List<CareerProject>
+    private lateinit var reportWriter: ReportWriter
 
     private val runId = UUID.randomUUID().toString().take(8)
-    private var questionCount = 0
-    private var successCount = 0
-    private var errorCount = 0
+    private val questionResults = mutableListOf<QuestionResult>()
+    private val conversationResults = mutableListOf<ConversationResult>()
 
     /**
      * Initialize the evaluation runner.
@@ -68,6 +77,7 @@ class EvalRunner(private val config: EvalConfig) {
         Logger.i(TAG) { "  Project Mode: ${config.projectMode}" }
         Logger.i(TAG) { "  Data Format: ${config.dataFormat}" }
         Logger.i(TAG) { "  Question Set: ${config.questionSet}" }
+        Logger.i(TAG) { "  Delay: ${config.delayMs}ms" }
         Logger.i(TAG) { "  Run ID: $runId" }
 
         tracer = OpenTelemetryAgentTracer.create(
@@ -89,6 +99,10 @@ class EvalRunner(private val config: EvalConfig) {
             tracer = tracer
         )
 
+        // Initialize report writer
+        val reportsDir = File(config.reportsDir)
+        reportWriter = ReportWriter(reportsDir)
+
         loadTestData()
         return true
     }
@@ -106,7 +120,8 @@ class EvalRunner(private val config: EvalConfig) {
 
         // Run simple questions
         questions.forEach { question ->
-            runQuestion(question)
+            val result = runQuestion(question)
+            questionResults.add(result)
             if (config.delayMs > 0) {
                 Thread.sleep(config.delayMs)
             }
@@ -114,26 +129,31 @@ class EvalRunner(private val config: EvalConfig) {
 
         // Run conversations
         conversations.forEach { conversation ->
-            runConversation(conversation)
+            val result = runConversation(conversation)
+            conversationResults.add(result)
             if (config.delayMs > 0) {
                 Thread.sleep(config.delayMs)
             }
         }
 
-        // Flush traces and print summary
+        // Flush traces
         tracer.flush()
         Thread.sleep(2000) // Wait for traces to be sent
 
-        val result = EvalResult(
+        // Generate report
+        val report = buildReport()
+        val (jsonFile, mdFile) = reportWriter.writeReports(report)
+
+        printSummary(report, jsonFile, mdFile)
+
+        return EvalResult(
             runId = runId,
             config = config,
-            totalQuestions = questionCount,
-            successCount = successCount,
-            errorCount = errorCount
+            totalQuestions = questionResults.size + conversationResults.size,
+            successCount = questionResults.count { it.success } + conversationResults.count { it.success },
+            errorCount = questionResults.count { !it.success } + conversationResults.count { !it.success },
+            reportPath = jsonFile.absolutePath
         )
-
-        printSummary()
-        return result
     }
 
     private fun getQuestions(): List<Question> {
@@ -150,10 +170,14 @@ class EvalRunner(private val config: EvalConfig) {
         }
     }
 
-    private fun runQuestion(question: Question) {
-        questionCount++
+    @Suppress("LongMethod")
+    private fun runQuestion(question: Question): QuestionResult {
         Logger.i(TAG) { "\n--- ${question.id}: ${question.category} ---" }
         Logger.i(TAG) { "Q: ${question.text}" }
+
+        val startTime = System.currentTimeMillis()
+        var ttftMs: Long? = null
+        var firstChunkReceived = false
 
         try {
             val systemPrompt = buildSystemPrompt()
@@ -173,7 +197,13 @@ class EvalRunner(private val config: EvalConfig) {
                         version = "eval-1.0",
                         variant = "${config.promptVariant}-${config.projectMode}"
                     ),
-                    onChunk = { response += it },
+                    onChunk = { chunk ->
+                        if (!firstChunkReceived) {
+                            ttftMs = System.currentTimeMillis() - startTime
+                            firstChunkReceived = true
+                        }
+                        response += chunk
+                    },
                     onComplete = { latch.countDown() },
                     onError = { e ->
                         error = e
@@ -182,29 +212,73 @@ class EvalRunner(private val config: EvalConfig) {
                 )
             }
 
+            val latencyMs = System.currentTimeMillis() - startTime
+
             if (!latch.await(60, TimeUnit.SECONDS)) {
                 Logger.e(TAG) { "Timeout waiting for response" }
-                errorCount++
-                return
+                return QuestionResult(
+                    questionId = question.id,
+                    questionText = question.text,
+                    category = question.category,
+                    response = "",
+                    latencyMs = latencyMs,
+                    ttftMs = ttftMs,
+                    success = false,
+                    errorMessage = "Timeout after 60 seconds"
+                )
             }
 
             if (error != null) {
                 Logger.e(TAG) { "Error: ${error?.message}" }
-                errorCount++
-                return
+                return QuestionResult(
+                    questionId = question.id,
+                    questionText = question.text,
+                    category = question.category,
+                    response = response,
+                    latencyMs = latencyMs,
+                    ttftMs = ttftMs,
+                    success = false,
+                    errorMessage = error?.message
+                )
             }
 
+            val suggestions = extractSuggestions(response)
             Logger.i(TAG) { "A: ${response.take(500)}${if (response.length > 500) "..." else ""}" }
-            successCount++
+            if (suggestions.isNotEmpty()) {
+                Logger.i(TAG) { "Suggestions: $suggestions" }
+            }
+
+            return QuestionResult(
+                questionId = question.id,
+                questionText = question.text,
+                category = question.category,
+                response = response,
+                latencyMs = latencyMs,
+                ttftMs = ttftMs,
+                suggestions = suggestions,
+                success = true
+            )
         } catch (e: Exception) {
             Logger.e(TAG) { "Exception: ${e.message}" }
-            errorCount++
+            return QuestionResult(
+                questionId = question.id,
+                questionText = question.text,
+                category = question.category,
+                response = "",
+                latencyMs = System.currentTimeMillis() - startTime,
+                ttftMs = ttftMs,
+                success = false,
+                errorMessage = e.message
+            )
         }
     }
 
-    private fun runConversation(conversation: Conversation) {
-        questionCount++
+    @Suppress("LongMethod")
+    private fun runConversation(conversation: Conversation): ConversationResult {
         Logger.i(TAG) { "\n=== ${conversation.id}: ${conversation.description} ===" }
+
+        val conversationStartTime = System.currentTimeMillis()
+        val turnResults = mutableListOf<TurnResult>()
 
         try {
             val systemPrompt = buildSystemPrompt()
@@ -214,6 +288,10 @@ class EvalRunner(private val config: EvalConfig) {
             conversation.turns.forEachIndexed { index, turn ->
                 messages.add(ChatMessage(role = "user", content = turn))
                 Logger.i(TAG) { "Turn ${index + 1} - User: $turn" }
+
+                val turnStartTime = System.currentTimeMillis()
+                var ttftMs: Long? = null
+                var firstChunkReceived = false
 
                 val latch = CountDownLatch(1)
                 var response = ""
@@ -229,7 +307,13 @@ class EvalRunner(private val config: EvalConfig) {
                             version = "eval-1.0",
                             variant = "${config.promptVariant}-${config.projectMode}"
                         ),
-                        onChunk = { response += it },
+                        onChunk = { chunk ->
+                            if (!firstChunkReceived) {
+                                ttftMs = System.currentTimeMillis() - turnStartTime
+                                firstChunkReceived = true
+                            }
+                            response += chunk
+                        },
                         onComplete = { latch.countDown() },
                         onError = { e ->
                             error = e
@@ -238,19 +322,46 @@ class EvalRunner(private val config: EvalConfig) {
                     )
                 }
 
+                val turnLatencyMs = System.currentTimeMillis() - turnStartTime
+
                 if (!latch.await(60, TimeUnit.SECONDS)) {
                     Logger.e(TAG) { "Timeout on turn ${index + 1}" }
-                    errorCount++
-                    return
+                    return ConversationResult(
+                        conversationId = conversation.id,
+                        description = conversation.description,
+                        turns = turnResults,
+                        totalLatencyMs = System.currentTimeMillis() - conversationStartTime,
+                        success = false,
+                        errorMessage = "Timeout on turn ${index + 1}"
+                    )
                 }
 
                 if (error != null) {
                     Logger.e(TAG) { "Error on turn ${index + 1}: ${error?.message}" }
-                    errorCount++
-                    return
+                    return ConversationResult(
+                        conversationId = conversation.id,
+                        description = conversation.description,
+                        turns = turnResults,
+                        totalLatencyMs = System.currentTimeMillis() - conversationStartTime,
+                        success = false,
+                        errorMessage = error?.message
+                    )
                 }
 
+                val suggestions = extractSuggestions(response)
                 Logger.i(TAG) { "Turn ${index + 1} - Assistant: ${response.take(300)}..." }
+
+                turnResults.add(
+                    TurnResult(
+                        turnNumber = index + 1,
+                        userMessage = turn,
+                        response = response,
+                        latencyMs = turnLatencyMs,
+                        ttftMs = ttftMs,
+                        suggestions = suggestions
+                    )
+                )
+
                 messages.add(ChatMessage(role = "assistant", content = response))
 
                 // Delay between turns
@@ -259,11 +370,75 @@ class EvalRunner(private val config: EvalConfig) {
                 }
             }
 
-            successCount++
+            return ConversationResult(
+                conversationId = conversation.id,
+                description = conversation.description,
+                turns = turnResults,
+                totalLatencyMs = System.currentTimeMillis() - conversationStartTime,
+                success = true
+            )
         } catch (e: Exception) {
             Logger.e(TAG) { "Exception in conversation: ${e.message}" }
-            errorCount++
+            return ConversationResult(
+                conversationId = conversation.id,
+                description = conversation.description,
+                turns = turnResults,
+                totalLatencyMs = System.currentTimeMillis() - conversationStartTime,
+                success = false,
+                errorMessage = e.message
+            )
         }
+    }
+
+    private fun extractSuggestions(response: String): List<String> {
+        val match = SUGGESTION_REGEX.find(response) ?: return emptyList()
+        val suggestionsContent = match.groupValues[1]
+        return suggestionsContent
+            .split(",")
+            .map { it.trim().removeSurrounding("\"") }
+            .filter { it.isNotBlank() }
+    }
+
+    private fun buildReport(): EvalReport {
+        val allLatencies = questionResults.map { it.latencyMs } +
+            conversationResults.flatMap { it.turns.map { t -> t.latencyMs } }
+
+        val allTtfts = (questionResults.mapNotNull { it.ttftMs } +
+            conversationResults.flatMap { it.turns.mapNotNull { t -> t.ttftMs } })
+
+        val sortedLatencies = allLatencies.sorted()
+
+        val summary = RunSummary(
+            totalQuestions = questionResults.size,
+            totalConversations = conversationResults.size,
+            successCount = questionResults.count { it.success } + conversationResults.count { it.success },
+            errorCount = questionResults.count { !it.success } + conversationResults.count { !it.success },
+            avgLatencyMs = if (allLatencies.isNotEmpty()) allLatencies.average() else 0.0,
+            avgTtftMs = if (allTtfts.isNotEmpty()) allTtfts.average() else null,
+            totalPromptTokens = questionResults.sumOf { it.promptTokens } +
+                conversationResults.flatMap { it.turns }.sumOf { it.promptTokens },
+            totalCompletionTokens = questionResults.sumOf { it.completionTokens } +
+                conversationResults.flatMap { it.turns }.sumOf { it.completionTokens },
+            totalTokens = questionResults.sumOf { it.totalTokens } +
+                conversationResults.flatMap { it.turns }.sumOf { it.totalTokens },
+            p50LatencyMs = calculatePercentile(sortedLatencies, 50),
+            p95LatencyMs = calculatePercentile(sortedLatencies, 95)
+        )
+
+        return EvalReport(
+            runId = runId,
+            timestamp = Instant.now().toString(),
+            config = config,
+            summary = summary,
+            questionResults = questionResults.toList(),
+            conversationResults = conversationResults.toList()
+        )
+    }
+
+    private fun calculatePercentile(sortedList: List<Long>, percentile: Int): Long {
+        if (sortedList.isEmpty()) return 0L
+        val index = (percentile / 100.0 * (sortedList.size - 1)).toInt()
+        return sortedList[index]
     }
 
     private fun buildSystemPrompt(): String {
@@ -469,7 +644,7 @@ class EvalRunner(private val config: EvalConfig) {
         Logger.i(TAG) { "Loaded ${projects.size} projects" }
     }
 
-    private fun printSummary() {
+    private fun printSummary(report: EvalReport, jsonFile: File, mdFile: File) {
         Logger.i(TAG) { "\n========== EVALUATION SUMMARY ==========" }
         Logger.i(TAG) { "Run ID: $runId" }
         Logger.i(TAG) { "Config:" }
@@ -479,9 +654,22 @@ class EvalRunner(private val config: EvalConfig) {
         Logger.i(TAG) { "  Data Format: ${config.dataFormat}" }
         Logger.i(TAG) { "" }
         Logger.i(TAG) { "Results:" }
-        Logger.i(TAG) { "  Total: $questionCount" }
-        Logger.i(TAG) { "  Success: $successCount" }
-        Logger.i(TAG) { "  Errors: $errorCount" }
+        Logger.i(TAG) { "  Questions: ${report.summary.totalQuestions}" }
+        Logger.i(TAG) { "  Conversations: ${report.summary.totalConversations}" }
+        Logger.i(TAG) { "  Success: ${report.summary.successCount}" }
+        Logger.i(TAG) { "  Errors: ${report.summary.errorCount}" }
+        Logger.i(TAG) { "" }
+        Logger.i(TAG) { "Performance:" }
+        Logger.i(TAG) { "  Avg Latency: ${report.summary.avgLatencyMs.toLong()}ms" }
+        report.summary.avgTtftMs?.let {
+            Logger.i(TAG) { "  Avg TTFT: ${it.toLong()}ms" }
+        }
+        Logger.i(TAG) { "  P50 Latency: ${report.summary.p50LatencyMs}ms" }
+        Logger.i(TAG) { "  P95 Latency: ${report.summary.p95LatencyMs}ms" }
+        Logger.i(TAG) { "" }
+        Logger.i(TAG) { "Reports:" }
+        Logger.i(TAG) { "  JSON: ${jsonFile.absolutePath}" }
+        Logger.i(TAG) { "  Markdown: ${mdFile.absolutePath}" }
         Logger.i(TAG) { "" }
         Logger.i(TAG) { "View traces at: http://localhost:6006" }
         Logger.i(TAG) { "Filter by service: cv-agent-eval-$runId" }
@@ -497,5 +685,6 @@ data class EvalResult(
     val config: EvalConfig,
     val totalQuestions: Int,
     val successCount: Int,
-    val errorCount: Int
+    val errorCount: Int,
+    val reportPath: String? = null
 )

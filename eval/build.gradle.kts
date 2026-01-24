@@ -107,5 +107,30 @@ tasks.register<Test>("eval") {
     environment("EVAL_PROJECT_MODE", project.findProperty("evalProjectMode") ?: "CURATED")
     environment("EVAL_FORMAT", project.findProperty("evalFormat") ?: "TEXT")
     environment("EVAL_QUESTIONS", project.findProperty("evalQuestions") ?: "SIMPLE")
-    environment("EVAL_DELAY_MS", project.findProperty("evalDelayMs") ?: "10000")
+    environment("EVAL_DELAY_MS", project.findProperty("evalDelayMs") ?: "2000")
+    environment("EVAL_REPORT_DIR", project.findProperty("evalReportDir") ?: "eval/reports")
+}
+
+// Compare two evaluation runs
+tasks.register<Test>("compare") {
+    description = "Compare two evaluation runs"
+    group = "verification"
+
+    dependsOn("compileTestKotlinAndroid")
+
+    doFirst {
+        val androidUnitTestTask = tasks.named<Test>("testAndroidUnitTest").get()
+        testClassesDirs = androidUnitTestTask.testClassesDirs
+        classpath = androidUnitTestTask.classpath
+    }
+
+    // Include comparison test
+    include("**/EvalCompareTest.class")
+
+    maxParallelForks = 1
+
+    // Pass run IDs for comparison
+    environment("BASELINE_RUN_ID", project.findProperty("baselineRun") ?: "")
+    environment("VARIANT_RUN_ID", project.findProperty("variantRun") ?: "")
+    environment("EVAL_REPORT_DIR", project.findProperty("evalReportDir") ?: "eval/reports")
 }

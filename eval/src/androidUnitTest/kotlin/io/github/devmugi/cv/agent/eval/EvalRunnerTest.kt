@@ -84,6 +84,9 @@ class EvalRunnerTest {
         println("Success: ${result.successCount}")
         println("Errors: ${result.errorCount}")
         println()
+        result.reportPath?.let {
+            println("Report: $it")
+        }
         println("View traces: http://localhost:6006")
         println("=".repeat(60))
 
@@ -111,7 +114,10 @@ class EvalRunnerTest {
         } ?: QuestionSet.SIMPLE
 
         val delayMs = System.getenv("EVAL_DELAY_MS")?.toLongOrNull()
-            ?: 10_000L
+            ?: 2_000L
+
+        val reportsDir = System.getenv("EVAL_REPORT_DIR")
+            ?: "eval/reports"
 
         return EvalConfig(
             promptVariant = variant,
@@ -119,7 +125,8 @@ class EvalRunnerTest {
             projectMode = projectMode,
             dataFormat = dataFormat,
             questionSet = questionSet,
-            delayMs = delayMs
+            delayMs = delayMs,
+            reportsDir = reportsDir
         )
     }
 }
