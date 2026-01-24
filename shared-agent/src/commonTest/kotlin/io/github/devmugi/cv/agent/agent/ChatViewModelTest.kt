@@ -277,7 +277,8 @@ class ChatViewModelTest {
 // Test doubles
 class FakeGroqApiClient : GroqApiClient(
     httpClient = HttpClient(MockEngine) { engine { addHandler { respond("") } } },
-    apiKey = "fake"
+    apiKey = "fake",
+    rateLimiter = io.github.devmugi.cv.agent.api.RateLimiter.NOOP
 ) {
     var responseChunks: List<String> = listOf("Test response")
     var shouldFail: GroqApiException? = null

@@ -22,7 +22,8 @@ import kotlinx.serialization.json.Json
 open class GroqApiClient(
     private val httpClient: HttpClient,
     private val apiKey: String,
-    private val tracer: AgentTracer = AgentTracer.NOOP
+    private val tracer: AgentTracer = AgentTracer.NOOP,
+    private val rateLimiter: RateLimiter = RateLimiter.NOOP
 ) {
     private val json = Json { ignoreUnknownKeys = true }
 
@@ -51,6 +52,9 @@ open class GroqApiClient(
         )
 
         try {
+            // Wait for rate limiter before making request
+            rateLimiter.acquire()
+
             // Prepend system prompt as first message if provided
             val allMessages = if (systemPrompt.isNotEmpty()) {
                 listOf(ChatMessage(role = "system", content = systemPrompt)) + messages
@@ -74,8 +78,10 @@ open class GroqApiClient(
                     onError(error)
                 }
                 HttpStatusCode.TooManyRequests -> {
-                    val error = GroqApiException.RateLimitError(null)
-                    Logger.w(TAG) { "Rate limit exceeded" }
+                    val retryAfter = response.headers["Retry-After"]?.toIntOrNull()
+                    rateLimiter.reportRateLimited(retryAfter)
+                    val error = GroqApiException.RateLimitError(retryAfter)
+                    Logger.w(TAG) { "Rate limit exceeded, retry-after: $retryAfter" }
                     span.error(error)
                     onError(error)
                 }

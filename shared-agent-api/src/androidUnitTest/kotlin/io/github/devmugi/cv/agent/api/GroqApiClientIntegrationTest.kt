@@ -26,16 +26,35 @@ import kotlin.test.fail
  * Integration tests that make real Groq API calls with OpenTelemetry tracing.
  * Traces are sent to Phoenix at localhost:6006.
  *
+ * **NOTE:** These tests are EXCLUDED from regular test runs to avoid rate limits.
+ *
  * Prerequisites:
  * 1. Start Phoenix: `phoenix serve`
  * 2. Set GROQ_API_KEY in environment or local.properties
- * 3. Run as Android instrumented test OR on emulator/device
  *
- * Run: ./gradlew :shared-agent-api:connectedAndroidTest
+ * Run integration tests:
+ * ```
+ * ./gradlew :shared-agent-api:evaluationTests
+ * ```
+ *
+ * Run with custom delay (default 2000ms):
+ * ```
+ * GROQ_TEST_DELAY_MS=3000 ./gradlew :shared-agent-api:evaluationTests
+ * ```
+ *
  * View traces: http://localhost:6006
  */
 @Suppress("FunctionNaming", "MagicNumber")
 class GroqApiClientIntegrationTest {
+
+    companion object {
+        /**
+         * Delay between tests to avoid hitting Groq rate limits.
+         * Configure via GROQ_TEST_DELAY_MS environment variable.
+         * Default: 2000ms (2 seconds). Set to 0 to disable.
+         */
+        private val TEST_DELAY_MS = System.getenv("GROQ_TEST_DELAY_MS")?.toLongOrNull() ?: 2000L
+    }
 
     private lateinit var tracer: OpenTelemetryAgentTracer
     private lateinit var apiClient: GroqApiClient
@@ -43,6 +62,11 @@ class GroqApiClientIntegrationTest {
 
     @Before
     fun setup() {
+        // Rate limit protection: delay between tests
+        if (TEST_DELAY_MS > 0) {
+            Thread.sleep(TEST_DELAY_MS)
+        }
+
         // Disable logging in tests to avoid android.util.Log dependency
         Logger.setMinSeverity(Severity.Assert)
 

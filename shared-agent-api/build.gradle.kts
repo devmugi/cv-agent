@@ -76,3 +76,28 @@ kotlin {
         }
     }
 }
+
+// Exclude integration/evaluation tests from default test task (they hit real API)
+tasks.withType<Test>().configureEach {
+    if (name == "testAndroidUnitTest" || name == "testDebugUnitTest" || name == "testReleaseUnitTest") {
+        exclude("**/AgentEvaluationTest.class")
+        exclude("**/GroqApiClientIntegrationTest.class")
+    }
+}
+
+// Dedicated task for running evaluation tests (real API calls)
+tasks.register<Test>("evaluationTests") {
+    description = "Run evaluation tests that make real Groq API calls"
+    group = "verification"
+
+    // Use the same test configuration as androidUnitTest
+    testClassesDirs = tasks.named<Test>("testAndroidUnitTest").get().testClassesDirs
+    classpath = tasks.named<Test>("testAndroidUnitTest").get().classpath
+
+    // Only include evaluation tests
+    include("**/AgentEvaluationTest.class")
+    include("**/GroqApiClientIntegrationTest.class")
+
+    // Ensure sequential execution
+    maxParallelForks = 1
+}

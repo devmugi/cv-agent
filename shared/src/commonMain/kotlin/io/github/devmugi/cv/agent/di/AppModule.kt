@@ -6,6 +6,8 @@ import io.github.devmugi.cv.agent.agent.ChatViewModel
 import io.github.devmugi.cv.agent.agent.SuggestionExtractor
 import io.github.devmugi.cv.agent.agent.SystemPromptBuilder
 import io.github.devmugi.cv.agent.api.GroqApiClient
+import io.github.devmugi.cv.agent.api.RateLimiter
+import io.github.devmugi.cv.agent.api.TokenBucketRateLimiter
 import io.ktor.client.HttpClient
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.plugins.logging.LogLevel
@@ -27,8 +29,11 @@ val appModule = module {
         }
     }
 
+    // Rate Limiter (shared across all API calls)
+    single<RateLimiter> { TokenBucketRateLimiter() }
+
     // API Layer
-    single { GroqApiClient(get(), GroqConfig.apiKey) }
+    single { GroqApiClient(get(), GroqConfig.apiKey, rateLimiter = get()) }
 
     // Agent Layer
     single { SystemPromptBuilder() }
