@@ -22,6 +22,7 @@ interface AgentTracer {
 interface TracingSpan {
     fun addResponseChunk(chunk: String)
     fun recordFirstToken()
+    fun addEvaluation(name: String, score: Double, label: String? = null)
     fun complete(fullResponse: String, tokenUsage: TokenUsage? = null)
     fun error(exception: Throwable, errorType: String? = null, retryable: Boolean? = null)
 }
@@ -53,6 +54,7 @@ private class NoOpAgentTracer : AgentTracer {
     private object NoOpTracingSpan : TracingSpan {
         override fun addResponseChunk(chunk: String) {}
         override fun recordFirstToken() {}
+        override fun addEvaluation(name: String, score: Double, label: String?) {}
         override fun complete(fullResponse: String, tokenUsage: TokenUsage?) {}
         override fun error(exception: Throwable, errorType: String?, retryable: Boolean?) {}
     }

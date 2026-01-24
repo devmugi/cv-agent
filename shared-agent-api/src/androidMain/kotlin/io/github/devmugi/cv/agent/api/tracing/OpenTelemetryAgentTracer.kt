@@ -106,6 +106,12 @@ class OpenTelemetryAgentTracer private constructor(
             }
         }
 
+        override fun addEvaluation(name: String, score: Double, label: String?) {
+            span.setAttribute("evals.$name.score", score)
+            label?.let { span.setAttribute("evals.$name.label", it) }
+            Logger.d(TAG) { "Added evaluation - $name: $score${label?.let { " ($it)" } ?: ""}" }
+        }
+
         override fun complete(fullResponse: String, tokenUsage: TokenUsage?) {
             Logger.d(TAG) { "Completing LLM span - response length: ${fullResponse.length}" }
             // OpenInference semantic conventions for output
