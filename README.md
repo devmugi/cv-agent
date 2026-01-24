@@ -1,35 +1,123 @@
-This is a Kotlin Multiplatform project targeting Android, iOS.
+# CV Agent
 
-* [/composeApp](./composeApp/src) is for code that will be shared across your Compose Multiplatform applications.
-  It contains several subfolders:
-  - [commonMain](./composeApp/src/commonMain/kotlin) is for code that’s common for all targets.
-  - Other folders are for Kotlin code that will be compiled for only the platform indicated in the folder name.
-    For example, if you want to use Apple’s CoreCrypto for the iOS part of your Kotlin app,
-    the [iosMain](./composeApp/src/iosMain/kotlin) folder would be the right place for such calls.
-    Similarly, if you want to edit the Desktop (JVM) specific part, the [jvmMain](./composeApp/src/jvmMain/kotlin)
-    folder is the appropriate location.
+A Kotlin Multiplatform mobile app that provides an AI-powered chat interface for exploring CV/resume data. Uses Groq's LLM API with streaming responses.
 
-* [/iosApp](./iosApp/iosApp) contains iOS applications. Even if you’re sharing your UI with Compose Multiplatform,
-  you need this entry point for your iOS app. This is also where you should add SwiftUI code for your project.
+## Module Structure
 
-### Build and Run Android Application
+```
+shared-domain/           Pure domain models (ChatState, Message, etc.)
+shared-career-projects/  Career/CV data models and UI components
+shared-agent-api/        LLM API client with OpenTelemetry tracing
+shared-agent/            Agent business logic (ViewModel, prompts)
+shared-ui/               Shared UI components
+shared/                  DI wiring and platform configuration
+android-app/             Android application entry point
+iosApp/                  iOS application (Xcode project)
+```
 
-To build and run the development version of the Android app, use the run configuration from the run widget
-in your IDE’s toolbar or build it directly from the terminal:
-- on macOS/Linux
-  ```shell
-  ./gradlew :composeApp:assembleDebug
-  ```
-- on Windows
-  ```shell
-  .\gradlew.bat :composeApp:assembleDebug
-  ```
+## Build Commands
 
-### Build and Run iOS Application
+```bash
+# Build Android app
+./gradlew :android-app:assembleDebug
 
-To build and run the development version of the iOS app, use the run configuration from the run widget
-in your IDE’s toolbar or open the [/iosApp](./iosApp) directory in Xcode and run it from there.
+# Run all tests
+./gradlew allTests
 
----
+# Run agent tests only
+./gradlew :shared-agent:testAndroidUnitTest
 
-Learn more about [Kotlin Multiplatform](https://www.jetbrains.com/help/kotlin-multiplatform-dev/get-started.html)…
+# Quality checks
+./gradlew qualityCheck
+```
+
+## Agent Module
+
+The agent functionality is split into two modules for better testability:
+
+### shared-agent-api
+
+Contains the LLM API client with OpenTelemetry tracing support:
+- `GroqApiClient` - Streaming chat completions via Groq API
+- `AgentTracer` - Tracing interface for LLM observability
+- `OpenTelemetryAgentTracer` - OTEL implementation (Android)
+
+### shared-agent
+
+Contains the agent business logic:
+- `ChatViewModel` - State management and message flow
+- `SystemPromptBuilder` - Builds system prompts from CV data
+- `AgentDataProvider` - Provides CV data to the agent
+- `SuggestionExtractor` - Extracts project suggestions from responses
+
+## LLM Observability with Arize Phoenix
+
+The agent module includes OpenTelemetry instrumentation for evaluating prompts and responses.
+
+### Setup Phoenix
+
+```bash
+# Install Phoenix
+pipx install arize-phoenix
+
+# Start Phoenix server
+phoenix serve
+```
+
+Phoenix UI will be available at `http://localhost:6006`
+
+### Enable Tracing
+
+To enable tracing in the app, inject `OpenTelemetryAgentTracer` when creating the `GroqApiClient`:
+
+```kotlin
+val tracer = OpenTelemetryAgentTracer.create(
+    endpoint = "http://localhost:4317",  // OTLP gRPC endpoint
+    serviceName = "cv-agent"
+)
+
+val apiClient = GroqApiClient(
+    httpClient = httpClient,
+    apiKey = apiKey,
+    tracer = tracer
+)
+```
+
+### What Gets Traced
+
+Each LLM request creates a span with:
+- Model name, temperature, max tokens
+- System prompt content
+- User messages
+- Full response content
+- Latency and token counts
+- Errors with exception details
+
+### Running Integration Tests
+
+Integration tests make real API calls and send traces to Phoenix:
+
+```bash
+# Start Phoenix first
+phoenix serve
+
+# Run integration tests
+./gradlew :shared-agent:testAndroidUnitTest
+
+# View traces in Phoenix UI
+open http://localhost:6006
+```
+
+## Configuration
+
+Set your Groq API key in `local.properties`:
+
+```properties
+GROQ_API_KEY=your_api_key_here
+```
+
+## Learn More
+
+- [Kotlin Multiplatform](https://www.jetbrains.com/help/kotlin-multiplatform-dev/get-started.html)
+- [Arize Phoenix](https://docs.arize.com/phoenix)
+- [OpenTelemetry](https://opentelemetry.io/)

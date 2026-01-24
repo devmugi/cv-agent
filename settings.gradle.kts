@@ -32,6 +32,8 @@ dependencyResolutionManagement {
 
 include(":shared-domain")
 include(":shared-career-projects")
+include(":shared-agent-api")
+include(":shared-agent")
 include(":shared-ui")
 include(":shared")
 include(":android-app")

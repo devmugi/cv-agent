@@ -36,6 +36,10 @@ arcane = "0.2.1"
 ktlint = "14.0.1"
 detekt = "1.23.8"
 
+# OpenTelemetry
+opentelemetry = "1.40.0"
+opentelemetry-semconv = "1.25.0-alpha"
+
 # Testing
 kotlinx-coroutines = "1.10.2"
 junit = "4.13.2"
@@ -117,6 +121,12 @@ arcane-chat = { module = "io.github.devmugi.design.arcane:arcane-chat", version.
 
 # Quality
 detekt-formatting = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "detekt" }
+
+# OpenTelemetry
+opentelemetry-api = { module = "io.opentelemetry:opentelemetry-api", version.ref = "opentelemetry" }
+opentelemetry-sdk = { module = "io.opentelemetry:opentelemetry-sdk", version.ref = "opentelemetry" }
+opentelemetry-exporter-otlp = { module = "io.opentelemetry:opentelemetry-exporter-otlp", version.ref = "opentelemetry" }
+opentelemetry-semconv = { module = "io.opentelemetry.semconv:opentelemetry-semconv", version.ref = "opentelemetry-semconv" }
 
 [plugins]
 # Kotlin
