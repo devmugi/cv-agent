@@ -49,6 +49,10 @@ junit = "4.13.2"
 mockk = "1.13.14"
 turbine = "1.2.0"
 
+# CLI & Config
+clikt = "5.0.3"
+kaml = "0.72.0"
+
 # Android
 android-compileSdk = "36"
 android-minSdk = "24"
@@ -119,6 +123,10 @@ turbine = { module = "app.cash.turbine:turbine", version.ref = "turbine" }
 
 # Logging
 kermit = { module = "co.touchlab:kermit", version.ref = "kermit" }
+
+# CLI & Config
+clikt = { module = "com.github.ajalt.clikt:clikt", version.ref = "clikt" }
+kaml = { module = "com.charleskorn.kaml:kaml", version.ref = "kaml" }
 
 # Design System
 arcane-foundation = { module = "io.github.devmugi.design.arcane:arcane-foundation", version.ref = "arcane" }
