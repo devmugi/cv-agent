@@ -51,10 +51,17 @@ open class GroqApiClient(
         )
 
         try {
+            // Prepend system prompt as first message if provided
+            val allMessages = if (systemPrompt.isNotEmpty()) {
+                listOf(ChatMessage(role = "system", content = systemPrompt)) + messages
+            } else {
+                messages
+            }
+
             val response: HttpResponse = httpClient.post(BASE_URL) {
                 header(HttpHeaders.Authorization, "Bearer $apiKey")
                 contentType(ContentType.Application.Json)
-                setBody(ChatRequest(model = MODEL, messages = messages))
+                setBody(ChatRequest(model = MODEL, messages = allMessages))
             }
 
             Logger.d(TAG) { "Response status: ${response.status}" }

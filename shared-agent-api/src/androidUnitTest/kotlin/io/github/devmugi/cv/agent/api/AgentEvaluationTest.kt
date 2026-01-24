@@ -1,5 +1,6 @@
 package io.github.devmugi.cv.agent.api
 
+import co.touchlab.kermit.LogWriter
 import co.touchlab.kermit.Logger
 import co.touchlab.kermit.Severity
 import io.github.devmugi.cv.agent.agent.AgentDataProvider
@@ -42,6 +43,10 @@ import kotlin.test.assertTrue
 @Suppress("FunctionNaming", "MagicNumber", "LargeClass")
 class AgentEvaluationTest {
 
+    companion object {
+        private const val TAG = "AgentEvaluation"
+    }
+
     private lateinit var tracer: OpenTelemetryAgentTracer
     private lateinit var apiClient: GroqApiClient
     private lateinit var promptBuilder: SystemPromptBuilder
@@ -54,8 +59,14 @@ class AgentEvaluationTest {
 
     @Before
     fun setup() {
-        // Disable logging in tests to avoid android.util.Log dependency
-        Logger.setMinSeverity(Severity.Assert)
+        // Configure Kermit with a JVM-compatible writer (LogcatWriter doesn't work in JVM tests)
+        Logger.setLogWriters(object : LogWriter() {
+            override fun log(severity: Severity, message: String, tag: String, throwable: Throwable?) {
+                println("[$severity][$tag] $message")
+                throwable?.printStackTrace()
+            }
+        })
+        Logger.setMinSeverity(Severity.Debug)
 
         apiKey = System.getenv("GROQ_API_KEY") ?: loadApiKeyFromProperties() ?: ""
         assumeTrue("GROQ_API_KEY not set - skipping evaluation tests", apiKey.isNotEmpty())
@@ -119,7 +130,7 @@ class AgentEvaluationTest {
                 projectLoader.loadCareerProject(file.readText())
             } ?: emptyList()
 
-        println("Loaded ${projects.size} projects: ${projects.map { it.id }}")
+        Logger.d(TAG) { "Loaded ${projects.size} projects: ${projects.map { it.id }}" }
     }
 
     private fun createDataProvider(mode: ProjectContextMode): AgentDataProvider {
@@ -135,8 +146,10 @@ class AgentEvaluationTest {
         val dataProvider = createDataProvider(mode)
         val systemPrompt = promptBuilder.build(dataProvider)
 
-        println("\n=== Mode: $mode | Question: $question ===")
-        println("System prompt length: ${systemPrompt.length} chars")
+        Logger.d(TAG) { "\n=== Mode: $mode | Question: $question ===" }
+        Logger.d(TAG) { "System prompt length: ${systemPrompt.length} chars" }
+        Logger.d(TAG) { "System prompt FIRST 1500 chars:\n${systemPrompt.take(1500)}" }
+        Logger.d(TAG) { "System prompt LAST 500 chars:\n${systemPrompt.takeLast(500)}" }
 
         val messages = listOf(ChatMessage(role = "user", content = question))
         val latch = CountDownLatch(1)
@@ -149,14 +162,14 @@ class AgentEvaluationTest {
                 onChunk = { response += it },
                 onComplete = { latch.countDown() },
                 onError = { e ->
-                    println("Error: ${e.message}")
+                    Logger.e(TAG) { "Error: ${e.message}" }
                     latch.countDown()
                 }
             )
         }
 
         assertTrue(latch.await(60, TimeUnit.SECONDS), "API call timed out")
-        println("Response: $response")
+        Logger.d(TAG) { "Response: $response" }
         return response
     }
 
@@ -164,15 +177,15 @@ class AgentEvaluationTest {
         val dataProvider = createDataProvider(mode)
         val systemPrompt = promptBuilder.build(dataProvider)
 
-        println("\n=== Mode: $mode | Conversation ===")
-        println("System prompt length: ${systemPrompt.length} chars")
+        Logger.d(TAG) { "\n=== Mode: $mode | Conversation ===" }
+        Logger.d(TAG) { "System prompt length: ${systemPrompt.length} chars" }
 
         val messages = mutableListOf<ChatMessage>()
         val responses = mutableListOf<String>()
 
         turns.forEach { turn ->
             messages.add(ChatMessage(role = "user", content = turn))
-            println("User: $turn")
+            Logger.d(TAG) { "User: $turn" }
 
             val latch = CountDownLatch(1)
             var response = ""
@@ -188,7 +201,7 @@ class AgentEvaluationTest {
             }
 
             assertTrue(latch.await(60, TimeUnit.SECONDS), "API call timed out")
-            println("Assistant: $response\n")
+            Logger.d(TAG) { "Assistant: $response\n" }
 
             messages.add(ChatMessage(role = "assistant", content = response))
             responses.add(response)
