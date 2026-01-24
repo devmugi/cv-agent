@@ -99,8 +99,12 @@ class EvalRunner(private val config: EvalConfig) {
             tracer = tracer
         )
 
-        // Initialize report writer
-        val reportsDir = File(config.reportsDir)
+        // Initialize report writer (use project root for relative paths)
+        val reportsDir = if (File(config.reportsDir).isAbsolute) {
+            File(config.reportsDir)
+        } else {
+            File(findProjectRoot(), config.reportsDir)
+        }
         reportWriter = ReportWriter(reportsDir)
 
         loadTestData()
@@ -627,8 +631,21 @@ class EvalRunner(private val config: EvalConfig) {
         }
     }
 
+    private fun findProjectRoot(): File {
+        // Try to find project root by looking for settings.gradle.kts
+        var dir = File(System.getProperty("user.dir"))
+        repeat(10) {
+            if (File(dir, "settings.gradle.kts").exists()) {
+                return dir
+            }
+            dir = dir.parentFile ?: return File(System.getProperty("user.dir"))
+        }
+        return File(System.getProperty("user.dir"))
+    }
+
     private fun loadTestData() {
-        val resourcesDir = File("shared-career-projects/src/commonMain/composeResources/files")
+        val projectRoot = findProjectRoot()
+        val resourcesDir = File(projectRoot, "shared-career-projects/src/commonMain/composeResources/files")
 
         // Load personal info
         val personalInfoJson = File(resourcesDir, "personal_info.json").readText()

@@ -1,0 +1,191 @@
+{
+    "runId": "95f36218",
+    "timestamp": "2026-01-24T21:24:40.677139Z",
+    "config": {
+        "promptVariant": "BASELINE",
+        "dataFormat": "TEXT",
+        "projectMode": "CURATED",
+        "model": "llama-3.3-70b-versatile",
+        "temperature": 0.7,
+        "maxTokens": 1024,
+        "questionSet": "SIMPLE",
+        "delayMs": 2000,
+        "phoenixEndpoint": "http://localhost:6006/v1/traces",
+        "reportsDir": "eval/reports"
+    },
+    "summary": {
+        "totalQuestions": 10,
+        "totalConversations": 0,
+        "successCount": 7,
+        "errorCount": 3,
+        "avgLatencyMs": 445.7,
+        "avgTtftMs": 600.0,
+        "totalPromptTokens": 0,
+        "totalCompletionTokens": 0,
+        "totalTokens": 0,
+        "p50LatencyMs": 416,
+        "p95LatencyMs": 846
+    },
+    "questionResults": [
+        {
+            "questionId": "Q1",
+            "questionText": "What is Denys's current job title and location?",
+            "category": "personal info recall",
+            "response": "Denys Honcharenko's current job title is Senior Android Engineer, and he is located in Genk, Belgium.\n\n```json\n{\"suggestions\": []}\n```",
+            "latencyMs": 846,
+            "ttftMs": 819,
+            "promptTokens": 0,
+            "completionTokens": 0,
+            "totalTokens": 0,
+            "suggestions": [],
+            "success": true,
+            "errorMessage": null
+        },
+        {
+            "questionId": "Q2",
+            "questionText": "What programming languages does Denys know?",
+            "category": "skills extraction",
+            "response": "Denys is proficient in a variety of programming languages, including Kotlin, Java, C, and C++. He also has experience with PHP and JavaScript, as well as AI-related languages such as Claude Code. Additionally, Denys is skilled in using Kotlin Multiplatform, which allows him to share code between Android and iOS platforms.\n\n```json\n{\"suggestions\": [\"mcdonalds\", \"geosatis\", \"adidas-gmr\"]}\n```",
+            "latencyMs": 613,
+            "ttftMs": 605,
+            "promptTokens": 0,
+            "completionTokens": 0,
+            "totalTokens": 0,
+            "suggestions": [
+                "mcdonalds",
+                "geosatis",
+                "adidas-gmr"
+            ],
+            "success": true,
+            "errorMessage": null
+        },
+        {
+            "questionId": "Q3",
+            "questionText": "Tell me about the McDonald's project",
+            "category": "featured project detail",
+            "response": "Denys Honcharenko worked on the McDonald's Global App (GMAL) as a Lead Android Engineer and KMM Developer from August 2021 to October 2022. The app is the world's most downloaded food and beverage app, serving over 100 million users across 60+ countries. Denys was responsible for working on the MDS (Delivery) and Payments feature streams, implementing KMP shared libraries for both Android and iOS. He also designed the architecture for 20+ payment providers and delivery integrations.\n\nSome notable achievements in this project include leading the ViewBinding migration using IntelliJ SSR tooling, creating the Android Talks initiative, and establishing the gmal-lite-rc Slack channel for improved release processes. The project showcases Denys' expertise in Kotlin, Kotlin Multiplatform (KMM), Jetpack Compose, and Coroutines.\n\nThe McDonald's Global App project demonstrates Denys' ability to work on large-scale, complex applications with multiple payment providers and delivery integrations. It also highlights his leadership skills, as he created initiatives to improve the development process and led the migration to new technologies.\n\n```json\n{\"suggestions\": [\"mcdonalds\", \"android-school\", \"adidas-gmr\"]}\n```",
+            "latencyMs": 923,
+            "ttftMs": 916,
+            "promptTokens": 0,
+            "completionTokens": 0,
+            "totalTokens": 0,
+            "suggestions": [
+                "mcdonalds",
+                "android-school",
+                "adidas-gmr"
+            ],
+            "success": true,
+            "errorMessage": null
+        },
+        {
+            "questionId": "Q4",
+            "questionText": "What was Denys's role at GEOSATIS?",
+            "category": "featured project role",
+            "response": "Denys Honcharenko worked at GEOSATIS as an Android Developer, Backend Developer, and DevOps engineer, where he contributed to the development of the GEOSATIS Victim App ecosystem. \n\n```json\n{\"suggestions\": [\"geosatis\"]}\n```",
+            "latencyMs": 403,
+            "ttftMs": 400,
+            "promptTokens": 0,
+            "completionTokens": 0,
+            "totalTokens": 0,
+            "suggestions": [
+                "geosatis"
+            ],
+            "success": true,
+            "errorMessage": null
+        },
+        {
+            "questionId": "Q5",
+            "questionText": "Has Denys worked with Kotlin Multiplatform?",
+            "category": "technology pattern matching",
+            "response": "Yes, Denys has worked with Kotlin Multiplatform. According to his skills and project experience, he has expertise in Kotlin Multiplatform, including KMM, Compose Multiplatform, and Coroutines. He has applied this expertise in several projects, such as the McDonald's Global App and the GEOSATIS Victim App.\n\n```json\n{\"suggestions\": [\"mcdonalds\", \"geosatis\"]}\n```",
+            "latencyMs": 506,
+            "ttftMs": 501,
+            "promptTokens": 0,
+            "completionTokens": 0,
+            "totalTokens": 0,
+            "suggestions": [
+                "mcdonalds",
+                "geosatis"
+            ],
+            "success": true,
+            "errorMessage": null
+        },
+        {
+            "questionId": "Q6",
+            "questionText": "What is the Lesara project about?",
+            "category": "non-featured project",
+            "response": "The Lesara project is an e-commerce platform for which Denys Honcharenko worked as a Senior Android Developer from September 2017 to April 2018. It is a European fast-fashion e-commerce company. \n\n```json\n{\"suggestions\": [\"lesara\"]}\n```",
+            "latencyMs": 416,
+            "ttftMs": 414,
+            "promptTokens": 0,
+            "completionTokens": 0,
+            "totalTokens": 0,
+            "suggestions": [
+                "lesara"
+            ],
+            "success": true,
+            "errorMessage": null
+        },
+        {
+            "questionId": "Q7",
+            "questionText": "List all companies Denys has worked for",
+            "category": "cross-project aggregation",
+            "response": "Denys Honcharenko has worked for the following companies:\n\n1. EPAM Systems (multiple projects, including Android School and Food Network Kitchen)\n2. Developers Shore (McDonald's Global App)\n3. GEOSATIS (GEOSATIS Victim App)\n4. StoAmigo\n5. Rifl Media\n6. Lesara\n7. Storesign (SMILdroid)\n8. Aitweb (as founder)\n\n{\"suggestions\": [\"android-school\", \"mcdonalds\", \"geosatis\"]}",
+            "latencyMs": 548,
+            "ttftMs": 545,
+            "promptTokens": 0,
+            "completionTokens": 0,
+            "totalTokens": 0,
+            "suggestions": [
+                "android-school",
+                "mcdonalds",
+                "geosatis"
+            ],
+            "success": true,
+            "errorMessage": null
+        },
+        {
+            "questionId": "Q8",
+            "questionText": "What IoT experience does Denys have?",
+            "category": "skill and project correlation",
+            "response": "",
+            "latencyMs": 81,
+            "ttftMs": null,
+            "promptTokens": 0,
+            "completionTokens": 0,
+            "totalTokens": 0,
+            "suggestions": [],
+            "success": false,
+            "errorMessage": "Rate limit exceeded"
+        },
+        {
+            "questionId": "Q9",
+            "questionText": "Tell me about the Adidas GMR smart insole",
+            "category": "featured project technical depth",
+            "response": "",
+            "latencyMs": 59,
+            "ttftMs": null,
+            "promptTokens": 0,
+            "completionTokens": 0,
+            "totalTokens": 0,
+            "suggestions": [],
+            "success": false,
+            "errorMessage": "Rate limit exceeded"
+        },
+        {
+            "questionId": "Q10",
+            "questionText": "What teaching or training experience does Denys have?",
+            "category": "teaching and training",
+            "response": "",
+            "latencyMs": 62,
+            "ttftMs": null,
+            "promptTokens": 0,
+            "completionTokens": 0,
+            "totalTokens": 0,
+            "suggestions": [],
+            "success": false,
+            "errorMessage": "Rate limit exceeded"
+        }
+    ],
+    "conversationResults": []
+}
