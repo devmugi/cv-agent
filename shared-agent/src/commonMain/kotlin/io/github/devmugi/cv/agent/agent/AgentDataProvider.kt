@@ -3,6 +3,17 @@ package io.github.devmugi.cv.agent.agent
 import io.github.devmugi.cv.agent.career.models.CareerProject
 import io.github.devmugi.cv.agent.career.models.PersonalInfo
 
+/**
+ * Determines how much project detail is included in the LLM system prompt.
+ */
+enum class ProjectContextMode {
+    /** Include full details for 5 featured projects only (lower token cost) */
+    CURATED,
+
+    /** Include full details for ALL projects (better coverage, higher token cost) */
+    ALL_PROJECTS
+}
+
 data class ProjectIndexEntry(
     val id: String,
     val name: String,
@@ -14,7 +25,8 @@ data class ProjectIndexEntry(
 class AgentDataProvider(
     val personalInfo: PersonalInfo,
     private val allProjects: List<CareerProject>,
-    private val featuredProjectIds: List<String>
+    private val featuredProjectIds: List<String>,
+    val contextMode: ProjectContextMode = ProjectContextMode.CURATED
 ) {
     companion object {
         val FEATURED_PROJECT_IDS = listOf(
@@ -40,7 +52,11 @@ class AgentDataProvider(
 
     @Suppress("CyclomaticComplexMethod", "ReturnCount")
     fun getCuratedDetails(projectId: String): String? {
-        if (projectId !in featuredProjectIds) return null
+        val shouldInclude = when (contextMode) {
+            ProjectContextMode.CURATED -> projectId in featuredProjectIds
+            ProjectContextMode.ALL_PROJECTS -> true
+        }
+        if (!shouldInclude) return null
         val project = allProjects.find { it.id == projectId } ?: return null
         return formatProjectDetails(project)
     }
@@ -87,6 +103,11 @@ class AgentDataProvider(
     }
 
     fun getFeaturedProjects(): List<CareerProject> {
-        return allProjects.filter { it.id in featuredProjectIds }
+        return when (contextMode) {
+            ProjectContextMode.CURATED -> allProjects.filter { it.id in featuredProjectIds }
+            ProjectContextMode.ALL_PROJECTS -> allProjects
+        }
     }
+
+    fun getAllProjects(): List<CareerProject> = allProjects
 }
