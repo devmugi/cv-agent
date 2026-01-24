@@ -14,13 +14,14 @@ CV Agent is a Kotlin Multiplatform (KMP) Compose Multiplatform mobile app that p
 ./gradlew :android-app:assembleDebug      # Android debug APK
 
 # Tests
-./gradlew :shared:test                    # Business logic tests
-./gradlew :shared-ui:test                 # UI component tests
-./gradlew :shared-domain:test             # Domain tests
+./gradlew :shared-agent:testAndroidUnitTest  # Agent tests
+./gradlew :shared-agent-api:testAndroidUnitTest  # API client tests
+./gradlew :shared-ui:testAndroidUnitTest  # UI component tests
+./gradlew :shared-domain:testAndroidUnitTest  # Domain tests
 ./gradlew allTests                        # All tests
 
 # Run single test class
-./gradlew :shared:test --tests "io.github.devmugi.cv.agent.agent.ChatViewModelTest"
+./gradlew :shared-agent:testAndroidUnitTest --tests "io.github.devmugi.cv.agent.agent.ChatViewModelTest"
 
 # Quality checks
 ./gradlew qualityCheck                    # Runs ktlint + detekt
@@ -34,20 +35,30 @@ CV Agent is a Kotlin Multiplatform (KMP) Compose Multiplatform mobile app that p
 ## Build Rules
 
 **Do NOT build iOS targets.** Reason: iOS tooling sucks, Xcode takes infinity time to build. Use Android-specific tasks instead:
-- `./gradlew :shared-ui:compileKotlinAndroid` instead of `./gradlew :shared-ui:build`
-- `./gradlew :shared:compileKotlinAndroid` instead of `./gradlew :shared:build`
+- `./gradlew :shared-agent:compileAndroidMain` instead of `./gradlew :shared-agent:build`
+- `./gradlew :shared:compileAndroidMain` instead of `./gradlew :shared:build`
 
 ## Module Architecture
 
 ```
-shared-domain/     → Pure domain models (no dependencies)
-shared-ui/         → UI components (depends on: shared-domain, Arcane Design System)
-shared/            → Business logic, API client, ViewModels (depends on: shared-domain, shared-ui)
-android-app/       → Android entry point (depends on: shared)
-iosApp/            → iOS app via Xcode (depends on: Shared.framework)
+shared-domain/         → Pure domain models (no dependencies)
+shared-career-projects/→ Career/CV data models & UI components
+shared-agent-api/      → LLM API client + OpenTelemetry tracing
+shared-agent/          → Agent business logic (ViewModel, prompts)
+shared-ui/             → UI components (depends on: shared-domain, Arcane Design System)
+shared/                → DI wiring only (depends on: all shared modules)
+android-app/           → Android entry point (depends on: shared)
+iosApp/                → iOS app via Xcode (depends on: Shared.framework)
 ```
 
-**Dependency flow:** `shared-domain` ← `shared-ui` ← `shared` ← `android-app`/`iosApp`
+**Dependency flow:**
+```
+shared-domain ← shared-career-projects ← shared-agent-api ← shared-agent
+                                              ↑                  ↑
+                                              └─── shared ───────┘
+                                                      ↑
+                                                 android-app
+```
 
 ## Key Architecture Patterns
 
@@ -55,11 +66,11 @@ iosApp/            → iOS app via Xcode (depends on: Shared.framework)
 
 **Dependency Injection:** Koin with module in `shared/src/commonMain/kotlin/.../di/AppModule.kt`. ViewModels use factory scope with parameters.
 
-**API Client:** `GroqApiClient` streams Server-Sent Events (SSE) from Groq API (model: llama-3.3-70b-versatile) with `onChunk`, `onComplete`, `onError` callbacks.
+**API Client:** `GroqApiClient` in shared-agent-api streams Server-Sent Events (SSE) from Groq API (model: llama-3.3-70b-versatile) with `onChunk`, `onComplete`, `onError` callbacks. Supports OpenTelemetry tracing via `AgentTracer`.
 
 **Platform Config:** `GroqConfig` uses expect/actual pattern for API key injection per platform.
 
-**Reference Extraction:** `ReferenceExtractor` parses CV references from AI responses, displayed as tappable chips.
+**Suggestion Extraction:** `SuggestionExtractor` parses project suggestions from AI responses, displayed as tappable chips.
 
 **Error Handling:** All errors displayed via Arcane toast notifications (no in-UI error messages).
 
@@ -67,17 +78,35 @@ iosApp/            → iOS app via Xcode (depends on: Shared.framework)
 
 | Purpose | Location |
 |---------|----------|
-| ViewModel | `shared/src/commonMain/.../agent/ChatViewModel.kt` |
-| API Client | `shared/src/commonMain/.../api/GroqApiClient.kt` |
+| ViewModel | `shared-agent/src/commonMain/.../agent/ChatViewModel.kt` |
+| API Client | `shared-agent-api/src/commonMain/.../api/GroqApiClient.kt` |
+| Tracing | `shared-agent-api/src/commonMain/.../api/tracing/AgentTracer.kt` |
+| OTEL Tracer | `shared-agent-api/src/androidMain/.../api/tracing/OpenTelemetryAgentTracer.kt` |
+| Prompt Builder | `shared-agent/src/commonMain/.../agent/SystemPromptBuilder.kt` |
 | DI Setup | `shared/src/commonMain/.../di/AppModule.kt` |
 | Main Screen | `shared-ui/src/commonMain/.../ui/ChatScreen.kt` |
 | Domain Models | `shared-domain/src/commonMain/.../domain/models/` |
 | Android Entry | `android-app/src/main/kotlin/.../MainActivity.kt` |
-| Test Fakes | `shared/src/commonTest/.../agent/ChatViewModelTest.kt` |
+| Agent Tests | `shared-agent/src/commonTest/.../agent/ChatViewModelTest.kt` |
+
+## LLM Observability
+
+The agent includes OpenTelemetry instrumentation for evaluating prompts:
+
+```bash
+# Install and start Phoenix
+pipx install arize-phoenix
+phoenix serve
+
+# Run tests with tracing
+./gradlew :shared-agent:testAndroidUnitTest
+
+# View traces at http://localhost:6006
+```
 
 ## Design System
 
-Uses **Arcane Design System** (io.github.nicholashauschild:arcane-components). Key components:
+Uses **Arcane Design System** (io.github.devmugi.design.arcane). Key components:
 - `ArcaneTheme`, `ArcaneButton`, `ArcaneTextField`, `ArcaneToast`, `ArcaneToastHost`
 - Theme colors: `ArcaneTheme.colors.*`
 - Typography: `ArcaneTheme.typography.*`
@@ -87,7 +116,7 @@ Uses **Arcane Design System** (io.github.nicholashauschild:arcane-components). K
 - Use `StandardTestDispatcher` for coroutine testing
 - Use `Turbine` for Flow testing (`flow.test { }`)
 - Use `MockK` for mocking
-- Create fake implementations (see `FakeGroqApiClient`, `FakeCVRepository` in ViewModel tests)
+- Create fake implementations (see `FakeGroqApiClient` in ChatViewModelTest)
 - UI tests use `@OptIn(ExperimentalTestApi::class)` with `runComposeUiTest`
 
 ## Code Quality

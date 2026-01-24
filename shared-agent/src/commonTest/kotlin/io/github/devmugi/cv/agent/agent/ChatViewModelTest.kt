@@ -10,6 +10,8 @@ import io.github.devmugi.cv.agent.domain.models.ChatError
 import io.github.devmugi.cv.agent.domain.models.MessageRole
 import io.github.devmugi.cv.agent.domain.models.defaultSuggestions
 import io.ktor.client.HttpClient
+import io.ktor.client.engine.mock.MockEngine
+import io.ktor.client.engine.mock.respond
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.StandardTestDispatcher
@@ -269,7 +271,7 @@ class ChatViewModelTest {
 
 // Test doubles
 class FakeGroqApiClient : GroqApiClient(
-    httpClient = HttpClient {},
+    httpClient = HttpClient(MockEngine) { engine { addHandler { respond("") } } },
     apiKey = "fake"
 ) {
     var responseChunks: List<String> = listOf("Test response")
@@ -280,6 +282,7 @@ class FakeGroqApiClient : GroqApiClient(
 
     override suspend fun streamChatCompletion(
         messages: List<ChatMessage>,
+        systemPrompt: String,
         onChunk: (String) -> Unit,
         onComplete: () -> Unit,
         onError: (GroqApiException) -> Unit

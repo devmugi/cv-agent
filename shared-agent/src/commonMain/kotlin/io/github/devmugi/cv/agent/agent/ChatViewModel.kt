@@ -102,6 +102,7 @@ class ChatViewModel(
 
         apiClient.streamChatCompletion(
             messages = apiMessages,
+            systemPrompt = systemPrompt,
             onChunk = { chunk ->
                 streamedContent += chunk
                 _state.update { current ->
