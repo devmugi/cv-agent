@@ -64,6 +64,9 @@ enum class QuestionSet {
     /** Multi-turn conversations Conv1-Conv10 */
     CONVERSATIONS,
 
+    /** McDonald's project deep-dive questions MCD1-MCD20 */
+    MCDONALDS,
+
     /** All questions and conversations */
     ALL
 }

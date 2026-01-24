@@ -117,6 +117,45 @@ object Conversations {
 }
 
 /**
+ * McDonald's project deep-dive questions for evaluation.
+ */
+object McdonaldsQuestions {
+    val questions = listOf(
+        // Basic Info (3)
+        Question("MCD1", "What was Denys's role on the McDonald's project?", "role"),
+        Question("MCD2", "How long did Denys work on the McDonald's app?", "duration"),
+        Question("MCD3", "What companies were involved in the McDonald's project chain?", "company structure"),
+
+        // Scale & Impact (3)
+        Question("MCD4", "How many users does the McDonald's Global App serve?", "metrics"),
+        Question("MCD5", "How many countries is the McDonald's app available in?", "metrics"),
+        Question("MCD6", "How many payment providers did Denys help integrate?", "metrics"),
+
+        // Feature Streams (3)
+        Question("MCD7", "What feature streams did Denys work on at McDonald's?", "feature streams"),
+        Question("MCD8", "What is MDS in the context of the McDonald's project?", "delivery"),
+        Question("MCD9", "What payment providers were integrated in the McDonald's app?", "payments"),
+
+        // Technical Details (4)
+        Question("MCD10", "What delivery tracking provider was used in the McDonald's app?", "technical"),
+        Question("MCD11", "How many order status states exist in the McDonald's delivery system?", "technical"),
+        Question("MCD12", "What is the Order 2.0 API in the McDonald's project?", "technical"),
+        Question("MCD13", "What markets did Denys work with directly for the delivery feature?", "markets"),
+
+        // KMM & Architecture (3)
+        Question("MCD14", "How was Kotlin Multiplatform used in the McDonald's project?", "kmm"),
+        Question("MCD15", "What is the mcm library in the McDonald's project?", "architecture"),
+        Question("MCD16", "What ViewModel pattern was used for KMM in the McDonald's app?", "architecture"),
+
+        // Leadership & Process (4)
+        Question("MCD17", "What was the Android Talks initiative at McDonald's?", "leadership"),
+        Question("MCD18", "What is the gmal-lite-rc channel about?", "process"),
+        Question("MCD19", "What estimation method was used in the McDonald's project?", "process"),
+        Question("MCD20", "What was the ViewBinding migration approach at McDonald's?", "technical")
+    )
+}
+
+/**
  * A single evaluation question.
  */
 data class Question(
