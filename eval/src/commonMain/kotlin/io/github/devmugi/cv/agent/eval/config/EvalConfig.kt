@@ -15,7 +15,7 @@ data class EvalConfig(
     val temperature: Double = 0.7,
     val maxTokens: Int = 1024,
     val questionSet: QuestionSet = QuestionSet.SIMPLE,
-    val delayMs: Long = 2_000,
+    val delayMs: Long = 5_000,
     val phoenixEndpoint: String = "http://localhost:6006/v1/traces",
     val reportsDir: String = "eval/reports"
 )
