@@ -60,6 +60,15 @@ kotlin {
         val androidUnitTest by getting {
             dependencies {
                 implementation(libs.ktor.client.okhttp)
+
+                // OpenTelemetry for tracing tests
+                implementation(libs.opentelemetry.api)
+                implementation(libs.opentelemetry.sdk)
+                implementation(libs.opentelemetry.exporter.otlp)
+
+                // For evaluation tests
+                implementation(projects.sharedAgent)
+                implementation(projects.sharedCareerProjects)
             }
         }
     }

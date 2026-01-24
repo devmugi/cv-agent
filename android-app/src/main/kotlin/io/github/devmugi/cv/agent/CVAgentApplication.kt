@@ -17,7 +17,7 @@ class CVAgentApplication : Application() {
         startKoin {
             androidLogger()
             androidContext(this@CVAgentApplication)
-            allowOverride(true)  // Allow tracingModule to override appModule definitions
+            allowOverride(true) // Allow tracingModule to override appModule definitions
             modules(appModule, tracingModule)
         }
     }

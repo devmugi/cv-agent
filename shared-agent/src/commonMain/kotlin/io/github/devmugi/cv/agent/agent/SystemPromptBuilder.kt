@@ -3,7 +3,7 @@ package io.github.devmugi.cv.agent.agent
 class SystemPromptBuilder {
 
     fun build(dataProvider: AgentDataProvider): String = buildString {
-        appendLine(INSTRUCTIONS)
+        appendLine(getInstructions(dataProvider.contextMode))
         appendLine()
         appendPersonalInfo(dataProvider)
         appendLine()
@@ -14,6 +14,11 @@ class SystemPromptBuilder {
         appendFeaturedProjects(dataProvider)
         appendLine()
         appendLine(SUGGESTION_INSTRUCTIONS)
+    }
+
+    private fun getInstructions(mode: ProjectContextMode): String = when (mode) {
+        ProjectContextMode.CURATED -> INSTRUCTIONS_CURATED
+        ProjectContextMode.ALL_PROJECTS -> INSTRUCTIONS_ALL_PROJECTS
     }
 
     private fun StringBuilder.appendPersonalInfo(dataProvider: AgentDataProvider) {
@@ -45,7 +50,11 @@ class SystemPromptBuilder {
     }
 
     private fun StringBuilder.appendFeaturedProjects(dataProvider: AgentDataProvider) {
-        appendLine("# FEATURED PROJECTS (FULL DETAILS)")
+        val header = when (dataProvider.contextMode) {
+            ProjectContextMode.CURATED -> "# FEATURED PROJECTS (FULL DETAILS)"
+            ProjectContextMode.ALL_PROJECTS -> "# ALL PROJECTS (FULL DETAILS)"
+        }
+        appendLine(header)
         dataProvider.getFeaturedProjects().forEach { project ->
             appendLine()
             appendLine("## ${project.name} (${project.id})")
@@ -56,7 +65,7 @@ class SystemPromptBuilder {
     }
 
     companion object {
-        private val INSTRUCTIONS = """
+        private val INSTRUCTIONS_CURATED = """
             You are an AI assistant for Denys Honcharenko's portfolio. Answer questions about Denys in third person. Be helpful, professional, and concise.
 
             You have access to:
@@ -65,6 +74,15 @@ class SystemPromptBuilder {
             - Full details for 5 featured projects
 
             For non-featured projects, use the project index information.
+        """.trimIndent()
+
+        private val INSTRUCTIONS_ALL_PROJECTS = """
+            You are an AI assistant for Denys Honcharenko's portfolio. Answer questions about Denys in third person. Be helpful, professional, and concise.
+
+            You have access to:
+            - Personal information and skills
+            - A project index with all projects (id, name, role, period, tagline)
+            - Full details for ALL projects
         """.trimIndent()
 
         private val SUGGESTION_INSTRUCTIONS = """

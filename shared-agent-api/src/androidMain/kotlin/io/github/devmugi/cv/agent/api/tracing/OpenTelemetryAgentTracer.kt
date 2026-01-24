@@ -1,6 +1,5 @@
 package io.github.devmugi.cv.agent.api.tracing
 
-import android.util.Log
 import io.github.devmugi.cv.agent.api.models.ChatMessage
 import io.opentelemetry.api.OpenTelemetry
 import io.opentelemetry.api.trace.Span
@@ -22,7 +21,7 @@ class OpenTelemetryAgentTracer private constructor(
      * Call this at the end of tests to ensure traces are sent before test completes.
      */
     fun flush() {
-        Log.d(TAG, "Flushing spans...")
+        println("[$TAG]Flushing spans...")
         tracerProvider.forceFlush().join(FLUSH_TIMEOUT_SECONDS, java.util.concurrent.TimeUnit.SECONDS)
     }
 
@@ -30,7 +29,7 @@ class OpenTelemetryAgentTracer private constructor(
      * Shuts down the tracer provider and flushes remaining spans.
      */
     fun shutdown() {
-        Log.d(TAG, "Shutting down tracer...")
+        println("[$TAG]Shutting down tracer...")
         tracerProvider.shutdown().join(FLUSH_TIMEOUT_SECONDS, java.util.concurrent.TimeUnit.SECONDS)
     }
 
@@ -41,7 +40,7 @@ class OpenTelemetryAgentTracer private constructor(
         temperature: Double,
         maxTokens: Int
     ): TracingSpan {
-        Log.d(TAG, "Starting LLM span - model: $model, messages: ${messages.size}")
+        println("[$TAG]Starting LLM span - model: $model, messages: ${messages.size}")
         val spanBuilder = tracer.spanBuilder("LLM")
             .setSpanKind(SpanKind.CLIENT)
             // OpenInference semantic conventions
@@ -83,7 +82,7 @@ class OpenTelemetryAgentTracer private constructor(
         }
 
         override fun complete(fullResponse: String, tokenCount: Int?) {
-            Log.d(TAG, "Completing LLM span - response length: ${fullResponse.length}")
+            println("[$TAG]Completing LLM span - response length: ${fullResponse.length}")
             // OpenInference semantic conventions for output
             span.setAttribute("llm.output_messages.0.message.role", "assistant")
             span.setAttribute("llm.output_messages.0.message.content", fullResponse.take(MAX_CONTENT_LENGTH))
@@ -109,7 +108,7 @@ class OpenTelemetryAgentTracer private constructor(
             endpoint: String = DEFAULT_ENDPOINT,
             serviceName: String = "cv-agent"
         ): OpenTelemetryAgentTracer {
-            Log.d(TAG, "Creating OpenTelemetry tracer - endpoint: $endpoint, service: $serviceName")
+            println("[$TAG]Creating OpenTelemetry tracer - endpoint: $endpoint, service: $serviceName")
 
             val exporter = OtlpHttpSpanExporter.builder()
                 .setEndpoint(endpoint)
@@ -123,7 +122,7 @@ class OpenTelemetryAgentTracer private constructor(
                 .setTracerProvider(tracerProvider)
                 .build()
 
-            Log.d(TAG, "OpenTelemetry tracer created successfully")
+            println("[$TAG]OpenTelemetry tracer created successfully")
             return OpenTelemetryAgentTracer(openTelemetry.getTracer(serviceName), tracerProvider)
         }
     }

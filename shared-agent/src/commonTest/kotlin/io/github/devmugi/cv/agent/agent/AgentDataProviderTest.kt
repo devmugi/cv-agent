@@ -83,15 +83,64 @@ class AgentDataProviderTest {
     }
 
     @Test
-    fun returnsNullForNonFeatured() {
+    fun returnsNullForNonFeaturedInCuratedMode() {
         val provider = AgentDataProvider(
             personalInfo = testPersonalInfo,
             allProjects = listOf(testProject),
-            featuredProjectIds = emptyList()
+            featuredProjectIds = emptyList(),
+            contextMode = ProjectContextMode.CURATED
         )
 
         val details = provider.getCuratedDetails("test-project")
 
         assertEquals(null, details)
+    }
+
+    @Test
+    fun returnsDetailsForAllProjectsInAllProjectsMode() {
+        val provider = AgentDataProvider(
+            personalInfo = testPersonalInfo,
+            allProjects = listOf(testProject),
+            featuredProjectIds = emptyList(),
+            contextMode = ProjectContextMode.ALL_PROJECTS
+        )
+
+        val details = provider.getCuratedDetails("test-project")
+
+        assertTrue(details != null)
+        assertTrue(details!!.contains("Test Company"))
+    }
+
+    @Test
+    fun getFeaturedProjectsReturnsCuratedInCuratedMode() {
+        val featuredProject = testProject.copy(id = "featured")
+        val otherProject = testProject.copy(id = "other")
+        val provider = AgentDataProvider(
+            personalInfo = testPersonalInfo,
+            allProjects = listOf(featuredProject, otherProject),
+            featuredProjectIds = listOf("featured"),
+            contextMode = ProjectContextMode.CURATED
+        )
+
+        val projects = provider.getFeaturedProjects()
+
+        assertEquals(1, projects.size)
+        assertEquals("featured", projects[0].id)
+    }
+
+    @Test
+    fun getFeaturedProjectsReturnsAllInAllProjectsMode() {
+        val featuredProject = testProject.copy(id = "featured")
+        val otherProject = testProject.copy(id = "other")
+        val provider = AgentDataProvider(
+            personalInfo = testPersonalInfo,
+            allProjects = listOf(featuredProject, otherProject),
+            featuredProjectIds = listOf("featured"),
+            contextMode = ProjectContextMode.ALL_PROJECTS
+        )
+
+        val projects = provider.getFeaturedProjects()
+
+        assertEquals(2, projects.size)
     }
 }

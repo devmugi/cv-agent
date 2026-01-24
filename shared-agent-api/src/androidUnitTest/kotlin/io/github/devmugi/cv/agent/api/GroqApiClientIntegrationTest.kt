@@ -27,8 +27,9 @@ import kotlin.test.fail
  * Prerequisites:
  * 1. Start Phoenix: `phoenix serve`
  * 2. Set GROQ_API_KEY in environment or local.properties
+ * 3. Run as Android instrumented test OR on emulator/device
  *
- * Run: ./gradlew :shared-agent-api:testAndroidUnitTest --tests "*IntegrationTest*"
+ * Run: ./gradlew :shared-agent-api:connectedAndroidTest
  * View traces: http://localhost:6006
  */
 @Suppress("FunctionNaming", "MagicNumber")
@@ -77,13 +78,16 @@ class GroqApiClientIntegrationTest {
         }
     }
 
+    @Suppress("SwallowedException")
     private fun loadApiKeyFromProperties(): String? {
         return try {
             val propsFile = File("../local.properties")
             if (propsFile.exists()) {
                 Properties().apply { load(propsFile.inputStream()) }
                     .getProperty("GROQ_API_KEY")
-            } else null
+            } else {
+                null
+            }
         } catch (e: Exception) {
             null
         }
