@@ -5,6 +5,7 @@ import io.github.devmugi.cv.agent.api.models.ChatMessage
 import io.github.devmugi.cv.agent.api.models.ChatRequest
 import io.github.devmugi.cv.agent.api.models.StreamChunk
 import io.github.devmugi.cv.agent.api.tracing.AgentTracer
+import io.github.devmugi.cv.agent.api.tracing.TokenUsage
 import io.github.devmugi.cv.agent.api.tracing.TracingSpan
 import io.ktor.client.HttpClient
 import io.ktor.client.request.header
@@ -38,17 +39,21 @@ open class GroqApiClient(
     open suspend fun streamChatCompletion(
         messages: List<ChatMessage>,
         systemPrompt: String = "",
+        sessionId: String? = null,
+        turnNumber: Int? = null,
         onChunk: (String) -> Unit,
         onComplete: () -> Unit,
         onError: (GroqApiException) -> Unit
     ) {
-        Logger.d(TAG) { "Starting chat completion - messages: ${messages.size}" }
+        Logger.d(TAG) { "Starting chat completion - messages: ${messages.size}, session: $sessionId, turn: $turnNumber" }
         val span = tracer.startLlmSpan(
             model = MODEL,
             systemPrompt = systemPrompt,
             messages = messages,
             temperature = DEFAULT_TEMPERATURE,
-            maxTokens = DEFAULT_MAX_TOKENS
+            maxTokens = DEFAULT_MAX_TOKENS,
+            sessionId = sessionId,
+            turnNumber = turnNumber
         )
 
         try {
@@ -74,7 +79,7 @@ open class GroqApiClient(
                 HttpStatusCode.Unauthorized, HttpStatusCode.Forbidden -> {
                     val error = GroqApiException.AuthError(response.status.value)
                     Logger.w(TAG) { "Auth error: ${response.status.value}" }
-                    span.error(error)
+                    span.error(error, errorType = "auth", retryable = false)
                     onError(error)
                 }
                 HttpStatusCode.TooManyRequests -> {
@@ -82,20 +87,26 @@ open class GroqApiClient(
                     rateLimiter.reportRateLimited(retryAfter)
                     val error = GroqApiException.RateLimitError(retryAfter)
                     Logger.w(TAG) { "Rate limit exceeded, retry-after: $retryAfter" }
-                    span.error(error)
+                    span.error(error, errorType = "rate_limit", retryable = true)
                     onError(error)
                 }
                 else -> {
                     val error = GroqApiException.ApiError(response.status.value, "API error")
                     Logger.w(TAG) { "API error: ${response.status.value}" }
-                    span.error(error)
+                    span.error(error, errorType = "api", retryable = false)
                     onError(error)
                 }
             }
         } catch (e: Exception) {
             Logger.e(TAG, e) { "Request failed: ${e.message}" }
             val error = if (e is GroqApiException) e else GroqApiException.NetworkError(e.message ?: "Unknown error")
-            span.error(error)
+            val errorType = when (e) {
+                is java.net.SocketTimeoutException -> "timeout"
+                is java.net.UnknownHostException -> "network"
+                is GroqApiException -> "api"
+                else -> "network"
+            }
+            span.error(error, errorType = errorType, retryable = true)
             onError(error)
         }
     }
@@ -108,6 +119,8 @@ open class GroqApiClient(
     ) {
         val fullResponse = StringBuilder()
         val channel = response.bodyAsChannel()
+        var isFirstContent = true
+        var tokenUsage: TokenUsage? = null
 
         while (!channel.isClosedForRead) {
             val line = channel.readUTF8Line() ?: break
@@ -115,13 +128,27 @@ open class GroqApiClient(
                 val data = line.removePrefix("data: ").trim()
                 if (data == "[DONE]") {
                     Logger.d(TAG) { "Stream completed - response length: ${fullResponse.length}" }
-                    span.complete(fullResponse.toString())
+                    span.complete(fullResponse.toString(), tokenUsage)
                     onComplete()
                     break
                 }
                 try {
                     val chunk = json.decodeFromString(StreamChunk.serializer(), data)
+
+                    // Capture usage data when present (typically in final chunk)
+                    chunk.usage?.let { usage ->
+                        tokenUsage = TokenUsage(
+                            promptTokens = usage.prompt_tokens,
+                            completionTokens = usage.completion_tokens,
+                            totalTokens = usage.total_tokens
+                        )
+                    }
+
                     chunk.choices.firstOrNull()?.delta?.content?.let { content ->
+                        if (isFirstContent) {
+                            span.recordFirstToken()
+                            isFirstContent = false
+                        }
                         fullResponse.append(content)
                         span.addResponseChunk(content)
                         onChunk(content)
