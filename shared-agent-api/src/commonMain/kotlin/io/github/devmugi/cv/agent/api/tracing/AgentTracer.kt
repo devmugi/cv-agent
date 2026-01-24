@@ -10,7 +10,8 @@ interface AgentTracer {
         temperature: Double,
         maxTokens: Int,
         sessionId: String? = null,
-        turnNumber: Int? = null
+        turnNumber: Int? = null,
+        promptMetadata: PromptMetadata? = null
     ): TracingSpan
 
     companion object {
@@ -31,6 +32,11 @@ data class TokenUsage(
     val totalTokens: Int
 )
 
+data class PromptMetadata(
+    val version: String,
+    val variant: String
+)
+
 private class NoOpAgentTracer : AgentTracer {
     override fun startLlmSpan(
         model: String,
@@ -39,7 +45,8 @@ private class NoOpAgentTracer : AgentTracer {
         temperature: Double,
         maxTokens: Int,
         sessionId: String?,
-        turnNumber: Int?
+        turnNumber: Int?,
+        promptMetadata: PromptMetadata?
     ): TracingSpan = NoOpTracingSpan
 
     @Suppress("EmptyFunctionBlock")

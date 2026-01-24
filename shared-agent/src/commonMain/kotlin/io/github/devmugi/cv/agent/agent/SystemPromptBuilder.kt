@@ -1,8 +1,27 @@
 package io.github.devmugi.cv.agent.agent
 
+data class SystemPromptResult(
+    val prompt: String,
+    val version: String,
+    val variant: String
+)
+
 class SystemPromptBuilder {
 
-    fun build(dataProvider: AgentDataProvider): String = buildString {
+    fun build(dataProvider: AgentDataProvider): String =
+        buildWithMetadata(dataProvider).prompt
+
+    fun buildWithMetadata(dataProvider: AgentDataProvider): SystemPromptResult {
+        val variant = dataProvider.contextMode.name
+        val prompt = buildPromptString(dataProvider)
+        return SystemPromptResult(
+            prompt = prompt,
+            version = PROMPT_VERSION,
+            variant = variant
+        )
+    }
+
+    private fun buildPromptString(dataProvider: AgentDataProvider): String = buildString {
         appendLine(getInstructions(dataProvider.contextMode))
         appendLine()
         appendPersonalInfo(dataProvider)
@@ -65,6 +84,8 @@ class SystemPromptBuilder {
     }
 
     companion object {
+        const val PROMPT_VERSION = "1.0.0"
+
         private val INSTRUCTIONS_CURATED = """
             You are an AI assistant for Denys Honcharenko's portfolio. Answer questions about Denys in third person. Be helpful, professional, and concise.
 

@@ -41,7 +41,8 @@ class OpenTelemetryAgentTracer private constructor(
         temperature: Double,
         maxTokens: Int,
         sessionId: String?,
-        turnNumber: Int?
+        turnNumber: Int?,
+        promptMetadata: PromptMetadata?
     ): TracingSpan {
         Logger.d(TAG) { "Starting LLM span - model: $model, messages: ${messages.size}, session: $sessionId, turn: $turnNumber" }
         val spanBuilder = tracer.spanBuilder("LLM")
@@ -54,6 +55,12 @@ class OpenTelemetryAgentTracer private constructor(
         // Session tracking
         sessionId?.let { spanBuilder.setAttribute("session.id", it) }
         turnNumber?.let { spanBuilder.setAttribute("llm.turn_number", it.toLong()) }
+
+        // Prompt versioning
+        promptMetadata?.let { meta ->
+            spanBuilder.setAttribute("llm.prompt.version", meta.version)
+            spanBuilder.setAttribute("llm.prompt.variant", meta.variant)
+        }
 
         // Add system prompt as first input message (index 0)
         var messageIndex = 0

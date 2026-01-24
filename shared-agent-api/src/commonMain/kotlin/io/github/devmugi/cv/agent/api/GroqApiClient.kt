@@ -5,6 +5,7 @@ import io.github.devmugi.cv.agent.api.models.ChatMessage
 import io.github.devmugi.cv.agent.api.models.ChatRequest
 import io.github.devmugi.cv.agent.api.models.StreamChunk
 import io.github.devmugi.cv.agent.api.tracing.AgentTracer
+import io.github.devmugi.cv.agent.api.tracing.PromptMetadata
 import io.github.devmugi.cv.agent.api.tracing.TokenUsage
 import io.github.devmugi.cv.agent.api.tracing.TracingSpan
 import io.ktor.client.HttpClient
@@ -41,6 +42,7 @@ open class GroqApiClient(
         systemPrompt: String = "",
         sessionId: String? = null,
         turnNumber: Int? = null,
+        promptMetadata: PromptMetadata? = null,
         onChunk: (String) -> Unit,
         onComplete: () -> Unit,
         onError: (GroqApiException) -> Unit
@@ -53,7 +55,8 @@ open class GroqApiClient(
             temperature = DEFAULT_TEMPERATURE,
             maxTokens = DEFAULT_MAX_TOKENS,
             sessionId = sessionId,
-            turnNumber = turnNumber
+            turnNumber = turnNumber,
+            promptMetadata = promptMetadata
         )
 
         try {
