@@ -6,6 +6,7 @@ import co.touchlab.kermit.Logger
 import io.github.devmugi.cv.agent.api.GroqApiClient
 import io.github.devmugi.cv.agent.api.GroqApiException
 import io.github.devmugi.cv.agent.api.models.ChatMessage
+import io.github.devmugi.cv.agent.api.tracing.PromptMetadata
 import io.github.devmugi.cv.agent.domain.models.ChatError
 import io.github.devmugi.cv.agent.domain.models.ChatState
 import io.github.devmugi.cv.agent.domain.models.Message
@@ -92,7 +93,9 @@ class ChatViewModel(
         val currentSessionId = sessionId
         Logger.d(TAG) { "Starting turn $currentTurn in session $currentSessionId" }
 
-        val systemPrompt = dataProvider?.let { promptBuilder.build(it) } ?: ""
+        val promptResult = dataProvider?.let { promptBuilder.buildWithMetadata(it) }
+        val systemPrompt = promptResult?.prompt ?: ""
+        val promptMetadata = promptResult?.let { PromptMetadata(it.version, it.variant) }
         val apiMessages = buildApiMessages(systemPrompt)
         val assistantMessageId = Uuid.random().toString()
 
@@ -120,6 +123,7 @@ class ChatViewModel(
             systemPrompt = systemPrompt,
             sessionId = currentSessionId,
             turnNumber = currentTurn,
+            promptMetadata = promptMetadata,
             onChunk = { chunk ->
                 streamedContent += chunk
                 _state.update { current ->
