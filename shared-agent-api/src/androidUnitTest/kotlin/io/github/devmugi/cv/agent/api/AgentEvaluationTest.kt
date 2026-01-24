@@ -32,12 +32,27 @@ import kotlin.test.assertTrue
  * Runs the same questions against both configurations and logs traces to Phoenix
  * for manual comparison of response quality and token usage.
  *
+ * **NOTE:** These tests are EXCLUDED from regular test runs to avoid rate limits.
+ *
  * Prerequisites:
  * 1. Start Phoenix: `phoenix serve`
  * 2. Set GROQ_API_KEY in environment or local.properties
- * 3. Run as Android instrumented test OR on emulator/device
  *
- * Run: ./gradlew :shared-agent-api:connectedAndroidTest
+ * Run evaluation tests:
+ * ```
+ * ./gradlew :shared-agent-api:evaluationTests
+ * ```
+ *
+ * Run with custom delay (default 2000ms):
+ * ```
+ * GROQ_TEST_DELAY_MS=3000 ./gradlew :shared-agent-api:evaluationTests
+ * ```
+ *
+ * Run without delay (single test):
+ * ```
+ * GROQ_TEST_DELAY_MS=0 ./gradlew :shared-agent-api:evaluationTests --tests "*Q1 CURATED*"
+ * ```
+ *
  * View traces: http://localhost:6006
  */
 @Suppress("FunctionNaming", "MagicNumber", "LargeClass")
@@ -45,6 +60,13 @@ class AgentEvaluationTest {
 
     companion object {
         private const val TAG = "AgentEvaluation"
+
+        /**
+         * Delay between tests to avoid hitting Groq rate limits.
+         * Configure via GROQ_TEST_DELAY_MS environment variable.
+         * Default: 2000ms (2 seconds). Set to 0 to disable.
+         */
+        private val TEST_DELAY_MS = System.getenv("GROQ_TEST_DELAY_MS")?.toLongOrNull() ?: 2000L
     }
 
     private lateinit var tracer: OpenTelemetryAgentTracer
@@ -59,6 +81,11 @@ class AgentEvaluationTest {
 
     @Before
     fun setup() {
+        // Rate limit protection: delay between tests
+        if (TEST_DELAY_MS > 0) {
+            Thread.sleep(TEST_DELAY_MS)
+        }
+
         // Configure Kermit with a JVM-compatible writer (LogcatWriter doesn't work in JVM tests)
         Logger.setLogWriters(object : LogWriter() {
             override fun log(severity: Severity, message: String, tag: String, throwable: Throwable?) {

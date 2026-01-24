@@ -39,6 +39,7 @@ The agent functionality is split into two modules for better testability:
 
 Contains the LLM API client with OpenTelemetry tracing support:
 - `GroqApiClient` - Streaming chat completions via Groq API
+- `RateLimiter` / `TokenBucketRateLimiter` - Rate limiting for API calls
 - `AgentTracer` - Tracing interface for LLM observability
 - `OpenTelemetryAgentTracer` - OTEL implementation (Android)
 
@@ -79,7 +80,8 @@ val tracer = OpenTelemetryAgentTracer.create(
 val apiClient = GroqApiClient(
     httpClient = httpClient,
     apiKey = apiKey,
-    tracer = tracer
+    tracer = tracer,
+    rateLimiter = TokenBucketRateLimiter()  // Optional, enabled by default via DI
 )
 ```
 
@@ -93,22 +95,60 @@ Each LLM request creates a span with:
 - Latency and token counts
 - Errors with exception details
 
-### Running Integration Tests
+### Running Evaluation Tests
 
-Integration tests make real API calls and send traces to Phoenix:
+Evaluation and integration tests make real Groq API calls and are **excluded from regular test runs** to avoid rate limits. They have a dedicated Gradle task:
 
 ```bash
 # Start Phoenix first
 phoenix serve
 
-# Run integration tests
-./gradlew :shared-agent:testAndroidUnitTest
+# Run evaluation tests (2s delay between tests by default)
+./gradlew :shared-agent-api:evaluationTests
+
+# Run with custom delay (in milliseconds)
+GROQ_TEST_DELAY_MS=3000 ./gradlew :shared-agent-api:evaluationTests
+
+# Run a single test (no delay needed)
+GROQ_TEST_DELAY_MS=0 ./gradlew :shared-agent-api:evaluationTests --tests "*Q1 CURATED*"
 
 # View traces in Phoenix UI
 open http://localhost:6006
 ```
 
-## Configuration
+## Rate Limiting
+
+The app includes built-in rate limiting to respect Groq API limits (30 RPM on free tier).
+
+### How It Works
+
+- `TokenBucketRateLimiter` enforces a minimum 2-second delay between API requests
+- On 429 (rate limit exceeded) responses, the `Retry-After` header is respected
+- Falls back to 60-second backoff if no `Retry-After` header is provided
+
+### Configuration
+
+Rate limiting is enabled by default in production. To customize:
+
+```kotlin
+// Custom rate limiter with different delay
+val rateLimiter = TokenBucketRateLimiter(minDelayMs = 1000) // 1 second
+
+val apiClient = GroqApiClient(
+    httpClient = httpClient,
+    apiKey = apiKey,
+    rateLimiter = rateLimiter
+)
+
+// Or disable rate limiting entirely (not recommended for production)
+val apiClient = GroqApiClient(
+    httpClient = httpClient,
+    apiKey = apiKey,
+    rateLimiter = RateLimiter.NOOP
+)
+```
+
+## API Key Configuration
 
 Set your Groq API key in `local.properties`:
 
