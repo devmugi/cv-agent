@@ -1,5 +1,9 @@
 package io.github.devmugi.cv.agent.agent
 
+import io.github.devmugi.cv.agent.career.models.CareerProject
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
+
 data class SystemPromptResult(
     val prompt: String,
     val version: String,
@@ -38,6 +42,9 @@ class SystemPromptBuilder {
     private fun getInstructions(mode: ProjectContextMode): String = when (mode) {
         ProjectContextMode.CURATED -> INSTRUCTIONS_CURATED
         ProjectContextMode.ALL_PROJECTS -> INSTRUCTIONS_ALL_PROJECTS
+        ProjectContextMode.PERSONAL_INFO_ONLY -> INSTRUCTIONS_PERSONAL_INFO_ONLY
+        ProjectContextMode.MCDONALDS_JSON_FULL -> INSTRUCTIONS_JSON_PROJECTS
+        ProjectContextMode.ALL_PROJECTS_JSON_FULL -> INSTRUCTIONS_JSON_PROJECTS
     }
 
     private fun StringBuilder.appendPersonalInfo(dataProvider: AgentDataProvider) {
@@ -69,9 +76,24 @@ class SystemPromptBuilder {
     }
 
     private fun StringBuilder.appendFeaturedProjects(dataProvider: AgentDataProvider) {
+        if (!dataProvider.shouldIncludeProjectDetails()) {
+            appendLine("# PROJECT DETAILS")
+            appendLine("(No detailed project information included in this mode)")
+            return
+        }
+
+        if (dataProvider.isJsonMode()) {
+            appendProjectsAsJson(dataProvider)
+        } else {
+            appendProjectsAsText(dataProvider)
+        }
+    }
+
+    private fun StringBuilder.appendProjectsAsText(dataProvider: AgentDataProvider) {
         val header = when (dataProvider.contextMode) {
             ProjectContextMode.CURATED -> "# FEATURED PROJECTS (FULL DETAILS)"
             ProjectContextMode.ALL_PROJECTS -> "# ALL PROJECTS (FULL DETAILS)"
+            else -> "# PROJECT DETAILS"
         }
         appendLine(header)
         dataProvider.getFeaturedProjects().forEach { project ->
@@ -83,8 +105,26 @@ class SystemPromptBuilder {
         }
     }
 
+    private fun StringBuilder.appendProjectsAsJson(dataProvider: AgentDataProvider) {
+        val header = when (dataProvider.contextMode) {
+            ProjectContextMode.MCDONALDS_JSON_FULL -> "# McDONALD'S PROJECT (JSON FORMAT)"
+            ProjectContextMode.ALL_PROJECTS_JSON_FULL -> "# ALL PROJECTS (JSON FORMAT)"
+            else -> "# PROJECTS (JSON FORMAT)"
+        }
+        appendLine(header)
+        dataProvider.getProjectsForMode().forEach { project ->
+            appendLine()
+            appendLine("## ${project.name} (${project.id})")
+            appendLine("```json")
+            appendLine(prettyJson.encodeToString(project))
+            appendLine("```")
+        }
+    }
+
     companion object {
         const val PROMPT_VERSION = "1.0.0"
+
+        private val prettyJson = Json { prettyPrint = true }
 
         private val INSTRUCTIONS_CURATED = """
             You are an AI assistant for Denys Honcharenko's portfolio. Answer questions about Denys in third person. Be helpful, professional, and concise.
@@ -104,6 +144,27 @@ class SystemPromptBuilder {
             - Personal information and skills
             - A project index with all projects (id, name, role, period, tagline)
             - Full details for ALL projects
+        """.trimIndent()
+
+        private val INSTRUCTIONS_PERSONAL_INFO_ONLY = """
+            You are an AI assistant for Denys Honcharenko's portfolio. Answer questions about Denys in third person. Be helpful, professional, and concise.
+
+            You have access to:
+            - Personal information and skills
+            - A project index with all projects (id, name, role, period, tagline)
+
+            Note: Detailed project information is not available. Use the project index for basic project info.
+        """.trimIndent()
+
+        private val INSTRUCTIONS_JSON_PROJECTS = """
+            You are an AI assistant for Denys Honcharenko's portfolio. Answer questions about Denys in third person. Be helpful, professional, and concise.
+
+            You have access to:
+            - Personal information and skills
+            - A project index with all projects (id, name, role, period, tagline)
+            - Full project data in JSON format (contains all fields from the original data)
+
+            Use the JSON data to answer detailed questions about projects.
         """.trimIndent()
 
         private val SUGGESTION_INSTRUCTIONS = """

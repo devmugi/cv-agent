@@ -11,7 +11,16 @@ enum class ProjectContextMode {
     CURATED,
 
     /** Include full details for ALL projects (better coverage, higher token cost) */
-    ALL_PROJECTS
+    ALL_PROJECTS,
+
+    /** Personal info + skills + project index only (no project details) */
+    PERSONAL_INFO_ONLY,
+
+    /** McDonald's project as raw JSON (for deep evaluation) */
+    MCDONALDS_JSON_FULL,
+
+    /** All projects as raw JSON (maximum context) */
+    ALL_PROJECTS_JSON_FULL
 }
 
 data class ProjectIndexEntry(
@@ -50,11 +59,40 @@ class AgentDataProvider(
         }
     }
 
+    /**
+     * Whether to include detailed project information in the prompt.
+     */
+    fun shouldIncludeProjectDetails(): Boolean = when (contextMode) {
+        ProjectContextMode.PERSONAL_INFO_ONLY -> false
+        else -> true
+    }
+
+    /**
+     * Whether the mode uses raw JSON format for projects.
+     */
+    fun isJsonMode(): Boolean = contextMode in listOf(
+        ProjectContextMode.MCDONALDS_JSON_FULL,
+        ProjectContextMode.ALL_PROJECTS_JSON_FULL
+    )
+
+    /**
+     * Get projects to include based on current mode.
+     */
+    fun getProjectsForMode(): List<CareerProject> = when (contextMode) {
+        ProjectContextMode.CURATED -> allProjects.filter { it.id in featuredProjectIds }
+        ProjectContextMode.MCDONALDS_JSON_FULL -> allProjects.filter { it.id == "mcdonalds" }
+        ProjectContextMode.PERSONAL_INFO_ONLY -> emptyList()
+        ProjectContextMode.ALL_PROJECTS, ProjectContextMode.ALL_PROJECTS_JSON_FULL -> allProjects
+    }
+
     @Suppress("CyclomaticComplexMethod", "ReturnCount")
     fun getCuratedDetails(projectId: String): String? {
         val shouldInclude = when (contextMode) {
             ProjectContextMode.CURATED -> projectId in featuredProjectIds
             ProjectContextMode.ALL_PROJECTS -> true
+            ProjectContextMode.PERSONAL_INFO_ONLY -> false
+            ProjectContextMode.MCDONALDS_JSON_FULL -> projectId == "mcdonalds"
+            ProjectContextMode.ALL_PROJECTS_JSON_FULL -> true
         }
         if (!shouldInclude) return null
         val project = allProjects.find { it.id == projectId } ?: return null
@@ -102,12 +140,7 @@ class AgentDataProvider(
         }
     }
 
-    fun getFeaturedProjects(): List<CareerProject> {
-        return when (contextMode) {
-            ProjectContextMode.CURATED -> allProjects.filter { it.id in featuredProjectIds }
-            ProjectContextMode.ALL_PROJECTS -> allProjects
-        }
-    }
+    fun getFeaturedProjects(): List<CareerProject> = getProjectsForMode()
 
     fun getAllProjects(): List<CareerProject> = allProjects
 }
