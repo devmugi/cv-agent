@@ -104,6 +104,77 @@ phoenix serve
 # View traces at http://localhost:6006
 ```
 
+## Evaluation Tests Analysis
+
+**After running `evaluationTests`, ALWAYS query Phoenix API to analyze results.**
+
+### Running Evaluation Tests
+
+```bash
+# Run all evaluation tests (with rate limit delay)
+GROQ_TEST_DELAY_MS=10000 ./gradlew :shared-agent-api:evaluationTests
+
+# Run only CURATED simple questions (Q1-Q10)
+GROQ_TEST_DELAY_MS=10000 ./gradlew :shared-agent-api:evaluationTests --tests "*Q* CURATED*"
+
+# Run only conversations
+GROQ_TEST_DELAY_MS=10000 ./gradlew :shared-agent-api:evaluationTests --tests "*Conv* CURATED*"
+```
+
+### Phoenix API Analysis (Required After Tests)
+
+After tests complete, query Phoenix GraphQL API at `http://localhost:6006/graphql`:
+
+```bash
+# Get project ID
+curl -s http://localhost:6006/graphql -H "Content-Type: application/json" \
+  -d '{"query":"{ projects { edges { node { id name } } } }"}'
+
+# Get recent spans with full attributes (use project ID from above)
+curl -s http://localhost:6006/graphql -H "Content-Type: application/json" \
+  -d '{"query":"query { node(id: \"PROJECT_ID\") { ... on Project { spans(first: 20, sort: { col: startTime, dir: desc }) { edges { node { name latencyMs statusCode startTime attributes } } } } } }"}'
+```
+
+### Required Analysis Output
+
+After running evaluation tests, provide a summary table:
+
+| Test | Question (short) | Latency | TTFT | Prompt Tokens | Completion Tokens | Response Analysis |
+|------|------------------|---------|------|---------------|-------------------|-------------------|
+| Q1   | Job title        | 299ms   | 297ms| 1,997         | 36                | ✅ Accurate, concise |
+
+**Include for each test:**
+1. **Question** - Short summary of what was asked
+2. **Latency** - Total response time (ms)
+3. **TTFT** - Time to first token (ms) from `llm.latency.time_to_first_token_ms`
+4. **Token counts** - From `llm.token_count.prompt/completion/total`
+5. **Response analysis** - Brief quality assessment:
+   - ✅ Accurate and complete
+   - ⚠️ Partially correct or verbose
+   - ❌ Incorrect or missing info
+
+**Insights to include:**
+- Average latency and TTFT
+- Token efficiency (completion/prompt ratio)
+- Prompt variant used (`llm.prompt.variant`: CURATED vs ALL_PROJECTS)
+- Session tracking (`session.id`, `llm.turn_number`) for conversations
+- Any errors (`error.type`, `error.retryable`)
+
+### Trace Attributes Reference
+
+| Attribute | Description |
+|-----------|-------------|
+| `llm.token_count.prompt` | Input tokens |
+| `llm.token_count.completion` | Output tokens |
+| `llm.token_count.total` | Total tokens |
+| `llm.latency.time_to_first_token_ms` | TTFT in milliseconds |
+| `llm.prompt.version` | Prompt version (e.g., "1.0.0") |
+| `llm.prompt.variant` | CURATED or ALL_PROJECTS |
+| `session.id` | Conversation session UUID |
+| `llm.turn_number` | Turn in conversation (1, 2, 3...) |
+| `error.type` | auth, rate_limit, api, timeout, network |
+| `error.retryable` | true/false |
+
 ## Design System
 
 Uses **Arcane Design System** (io.github.devmugi.design.arcane). Key components:
