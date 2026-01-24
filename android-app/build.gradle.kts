@@ -39,14 +39,22 @@ android {
     }
 
     buildTypes {
+        getByName("debug") {
+            buildConfigField("Boolean", "ENABLE_PHOENIX_TRACING", "true")
+        }
         getByName("release") {
             isMinifyEnabled = false
+            buildConfigField("Boolean", "ENABLE_PHOENIX_TRACING", "false")
         }
         all {
             val apiKey = localProperties.getProperty("GROQ_API_KEY")
                 ?: project.findProperty("GROQ_API_KEY")?.toString()
                 ?: ""
             buildConfigField("String", "GROQ_API_KEY", "\"$apiKey\"")
+
+            // Phoenix tracing host (set in local.properties for real device testing)
+            val phoenixHost = localProperties.getProperty("PHOENIX_HOST") ?: ""
+            buildConfigField("String", "PHOENIX_HOST", "\"$phoenixHost\"")
         }
     }
 
@@ -70,6 +78,7 @@ android {
 dependencies {
     implementation(projects.shared)
     implementation(projects.sharedCareerProjects)
+    implementation(projects.sharedAgentApi)
 
     // Arcane Design System (needed for ArcaneTheme and ArcaneToastHost in MainActivity)
     implementation(libs.arcane.foundation)

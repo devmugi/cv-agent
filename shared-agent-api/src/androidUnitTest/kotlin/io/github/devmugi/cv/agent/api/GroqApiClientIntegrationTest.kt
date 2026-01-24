@@ -22,7 +22,7 @@ import kotlin.test.fail
 
 /**
  * Integration tests that make real Groq API calls with OpenTelemetry tracing.
- * Traces are sent to Phoenix at localhost:4317.
+ * Traces are sent to Phoenix at localhost:6006.
  *
  * Prerequisites:
  * 1. Start Phoenix: `phoenix serve`
@@ -31,6 +31,7 @@ import kotlin.test.fail
  * Run: ./gradlew :shared-agent-api:testAndroidUnitTest --tests "*IntegrationTest*"
  * View traces: http://localhost:6006
  */
+@Suppress("FunctionNaming", "MagicNumber")
 class GroqApiClientIntegrationTest {
 
     private lateinit var tracer: OpenTelemetryAgentTracer
