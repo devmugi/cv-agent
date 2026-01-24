@@ -30,8 +30,8 @@ kotlin {
         commonMain.dependencies {
             api(projects.sharedDomain)
 
-            // Networking
-            implementation(libs.ktor.client.core)
+            // Networking - api because GroqApiClient constructor exposes HttpClient
+            api(libs.ktor.client.core)
             implementation(libs.ktor.client.content.negotiation)
             implementation(libs.ktor.serialization.kotlinx.json)
             implementation(libs.ktor.client.logging)

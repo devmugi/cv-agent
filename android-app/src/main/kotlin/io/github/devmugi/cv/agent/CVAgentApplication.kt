@@ -2,6 +2,7 @@ package io.github.devmugi.cv.agent
 
 import android.app.Application
 import io.github.devmugi.cv.agent.di.appModule
+import io.github.devmugi.cv.agent.di.tracingModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
@@ -16,7 +17,8 @@ class CVAgentApplication : Application() {
         startKoin {
             androidLogger()
             androidContext(this@CVAgentApplication)
-            modules(appModule)
+            allowOverride(true)  // Allow tracingModule to override appModule definitions
+            modules(appModule, tracingModule)
         }
     }
 }
