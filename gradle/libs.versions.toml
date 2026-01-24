@@ -32,6 +32,9 @@ multiplatform-markdown = "0.29.0"
 # Design System
 arcane = "0.2.1"
 
+# Logging
+kermit = "2.0.8"
+
 # Quality
 ktlint = "14.0.1"
 detekt = "1.23.8"
@@ -113,6 +116,9 @@ koin-compose = { module = "io.insert-koin:koin-compose", version.ref = "koin-com
 junit = { module = "junit:junit", version.ref = "junit" }
 mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
 turbine = { module = "app.cash.turbine:turbine", version.ref = "turbine" }
+
+# Logging
+kermit = { module = "co.touchlab:kermit", version.ref = "kermit" }
 
 # Design System
 arcane-foundation = { module = "io.github.devmugi.design.arcane:arcane-foundation", version.ref = "arcane" }

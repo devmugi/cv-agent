@@ -1,5 +1,7 @@
 package io.github.devmugi.cv.agent.api
 
+import co.touchlab.kermit.Logger
+import co.touchlab.kermit.Severity
 import io.github.devmugi.cv.agent.agent.AgentDataProvider
 import io.github.devmugi.cv.agent.agent.ProjectContextMode
 import io.github.devmugi.cv.agent.agent.SystemPromptBuilder
@@ -52,6 +54,9 @@ class AgentEvaluationTest {
 
     @Before
     fun setup() {
+        // Disable logging in tests to avoid android.util.Log dependency
+        Logger.setMinSeverity(Severity.Assert)
+
         apiKey = System.getenv("GROQ_API_KEY") ?: loadApiKeyFromProperties() ?: ""
         assumeTrue("GROQ_API_KEY not set - skipping evaluation tests", apiKey.isNotEmpty())
 
@@ -99,7 +104,6 @@ class AgentEvaluationTest {
             null
         }
     }
-
 
     private fun loadTestData() {
         val resourcesDir = File("../shared-career-projects/src/commonMain/composeResources/files")

@@ -44,6 +44,9 @@ kotlin {
 
             // Coroutines
             implementation(libs.kotlinx.coroutines.core)
+
+            // Logging (via shared-agent-api)
+            implementation(libs.kermit)
         }
 
         commonTest.dependencies {

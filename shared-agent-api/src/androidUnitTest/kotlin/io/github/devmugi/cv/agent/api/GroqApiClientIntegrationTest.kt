@@ -1,5 +1,7 @@
 package io.github.devmugi.cv.agent.api
 
+import co.touchlab.kermit.Logger
+import co.touchlab.kermit.Severity
 import io.github.devmugi.cv.agent.api.models.ChatMessage
 import io.github.devmugi.cv.agent.api.tracing.OpenTelemetryAgentTracer
 import io.ktor.client.HttpClient
@@ -41,6 +43,9 @@ class GroqApiClientIntegrationTest {
 
     @Before
     fun setup() {
+        // Disable logging in tests to avoid android.util.Log dependency
+        Logger.setMinSeverity(Severity.Assert)
+
         // Try environment variable first, then local.properties
         apiKey = System.getenv("GROQ_API_KEY") ?: loadApiKeyFromProperties() ?: ""
 

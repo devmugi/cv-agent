@@ -1,5 +1,7 @@
 package io.github.devmugi.cv.agent.agent
 
+import co.touchlab.kermit.Logger
+import co.touchlab.kermit.Severity
 import io.github.devmugi.cv.agent.api.GroqApiClient
 import io.github.devmugi.cv.agent.api.GroqApiException
 import io.github.devmugi.cv.agent.api.models.ChatMessage
@@ -61,6 +63,9 @@ class ChatViewModelTest {
 
     @BeforeTest
     fun setup() {
+        // Disable logging in tests to avoid android.util.Log dependency
+        Logger.setMinSeverity(Severity.Assert)
+
         Dispatchers.setMain(testDispatcher)
         fakeApiClient = FakeGroqApiClient()
         viewModel = ChatViewModel(

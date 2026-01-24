@@ -1,6 +1,6 @@
 package io.github.devmugi.cv.agent.di
 
-import android.util.Log
+import co.touchlab.kermit.Logger
 import io.github.devmugi.cv.agent.BuildConfig
 import io.github.devmugi.cv.agent.GroqConfig
 import io.github.devmugi.cv.agent.api.GroqApiClient
@@ -24,20 +24,20 @@ val tracingModule = module {
         if (BuildConfig.ENABLE_PHOENIX_TRACING) {
             val host = BuildConfig.PHOENIX_HOST.ifEmpty { "10.0.2.2" }
             val endpoint = "http://$host:6006/v1/traces"
-            Log.d(TAG, "Phoenix tracing ENABLED, endpoint: $endpoint")
+            Logger.d(TAG) { "Phoenix tracing ENABLED, endpoint: $endpoint" }
             OpenTelemetryAgentTracer.create(
                 endpoint = endpoint,
                 serviceName = "cv-agent-android"
             )
         } else {
-            Log.d(TAG, "Phoenix tracing DISABLED")
+            Logger.d(TAG) { "Phoenix tracing DISABLED" }
             AgentTracer.NOOP
         }
     }
 
     // Override GroqApiClient to include the tracer
     single {
-        Log.d(TAG, "Creating GroqApiClient with tracer")
+        Logger.d(TAG) { "Creating GroqApiClient with tracer" }
         GroqApiClient(get(), GroqConfig.apiKey, get<AgentTracer>())
     }
 }

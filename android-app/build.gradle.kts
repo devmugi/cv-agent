@@ -88,6 +88,7 @@ dependencies {
     implementation(libs.compose.foundation)
     implementation(libs.koin.android)
     implementation(libs.koin.compose)
+    implementation(libs.kermit)
     implementation(libs.compose.components.resources)
     implementation(libs.kotlinx.serialization.json)
 
