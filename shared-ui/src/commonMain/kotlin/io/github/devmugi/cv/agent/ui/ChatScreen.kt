@@ -11,7 +11,9 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.imePadding
+import androidx.compose.foundation.layout.isImeVisible
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -52,6 +54,7 @@ import io.github.devmugi.cv.agent.ui.components.MessageActions
 import io.github.devmugi.cv.agent.ui.components.SuggestionChip
 import io.github.devmugi.cv.agent.ui.components.WelcomeSection
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun ChatScreen(
     state: ChatState,
@@ -71,8 +74,16 @@ fun ChatScreen(
     var inputText by remember { mutableStateOf("") }
     var isInputFocused by remember { mutableStateOf(false) }
     val focusManager = LocalFocusManager.current
+    val isKeyboardVisible = WindowInsets.isImeVisible
 
     val showWelcome = state.messages.isEmpty() && !state.isLoading && !state.isStreaming
+
+    // Clear focus when keyboard hides
+    LaunchedEffect(isKeyboardVisible) {
+        if (!isKeyboardVisible) {
+            focusManager.clearFocus()
+        }
+    }
 
     // Show errors as toasts
     LaunchedEffect(state.error) {
