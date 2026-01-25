@@ -32,7 +32,7 @@ import com.mikepenz.markdown.m3.Markdown
 import com.mikepenz.markdown.m3.markdownColor
 import io.github.devmugi.arcane.chat.components.messages.ArcaneAssistantMessageBlock
 import io.github.devmugi.arcane.chat.components.messages.ArcaneChatMessageList
-import io.github.devmugi.arcane.chat.components.messages.ArcaneUserMessageBlock
+import io.github.devmugi.cv.agent.ui.components.OutlinedUserMessageBlock
 import io.github.devmugi.arcane.chat.components.scaffold.ArcaneChatScreenScaffold
 import io.github.devmugi.arcane.chat.models.MessageBlock
 import io.github.devmugi.arcane.design.components.feedback.ArcaneSkeleton
@@ -198,15 +198,14 @@ private fun MessageItem(
 ) {
     when (message.role) {
         MessageRole.USER -> {
-            ArcaneUserMessageBlock(
+            OutlinedUserMessageBlock(
                 blocks = listOf(
                     MessageBlock.Text(
                         id = "${message.id}-text",
                         content = message.content
                     )
                 ),
-                modifier = Modifier.padding(horizontal = 16.dp, vertical = 4.dp),
-                backgroundColor = ArcaneTheme.colors.surfaceContainerLow
+                modifier = Modifier.padding(horizontal = 16.dp, vertical = 4.dp)
             )
         }
         MessageRole.ASSISTANT -> {
