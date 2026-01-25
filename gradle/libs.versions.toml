@@ -32,6 +32,9 @@ multiplatform-markdown = "0.29.0"
 # Design System
 arcane = "0.3.2"
 
+# Icons
+compose-icons = "1.1.1"
+
 # Logging
 kermit = "2.0.8"
 
@@ -135,6 +138,9 @@ kaml = { module = "com.charleskorn.kaml:kaml", version.ref = "kaml" }
 arcane-foundation = { module = "io.github.devmugi.design.arcane:arcane-foundation", version.ref = "arcane" }
 arcane-components = { module = "io.github.devmugi.design.arcane:arcane-components", version.ref = "arcane" }
 arcane-chat = { module = "io.github.devmugi.design.arcane:arcane-chat", version.ref = "arcane" }
+
+# Icons
+compose-icons-simple = { module = "br.com.devsrsouza.compose.icons:simple-icons", version.ref = "compose-icons" }
 
 # Quality
 detekt-formatting = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "detekt" }
