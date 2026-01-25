@@ -1,12 +1,18 @@
 package io.github.devmugi.cv.agent.career.ui
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.EmojiEvents
@@ -14,10 +20,16 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import io.github.devmugi.arcane.design.foundation.theme.ArcaneTheme
 import io.github.devmugi.cv.agent.career.models.CareerProject
@@ -36,6 +48,8 @@ import io.github.devmugi.cv.agent.career.ui.components.StandoutSection
 import io.github.devmugi.cv.agent.career.ui.components.TeamStructureSection
 import io.github.devmugi.cv.agent.career.ui.components.TechnologiesSection
 
+private val AmberColor = Color(0xFFFFC107)
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CareerProjectDetailsScreenScaffold(
@@ -44,12 +58,46 @@ fun CareerProjectDetailsScreenScaffold(
     onLinkClick: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val lazyListState = rememberLazyListState()
+
+    val showToolbarTitle by remember {
+        derivedStateOf {
+            lazyListState.firstVisibleItemIndex > 0 ||
+                lazyListState.firstVisibleItemScrollOffset > 200
+        }
+    }
+
     Scaffold(
         modifier = modifier,
         containerColor = ArcaneTheme.colors.surfaceContainerLow,
         topBar = {
             TopAppBar(
-                title = { },
+                title = {
+                    AnimatedVisibility(
+                        visible = showToolbarTitle,
+                        enter = fadeIn(animationSpec = tween(200)),
+                        exit = fadeOut(animationSpec = tween(150))
+                    ) {
+                        Column {
+                            Text(
+                                text = project.name,
+                                style = ArcaneTheme.typography.titleMedium,
+                                color = ArcaneTheme.colors.text,
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis
+                            )
+                            project.overview?.role?.let { role ->
+                                Text(
+                                    text = role,
+                                    style = ArcaneTheme.typography.bodySmall,
+                                    color = AmberColor,
+                                    maxLines = 1,
+                                    overflow = TextOverflow.Ellipsis
+                                )
+                            }
+                        }
+                    }
+                },
                 navigationIcon = {
                     IconButton(onClick = onBackClick) {
                         Icon(
@@ -66,6 +114,7 @@ fun CareerProjectDetailsScreenScaffold(
         }
     ) { padding ->
         LazyColumn(
+            state = lazyListState,
             modifier = Modifier
                 .fillMaxSize()
                 .padding(padding),
