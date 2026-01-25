@@ -1,5 +1,8 @@
 package io.github.devmugi.cv.agent.domain.models
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class ChatState(
     val messages: List<Message> = emptyList(),
     val isLoading: Boolean = false,
@@ -11,9 +14,13 @@ data class ChatState(
     val projectNames: Map<String, String> = emptyMap()
 )
 
+@Serializable
 sealed class ChatError {
+    @Serializable
     data class Network(val message: String) : ChatError()
+    @Serializable
     data class Api(val message: String) : ChatError()
+    @Serializable
     data object RateLimit : ChatError()
 }
 

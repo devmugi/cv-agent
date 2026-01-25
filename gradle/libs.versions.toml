@@ -30,7 +30,7 @@ kotlinx-serialization = "1.7.3"
 multiplatform-markdown = "0.29.0"
 
 # Design System
-arcane = "0.3.1"
+arcane = "0.3.2"
 
 # Logging
 kermit = "2.0.8"
@@ -48,6 +48,7 @@ kotlinx-coroutines = "1.10.2"
 junit = "4.13.2"
 mockk = "1.13.14"
 turbine = "1.2.0"
+robolectric = "4.14.1"
 
 # CLI & Config
 clikt = "5.0.3"
@@ -115,11 +116,13 @@ multiplatform-markdown-renderer-m3 = { module = "com.mikepenz:multiplatform-mark
 koin-core = { module = "io.insert-koin:koin-core", version.ref = "koin" }
 koin-android = { module = "io.insert-koin:koin-android", version.ref = "koin" }
 koin-compose = { module = "io.insert-koin:koin-compose", version.ref = "koin-compose" }
+koin-androidx-compose = { module = "io.insert-koin:koin-androidx-compose", version.ref = "koin" }
 
 # Testing
 junit = { module = "junit:junit", version.ref = "junit" }
 mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
 turbine = { module = "app.cash.turbine:turbine", version.ref = "turbine" }
+robolectric = { module = "org.robolectric:robolectric", version.ref = "robolectric" }
 
 # Logging
 kermit = { module = "co.touchlab:kermit", version.ref = "kermit" }

@@ -1,5 +1,6 @@
 package io.github.devmugi.cv.agent.agent
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import co.touchlab.kermit.Logger
@@ -18,16 +19,30 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 
 class ChatViewModel(
+    private val savedStateHandle: SavedStateHandle? = null,
     private val apiClient: GroqApiClient,
     private val promptBuilder: SystemPromptBuilder,
     private val suggestionExtractor: SuggestionExtractor,
     private val dataProvider: AgentDataProvider?,
 ) : ViewModel() {
 
+    companion object {
+        private const val TAG = "ChatViewModel"
+        private const val MAX_HISTORY = 10
+        private const val KEY_MESSAGES = "chat_messages"
+        private const val KEY_SESSION_ID = "session_id"
+        private const val KEY_TURN_NUMBER = "turn_number"
+    }
+
+    private val json = Json { ignoreUnknownKeys = true }
+
     private val _state = MutableStateFlow(
         ChatState(
+            messages = restoreMessages(),
             projectNames = dataProvider?.getProjectIndex()
                 ?.associate { it.id to it.name }
                 ?: emptyMap()
@@ -37,12 +52,41 @@ class ChatViewModel(
 
     private var lastUserMessage: String? = null
     @OptIn(ExperimentalUuidApi::class)
-    private var sessionId: String = Uuid.random().toString()
-    private var turnNumber: Int = 0
+    private var sessionId: String = savedStateHandle?.get<String>(KEY_SESSION_ID) ?: Uuid.random().toString()
+    private var turnNumber: Int = savedStateHandle?.get<Int>(KEY_TURN_NUMBER) ?: 0
 
-    companion object {
-        private const val TAG = "ChatViewModel"
-        private const val MAX_HISTORY = 10
+    init {
+        // Save session info on init if restored
+        savedStateHandle?.let {
+            it[KEY_SESSION_ID] = sessionId
+            it[KEY_TURN_NUMBER] = turnNumber
+        }
+    }
+
+    private fun restoreMessages(): List<Message> {
+        val messagesJson = savedStateHandle?.get<String>(KEY_MESSAGES) ?: return emptyList()
+        return try {
+            json.decodeFromString<List<Message>>(messagesJson)
+        } catch (e: Exception) {
+            Logger.w(TAG) { "Failed to restore messages: ${e.message}" }
+            emptyList()
+        }
+    }
+
+    private fun saveMessages(messages: List<Message>) {
+        savedStateHandle ?: return
+        try {
+            savedStateHandle[KEY_MESSAGES] = json.encodeToString(messages)
+        } catch (e: Exception) {
+            Logger.w(TAG) { "Failed to save messages: ${e.message}" }
+        }
+    }
+
+    private fun saveSessionState() {
+        savedStateHandle?.let {
+            it[KEY_SESSION_ID] = sessionId
+            it[KEY_TURN_NUMBER] = turnNumber
+        }
     }
 
     fun sendMessage(content: String) {
@@ -51,8 +95,10 @@ class ChatViewModel(
         val userMessage = Message(role = MessageRole.USER, content = content)
 
         _state.update { current ->
+            val newMessages = current.messages + userMessage
+            saveMessages(newMessages)
             current.copy(
-                messages = current.messages + userMessage,
+                messages = newMessages,
                 isLoading = true,
                 thinkingStatus = "Crafting personalized response.",
                 error = null,
@@ -84,6 +130,9 @@ class ChatViewModel(
         lastUserMessage = null
         sessionId = Uuid.random().toString()
         turnNumber = 0
+        // Clear saved state
+        savedStateHandle?.remove<String>(KEY_MESSAGES)
+        saveSessionState()
     }
 
     @OptIn(ExperimentalUuidApi::class)
@@ -143,17 +192,20 @@ class ChatViewModel(
                 Logger.d(TAG) { "Stream completed - content length: ${streamedContent.length}" }
                 val extractionResult = suggestionExtractor.extract(streamedContent)
                 _state.update { current ->
+                    val newMessages = current.messages.map { msg ->
+                        if (msg.id == assistantMessageId) {
+                            msg.copy(
+                                content = extractionResult.cleanedContent,
+                                suggestions = extractionResult.suggestions
+                            )
+                        } else {
+                            msg
+                        }
+                    }
+                    saveMessages(newMessages)
+                    saveSessionState()
                     current.copy(
-                        messages = current.messages.map { msg ->
-                            if (msg.id == assistantMessageId) {
-                                msg.copy(
-                                    content = extractionResult.cleanedContent,
-                                    suggestions = extractionResult.suggestions
-                                )
-                            } else {
-                                msg
-                            }
-                        },
+                        messages = newMessages,
                         isStreaming = false,
                         streamingMessageId = null
                     )
@@ -168,8 +220,10 @@ class ChatViewModel(
                     is GroqApiException.ApiError -> ChatError.Api(exception.message)
                 }
                 _state.update { current ->
+                    val newMessages = current.messages.filter { it.id != assistantMessageId }
+                    saveMessages(newMessages)
                     current.copy(
-                        messages = current.messages.filter { it.id != assistantMessageId },
+                        messages = newMessages,
                         isLoading = false,
                         isStreaming = false,
                         streamingMessageId = null,
