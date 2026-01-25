@@ -131,7 +131,7 @@ fun ChatScreen(
                         messages = state.messages.reversed(),
                         modifier = Modifier.fillMaxSize().testTag("chat_messages_list"),
                         reverseLayout = true,
-                        contentPadding = PaddingValues(top = 8.dp, bottom = 140.dp),
+                        contentPadding = PaddingValues(top = 8.dp, bottom = 200.dp),
                         showScrollToBottom = true,
                         messageKey = { it.id },
                         messageContent = { message ->
