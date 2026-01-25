@@ -30,6 +30,8 @@ import io.github.devmugi.arcane.chat.components.messages.ArcaneChatMessageList
 import io.github.devmugi.arcane.chat.components.messages.ArcaneUserMessageBlock
 import io.github.devmugi.arcane.chat.components.scaffold.ArcaneChatScreenScaffold
 import io.github.devmugi.arcane.chat.models.MessageBlock
+import io.github.devmugi.arcane.design.components.feedback.ArcaneSkeleton
+import io.github.devmugi.arcane.design.components.feedback.ArcaneSkeletonShape
 import io.github.devmugi.arcane.design.components.feedback.ArcaneToastState
 import io.github.devmugi.arcane.design.components.feedback.ArcaneToastStyle
 import io.github.devmugi.arcane.design.foundation.theme.ArcaneTheme
@@ -190,10 +192,8 @@ private fun MessageItem(
                             id = "${message.id}-content",
                             content = {
                                 if (isThinking) {
-                                    Text(
-                                        text = state.thinkingStatus ?: "...",
-                                        style = ArcaneTheme.typography.bodyMedium,
-                                        color = ArcaneTheme.colors.textSecondary
+                                    ArcaneSkeleton(
+                                        shape = ArcaneSkeletonShape.Text(lines = 3)
                                     )
                                 } else {
                                     Markdown(

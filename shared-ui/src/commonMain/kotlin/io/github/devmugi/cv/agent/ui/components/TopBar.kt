@@ -10,8 +10,10 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
-import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Text
+import io.github.devmugi.arcane.design.components.controls.ArcaneButtonSize
+import io.github.devmugi.arcane.design.components.controls.ArcaneButtonStyle
+import io.github.devmugi.arcane.design.components.controls.ArcaneTextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -48,9 +50,12 @@ fun CVAgentTopBar(
                     color = ArcaneTheme.colors.text
                 )
                 Spacer(modifier = Modifier.weight(1f))
-                FilledTonalButton(onClick = onCareerClick) {
-                    Text(text = "Career")
-                }
+                ArcaneTextButton(
+                    text = "Career",
+                    onClick = onCareerClick,
+                    style = ArcaneButtonStyle.Outlined(),
+                    size = ArcaneButtonSize.Medium
+                )
             }
         }
         Box(
