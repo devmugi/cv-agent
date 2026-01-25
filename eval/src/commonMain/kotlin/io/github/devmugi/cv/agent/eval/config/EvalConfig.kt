@@ -67,6 +67,15 @@ enum class QuestionSet {
     /** McDonald's project deep-dive questions MCD1-MCD20 */
     MCDONALDS,
 
+    /** 5 questions per project (65 total) */
+    ALL_PROJECTS,
+
+    /** General profile questions about skills/experience (10) */
+    PROFILE,
+
+    /** Off-topic and malicious questions to test boundaries (10) */
+    MALICIOUS,
+
     /** All questions and conversations */
     ALL
 }
