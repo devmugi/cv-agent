@@ -41,6 +41,8 @@ fun AnimatedChatInput(
         label = "inputWidthAnimation"
     )
 
+    val inputShape = RoundedCornerShape(24.dp)
+
     LaunchedEffect(isFocused) {
         onInputFocusChanged(isFocused)
     }
@@ -50,7 +52,7 @@ fun AnimatedChatInput(
             .fillMaxWidth(widthFraction)
             .background(
                 color = ArcaneTheme.colors.surfaceContainerLow,
-                shape = RoundedCornerShape(28.dp)
+                shape = inputShape
             ),
         contentAlignment = Alignment.Center
     ) {
