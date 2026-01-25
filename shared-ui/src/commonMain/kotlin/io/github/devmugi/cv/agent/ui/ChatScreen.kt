@@ -1,6 +1,9 @@
 package io.github.devmugi.cv.agent.ui
 
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
@@ -9,10 +12,10 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.imePadding
-import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.ui.Alignment
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -20,11 +23,11 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import com.mikepenz.markdown.m3.Markdown
 import com.mikepenz.markdown.m3.markdownColor
-import io.github.devmugi.arcane.chat.components.input.ArcaneAgentChatInput
 import io.github.devmugi.arcane.chat.components.messages.ArcaneAssistantMessageBlock
 import io.github.devmugi.arcane.chat.components.messages.ArcaneChatMessageList
 import io.github.devmugi.arcane.chat.components.messages.ArcaneUserMessageBlock
@@ -39,9 +42,11 @@ import io.github.devmugi.cv.agent.domain.models.ChatError
 import io.github.devmugi.cv.agent.domain.models.ChatState
 import io.github.devmugi.cv.agent.domain.models.Message
 import io.github.devmugi.cv.agent.domain.models.MessageRole
+import io.github.devmugi.cv.agent.ui.components.AnimatedChatInput
 import io.github.devmugi.cv.agent.ui.components.CVAgentTopBar
 import io.github.devmugi.cv.agent.ui.components.ContextChip
 import io.github.devmugi.cv.agent.ui.components.Disclaimer
+import io.github.devmugi.cv.agent.ui.components.FloatingInputContainer
 import io.github.devmugi.cv.agent.ui.components.FeedbackState
 import io.github.devmugi.cv.agent.ui.components.MessageActions
 import io.github.devmugi.cv.agent.ui.components.SuggestionChip
@@ -64,6 +69,8 @@ fun ChatScreen(
     onNavigateToProject: (String) -> Unit = {}
 ) {
     var inputText by remember { mutableStateOf("") }
+    var isInputFocused by remember { mutableStateOf(false) }
+    val focusManager = LocalFocusManager.current
 
     val showWelcome = state.messages.isEmpty() && !state.isLoading && !state.isStreaming
 
@@ -86,11 +93,57 @@ fun ChatScreen(
         containerColor = ArcaneTheme.colors.surfaceContainerLow,
         topBar = {
             CVAgentTopBar(onCareerClick = onNavigateToCareerTimeline)
-        },
-        bottomBar = {
-            Column(modifier = Modifier.navigationBarsPadding().imePadding()) {
+        }
+    ) { padding ->
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(padding)
+                .clickable(
+                    interactionSource = remember { MutableInteractionSource() },
+                    indication = null
+                ) {
+                    focusManager.clearFocus()
+                }
+        ) {
+            ArcaneChatScreenScaffold(
+                isEmpty = showWelcome,
+                modifier = Modifier.fillMaxSize().imePadding(),
+                emptyState = {
+                    WelcomeSection(
+                        suggestions = state.suggestions,
+                        onSuggestionClick = onSuggestionClick
+                    )
+                },
+                content = {
+                    ArcaneChatMessageList(
+                        messages = state.messages.reversed(),
+                        modifier = Modifier.fillMaxSize().testTag("chat_messages_list"),
+                        reverseLayout = true,
+                        contentPadding = PaddingValues(top = 8.dp, bottom = 140.dp),
+                        showScrollToBottom = true,
+                        messageKey = { it.id },
+                        messageContent = { message ->
+                            MessageItem(
+                                message = message,
+                                state = state,
+                                onNavigateToProject = onNavigateToProject,
+                                onCopyMessage = onCopyMessage,
+                                onShareMessage = onShareMessage,
+                                onLikeMessage = onLikeMessage,
+                                onDislikeMessage = onDislikeMessage,
+                                onRegenerateMessage = onRegenerateMessage
+                            )
+                        }
+                    )
+                }
+            )
+
+            FloatingInputContainer(
+                modifier = Modifier.align(Alignment.BottomCenter)
+            ) {
                 Disclaimer()
-                ArcaneAgentChatInput(
+                AnimatedChatInput(
                     value = inputText,
                     onValueChange = { inputText = it },
                     onSend = {
@@ -112,47 +165,11 @@ fun ChatScreen(
                     } else {
                         null
                     },
-                    modifier = Modifier
-                        .padding(horizontal = 16.dp)
-                        .testTag("chat_input")
+                    onInputFocusChanged = { focused -> isInputFocused = focused },
+                    modifier = Modifier.testTag("chat_input")
                 )
             }
         }
-    ) { padding ->
-        ArcaneChatScreenScaffold(
-            isEmpty = showWelcome,
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(padding),
-            emptyState = {
-                WelcomeSection(
-                    suggestions = state.suggestions,
-                    onSuggestionClick = onSuggestionClick
-                )
-            },
-            content = {
-                ArcaneChatMessageList(
-                    messages = state.messages.reversed(),
-                    modifier = Modifier.fillMaxSize().testTag("chat_messages_list"),
-                    reverseLayout = true,
-                    contentPadding = PaddingValues(vertical = 8.dp),
-                    showScrollToBottom = true,
-                    messageKey = { it.id },
-                    messageContent = { message ->
-                        MessageItem(
-                            message = message,
-                            state = state,
-                            onNavigateToProject = onNavigateToProject,
-                            onCopyMessage = onCopyMessage,
-                            onShareMessage = onShareMessage,
-                            onLikeMessage = onLikeMessage,
-                            onDislikeMessage = onDislikeMessage,
-                            onRegenerateMessage = onRegenerateMessage
-                        )
-                    }
-                )
-            }
-        )
     }
 }
 
