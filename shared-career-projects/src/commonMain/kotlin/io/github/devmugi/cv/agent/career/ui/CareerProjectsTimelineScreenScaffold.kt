@@ -1,9 +1,15 @@
 package io.github.devmugi.cv.agent.career.ui
 
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
@@ -17,7 +23,10 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.unit.dp
+import io.github.devmugi.arcane.design.foundation.primitives.ArcaneSurface
+import io.github.devmugi.arcane.design.foundation.primitives.SurfaceVariant
 import io.github.devmugi.arcane.design.foundation.theme.ArcaneTheme
 import io.github.devmugi.cv.agent.career.models.ProjectDataTimeline
 
@@ -64,12 +73,31 @@ fun CareerProjectsTimelineScreenScaffold(
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             item {
-                Text(
-                    text = "From System Administrator to Lead Android Developer & AI Agent Engineer",
-                    style = ArcaneTheme.typography.bodyLarge,
-                    color = ArcaneTheme.colors.textSecondary,
-                    modifier = Modifier.padding(bottom = 8.dp)
-                )
+                ArcaneSurface(
+                    variant = SurfaceVariant.Container,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .border(
+                            1.dp,
+                            ArcaneTheme.colors.primary.copy(alpha = 0.3f),
+                            RoundedCornerShape(12.dp)
+                        )
+                ) {
+                    Column(modifier = Modifier.padding(16.dp)) {
+                        Text(
+                            text = "From System Administrator to Lead Android Developer & AI Agent Engineer",
+                            style = ArcaneTheme.typography.bodyLarge,
+                            color = ArcaneTheme.colors.text.copy(alpha = 0.7f)
+                        )
+                        Spacer(modifier = Modifier.height(4.dp))
+                        Text(
+                            text = "2006 - Present (19 years)",
+                            style = ArcaneTheme.typography.bodyMedium,
+                            fontStyle = FontStyle.Italic,
+                            color = ArcaneTheme.colors.textSecondary
+                        )
+                    }
+                }
             }
             items(projects, key = { it.id }) { project ->
                 CareerProjectTimelineInfo(
