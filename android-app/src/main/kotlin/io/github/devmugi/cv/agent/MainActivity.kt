@@ -65,7 +65,7 @@ import io.github.devmugi.cv.agent.ui.CareerProjectsTimelineScreen
 import io.github.devmugi.cv.agent.ui.ChatScreen
 import kotlinx.serialization.json.Json
 import org.jetbrains.compose.resources.ExperimentalResourceApi
-import org.koin.compose.koinInject
+import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
 
 private enum class ThemeVariant(val displayName: String) {
@@ -75,7 +75,8 @@ private enum class ThemeVariant(val displayName: String) {
     P2L("P2L"),
     CLAUDE_D("Claude Dark"),
     CLAUDE_L("Claude Light"),
-    MTG("MTG")
+    AGENT2D("Agent2 Dark"),
+    AGENT2L("Agent2 Light")
 }
 
 private fun ThemeVariant.toColors(): ArcaneColors = when (this) {
@@ -85,7 +86,8 @@ private fun ThemeVariant.toColors(): ArcaneColors = when (this) {
     ThemeVariant.P2L -> ArcaneColors.p2l()
     ThemeVariant.CLAUDE_D -> ArcaneColors.claudeD()
     ThemeVariant.CLAUDE_L -> ArcaneColors.claudeL()
-    ThemeVariant.MTG -> ArcaneColors.mtg()
+    ThemeVariant.AGENT2D -> ArcaneColors.agent2Dark()
+    ThemeVariant.AGENT2L -> ArcaneColors.agent2Light()
 }
 
 private enum class Screen { Chat, CareerTimeline, ProjectDetails }
@@ -112,7 +114,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            var currentTheme by rememberSaveable { mutableStateOf(ThemeVariant.PERPLEXITY) }
+            var currentTheme by rememberSaveable { mutableStateOf(ThemeVariant.AGENT2L) }
 
             ArcaneTheme(colors = currentTheme.toColors()) {
                 CVAgentApp(
@@ -150,7 +152,8 @@ private fun CVAgentApp(
     val dataResult = agentDataResult ?: return
 
     // ViewModel is only created after dataProvider is available
-    val viewModel: ChatViewModel = koinInject { parametersOf(dataResult.dataProvider) }
+    // Uses koinViewModel for proper lifecycle scoping and SavedStateHandle support
+    val viewModel: ChatViewModel = koinViewModel { parametersOf(dataResult.dataProvider) }
     val state by viewModel.state.collectAsState()
 
     AppContent(

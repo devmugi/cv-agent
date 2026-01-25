@@ -1,8 +1,6 @@
 package io.github.devmugi.cv.agent.di
 
 import io.github.devmugi.cv.agent.GroqConfig
-import io.github.devmugi.cv.agent.agent.AgentDataProvider
-import io.github.devmugi.cv.agent.agent.ChatViewModel
 import io.github.devmugi.cv.agent.agent.SuggestionExtractor
 import io.github.devmugi.cv.agent.agent.SystemPromptBuilder
 import io.github.devmugi.cv.agent.api.GroqApiClient
@@ -39,13 +37,6 @@ val appModule = module {
     single { SystemPromptBuilder() }
     single { SuggestionExtractor() }
 
-    // ViewModel factory
-    factory { (dataProvider: AgentDataProvider?) ->
-        ChatViewModel(
-            apiClient = get(),
-            promptBuilder = get(),
-            suggestionExtractor = get(),
-            dataProvider = dataProvider
-        )
-    }
+    // Note: ChatViewModel is registered in platform-specific viewModelModule
+    // to properly handle SavedStateHandle injection
 }

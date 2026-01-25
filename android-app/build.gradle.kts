@@ -90,6 +90,7 @@ dependencies {
     implementation(libs.compose.material.icons.extended)
     implementation(libs.koin.android)
     implementation(libs.koin.compose)
+    implementation(libs.koin.androidx.compose)
     implementation(libs.kermit)
     implementation(libs.compose.components.resources)
     implementation(libs.kotlinx.serialization.json)
