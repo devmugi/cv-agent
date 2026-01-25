@@ -8,8 +8,8 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
-import androidx.compose.material.icons.filled.Schedule
 import androidx.compose.material3.Icon
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -27,15 +27,15 @@ fun ContextChip(
         modifier = modifier
             .clip(RoundedCornerShape(50))
             .background(ArcaneTheme.colors.primary)
+            .clickable(onClick = onDismiss)
             .padding(horizontal = 12.dp, vertical = 6.dp)
             .testTag("context_chip"),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Icon(
-            imageVector = Icons.Default.Schedule,
-            contentDescription = "Conversation history",
-            tint = ArcaneTheme.colors.surfaceContainerLow,
-            modifier = Modifier.size(18.dp)
+        Text(
+            text = "Clear",
+            style = ArcaneTheme.typography.labelMedium,
+            color = ArcaneTheme.colors.surfaceContainerLow
         )
 
         Icon(
@@ -43,9 +43,8 @@ fun ContextChip(
             contentDescription = "Clear history",
             tint = ArcaneTheme.colors.surfaceContainerLow,
             modifier = Modifier
-                .padding(start = 8.dp)
+                .padding(start = 4.dp)
                 .size(18.dp)
-                .clickable(onClick = onDismiss)
                 .testTag("context_chip_dismiss")
         )
     }
