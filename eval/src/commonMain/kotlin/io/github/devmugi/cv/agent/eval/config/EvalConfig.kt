@@ -37,7 +37,10 @@ enum class PromptVariant {
     PERSONA_DETAILED,
 
     /** Allow first person responses */
-    ROLE_FIRST_PERSON
+    ROLE_FIRST_PERSON,
+
+    /** Tiered response with explicit boundaries for off-topic deflection */
+    PERSONA_BOUNDED
 }
 
 /**
