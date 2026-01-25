@@ -27,14 +27,16 @@ fun WelcomeSection(
             .fillMaxWidth()
             .padding(horizontal = 24.dp)
             .testTag("welcome_section"),
-        horizontalAlignment = Alignment.CenterHorizontally,
+        horizontalAlignment = Alignment.Start,
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         item {
             Text(
                 text = "Welcome!",
                 style = ArcaneTheme.typography.displaySmall,
-                color = ArcaneTheme.colors.text
+                color = ArcaneTheme.colors.text,
+                textAlign = TextAlign.Center,
+                modifier = Modifier.fillMaxWidth()
             )
 
             Spacer(modifier = Modifier.height(8.dp))
@@ -43,7 +45,8 @@ fun WelcomeSection(
                 text = "I'm Denys's AI assistant. Ask me anything about his professional experience, skills, or projects.",
                 style = ArcaneTheme.typography.bodyLarge,
                 color = ArcaneTheme.colors.textSecondary,
-                textAlign = TextAlign.Center
+                textAlign = TextAlign.Center,
+                modifier = Modifier.fillMaxWidth()
             )
 
             Spacer(modifier = Modifier.height(16.dp))
