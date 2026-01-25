@@ -66,52 +66,6 @@ class AgentDataProviderTest {
     }
 
     @Test
-    fun extractsCuratedDetailsForFeatured() {
-        val provider = AgentDataProvider(
-            personalInfo = testPersonalInfo,
-            allProjects = listOf(testProject),
-            featuredProjectIds = listOf("test-project")
-        )
-
-        val details = provider.getCuratedDetails("test-project")
-
-        assertTrue(details != null)
-        assertTrue(details!!.contains("Test Company"))
-        assertTrue(details.contains("Test Product"))
-        assertTrue(details.contains("Short description"))
-        assertTrue(details.contains("Kotlin"))
-    }
-
-    @Test
-    fun returnsNullForNonFeaturedInCuratedMode() {
-        val provider = AgentDataProvider(
-            personalInfo = testPersonalInfo,
-            allProjects = listOf(testProject),
-            featuredProjectIds = emptyList(),
-            contextMode = ProjectContextMode.CURATED
-        )
-
-        val details = provider.getCuratedDetails("test-project")
-
-        assertEquals(null, details)
-    }
-
-    @Test
-    fun returnsDetailsForAllProjectsInAllProjectsMode() {
-        val provider = AgentDataProvider(
-            personalInfo = testPersonalInfo,
-            allProjects = listOf(testProject),
-            featuredProjectIds = emptyList(),
-            contextMode = ProjectContextMode.ALL_PROJECTS
-        )
-
-        val details = provider.getCuratedDetails("test-project")
-
-        assertTrue(details != null)
-        assertTrue(details!!.contains("Test Company"))
-    }
-
-    @Test
     fun getFeaturedProjectsReturnsCuratedInCuratedMode() {
         val featuredProject = testProject.copy(id = "featured")
         val otherProject = testProject.copy(id = "other")

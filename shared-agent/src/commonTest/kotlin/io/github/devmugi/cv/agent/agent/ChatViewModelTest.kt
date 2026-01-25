@@ -289,6 +289,9 @@ class FakeGroqApiClient : GroqApiClient(
     override suspend fun streamChatCompletion(
         messages: List<ChatMessage>,
         systemPrompt: String,
+        sessionId: String?,
+        turnNumber: Int?,
+        promptMetadata: io.github.devmugi.cv.agent.api.tracing.PromptMetadata?,
         onChunk: (String) -> Unit,
         onComplete: () -> Unit,
         onError: (GroqApiException) -> Unit
