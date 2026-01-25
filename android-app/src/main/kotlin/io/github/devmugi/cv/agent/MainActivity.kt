@@ -5,9 +5,15 @@ import android.net.Uri
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.spring
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -217,35 +223,58 @@ private fun AppContent(
     onThemeChange: (ThemeVariant) -> Unit
 ) {
     Box {
-        when (currentScreen) {
-            Screen.Chat -> ChatScreen(
-                state = state,
-                toastState = toastState,
-                onSendMessage = viewModel::sendMessage,
-                onSuggestionClick = viewModel::onSuggestionClicked,
-                onClearHistory = viewModel::clearHistory,
-                onNavigateToCareerTimeline = { onScreenChange(Screen.CareerTimeline) },
-                onNavigateToProject = { projectId ->
-                    careerProjectsMap[projectId]?.let { project ->
-                        onProjectSelect(project)
-                        onScreenChange(Screen.ProjectDetails)
-                    }
-                }
-            )
-            Screen.CareerTimeline -> CareerProjectsTimelineScreen(
-                projects = careerProjects,
-                onProjectClick = { timelineProject ->
-                    onProjectSelect(careerProjectsMap[timelineProject.id])
-                    onScreenChange(Screen.ProjectDetails)
-                },
-                onBackClick = { onScreenChange(Screen.Chat) }
-            )
-            Screen.ProjectDetails -> selectedProject?.let { project ->
-                CareerProjectDetailsScreen(
-                    project = project,
-                    onBackClick = { onScreenChange(Screen.CareerTimeline) },
-                    onLinkClick = onOpenUrl
+        AnimatedContent(
+            targetState = currentScreen,
+            transitionSpec = {
+                val direction = if (targetState.ordinal > initialState.ordinal) 1 else -1
+
+                (fadeIn(animationSpec = spring(stiffness = Spring.StiffnessMedium)) +
+                    slideInHorizontally(
+                        initialOffsetX = { fullWidth -> direction * fullWidth / 3 },
+                        animationSpec = spring(
+                            dampingRatio = Spring.DampingRatioLowBouncy,
+                            stiffness = Spring.StiffnessMedium
+                        )
+                    )).togetherWith(
+                    fadeOut(animationSpec = spring(stiffness = Spring.StiffnessHigh)) +
+                        slideOutHorizontally(
+                            targetOffsetX = { fullWidth -> -direction * fullWidth / 3 },
+                            animationSpec = spring(stiffness = Spring.StiffnessMedium)
+                        )
                 )
+            },
+            label = "screenTransition"
+        ) { screen ->
+            when (screen) {
+                Screen.Chat -> ChatScreen(
+                    state = state,
+                    toastState = toastState,
+                    onSendMessage = viewModel::sendMessage,
+                    onSuggestionClick = viewModel::onSuggestionClicked,
+                    onClearHistory = viewModel::clearHistory,
+                    onNavigateToCareerTimeline = { onScreenChange(Screen.CareerTimeline) },
+                    onNavigateToProject = { projectId ->
+                        careerProjectsMap[projectId]?.let { project ->
+                            onProjectSelect(project)
+                            onScreenChange(Screen.ProjectDetails)
+                        }
+                    }
+                )
+                Screen.CareerTimeline -> CareerProjectsTimelineScreen(
+                    projects = careerProjects,
+                    onProjectClick = { timelineProject ->
+                        onProjectSelect(careerProjectsMap[timelineProject.id])
+                        onScreenChange(Screen.ProjectDetails)
+                    },
+                    onBackClick = { onScreenChange(Screen.Chat) }
+                )
+                Screen.ProjectDetails -> selectedProject?.let { project ->
+                    CareerProjectDetailsScreen(
+                        project = project,
+                        onBackClick = { onScreenChange(Screen.CareerTimeline) },
+                        onLinkClick = onOpenUrl
+                    )
+                }
             }
         }
         ArcaneToastHost(
