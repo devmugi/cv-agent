@@ -99,4 +99,62 @@ class SuggestionExtractorTest {
 
         assertEquals(listOf("adidas-gmr", "geosatis"), result.suggestions)
     }
+
+    @Test
+    fun extractsRawJsonOnSameLine() {
+        val input = """Some text about the project. {"suggestions": ["mcdonalds", "adidas-gmr"]}"""
+
+        val result = extractor.extract(input)
+
+        assertEquals("Some text about the project.", result.cleanedContent.trim())
+        assertEquals(listOf("mcdonalds", "adidas-gmr"), result.suggestions)
+    }
+
+    @Test
+    fun extractsRawJsonOnNewLine() {
+        val input = """
+            Some text about the project.
+            {"suggestions": ["mcdonalds"]}
+        """.trimIndent()
+
+        val result = extractor.extract(input)
+
+        assertEquals("Some text about the project.", result.cleanedContent.trim())
+        assertEquals(listOf("mcdonalds"), result.suggestions)
+    }
+
+    @Test
+    fun extractsRawJsonWithSpacesInArray() {
+        val input = """Response text. {"suggestions": [ "a", "b" ]}"""
+
+        val result = extractor.extract(input)
+
+        assertEquals("Response text.", result.cleanedContent.trim())
+        assertEquals(listOf("a", "b"), result.suggestions)
+    }
+
+    @Test
+    fun prefersCodeBlockOverRawJson() {
+        val input = """
+            Text with raw json {"suggestions": ["wrong"]}
+
+            ```json
+            {"suggestions": ["correct"]}
+            ```
+        """.trimIndent()
+
+        val result = extractor.extract(input)
+
+        assertEquals(listOf("correct"), result.suggestions)
+    }
+
+    @Test
+    fun handlesEmptyRawJsonSuggestions() {
+        val input = """Some text. {"suggestions": []}"""
+
+        val result = extractor.extract(input)
+
+        assertEquals("Some text.", result.cleanedContent.trim())
+        assertTrue(result.suggestions.isEmpty())
+    }
 }
