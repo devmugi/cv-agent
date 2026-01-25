@@ -125,6 +125,7 @@ class ChatViewModel(
             turnNumber = currentTurn,
             promptMetadata = promptMetadata,
             onChunk = { chunk ->
+                Logger.d(TAG) { "ON_CHUNK: ${chunk.length} chars at ${System.currentTimeMillis()}" }
                 streamedContent += chunk
                 _state.update { current ->
                     current.copy(

@@ -120,6 +120,7 @@ open class GroqApiClient(
         onChunk: (String) -> Unit,
         onComplete: () -> Unit
     ) {
+        Logger.d(TAG) { "PARSE_STREAM_START at ${System.currentTimeMillis()}" }
         val fullResponse = StringBuilder()
         val channel = response.bodyAsChannel()
         var isFirstContent = true
@@ -147,8 +148,10 @@ open class GroqApiClient(
                         )
                     }
 
-                    chunk.choices.firstOrNull()?.delta?.content?.let { content ->
+                    chunk.choices.firstOrNull()?.delta?.content?.takeIf { it.isNotEmpty() }?.let { content ->
+                        Logger.d(TAG) { "CHUNK_ARRIVED: '${content.take(20)}' at ${System.currentTimeMillis()}" }
                         if (isFirstContent) {
+                            Logger.d(TAG) { "FIRST_CHUNK at ${System.currentTimeMillis()}" }
                             span.recordFirstToken()
                             isFirstContent = false
                         }

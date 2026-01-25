@@ -232,7 +232,7 @@ private fun MessageItem(
                         )
                     ),
                     title = if (isThinking) "Thinking..." else "Assistant",
-                    isLoading = isStreaming,
+                    isLoading = isThinking,
                     enableTruncation = false,
                     bottomActions = if (!isStreaming) {
                         {
