@@ -1,6 +1,5 @@
 package io.github.devmugi.cv.agent.agent
 
-import io.github.devmugi.cv.agent.career.models.CareerProject
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
@@ -82,34 +81,12 @@ class SystemPromptBuilder {
             return
         }
 
-        if (dataProvider.isJsonMode()) {
-            appendProjectsAsJson(dataProvider)
-        } else {
-            appendProjectsAsText(dataProvider)
-        }
-    }
-
-    private fun StringBuilder.appendProjectsAsText(dataProvider: AgentDataProvider) {
         val header = when (dataProvider.contextMode) {
-            ProjectContextMode.CURATED -> "# FEATURED PROJECTS (FULL DETAILS)"
-            ProjectContextMode.ALL_PROJECTS -> "# ALL PROJECTS (FULL DETAILS)"
-            else -> "# PROJECT DETAILS"
-        }
-        appendLine(header)
-        dataProvider.getFeaturedProjects().forEach { project ->
-            appendLine()
-            appendLine("## ${project.name} (${project.id})")
-            dataProvider.getCuratedDetails(project.id)?.let { details ->
-                appendLine(details)
-            }
-        }
-    }
-
-    private fun StringBuilder.appendProjectsAsJson(dataProvider: AgentDataProvider) {
-        val header = when (dataProvider.contextMode) {
+            ProjectContextMode.CURATED -> "# FEATURED PROJECTS (JSON FORMAT)"
+            ProjectContextMode.ALL_PROJECTS -> "# ALL PROJECTS (JSON FORMAT)"
             ProjectContextMode.MCDONALDS_JSON_FULL -> "# McDONALD'S PROJECT (JSON FORMAT)"
             ProjectContextMode.ALL_PROJECTS_JSON_FULL -> "# ALL PROJECTS (JSON FORMAT)"
-            else -> "# PROJECTS (JSON FORMAT)"
+            ProjectContextMode.PERSONAL_INFO_ONLY -> "# PROJECT DETAILS"
         }
         appendLine(header)
         dataProvider.getProjectsForMode().forEach { project ->
@@ -132,9 +109,10 @@ class SystemPromptBuilder {
             You have access to:
             - Personal information and skills
             - A project index with all projects (id, name, role, period, tagline)
-            - Full details for 5 featured projects
+            - Full project data in JSON format for 5 featured projects
 
             For non-featured projects, use the project index information.
+            Use the JSON data to answer detailed questions about featured projects.
         """.trimIndent()
 
         private val INSTRUCTIONS_ALL_PROJECTS = """
@@ -143,7 +121,9 @@ class SystemPromptBuilder {
             You have access to:
             - Personal information and skills
             - A project index with all projects (id, name, role, period, tagline)
-            - Full details for ALL projects
+            - Full project data in JSON format for ALL projects
+
+            Use the JSON data to answer detailed questions about projects.
         """.trimIndent()
 
         private val INSTRUCTIONS_PERSONAL_INFO_ONLY = """
