@@ -4,6 +4,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import androidx.activity.ComponentActivity
+import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
@@ -225,6 +226,15 @@ private fun AppContent(
     currentTheme: ThemeVariant,
     onThemeChange: (ThemeVariant) -> Unit
 ) {
+    // Handle system back gesture/button for custom navigation
+    BackHandler(enabled = currentScreen != Screen.Chat) {
+        when (currentScreen) {
+            Screen.ProjectDetails -> onScreenChange(Screen.CareerTimeline)
+            Screen.CareerTimeline -> onScreenChange(Screen.Chat)
+            Screen.Chat -> { /* Let system handle - exits app */ }
+        }
+    }
+
     Box {
         AnimatedContent(
             targetState = currentScreen,
