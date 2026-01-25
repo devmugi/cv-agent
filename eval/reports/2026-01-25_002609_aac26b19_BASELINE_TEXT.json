@@ -1,0 +1,1126 @@
+{
+    "runId": "aac26b19",
+    "timestamp": "2026-01-24T23:26:09.288993Z",
+    "config": {
+        "promptVariant": "BASELINE",
+        "dataFormat": "TEXT",
+        "projectMode": "ALL_PROJECTS",
+        "model": "llama-3.3-70b-versatile",
+        "temperature": 0.7,
+        "maxTokens": 1024,
+        "questionSet": "ALL_PROJECTS",
+        "delayMs": 1000,
+        "phoenixEndpoint": "http://localhost:6006/v1/traces",
+        "reportsDir": "eval/reports"
+    },
+    "summary": {
+        "totalQuestions": 65,
+        "totalConversations": 0,
+        "successCount": 65,
+        "errorCount": 0,
+        "avgLatencyMs": 588.1692307692308,
+        "avgTtftMs": 587.4923076923077,
+        "totalPromptTokens": 0,
+        "totalCompletionTokens": 0,
+        "totalTokens": 0,
+        "p50LatencyMs": 545,
+        "p95LatencyMs": 915
+    },
+    "questionResults": [
+        {
+            "questionId": "GEO1",
+            "questionText": "What is Denys's role at GEOSATIS?",
+            "category": "role",
+            "response": "Denys Honcharenko's role at GEOSATIS is Android Developer, Backend Developer, and DevOps. He worked on the GEOSATIS Victim App, a mobile protection system for domestic violence victims, from October 2022 to July 2025.\n\n```json\n{\"suggestions\": [\"geosatis\", \"mcdonalds\", \"veev\"]}\n```",
+            "latencyMs": 549,
+            "ttftMs": 547,
+            "promptTokens": 0,
+            "completionTokens": 0,
+            "totalTokens": 0,
+            "suggestions": [
+                "geosatis",
+                "mcdonalds",
+                "veev"
+            ],
+            "success": true,
+            "errorMessage": null
+        },
+        {
+            "questionId": "GEO2",
+            "questionText": "What is the VAP2 app and how much code is shared between platforms?",
+            "category": "architecture",
+            "response": "The VAP2 app is a mobile protection system for domestic violence victims, developed as part of the GEOSATIS Victim App ecosystem. It provides features such as real-time location tracking, emergency video recording, one-touch emergency calls, and alarm notifications via GraphQL Subscriptions.\n\nAs for code sharing, the VAP2 app utilizes Kotlin Multiplatform (KMP) to share code between Android and iOS platforms. This allows Denys to write common business logic, data models, and other shared components in a single codebase, which can then be compiled for both Android and iOS. The exact percentage of shared code is not specified, but the use of KMP enables significant code reuse and reduces development time.\n\n```json\n{\"suggestions\": [\"geosatis\", \"mcdonalds\"]}\n```",
+            "latencyMs": 859,
+            "ttftMs": 858,
+            "promptTokens": 0,
+            "completionTokens": 0,
+            "totalTokens": 0,
+            "suggestions": [
+                "geosatis",
+                "mcdonalds"
+            ],
+            "success": true,
+            "errorMessage": null
+        },
+        {
+            "questionId": "GEO3",
+            "questionText": "How did Denys rescue the GEOSATIS app in his first month?",
+            "category": "challenge",
+            "response": "Denys rescued the non-functional GEOSATIS Victim App in his first month by taking full ownership of the mobile product and addressing the critical issues that were preventing it from working. Although the exact details of the rescue are not provided, it is mentioned that he successfully advocated for GraphQL over the unstable Geonitro binary protocol, which suggests that he made significant technical contributions to stabilize and improve the app.\n\nAs the solo Android developer, Denys had full ownership of the entire mobile product, which enabled him to identify and fix the problems promptly. His experience in working with various technologies, including Kotlin Multiplatform, Compose Multiplatform, and Spring Boot, likely helped him to efficiently resolve the issues and get the app up and running.\n\n```json\n{\"suggestions\": [\"geosatis\", \"mcdonalds\", \"veev\"]}\n```",
+            "latencyMs": 915,
+            "ttftMs": 914,
+            "promptTokens": 0,
+            "completionTokens": 0,
+            "totalTokens": 0,
+            "suggestions": [
+                "geosatis",
+                "mcdonalds",
+                "veev"
+            ],
+            "success": true,
+            "errorMessage": null
+        },
+        {
+            "questionId": "GEO4",
+            "questionText": "What backend technologies does Denys use at GEOSATIS?",
+            "category": "backend",
+            "response": "At GEOSATIS, Denys uses Spring Boot as the primary backend technology, along with Kafka event streaming and GraphQL APIs for data exchange. He also utilizes Firebase Auth for authentication purposes.\n\n```json\n{\"suggestions\": [\"geosatis\", \"veev\", \"kntu-it\"]}\n```",
+            "latencyMs": 545,
+            "ttftMs": 545,
+            "promptTokens": 0,
+            "completionTokens": 0,
+            "totalTokens": 0,
+            "suggestions": [
+                "geosatis",
+                "veev",
+                "kntu-it"
+            ],
+            "success": true,
+            "errorMessage": null
+        },
+        {
+            "questionId": "GEO5",
+            "questionText": "What real-world impact has the GEOSATIS victim protection system had?",
+            "category": "impact",
+            "response": "The GEOSATIS Victim App ecosystem, which Denys Honcharenko worked on as an Android Developer, Backend Developer, and DevOps engineer, has had a significant real-world impact. According to the information available, the system has been used to prevent domestic violence crime in Seville, Spain, in 2024. This demonstrates the practical application and effectiveness of the system in protecting victims of domestic violence.\n\n{\"suggestions\": [\"geosatis\"]}",
+            "latencyMs": 596,
+            "ttftMs": 595,
+            "promptTokens": 0,
+            "completionTokens": 0,
+            "totalTokens": 0,
+            "suggestions": [
+                "geosatis"
+            ],
+            "success": true,
+            "errorMessage": null
+        },
+        {
+            "questionId": "GMR1",
+            "questionText": "What was Denys's role on the Adidas GMR project?",
+            "category": "role",
+            "response": "Denys Honcharenko was the Lead Software Engineer on the Adidas GMR project. \n\n```json\n{\"suggestions\": [\"adidas-gmr\", \"mcdonalds\", \"geosatis\"]}\n```",
+            "latencyMs": 421,
+            "ttftMs": 421,
+            "promptTokens": 0,
+            "completionTokens": 0,
+            "totalTokens": 0,
+            "suggestions": [
+                "adidas-gmr",
+                "mcdonalds",
+                "geosatis"
+            ],
+            "success": true,
+            "errorMessage": null
+        },
+        {
+            "questionId": "GMR2",
+            "questionText": "What is the Bluetooth Tag Emulator and why was it important?",
+            "category": "technical",
+            "response": "The Bluetooth Tag Emulator was a tool created by Denys Honcharenko during his work on the Adidas GMR project. It was an emulator that mimicked the behavior of Bluetooth Low Energy (BLE) tags, allowing the development team to test and debug the Adidas GMR system without the need for physical tags.\n\nThe emulator was important because it significantly improved the efficiency of the testing process. By using the emulator, the team could simulate various scenarios and test different aspects of the system, such as connectivity and data transfer, without relying on physical hardware. This not only saved time but also reduced the costs associated with testing and debugging.\n\nThe Bluetooth Tag Emulator was a key innovation that helped the team deliver the project on time. It is an example of Denys' problem-solving skills and ability to create technical solutions that drive project success.\n\n```json\n{\"suggestions\": [\"adidas-gmr\"]}\n```",
+            "latencyMs": 1030,
+            "ttftMs": 1029,
+            "promptTokens": 0,
+            "completionTokens": 0,
+            "totalTokens": 0,
+            "suggestions": [
+                "adidas-gmr"
+            ],
+            "success": true,
+            "errorMessage": null
+        },
+        {
+            "questionId": "GMR3",
+            "questionText": "How did Denys rescue the failing Adidas GMR project?",
+            "category": "challenge",
+            "response": "Denys Honcharenko, as the Lead Software Engineer, played a crucial role in rescuing the failing Adidas GMR project. Although the exact details of the rescue efforts are not provided, it is mentioned that the team, led by Denys, was able to save the project and deliver it on time. Additionally, Denys created a BLE emulator that increased QA efficiency by 10 times, which was a significant innovation in the project.\n\n```json\n{\"suggestions\": [\"adidas-gmr\"]}\n```",
+            "latencyMs": 636,
+            "ttftMs": 635,
+            "promptTokens": 0,
+            "completionTokens": 0,
+            "totalTokens": 0,
+            "suggestions": [
+                "adidas-gmr"
+            ],
+            "success": true,
+            "errorMessage": null
+        },
+        {
+            "questionId": "GMR4",
+            "questionText": "What SDK did Denys integrate for the smart insole?",
+            "category": "technical",
+            "response": "Denys integrated the Google Jacquard SDK for the smart insole in the Adidas GMR project.\n\n```json\n{\"suggestions\": [\"adidas-gmr\"]}\n```",
+            "latencyMs": 431,
+            "ttftMs": 431,
+            "promptTokens": 0,
+            "completionTokens": 0,
+            "totalTokens": 0,
+            "suggestions": [
+                "adidas-gmr"
+            ],
+            "success": true,
+            "errorMessage": null
+        },
+        {
+            "questionId": "GMR5",
+            "questionText": "How large was the team Denys led on Adidas GMR?",
+            "category": "leadership",
+            "response": "Denys was the Lead Software Engineer on the Adidas GMR project, but the size of the team he led is not explicitly mentioned in the provided information. However, it is mentioned that he worked directly with Google, Adidas, and EA Sports, and that the team saved a failing project and delivered it on time, which suggests that it was a collaborative effort with multiple stakeholders involved.\n\n```json\n{\"suggestions\": [\"adidas-gmr\"]}\n```",
+            "latencyMs": 655,
+            "ttftMs": 654,
+            "promptTokens": 0,
+            "completionTokens": 0,
+            "totalTokens": 0,
+            "suggestions": [
+                "adidas-gmr"
+            ],
+            "success": true,
+            "errorMessage": null
+        },
+        {
+            "questionId": "FNK1",
+            "questionText": "What platforms did Denys develop for in Food Network Kitchen?",
+            "category": "platforms",
+            "response": "Denys developed the Food Network Kitchen app for multiple platforms, including Android mobile, Android TV, and Amazon Fire TV, with additional support for Google Cast SDK for streaming to compatible devices.\n\n```json\n{\"suggestions\": [\"food-network-kitchen\", \"mcdonalds\", \"smildroid\"]}\n```",
+            "latencyMs": 587,
+            "ttftMs": 586,
+            "promptTokens": 0,
+            "completionTokens": 0,
+            "totalTokens": 0,
+            "suggestions": [
+                "food-network-kitchen",
+                "mcdonalds",
+                "smildroid"
+            ],
+            "success": true,
+            "errorMessage": null
+        },
+        {
+            "questionId": "FNK2",
+            "questionText": "What video streaming technology was used in Food Network Kitchen?",
+            "category": "technical",
+            "response": "The video streaming technology used in Food Network Kitchen was ExoPlayer, which is an open-source media player for Android, in addition to Google Cast SDK for Chromecast integration. \n\n```json\n{\"suggestions\": [\"food-network-kitchen\", \"mcdonalds\", \"smildroid\"]}\n```",
+            "latencyMs": 666,
+            "ttftMs": 665,
+            "promptTokens": 0,
+            "completionTokens": 0,
+            "totalTokens": 0,
+            "suggestions": [
+                "food-network-kitchen",
+                "mcdonalds",
+                "smildroid"
+            ],
+            "success": true,
+            "errorMessage": null
+        },
+        {
+            "questionId": "FNK3",
+            "questionText": "How did Denys handle Chromecast integration?",
+            "category": "technical",
+            "response": "Denys handled Chromecast integration while working on the Food Network Kitchen project. He developed the Android app, which included features like live cooking classes, recipes, and smart kitchen device integration, and also ensured the app was compatible with Chromecast for seamless video streaming to larger screens. \n\n```json\n{\"suggestions\": [\"food-network-kitchen\"]}\n```",
+            "latencyMs": 603,
+            "ttftMs": 603,
+            "promptTokens": 0,
+            "completionTokens": 0,
+            "totalTokens": 0,
+            "suggestions": [
+                "food-network-kitchen"
+            ],
+            "success": true,
+            "errorMessage": null
+        },
+        {
+            "questionId": "FNK4",
+            "questionText": "What architecture changes did Denys make to RecyclerView?",
+            "category": "architecture",
+            "response": "Denys does not have any information about making architecture changes to RecyclerView. However, he did work on several projects where he implemented various architectures such as MVP, MVVM, MVI, and Clean Architecture. \n\nFor example, in the Lesara project, Denys initiated and documented a 4-stage architecture migration strategy (MVP → Clean Architecture → Modules → Kotlin) and led the complete Product List rewrite with Sorting/Filtering.\n\n```json\n{\"suggestions\": [\"lesara\", \"stoamigo\", \"smildroid\"]}\n```",
+            "latencyMs": 732,
+            "ttftMs": 731,
+            "promptTokens": 0,
+            "completionTokens": 0,
+            "totalTokens": 0,
+            "suggestions": [
+                "lesara",
+                "stoamigo",
+                "smildroid"
+            ],
+            "success": true,
+            "errorMessage": null
+        },
+        {
+            "questionId": "FNK5",
+            "questionText": "What challenges exist in TV app development vs mobile?",
+            "category": "challenges",
+            "response": "Denys Honcharenko has experience in both mobile and TV app development, having worked on projects such as Food Network Kitchen, which was available on Android mobile, Fire TV, and Chromecast. In TV app development, some challenges that exist compared to mobile development include:\n\n* Limited input methods: TV apps often rely on remote controls or voice commands, which can limit the types of interactions and inputs that are possible.\n* Different screen sizes and resolutions: TV screens can vary greatly in size and resolution, which can make it difficult to optimize the app's layout and design.\n* Content discovery: TV apps often have to compete with other apps and content sources for the user's attention, making content discovery and navigation a key challenge.\n* Monetization: TV apps may have different monetization models than mobile apps, such as subscription-based services or advertising.\n\nDespite these challenges, Denys has successfully developed TV apps, including Food Network Kitchen, which featured live and on-demand cooking classes, recipes, and integration with smart kitchen appliances.\n\n```json\n{\"suggestions\": [\"food-network-kitchen\", \"smildroid\", \"adidas-gmr\"]}\n```",
+            "latencyMs": 1219,
+            "ttftMs": 1217,
+            "promptTokens": 0,
+            "completionTokens": 0,
+            "totalTokens": 0,
+            "suggestions": [
+                "food-network-kitchen",
+                "smildroid",
+                "adidas-gmr"
+            ],
+            "success": true,
+            "errorMessage": null
+        },
+        {
+            "questionId": "SCH1",
+            "questionText": "What was the Android School program?",
+            "category": "overview",
+            "response": "The Android School program was an internal education course created and taught by Denys Honcharenko at EPAM Systems from August 2020 to June 2021. The program aimed to train junior developers and career changers in Android development, preparing them for employment at EPAM. Over two course iterations, the program achieved a 70% hiring rate, with 14 out of 20 total students being hired by the company.\n\n{\"suggestions\": [\"android-school\", \"lesara\", \"stoamigo\"]}",
+            "latencyMs": 517,
+            "ttftMs": 517,
+            "promptTokens": 0,
+            "completionTokens": 0,
+            "totalTokens": 0,
+            "suggestions": [
+                "android-school",
+                "lesara",
+                "stoamigo"
+            ],
+            "success": true,
+            "errorMessage": null
+        },
+        {
+            "questionId": "SCH2",
+            "questionText": "What was the hiring rate for Android School graduates?",
+            "category": "metrics",
+            "response": "The hiring rate for Android School graduates was 70%. Out of 20 total students, 14 were hired by EPAM Systems after completing the program. \n\n```json\n{\"suggestions\": [\"android-school\"]}\n```",
+            "latencyMs": 424,
+            "ttftMs": 424,
+            "promptTokens": 0,
+            "completionTokens": 0,
+            "totalTokens": 0,
+            "suggestions": [
+                "android-school"
+            ],
+            "success": true,
+            "errorMessage": null
+        },
+        {
+            "questionId": "SCH3",
+            "questionText": "How many students did Denys mentor in Android School?",
+            "category": "metrics",
+            "response": "Denys mentored 20 students in Android School, with 14 of them being hired by EPAM Systems after completing the program.\n\n```json\n{\"suggestions\": [\"android-school\"]}\n```",
+            "latencyMs": 473,
+            "ttftMs": 473,
+            "promptTokens": 0,
+            "completionTokens": 0,
+            "totalTokens": 0,
+            "suggestions": [
+                "android-school"
+            ],
+            "success": true,
+            "errorMessage": null
+        },
+        {
+            "questionId": "SCH4",
+            "questionText": "What topics were covered in the Android School curriculum?",
+            "category": "curriculum",
+            "response": "Denys Honcharenko created and taught the 'Android School' education course at EPAM Systems, covering topics related to Android development. Although the specific curriculum details are not provided, the course aimed to train junior developers and career changers in Android development using Kotlin, Android SDK, and Jetpack.\n\nAs the creator and lead instructor, Denys likely covered fundamental Android development concepts, such as architecture patterns (MVVM, MVP, MVI), UI development with Jetpack Compose, and best practices for coding in Kotlin. The course may have also included hands-on exercises, projects, and real-world examples to prepare students for employment at EPAM.\n\n{\"suggestions\": [\"android-school\", \"mcdonalds\", \"lesara\"]}",
+            "latencyMs": 826,
+            "ttftMs": 825,
+            "promptTokens": 0,
+            "completionTokens": 0,
+            "totalTokens": 0,
+            "suggestions": [
+                "android-school",
+                "mcdonalds",
+                "lesara"
+            ],
+            "success": true,
+            "errorMessage": null
+        },
+        {
+            "questionId": "SCH5",
+            "questionText": "Who was the target audience for Android School?",
+            "category": "audience",
+            "response": "The target audience for Android School, an internal education program created by Denys Honcharenko at EPAM Systems, were junior developers and career changers looking to learn Android development. The program aimed to train these individuals and prepare them for employment at EPAM.\n\n```json\n{\"suggestions\": [\"android-school\"]}\n```",
+            "latencyMs": 450,
+            "ttftMs": 449,
+            "promptTokens": 0,
+            "completionTokens": 0,
+            "totalTokens": 0,
+            "suggestions": [
+                "android-school"
+            ],
+            "success": true,
+            "errorMessage": null
+        },
+        {
+            "questionId": "VEEV1",
+            "questionText": "What is the Veev WallApp and where was it deployed?",
+            "category": "overview",
+            "response": "The Veev WallApp is one of the two Android applications developed by Denys for Veev Smart Home, a $1B+ prefab smart home startup in Silicon Valley. The WallApp was designed to run on kiosk tablets mounted on walls in Veev's prefab homes, providing a user interface for homeowners to interact with their smart home system.\n\nThe Veev WallApp, along with the Veev Mobile App, was deployed in thousands of homes in the Bay Area, as part of Veev's smart home technology embedded into their prefab construction homes.\n\n```json\n{\"suggestions\": [\"veev\", \"lesara\", \"adidas-gmr\"]}\n```",
+            "latencyMs": 778,
+            "ttftMs": 778,
+            "promptTokens": 0,
+            "completionTokens": 0,
+            "totalTokens": 0,
+            "suggestions": [
+                "veev",
+                "lesara",
+                "adidas-gmr"
+            ],
+            "success": true,
+            "errorMessage": null
+        },
+        {
+            "questionId": "VEEV2",
+            "questionText": "What AWS services did Denys use for Veev backend?",
+            "category": "backend",
+            "response": "Denys used AWS Lambda, AWS IoT Core, and AppSync for the Veev Smart Home backend. He also utilized Terraform for infrastructure management.\n\n```json\n{\"suggestions\": [\"veev\", \"geosatis\", \"mcdonalds\"]}\n```",
+            "latencyMs": 475,
+            "ttftMs": 474,
+            "promptTokens": 0,
+            "completionTokens": 0,
+            "totalTokens": 0,
+            "suggestions": [
+                "veev",
+                "geosatis",
+                "mcdonalds"
+            ],
+            "success": true,
+            "errorMessage": null
+        },
+        {
+            "questionId": "VEEV3",
+            "questionText": "How did Denys integrate Amazon Alexa with Veev?",
+            "category": "integration",
+            "response": "Denys integrated Amazon Alexa with Veev by implementing Alexa voice integration in the Veev Smart Home system. This allowed homeowners to control their smart homes using voice commands through Amazon Alexa devices. The integration was part of the larger Veev Digital Home project, which included two Android applications (WallApp and Mobile App) and an AWS IoT backend.\n\nAs the Android Developer and Backend Developer for Veev, Denys worked on the overall architecture of the smart home system, including the Alexa integration. He developed the necessary APIs and infrastructure to enable seamless communication between the Veev system and Amazon Alexa.\n\nThe Alexa integration enabled homeowners to control various aspects of their smart homes, such as lighting, temperature, and security, using voice commands. This integration enhanced the overall user experience of the Veev Smart Home system, making it more convenient and user-friendly.\n\n```json\n{\"suggestions\": [\"veev\", \"adidas-gmr\", \"geosatis\"]}\n```",
+            "latencyMs": 954,
+            "ttftMs": 952,
+            "promptTokens": 0,
+            "completionTokens": 0,
+            "totalTokens": 0,
+            "suggestions": [
+                "veev",
+                "adidas-gmr",
+                "geosatis"
+            ],
+            "success": true,
+            "errorMessage": null
+        },
+        {
+            "questionId": "VEEV4",
+            "questionText": "What infrastructure-as-code tool was used at Veev?",
+            "category": "devops",
+            "response": "At Veev, the infrastructure-as-code tool used was Terraform. \n\n```json\n{\"suggestions\": [\"veev\"]}\n```",
+            "latencyMs": 417,
+            "ttftMs": 416,
+            "promptTokens": 0,
+            "completionTokens": 0,
+            "totalTokens": 0,
+            "suggestions": [
+                "veev"
+            ],
+            "success": true,
+            "errorMessage": null
+        },
+        {
+            "questionId": "VEEV5",
+            "questionText": "How many homes were running Veev's smart home system?",
+            "category": "metrics",
+            "response": "According to Denys Honcharenko's experience with Veev Smart Home, the system was deployed in thousands of homes in the Bay Area.\n\n```json\n{\"suggestions\": [\"veev\"]}\n```",
+            "latencyMs": 440,
+            "ttftMs": 439,
+            "promptTokens": 0,
+            "completionTokens": 0,
+            "totalTokens": 0,
+            "suggestions": [
+                "veev"
+            ],
+            "success": true,
+            "errorMessage": null
+        },
+        {
+            "questionId": "LES1",
+            "questionText": "What was the Lesara project about?",
+            "category": "overview",
+            "response": "The Lesara project was about developing a native Android app for Europe's fastest-growing fashion startup, Lesara. Denys Honcharenko worked as a Senior Android Developer on this project from September 2017 to April 2018. The company had raised €85 million and expanded to 24 European markets, with the mobile apps reaching 2M+ downloads and 4.5-star ratings. Denys initiated and documented a 4-stage architecture migration strategy, led the complete Product List rewrite, introduced Room database for offline caching, and presented Material Design guidelines during a business trip to Berlin.\n\n```json\n{\"suggestions\": [\"lesara\", \"mcdonalds\", \"veev\"]}\n```",
+            "latencyMs": 642,
+            "ttftMs": 641,
+            "promptTokens": 0,
+            "completionTokens": 0,
+            "totalTokens": 0,
+            "suggestions": [
+                "lesara",
+                "mcdonalds",
+                "veev"
+            ],
+            "success": true,
+            "errorMessage": null
+        },
+        {
+            "questionId": "LES2",
+            "questionText": "What architecture migration did Denys lead at Lesara?",
+            "category": "architecture",
+            "response": "Denys led a 4-stage architecture migration strategy at Lesara, which included migrating the codebase from MVP to Clean Architecture, then to a modular approach, and finally to Kotlin. This migration aimed to improve the maintainability and scalability of the Android app. \n\n{\"suggestions\": [\"lesara\"]}",
+            "latencyMs": 563,
+            "ttftMs": 562,
+            "promptTokens": 0,
+            "completionTokens": 0,
+            "totalTokens": 0,
+            "suggestions": [
+                "lesara"
+            ],
+            "success": true,
+            "errorMessage": null
+        },
+        {
+            "questionId": "LES3",
+            "questionText": "What major feature did Denys rewrite at Lesara?",
+            "category": "feature",
+            "response": "At Lesara, Denys rewrote the complete Product List feature with Sorting/Filtering functionality. He also introduced Room database for offline caching as part of his contributions to improve the app's architecture and performance.\n\n```json\n{\"suggestions\": [\"lesara\"]}\n```",
+            "latencyMs": 544,
+            "ttftMs": 543,
+            "promptTokens": 0,
+            "completionTokens": 0,
+            "totalTokens": 0,
+            "suggestions": [
+                "lesara"
+            ],
+            "success": true,
+            "errorMessage": null
+        },
+        {
+            "questionId": "LES4",
+            "questionText": "How much dead code did Denys remove at Lesara?",
+            "category": "technical",
+            "response": "Denys does not mention the exact amount of dead code he removed at Lesara. However, he does mention that he initiated and documented a 4-stage architecture migration strategy (MVP → Clean Architecture → Modules → Kotlin) and led the complete Product List rewrite with Sorting/Filtering, which likely involved removing unnecessary code.\n\n```json\n{\"suggestions\": [\"lesara\"]}\n```",
+            "latencyMs": 535,
+            "ttftMs": 534,
+            "promptTokens": 0,
+            "completionTokens": 0,
+            "totalTokens": 0,
+            "suggestions": [
+                "lesara"
+            ],
+            "success": true,
+            "errorMessage": null
+        },
+        {
+            "questionId": "LES5",
+            "questionText": "What CI/CD system did Denys set up at Lesara?",
+            "category": "devops",
+            "response": "Denys did not specifically mention setting up a CI/CD system at Lesara in the provided information. However, he did mention his experience with CI/CD in his skills section, listing CI/CD as one of his expertise areas.\n\nAs a Senior Android Developer at Lesara, Denys focused on fixing the codebase, initiating and documenting a 4-stage architecture migration strategy, leading the complete Product List rewrite, introducing Room database for offline caching, and presenting Material Design guidelines.\n\n```json\n{\"suggestions\": [\"lesara\"]}\n```",
+            "latencyMs": 629,
+            "ttftMs": 628,
+            "promptTokens": 0,
+            "completionTokens": 0,
+            "totalTokens": 0,
+            "suggestions": [
+                "lesara"
+            ],
+            "success": true,
+            "errorMessage": null
+        },
+        {
+            "questionId": "STO1",
+            "questionText": "What is StoAmigo and what problem did it solve?",
+            "category": "overview",
+            "response": "StoAmigo was a cross-device file sharing platform that allowed users to access files stored on any device from their phone, without upload times or size limits. The company started with CloudLocker, a crowdfunded physical private cloud storage device, and evolved into a cross-platform file sharing solution. StoAmigo solved the problem of accessing and sharing files across different devices, providing a convenient and efficient way for users to manage their files.\n\n```json\n{\"suggestions\": [\"stoamigo\", \"veev\", \"lesara\"]}\n```",
+            "latencyMs": 614,
+            "ttftMs": 613,
+            "promptTokens": 0,
+            "completionTokens": 0,
+            "totalTokens": 0,
+            "suggestions": [
+                "stoamigo",
+                "veev",
+                "lesara"
+            ],
+            "success": true,
+            "errorMessage": null
+        },
+        {
+            "questionId": "STO2",
+            "questionText": "What WebRTC feature did Denys prototype at StoAmigo?",
+            "category": "technical",
+            "response": "Denys prototyped real-time peer-to-peer file sharing using WebRTC technology at StoAmigo. \n\n```json\n{\"suggestions\": [\"stoamigo\"]}\n```",
+            "latencyMs": 414,
+            "ttftMs": 414,
+            "promptTokens": 0,
+            "completionTokens": 0,
+            "totalTokens": 0,
+            "suggestions": [
+                "stoamigo"
+            ],
+            "success": true,
+            "errorMessage": null
+        },
+        {
+            "questionId": "STO3",
+            "questionText": "How many users did the StoAmigo platform serve?",
+            "category": "metrics",
+            "response": "The StoAmigo platform served over 2 million users.\n\n```json\n{\"suggestions\": [\"stoamigo\", \"mcdonalds\", \"lesara\"]}\n```",
+            "latencyMs": 445,
+            "ttftMs": 445,
+            "promptTokens": 0,
+            "completionTokens": 0,
+            "totalTokens": 0,
+            "suggestions": [
+                "stoamigo",
+                "mcdonalds",
+                "lesara"
+            ],
+            "success": true,
+            "errorMessage": null
+        },
+        {
+            "questionId": "STO4",
+            "questionText": "What cloud integration did Denys implement at StoAmigo?",
+            "category": "integration",
+            "response": "Denys implemented Google Drive integration at StoAmigo, a cloud storage and file sharing platform. He also worked on a WebRTC prototype for real-time peer-to-peer file sharing.\n\n```json\n{\"suggestions\": [\"stoamigo\", \"geosatis\", \"veev\"]}\n```",
+            "latencyMs": 545,
+            "ttftMs": 544,
+            "promptTokens": 0,
+            "completionTokens": 0,
+            "totalTokens": 0,
+            "suggestions": [
+                "stoamigo",
+                "geosatis",
+                "veev"
+            ],
+            "success": true,
+            "errorMessage": null
+        },
+        {
+            "questionId": "STO5",
+            "questionText": "What file system architecture did Denys design?",
+            "category": "architecture",
+            "response": "Denys designed a new file system architecture for the StoAmigo Android app, a cross-device file sharing platform. The details of this architecture are not specified in the provided information, but it is mentioned as one of the key accomplishments during his time working on the StoAmigo project.\n\n```json\n{\"suggestions\": [\"stoamigo\"]}\n```",
+            "latencyMs": 516,
+            "ttftMs": 515,
+            "promptTokens": 0,
+            "completionTokens": 0,
+            "totalTokens": 0,
+            "suggestions": [
+                "stoamigo"
+            ],
+            "success": true,
+            "errorMessage": null
+        },
+        {
+            "questionId": "SMIL1",
+            "questionText": "What is SMILdroid/Storesign 7?",
+            "category": "overview",
+            "response": "SMILdroid, also known as Storesign 7, is an Android-based media player application designed to handle SMIL (Synchronized Multimedia Integration Language) files for digital signage displays. The app enabled synchronized playback of multiple media types (video, images, text) across different screen zones following the SMIL 3.0 standard. Denys Honcharenko worked on this project as an Android Developer from August 2012 to August 2014. He built the application and custom Rockchip Android ROMs for low-cost Android tablets and TV boxes, providing an affordable alternative to expensive dedicated PCs for digital signage.\n\n```json\n{\"suggestions\": [\"smildroid\", \"mcdonalds\", \"veev\"]}\n```",
+            "latencyMs": 654,
+            "ttftMs": 653,
+            "promptTokens": 0,
+            "completionTokens": 0,
+            "totalTokens": 0,
+            "suggestions": [
+                "smildroid",
+                "mcdonalds",
+                "veev"
+            ],
+            "success": true,
+            "errorMessage": null
+        },
+        {
+            "questionId": "SMIL2",
+            "questionText": "What is the SMIL 3.0 standard and how did Denys implement it?",
+            "category": "technical",
+            "response": "The SMIL 3.0 standard (Synchronized Multimedia Integration Language) is a W3C recommendation for describing multimedia presentations that synchronize multiple media elements, such as video, audio, images, and text. It allows for the creation of interactive multimedia content, enabling features like playback control, layout management, and timing synchronization.\n\nDenys implemented the SMIL 3.0 standard in the SMILdroid project, where he developed an Android-based media player application for digital signage. As the solo Android developer, he built the application and custom Rockchip Android ROMs for low-cost Android tablets and TV boxes. The SMILdroid app enabled synchronized playback of multiple media types across different screen zones, following the SMIL 3.0 standard.\n\nDenys' implementation of SMIL 3.0 in SMILdroid was one of the early players to bring open-standard SMIL playback to the Android ecosystem. He successfully integrated the SMIL 3.0 standard into the app, allowing for seamless synchronization of multimedia content on digital signage displays.\n\n```json\n{\"suggestions\": [\"smildroid\", \"mcdonalds\", \"geosatis\"]}\n```",
+            "latencyMs": 1063,
+            "ttftMs": 1061,
+            "promptTokens": 0,
+            "completionTokens": 0,
+            "totalTokens": 0,
+            "suggestions": [
+                "smildroid",
+                "mcdonalds",
+                "geosatis"
+            ],
+            "success": true,
+            "errorMessage": null
+        },
+        {
+            "questionId": "SMIL3",
+            "questionText": "What custom ROM work did Denys do for SMILdroid?",
+            "category": "technical",
+            "response": "Denys built custom Rockchip ROMs for low-cost Android tablets and TV boxes as part of the SMILdroid project. This custom ROM work was done to provide an affordable alternative to expensive dedicated PCs for digital signage.\n\n```json\n{\"suggestions\": [\"smildroid\"]}\n```",
+            "latencyMs": 486,
+            "ttftMs": 485,
+            "promptTokens": 0,
+            "completionTokens": 0,
+            "totalTokens": 0,
+            "suggestions": [
+                "smildroid"
+            ],
+            "success": true,
+            "errorMessage": null
+        },
+        {
+            "questionId": "SMIL4",
+            "questionText": "What CMS was integrated with SMILdroid?",
+            "category": "integration",
+            "response": "The CMS integrated with SMILdroid was miX-L. \n\n```json\n{\"suggestions\": [\"smildroid\"]}\n```",
+            "latencyMs": 418,
+            "ttftMs": 418,
+            "promptTokens": 0,
+            "completionTokens": 0,
+            "totalTokens": 0,
+            "suggestions": [
+                "smildroid"
+            ],
+            "success": true,
+            "errorMessage": null
+        },
+        {
+            "questionId": "SMIL5",
+            "questionText": "What deployment environment was SMILdroid designed for?",
+            "category": "deployment",
+            "response": "SMILdroid (Storesign 7) was designed for digital signage, specifically for low-cost Android tablets and TV boxes using custom Rockchip Android ROMs. This allowed for an affordable alternative to expensive dedicated PCs for digital signage.\n\n```json\n{\"suggestions\": [\"smildroid\", \"veev\", \"kntu-it\"]}\n```",
+            "latencyMs": 549,
+            "ttftMs": 548,
+            "promptTokens": 0,
+            "completionTokens": 0,
+            "totalTokens": 0,
+            "suggestions": [
+                "smildroid",
+                "veev",
+                "kntu-it"
+            ],
+            "success": true,
+            "errorMessage": null
+        },
+        {
+            "questionId": "RIFL1",
+            "questionText": "What was Denys's role at Rifl Media?",
+            "category": "role",
+            "response": "Denys Honcharenko was an Android Developer at Rifl Media, where he worked on the \"Take It To\" project, a multi-media platform for presenting and sharing creative content. \n\n```json\n{\"suggestions\": [\"rifl-media\"]}\n```",
+            "latencyMs": 443,
+            "ttftMs": 443,
+            "promptTokens": 0,
+            "completionTokens": 0,
+            "totalTokens": 0,
+            "suggestions": [
+                "rifl-media"
+            ],
+            "success": true,
+            "errorMessage": null
+        },
+        {
+            "questionId": "RIFL2",
+            "questionText": "How did Denys grow the Android team at Rifl Media?",
+            "category": "leadership",
+            "response": "Denys joined Rifl Media as the first Android developer and built the Android app from scratch. As the product expanded, he grew the Android team from 1 to 3 developers. This indicates that Denys not only developed the app but also played a role in scaling the team to meet the growing demands of the project.\n\n```json\n{\"suggestions\": [\"rifl-media\", \"stoamigo\", \"lesara\"]}\n```",
+            "latencyMs": 597,
+            "ttftMs": 596,
+            "promptTokens": 0,
+            "completionTokens": 0,
+            "totalTokens": 0,
+            "suggestions": [
+                "rifl-media",
+                "stoamigo",
+                "lesara"
+            ],
+            "success": true,
+            "errorMessage": null
+        },
+        {
+            "questionId": "RIFL3",
+            "questionText": "What type of content did the Take It To app handle?",
+            "category": "feature",
+            "response": "The Take It To app handled multi-media content, specifically designed for presenting and sharing creative content, targeting creative industries. \n\n```json\n{\"suggestions\": [\"rifl-media\", \"food-network-kitchen\", \"adidas-gmr\"]}\n```",
+            "latencyMs": 594,
+            "ttftMs": 594,
+            "promptTokens": 0,
+            "completionTokens": 0,
+            "totalTokens": 0,
+            "suggestions": [
+                "rifl-media",
+                "food-network-kitchen",
+                "adidas-gmr"
+            ],
+            "success": true,
+            "errorMessage": null
+        },
+        {
+            "questionId": "RIFL4",
+            "questionText": "How did Denys coordinate with the iOS team?",
+            "category": "collaboration",
+            "response": "Denys coordinated with the iOS team through shared libraries and frameworks, particularly when working on cross-platform projects like the McDonald's Global App. As a Lead Android Engineer and KMM Developer, he designed and implemented shared KMP (Kotlin Multiplatform) libraries for both Android and iOS, ensuring seamless integration and feature parity across platforms. This approach enabled the iOS team to easily integrate the shared code, reducing development time and effort. \n\n```json\n{\"suggestions\": [\"mcdonalds\", \"adidas-gmr\", \"geosatis\"]}\n```",
+            "latencyMs": 807,
+            "ttftMs": 806,
+            "promptTokens": 0,
+            "completionTokens": 0,
+            "totalTokens": 0,
+            "suggestions": [
+                "mcdonalds",
+                "adidas-gmr",
+                "geosatis"
+            ],
+            "success": true,
+            "errorMessage": null
+        },
+        {
+            "questionId": "RIFL5",
+            "questionText": "What was unique about being the first Android developer?",
+            "category": "challenge",
+            "response": "As the first Android developer at Rifl Media for the \"Take It To\" project, Denys had the unique opportunity to build the Android app from scratch. This allowed him to establish the foundation and architecture of the app, making key decisions that would impact its future development and growth. He was also responsible for growing the Android team from a single member (himself) to a team of three developers as the product expanded. This experience likely provided him with valuable insights into the importance of initial design and architecture decisions, as well as the challenges of scaling a team and managing growth.\n\n```json\n{\"suggestions\": [\"rifl-media\", \"stoamigo\", \"smildroid\"]}\n```",
+            "latencyMs": 864,
+            "ttftMs": 863,
+            "promptTokens": 0,
+            "completionTokens": 0,
+            "totalTokens": 0,
+            "suggestions": [
+                "rifl-media",
+                "stoamigo",
+                "smildroid"
+            ],
+            "success": true,
+            "errorMessage": null
+        },
+        {
+            "questionId": "KNTU1",
+            "questionText": "What was Denys's role at KNTU?",
+            "category": "role",
+            "response": "Denys Honcharenko worked as a System Administrator and DevOps engineer at Kherson National Technical University (KNTU) from August 2006 to August 2012. He was responsible for managing the university's IT infrastructure, including a private cloud with 500+ virtual machines, 100+ physical servers, and network services for 1000+ users.\n\n```json\n{\"suggestions\": [\"kntu-it\"]}\n```",
+            "latencyMs": 590,
+            "ttftMs": 590,
+            "promptTokens": 0,
+            "completionTokens": 0,
+            "totalTokens": 0,
+            "suggestions": [
+                "kntu-it"
+            ],
+            "success": true,
+            "errorMessage": null
+        },
+        {
+            "questionId": "KNTU2",
+            "questionText": "How many virtual machines did Denys manage at KNTU?",
+            "category": "metrics",
+            "response": "Denys managed 500+ virtual machines as part of the XEN-based private cloud at Kherson National Technical University (KNTU).\n\n```json\n{\"suggestions\": [\"kntu-it\"]}\n```",
+            "latencyMs": 402,
+            "ttftMs": 401,
+            "promptTokens": 0,
+            "completionTokens": 0,
+            "totalTokens": 0,
+            "suggestions": [
+                "kntu-it"
+            ],
+            "success": true,
+            "errorMessage": null
+        },
+        {
+            "questionId": "KNTU3",
+            "questionText": "What virtualization platform was used at KNTU?",
+            "category": "technical",
+            "response": "At Kherson National Technical University (KNTU), the virtualization platform used was XEN. Denys managed a pioneering XEN-based private cloud with 500+ virtual machines as part of his role as System Administrator and DevOps engineer.\n\n```json\n{\"suggestions\": [\"kntu-it\"]}\n```",
+            "latencyMs": 473,
+            "ttftMs": 473,
+            "promptTokens": 0,
+            "completionTokens": 0,
+            "totalTokens": 0,
+            "suggestions": [
+                "kntu-it"
+            ],
+            "success": true,
+            "errorMessage": null
+        },
+        {
+            "questionId": "KNTU4",
+            "questionText": "What academic network was KNTU connected to?",
+            "category": "infrastructure",
+            "response": "KNTU (Kherson National Technical University) was connected to the URAN academic network, which stands for Ukrainian Research and Academic Network. \n\n```json\n{\"suggestions\": [\"kntu-it\"]}\n```",
+            "latencyMs": 446,
+            "ttftMs": 445,
+            "promptTokens": 0,
+            "completionTokens": 0,
+            "totalTokens": 0,
+            "suggestions": [
+                "kntu-it"
+            ],
+            "success": true,
+            "errorMessage": null
+        },
+        {
+            "questionId": "KNTU5",
+            "questionText": "What web portal did Denys develop for the university?",
+            "category": "development",
+            "response": "Denys developed the university web portal (kntu.net.ua) on the eZ Publish CMS during his time as a System Administrator and DevOps engineer at Kherson National Technical University.\n\n```json\n{\"suggestions\": [\"kntu-it\"]}\n```",
+            "latencyMs": 654,
+            "ttftMs": 653,
+            "promptTokens": 0,
+            "completionTokens": 0,
+            "totalTokens": 0,
+            "suggestions": [
+                "kntu-it"
+            ],
+            "success": true,
+            "errorMessage": null
+        },
+        {
+            "questionId": "VAL1",
+            "questionText": "What programming language did Denys use for Valentina?",
+            "category": "technical",
+            "response": "Denys used C and C++ for the Valentina for PHP ADK project.\n\n```json\n{\"suggestions\": [\"valentina\"]}\n```",
+            "latencyMs": 450,
+            "ttftMs": 450,
+            "promptTokens": 0,
+            "completionTokens": 0,
+            "totalTokens": 0,
+            "suggestions": [
+                "valentina"
+            ],
+            "success": true,
+            "errorMessage": null
+        },
+        {
+            "questionId": "VAL2",
+            "questionText": "What is Valentina DB and what did Denys contribute?",
+            "category": "contribution",
+            "response": "Valentina DB is a database engine that allows developers to integrate it into their applications. Denys contributed to Valentina DB by developing C/C++ extensions for its PHP integration, specifically for the Valentina for PHP ADK. This work involved building PHP extensions that enabled developers to use Valentina DB from PHP applications through both native API and PDO interface.\n\n```json\n{\"suggestions\": [\"valentina\"]}\n```",
+            "latencyMs": 618,
+            "ttftMs": 618,
+            "promptTokens": 0,
+            "completionTokens": 0,
+            "totalTokens": 0,
+            "suggestions": [
+                "valentina"
+            ],
+            "success": true,
+            "errorMessage": null
+        },
+        {
+            "questionId": "VAL3",
+            "questionText": "What PHP interface did Denys implement for Valentina?",
+            "category": "technical",
+            "response": "Denys implemented the PDO interface for Valentina DB's PHP integration (Valentina for PHP ADK). \n\n```json\n{\"suggestions\": [\"valentina\"]}\n```",
+            "latencyMs": 460,
+            "ttftMs": 459,
+            "promptTokens": 0,
+            "completionTokens": 0,
+            "totalTokens": 0,
+            "suggestions": [
+                "valentina"
+            ],
+            "success": true,
+            "errorMessage": null
+        },
+        {
+            "questionId": "VAL4",
+            "questionText": "What type of development is PHP extension programming?",
+            "category": "technical",
+            "response": "PHP extension programming is a type of systems programming or low-level programming, as it involves developing extensions to the PHP language itself, typically using C or C++. This type of development requires a deep understanding of the PHP internals, as well as proficiency in C or C++ programming languages. It is a specialized area of software development that involves creating custom extensions to enhance the functionality of the PHP language.\n\n```json\n{\"suggestions\": [\"valentina\"]}\n```",
+            "latencyMs": 656,
+            "ttftMs": 656,
+            "promptTokens": 0,
+            "completionTokens": 0,
+            "totalTokens": 0,
+            "suggestions": [
+                "valentina"
+            ],
+            "success": true,
+            "errorMessage": null
+        },
+        {
+            "questionId": "VAL5",
+            "questionText": "What version of Valentina included Denys's contribution?",
+            "category": "history",
+            "response": "Denys's contribution to Valentina DB was included in version 4.9.1, which was released in August 2011. This version transitioned to 'standalone' archives, embedding the local Valentina engine directly in the PHP extension.\n\n```json\n{\"suggestions\": [\"valentina\"]}\n```",
+            "latencyMs": 527,
+            "ttftMs": 527,
+            "promptTokens": 0,
+            "completionTokens": 0,
+            "totalTokens": 0,
+            "suggestions": [
+                "valentina"
+            ],
+            "success": true,
+            "errorMessage": null
+        },
+        {
+            "questionId": "AIT1",
+            "questionText": "What was Aitweb and what was Denys's role?",
+            "category": "overview",
+            "response": "Aitweb was a web studio founded and operated by Denys Honcharenko from 2011-2012. Denys's role was that of the Founder and Web Developer. The studio specialized in developing landing pages and web applications using eZ Publish, an enterprise-grade PHP CMS framework, and provided hosting services.\n\n```json\n{\"suggestions\": [\"aitweb\"]}\n```",
+            "latencyMs": 521,
+            "ttftMs": 520,
+            "promptTokens": 0,
+            "completionTokens": 0,
+            "totalTokens": 0,
+            "suggestions": [
+                "aitweb"
+            ],
+            "success": true,
+            "errorMessage": null
+        },
+        {
+            "questionId": "AIT2",
+            "questionText": "How many people did Denys manage at Aitweb?",
+            "category": "leadership",
+            "response": "Denys managed a team of 10 employees at Aitweb, the web studio he founded and operated from 2011-2012.\n\n```json\n{\"suggestions\": [\"aitweb\"]}\n```",
+            "latencyMs": 446,
+            "ttftMs": 445,
+            "promptTokens": 0,
+            "completionTokens": 0,
+            "totalTokens": 0,
+            "suggestions": [
+                "aitweb"
+            ],
+            "success": true,
+            "errorMessage": null
+        },
+        {
+            "questionId": "AIT3",
+            "questionText": "What CMS did Aitweb specialize in?",
+            "category": "technical",
+            "response": "Aitweb, the web studio founded by Denys Honcharenko, specialized in developing landing pages and web applications using eZ Publish, an enterprise-grade PHP CMS framework.\n\n```json\n{\"suggestions\": [\"aitweb\"]}\n```",
+            "latencyMs": 489,
+            "ttftMs": 488,
+            "promptTokens": 0,
+            "completionTokens": 0,
+            "totalTokens": 0,
+            "suggestions": [
+                "aitweb"
+            ],
+            "success": true,
+            "errorMessage": null
+        },
+        {
+            "questionId": "AIT4",
+            "questionText": "How many websites did Aitweb build?",
+            "category": "metrics",
+            "response": "Aitweb, Denys' web studio, built 50+ landing pages for local companies and universities. \n\n```json\n{\"suggestions\": [\"aitweb\"]}\n```",
+            "latencyMs": 455,
+            "ttftMs": 455,
+            "promptTokens": 0,
+            "completionTokens": 0,
+            "totalTokens": 0,
+            "suggestions": [
+                "aitweb"
+            ],
+            "success": true,
+            "errorMessage": null
+        },
+        {
+            "questionId": "AIT5",
+            "questionText": "What were Aitweb's primary clients?",
+            "category": "clients",
+            "response": "Aitweb's primary client was Kherson National Technical University (KNTU), for whom they maintained the university's web ecosystem and various departmental subdomains. They also provided hosting services through the URAN (Ukrainian Research and Academic Network) infrastructure and built landing pages for local companies, including the Kherson State Maritime Academy's Moodle e-learning platform.\n\n```json\n{\"suggestions\": [\"aitweb\", \"kntu-it\"]}\n```",
+            "latencyMs": 580,
+            "ttftMs": 580,
+            "promptTokens": 0,
+            "completionTokens": 0,
+            "totalTokens": 0,
+            "suggestions": [
+                "aitweb",
+                "kntu-it"
+            ],
+            "success": true,
+            "errorMessage": null
+        },
+        {
+            "questionId": "MCD1",
+            "questionText": "What was Denys's role on the McDonald's project?",
+            "category": "role",
+            "response": "Denys was the Lead Android Engineer and KMM Developer on the McDonald's Global App project. \n\n```json\n{\"suggestions\": [\"mcdonalds\", \"geosatis\", \"adidas-gmr\"]}\n```",
+            "latencyMs": 461,
+            "ttftMs": 461,
+            "promptTokens": 0,
+            "completionTokens": 0,
+            "totalTokens": 0,
+            "suggestions": [
+                "mcdonalds",
+                "geosatis",
+                "adidas-gmr"
+            ],
+            "success": true,
+            "errorMessage": null
+        },
+        {
+            "questionId": "MCD2",
+            "questionText": "How long did Denys work on the McDonald's app?",
+            "category": "duration",
+            "response": "Denys worked on the McDonald's Global App from August 2021 to October 2022, which is approximately 1 year and 2 months.\n\n```json\n{\"suggestions\": [\"mcdonalds\"]}\n```",
+            "latencyMs": 446,
+            "ttftMs": 446,
+            "promptTokens": 0,
+            "completionTokens": 0,
+            "totalTokens": 0,
+            "suggestions": [
+                "mcdonalds"
+            ],
+            "success": true,
+            "errorMessage": null
+        },
+        {
+            "questionId": "MCD3",
+            "questionText": "What companies were involved in the McDonald's project chain?",
+            "category": "company structure",
+            "response": "The McDonald's Global App project involved several companies, including McDonald's itself and Developers Shore, where Denys worked as a Lead Android Engineer / KMM Developer.\n\n```json\n{\"suggestions\": [\"mcdonalds\"]}\n```",
+            "latencyMs": 523,
+            "ttftMs": 522,
+            "promptTokens": 0,
+            "completionTokens": 0,
+            "totalTokens": 0,
+            "suggestions": [
+                "mcdonalds"
+            ],
+            "success": true,
+            "errorMessage": null
+        },
+        {
+            "questionId": "MCD4",
+            "questionText": "How many users does the McDonald's Global App serve?",
+            "category": "metrics",
+            "response": "The McDonald's Global App serves 100M+ users across 60+ countries. \n\n```json\n{\"suggestions\": [\"mcdonalds\", \"lesara\", \"stoamigo\"]}\n```",
+            "latencyMs": 456,
+            "ttftMs": 456,
+            "promptTokens": 0,
+            "completionTokens": 0,
+            "totalTokens": 0,
+            "suggestions": [
+                "mcdonalds",
+                "lesara",
+                "stoamigo"
+            ],
+            "success": true,
+            "errorMessage": null
+        },
+        {
+            "questionId": "MCD5",
+            "questionText": "How many countries is the McDonald's app available in?",
+            "category": "metrics",
+            "response": "The McDonald's Global App is available in over 60 countries. \n\n```json\n{\"suggestions\": [\"mcdonalds\"]}\n```",
+            "latencyMs": 458,
+            "ttftMs": 458,
+            "promptTokens": 0,
+            "completionTokens": 0,
+            "totalTokens": 0,
+            "suggestions": [
+                "mcdonalds"
+            ],
+            "success": true,
+            "errorMessage": null
+        }
+    ],
+    "conversationResults": []
+}
