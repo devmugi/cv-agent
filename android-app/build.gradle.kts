@@ -86,6 +86,8 @@ dependencies {
 
     implementation(libs.androidx.activity.compose)
     implementation(libs.compose.foundation)
+    implementation(libs.compose.material3)
+    implementation(libs.compose.material.icons.extended)
     implementation(libs.koin.android)
     implementation(libs.koin.compose)
     implementation(libs.kermit)
