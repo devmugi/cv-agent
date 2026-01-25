@@ -1,0 +1,200 @@
+{
+    "runId": "8d4c19d0",
+    "timestamp": "2026-01-25T10:45:41.843204Z",
+    "config": {
+        "promptVariant": "BASELINE",
+        "dataFormat": "TEXT",
+        "projectMode": "CURATED",
+        "model": "llama-3.3-70b-versatile",
+        "temperature": 0.7,
+        "maxTokens": 1024,
+        "questionSet": "SIMPLE",
+        "delayMs": 5000,
+        "phoenixEndpoint": "http://localhost:6006/v1/traces",
+        "reportsDir": "eval/reports"
+    },
+    "summary": {
+        "totalQuestions": 10,
+        "totalConversations": 0,
+        "successCount": 10,
+        "errorCount": 0,
+        "avgLatencyMs": 576.4,
+        "avgTtftMs": 570.4,
+        "totalPromptTokens": 0,
+        "totalCompletionTokens": 0,
+        "totalTokens": 0,
+        "p50LatencyMs": 558,
+        "p95LatencyMs": 753
+    },
+    "questionResults": [
+        {
+            "questionId": "Q1",
+            "questionText": "What is Denys's current job title and location?",
+            "category": "personal info recall",
+            "response": "Denys Honcharenko's current job title is Senior Android Engineer, and he is located in Genk, Belgium.\n\n```json\n{\"suggestions\": []}\n```",
+            "latencyMs": 754,
+            "ttftMs": 727,
+            "promptTokens": 0,
+            "completionTokens": 0,
+            "totalTokens": 0,
+            "suggestions": [],
+            "success": true,
+            "errorMessage": null
+        },
+        {
+            "questionId": "Q2",
+            "questionText": "What programming languages does Denys know?",
+            "category": "skills extraction",
+            "response": "Denys Honcharenko is proficient in a variety of programming languages, including Kotlin, Java, C, and C++. He also has experience with JavaScript and PHP, as well as knowledge of SQL for database management. Additionally, Denys has worked with Kotlin Multiplatform, which allows him to share code between Android and iOS platforms.\n\n```json\n{\"suggestions\": [\"mcdonalds\", \"geosatis\", \"adidas-gmr\"]}\n```",
+            "latencyMs": 558,
+            "ttftMs": 552,
+            "promptTokens": 0,
+            "completionTokens": 0,
+            "totalTokens": 0,
+            "suggestions": [
+                "mcdonalds",
+                "geosatis",
+                "adidas-gmr"
+            ],
+            "success": true,
+            "errorMessage": null
+        },
+        {
+            "questionId": "Q3",
+            "questionText": "Tell me about the McDonald's project",
+            "category": "featured project detail",
+            "response": "Denys Honcharenko worked on the McDonald's Global App (GMAL) as a Lead Android Engineer and KMM Developer from August 2021 to October 2022. The app serves 100M+ users across 60+ countries, providing features such as ordering, payments, delivery, and loyalty programs. Denys was involved in implementing KMP shared libraries for both Android and iOS, designing the architecture for 20+ payment providers, and leading the ViewBinding migration using IntelliJ SSR tooling. He also created the Android Talks initiative and established a Slack channel for improved release processes.\n\nThe project stands out for its massive scale KMM implementation, complex payment architecture, and team leadership. Denys' work on this project demonstrates his expertise in Kotlin, Kotlin Multiplatform, Jetpack Compose, and Coroutines.\n\n```json\n{\"suggestions\": [\"mcdonalds\", \"android-school\", \"adidas-gmr\"]}\n```",
+            "latencyMs": 753,
+            "ttftMs": 745,
+            "promptTokens": 0,
+            "completionTokens": 0,
+            "totalTokens": 0,
+            "suggestions": [
+                "mcdonalds",
+                "android-school",
+                "adidas-gmr"
+            ],
+            "success": true,
+            "errorMessage": null
+        },
+        {
+            "questionId": "Q4",
+            "questionText": "What was Denys's role at GEOSATIS?",
+            "category": "featured project role",
+            "response": "Denys worked at GEOSATIS as an Android Developer, Backend Developer, and DevOps. \n\n```json\n{\"suggestions\": [\"geosatis\"]}\n```",
+            "latencyMs": 313,
+            "ttftMs": 312,
+            "promptTokens": 0,
+            "completionTokens": 0,
+            "totalTokens": 0,
+            "suggestions": [
+                "geosatis"
+            ],
+            "success": true,
+            "errorMessage": null
+        },
+        {
+            "questionId": "Q5",
+            "questionText": "Has Denys worked with Kotlin Multiplatform?",
+            "category": "technology pattern matching",
+            "response": "Yes, Denys has experience working with Kotlin Multiplatform. In his summary, it is mentioned that he specializes in Kotlin Multiplatform, and he has worked on projects that utilize this technology, such as the McDonald's Global App and the GEOSATIS Victim App.\n\n```json\n{\"suggestions\": [\"mcdonalds\", \"geosatis\"]}\n```",
+            "latencyMs": 473,
+            "ttftMs": 470,
+            "promptTokens": 0,
+            "completionTokens": 0,
+            "totalTokens": 0,
+            "suggestions": [
+                "mcdonalds",
+                "geosatis"
+            ],
+            "success": true,
+            "errorMessage": null
+        },
+        {
+            "questionId": "Q6",
+            "questionText": "What is the Lesara project about?",
+            "category": "non-featured project",
+            "response": "The Lesara project is an e-commerce application for which Denys Honcharenko worked as a Senior Android Developer from September 2017 to April 2018. It is a European fast-fashion e-commerce platform. \n\n```json\n{\"suggestions\": [\"lesara\"]}\n```",
+            "latencyMs": 464,
+            "ttftMs": 463,
+            "promptTokens": 0,
+            "completionTokens": 0,
+            "totalTokens": 0,
+            "suggestions": [
+                "lesara"
+            ],
+            "success": true,
+            "errorMessage": null
+        },
+        {
+            "questionId": "Q7",
+            "questionText": "List all companies Denys has worked for",
+            "category": "cross-project aggregation",
+            "response": "Denys Honcharenko has worked for the following companies: \n\n1. EPAM Systems \n2. Developers Shore \n3. GEOSATIS \n4. StoAmigo \n5. Rifl Media \n6. Lesara \n7. SMILdroid (Storesign 7) \n8. McDonald's (through Developers Shore) \n9. Veev \n10. Aitweb \n11. KNTU IT \n\n{\"suggestions\": [\"android-school\", \"mcdonalds\", \"geosatis\"]}",
+            "latencyMs": 505,
+            "ttftMs": 503,
+            "promptTokens": 0,
+            "completionTokens": 0,
+            "totalTokens": 0,
+            "suggestions": [
+                "android-school",
+                "mcdonalds",
+                "geosatis"
+            ],
+            "success": true,
+            "errorMessage": null
+        },
+        {
+            "questionId": "Q8",
+            "questionText": "What IoT experience does Denys have?",
+            "category": "skill and project correlation",
+            "response": "Denys has experience with IoT solutions, including Bluetooth/BLE, MQTT, OpenHab, Alexa Skills, and AWS IoT. He has worked on projects that involve integrating smart devices and developing connected systems. For example, in the Adidas GMR project, he worked on a smart insole system that tracked real-world soccer performance using Google Jacquard technology and Bluetooth Low Energy (BLE). Additionally, in the Veev Smart Home project, he developed a smart home platform for prefab construction, which likely involved integrating various IoT devices and systems.\n\n```json\n{\"suggestions\": [\"adidas-gmr\", \"veev\"]}\n```",
+            "latencyMs": 651,
+            "ttftMs": 644,
+            "promptTokens": 0,
+            "completionTokens": 0,
+            "totalTokens": 0,
+            "suggestions": [
+                "adidas-gmr",
+                "veev"
+            ],
+            "success": true,
+            "errorMessage": null
+        },
+        {
+            "questionId": "Q9",
+            "questionText": "Tell me about the Adidas GMR smart insole",
+            "category": "featured project technical depth",
+            "response": "The Adidas GMR is a smart insole system that Denys Honcharenko worked on as a Lead Software Engineer at EPAM Systems. The project was a collaboration between Adidas, Google (utilizing Jacquard technology), and EA Sports. The smart insole tracks real-world soccer performance and converts it into rewards in the EA SPORTS FIFA Mobile game. Key features of the Adidas GMR include shot power measurement, distance and speed tracking, kick detection, FIFA Mobile integration, global leaderboards, and universal fit compatibility with any footwear. Denys and his team successfully rescued the failing project and delivered it on time, also creating a BLE emulator that increased QA efficiency by 10 times.\n\n```json\n{\"suggestions\": [\"adidas-gmr\", \"mcdonalds\", \"food-network-kitchen\"]}\n```",
+            "latencyMs": 724,
+            "ttftMs": 721,
+            "promptTokens": 0,
+            "completionTokens": 0,
+            "totalTokens": 0,
+            "suggestions": [
+                "adidas-gmr",
+                "mcdonalds",
+                "food-network-kitchen"
+            ],
+            "success": true,
+            "errorMessage": null
+        },
+        {
+            "questionId": "Q10",
+            "questionText": "What teaching or training experience does Denys have?",
+            "category": "teaching and training",
+            "response": "Denys has experience in teaching and training, specifically as the Creator and Lead Instructor of the \"Android School\" education course at EPAM Systems. The program was designed to train junior developers and career changers in Android development, preparing them for employment at EPAM. Over two course iterations, the program achieved a 70% hiring rate, with 14 out of 20 total students being hired by the company.\n\n```json\n{\"suggestions\": [\"android-school\"]}\n```",
+            "latencyMs": 569,
+            "ttftMs": 567,
+            "promptTokens": 0,
+            "completionTokens": 0,
+            "totalTokens": 0,
+            "suggestions": [
+                "android-school"
+            ],
+            "success": true,
+            "errorMessage": null
+        }
+    ],
+    "conversationResults": []
+}
