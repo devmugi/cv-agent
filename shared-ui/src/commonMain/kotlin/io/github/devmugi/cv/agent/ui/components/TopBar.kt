@@ -1,6 +1,12 @@
 package io.github.devmugi.cv.agent.ui.components
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -8,27 +14,45 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Language
+import androidx.compose.material.icons.filled.Email
+import androidx.compose.material.icons.filled.Phone
+import androidx.compose.material3.ripple
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import io.github.devmugi.arcane.design.components.controls.ArcaneButtonSize
 import io.github.devmugi.arcane.design.components.controls.ArcaneButtonStyle
 import io.github.devmugi.arcane.design.components.controls.ArcaneTextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.unit.dp
+import compose.icons.SimpleIcons
+import compose.icons.simpleicons.Github
+import compose.icons.simpleicons.Linkedin
 import io.github.devmugi.arcane.design.foundation.primitives.ArcaneSurface
 import io.github.devmugi.arcane.design.foundation.theme.ArcaneTheme
 
 fun buildTopBarTitle(): String = "<DH/> Denys Honcharenko CV"
 
+private val LinkedInBlue = Color(0xFF0A66C2)
+
 @Composable
 fun CVAgentTopBar(
-    onCareerClick: () -> Unit = {}
+    onCareerClick: () -> Unit = {},
+    showContactBanner: Boolean = true
 ) {
+    val uriHandler = LocalUriHandler.current
+
     Column(modifier = Modifier.fillMaxWidth()) {
         ArcaneSurface(
             modifier = Modifier.fillMaxWidth().statusBarsPadding(),
@@ -58,6 +82,31 @@ fun CVAgentTopBar(
                 )
             }
         }
+
+        AnimatedVisibility(
+            visible = showContactBanner,
+            enter = expandVertically(),
+            exit = shrinkVertically()
+        ) {
+            ContactBanner(
+                onLinkedInClick = {
+                    uriHandler.openUri("https://www.linkedin.com/in/denyshoncharenko/")
+                },
+                onGitHubClick = {
+                    uriHandler.openUri("https://github.com/devmugi")
+                },
+                onEmailClick = {
+                    uriHandler.openUri("mailto:aidevmugi@gmail.com")
+                },
+                onPhoneClick = {
+                    uriHandler.openUri("tel:+32470383388")
+                },
+                onCVClick = {
+                    uriHandler.openUri("https://devmugi.github.io/devmugi/")
+                }
+            )
+        }
+
         Box(
             modifier = Modifier
                 .fillMaxWidth()
@@ -72,4 +121,83 @@ fun CVAgentTopBar(
                 )
         )
     }
+}
+
+@Composable
+private fun ContactBanner(
+    onLinkedInClick: () -> Unit,
+    onGitHubClick: () -> Unit,
+    onEmailClick: () -> Unit,
+    onPhoneClick: () -> Unit,
+    onCVClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Column(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp, vertical = 8.dp),
+        horizontalAlignment = Alignment.Start
+    ) {
+        Text(
+            text = "\uD83D\uDFE2 Open to Work \u00B7 Belgium, Remote",
+            style = ArcaneTheme.typography.bodyMedium,
+            color = ArcaneTheme.colors.textSecondary
+        )
+        Spacer(modifier = Modifier.height(8.dp))
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(24.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            ContactIconButton(
+                icon = SimpleIcons.Linkedin,
+                contentDescription = "LinkedIn",
+                onClick = onLinkedInClick,
+                tint = LinkedInBlue
+            )
+            ContactIconButton(
+                icon = SimpleIcons.Github,
+                contentDescription = "GitHub",
+                onClick = onGitHubClick
+            )
+            ContactIconButton(
+                icon = Icons.Filled.Email,
+                contentDescription = "Email",
+                onClick = onEmailClick
+            )
+            ContactIconButton(
+                icon = Icons.Filled.Phone,
+                contentDescription = "Phone",
+                onClick = onPhoneClick
+            )
+            ContactIconButton(
+                icon = Icons.Filled.Language,
+                contentDescription = "Website",
+                onClick = onCVClick
+            )
+        }
+    }
+}
+
+@Composable
+private fun ContactIconButton(
+    icon: ImageVector,
+    contentDescription: String,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+    tint: Color = ArcaneTheme.colors.textSecondary
+) {
+    val interactionSource = remember { MutableInteractionSource() }
+
+    Icon(
+        imageVector = icon,
+        contentDescription = contentDescription,
+        tint = tint,
+        modifier = modifier
+            .size(24.dp)
+            .clickable(
+                interactionSource = interactionSource,
+                indication = ripple(bounded = false, radius = 20.dp),
+                onClick = onClick
+            )
+    )
 }

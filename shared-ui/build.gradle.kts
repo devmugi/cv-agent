@@ -42,6 +42,9 @@ kotlin {
             // Material Icons
             implementation(libs.compose.material.icons.extended.multiplatform)
 
+            // Simple Icons (social/brand icons)
+            implementation(libs.compose.icons.simple)
+
             // Lifecycle (for collectAsState)
             implementation(libs.androidx.lifecycle.runtime.compose)
 

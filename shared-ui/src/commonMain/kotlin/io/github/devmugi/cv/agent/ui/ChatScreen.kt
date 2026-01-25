@@ -21,10 +21,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
+import androidx.compose.ui.input.nestedscroll.NestedScrollSource
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
@@ -78,6 +83,24 @@ fun ChatScreen(
 
     val showWelcome = state.messages.isEmpty() && !state.isLoading && !state.isStreaming
 
+    // Track cumulative scroll offset to show/hide contact banner
+    var cumulativeScroll by remember { mutableFloatStateOf(0f) }
+    val scrollThreshold = 100f // Hide banner after scrolling this many pixels
+
+    val nestedScrollConnection = remember {
+        object : NestedScrollConnection {
+            override fun onPreScroll(available: Offset, source: NestedScrollSource): Offset {
+                // In reversed layout, positive Y = scrolling toward newer (bottom)
+                // negative Y = scrolling toward older (top)
+                cumulativeScroll = (cumulativeScroll + available.y).coerceIn(-scrollThreshold * 2, 0f)
+                return Offset.Zero // Don't consume any scroll
+            }
+        }
+    }
+
+    // Show banner when at "bottom" (newest messages) or welcome state
+    val showContactBanner = showWelcome || cumulativeScroll > -scrollThreshold
+
     // Clear focus when keyboard hides
     LaunchedEffect(isKeyboardVisible) {
         if (!isKeyboardVisible) {
@@ -103,7 +126,10 @@ fun ChatScreen(
         modifier = modifier,
         containerColor = ArcaneTheme.colors.surfaceContainerLow,
         topBar = {
-            CVAgentTopBar(onCareerClick = onNavigateToCareerTimeline)
+            CVAgentTopBar(
+                onCareerClick = onNavigateToCareerTimeline,
+                showContactBanner = showContactBanner
+            )
         }
     ) { padding ->
         Box(
@@ -119,7 +145,7 @@ fun ChatScreen(
         ) {
             ArcaneChatScreenScaffold(
                 isEmpty = showWelcome,
-                modifier = Modifier.fillMaxSize().imePadding(),
+                modifier = Modifier.fillMaxSize().imePadding().nestedScroll(nestedScrollConnection),
                 emptyState = {
                     WelcomeSection(
                         suggestions = state.suggestions,
