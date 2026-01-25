@@ -1,12 +1,11 @@
 package io.github.devmugi.cv.agent.ui.components
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
+import io.github.devmugi.arcane.design.components.feedback.ArcaneEmptyState
 import io.github.devmugi.arcane.design.foundation.theme.ArcaneTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -21,13 +20,11 @@ fun WelcomeSection(
     onSuggestionClick: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Column(
+    ArcaneEmptyState(
         modifier = modifier
             .fillMaxWidth()
             .padding(24.dp)
-            .testTag("welcome_section"),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
+            .testTag("welcome_section")
     ) {
         Text(
             text = "Welcome!",
