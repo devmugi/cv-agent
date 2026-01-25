@@ -14,10 +14,13 @@ import io.github.devmugi.cv.agent.eval.config.DataFormat
 import io.github.devmugi.cv.agent.eval.config.EvalConfig
 import io.github.devmugi.cv.agent.eval.config.QuestionSet
 import io.github.devmugi.cv.agent.eval.prompts.PromptVariants
+import io.github.devmugi.cv.agent.eval.questions.AllProjectsQuestions
 import io.github.devmugi.cv.agent.eval.questions.Conversation
 import io.github.devmugi.cv.agent.eval.questions.Conversations
-import io.github.devmugi.cv.agent.eval.questions.Question
+import io.github.devmugi.cv.agent.eval.questions.MaliciousQuestions
 import io.github.devmugi.cv.agent.eval.questions.McdonaldsQuestions
+import io.github.devmugi.cv.agent.eval.questions.ProfileQuestions
+import io.github.devmugi.cv.agent.eval.questions.Question
 import io.github.devmugi.cv.agent.eval.questions.SimpleQuestions
 import io.github.devmugi.cv.agent.eval.report.ConversationResult
 import io.github.devmugi.cv.agent.eval.report.EvalReport
@@ -161,11 +164,70 @@ class EvalRunner(private val config: EvalConfig) {
         )
     }
 
+    /**
+     * Ask a single question and return the response.
+     * Used for quick matrix testing.
+     */
+    fun askSingleQuestion(questionText: String): String? {
+        val startTime = System.currentTimeMillis()
+        var response: String? = null
+
+        try {
+            val systemPrompt = buildSystemPrompt()
+            val messages = listOf(ChatMessage(role = "user", content = questionText))
+
+            val latch = CountDownLatch(1)
+            val responseBuilder = StringBuilder()
+            var error: Throwable? = null
+
+            runBlocking {
+                apiClient.streamChatCompletion(
+                    messages = messages,
+                    systemPrompt = systemPrompt,
+                    sessionId = "$runId-single",
+                    turnNumber = 1,
+                    promptMetadata = PromptMetadata(
+                        version = "eval-1.0",
+                        variant = "${config.promptVariant}-${config.projectMode}"
+                    ),
+                    onChunk = { chunk -> responseBuilder.append(chunk) },
+                    onComplete = { latch.countDown() },
+                    onError = { e ->
+                        error = e
+                        latch.countDown()
+                    }
+                )
+            }
+
+            if (!latch.await(60, TimeUnit.SECONDS)) {
+                return "ERROR: Timeout"
+            }
+
+            error?.let {
+                return "ERROR: ${it.message}"
+            }
+
+            response = responseBuilder.toString()
+            val latencyMs = System.currentTimeMillis() - startTime
+            Logger.i(TAG) { "Response received in ${latencyMs}ms" }
+
+        } catch (e: Exception) {
+            Logger.e(TAG) { "Error: ${e.message}" }
+            return "ERROR: ${e.message}"
+        }
+
+        return response
+    }
+
     private fun getQuestions(): List<Question> {
         return when (config.questionSet) {
             QuestionSet.SIMPLE -> SimpleQuestions.questions
             QuestionSet.MCDONALDS -> McdonaldsQuestions.questions
-            QuestionSet.ALL -> SimpleQuestions.questions + McdonaldsQuestions.questions
+            QuestionSet.ALL_PROJECTS -> AllProjectsQuestions.questions
+            QuestionSet.PROFILE -> ProfileQuestions.questions
+            QuestionSet.MALICIOUS -> MaliciousQuestions.questions
+            QuestionSet.ALL -> SimpleQuestions.questions + McdonaldsQuestions.questions +
+                AllProjectsQuestions.questions + ProfileQuestions.questions
             QuestionSet.CONVERSATIONS -> emptyList()
         }
     }
@@ -173,7 +235,11 @@ class EvalRunner(private val config: EvalConfig) {
     private fun getConversations(): List<Conversation> {
         return when (config.questionSet) {
             QuestionSet.CONVERSATIONS, QuestionSet.ALL -> Conversations.conversations
-            QuestionSet.SIMPLE, QuestionSet.MCDONALDS -> emptyList()
+            QuestionSet.SIMPLE,
+            QuestionSet.MCDONALDS,
+            QuestionSet.ALL_PROJECTS,
+            QuestionSet.PROFILE,
+            QuestionSet.MALICIOUS -> emptyList()
         }
     }
 
