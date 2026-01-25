@@ -8,6 +8,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.unit.dp
 import io.github.devmugi.arcane.design.foundation.theme.ArcaneTheme
 
@@ -23,17 +24,36 @@ fun TechnologyTag(
     modifier: Modifier = Modifier,
     category: TechnologyCategory = TechnologyCategory.TOOL
 ) {
+    // Detect light theme: dark text = light theme
+    val isLightTheme = ArcaneTheme.colors.text.luminance() < 0.5f
+
     val (backgroundColor, borderColor, textColor) = when (category) {
-        TechnologyCategory.PRIMARY -> Triple(
-            Color(0xFF3D3520), // Warm amber background
-            Color(0xFFFFC107), // Amber border
-            Color(0xFFFFD54F)  // Bright amber text
-        )
-        TechnologyCategory.SECONDARY -> Triple(
-            Color(0xFF1E3A5F), // Blue background
-            Color(0xFF64B5F6), // Blue border
-            Color(0xFF90CAF9)  // Light blue text
-        )
+        TechnologyCategory.PRIMARY -> if (isLightTheme) {
+            Triple(
+                Color.Transparent,
+                Color(0xFFD4A000), // Darker amber border for light bg
+                Color(0xFF8B6914)  // Dark amber text
+            )
+        } else {
+            Triple(
+                Color(0xFF3D3520), // Warm amber background
+                Color(0xFFFFC107), // Amber border
+                Color(0xFFFFD54F)  // Bright amber text
+            )
+        }
+        TechnologyCategory.SECONDARY -> if (isLightTheme) {
+            Triple(
+                Color.Transparent,
+                Color(0xFF1976D2), // Darker blue border
+                Color(0xFF1565C0)  // Dark blue text
+            )
+        } else {
+            Triple(
+                Color(0xFF1E3A5F), // Blue background
+                Color(0xFF64B5F6), // Blue border
+                Color(0xFF90CAF9)  // Light blue text
+            )
+        }
         TechnologyCategory.TOOL -> Triple(
             ArcaneTheme.colors.surfaceContainerLow,
             ArcaneTheme.colors.textSecondary.copy(alpha = 0.4f),
