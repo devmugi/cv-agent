@@ -23,20 +23,21 @@ kotlin {
         }
     }
 
-    listOf(
-        iosArm64(),
-        iosSimulatorArm64()
-    ).forEach { iosTarget ->
-        iosTarget.binaries.framework {
-            baseName = "Shared"
-            isStatic = true
-            export(projects.sharedDomain)
-            export(projects.sharedUi)
-            export(projects.sharedCareerProjects)
-            export(projects.sharedAgentApi)
-            export(projects.sharedAgent)
-        }
-    }
+    // iOS targets disabled - dependencies don't support iOS yet
+    // listOf(
+    //     iosArm64(),
+    //     iosSimulatorArm64()
+    // ).forEach { iosTarget ->
+    //     iosTarget.binaries.framework {
+    //         baseName = "Shared"
+    //         isStatic = true
+    //         export(projects.sharedDomain)
+    //         export(projects.sharedUi)
+    //         export(projects.sharedCareerProjects)
+    //         export(projects.sharedAgentApi)
+    //         export(projects.sharedAgent)
+    //     }
+    // }
 
     sourceSets {
         commonMain.dependencies {
@@ -75,9 +76,9 @@ kotlin {
             implementation(libs.koin.android)
         }
 
-        iosMain.dependencies {
-            implementation(libs.ktor.client.darwin)
-        }
+        // iosMain.dependencies {
+        //     implementation(libs.ktor.client.darwin)
+        // }
 
         commonTest.dependencies {
             implementation(libs.kotlin.test)

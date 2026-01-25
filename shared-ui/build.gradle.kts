@@ -12,15 +12,16 @@ kotlin {
         minSdk = libs.versions.android.minSdk.get().toInt()
     }
 
-    listOf(
-        iosArm64(),
-        iosSimulatorArm64()
-    ).forEach { iosTarget ->
-        iosTarget.binaries.framework {
-            baseName = "SharedUi"
-            isStatic = true
-        }
-    }
+    // iOS targets disabled - dependencies don't support iOS yet
+    // listOf(
+    //     iosArm64(),
+    //     iosSimulatorArm64()
+    // ).forEach { iosTarget ->
+    //     iosTarget.binaries.framework {
+    //         baseName = "SharedUi"
+    //         isStatic = true
+    //     }
+    // }
 
     sourceSets {
         commonMain.dependencies {
