@@ -18,8 +18,12 @@ sealed class ChatError {
 }
 
 val defaultSuggestions = listOf(
-    "What's Denys's experience?",
-    "Tell me about his skills",
-    "What projects has he worked on?",
-    "What are his achievements?"
+    "What's Denys's current role?",
+    "Has he worked with Jetpack Compose?",
+    "What's his Kotlin Multiplatform experience?",
+    "Tell me about the McDonald's app",
+    "What did he build at GEOSATIS?",
+    "Tell me about the Adidas GMR project",
+    "Has he trained other developers?",
+    "Has Denys led teams before?"
 )
