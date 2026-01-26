@@ -2,6 +2,7 @@ package io.github.devmugi.cv.agent.identity
 
 /**
  * Test implementation of [InstallationIdentity] with configurable behavior.
+ * Available in commonMain for cross-module test usage.
  */
 class TestInstallationIdentity(
     private val id: String = "test-installation-id"
