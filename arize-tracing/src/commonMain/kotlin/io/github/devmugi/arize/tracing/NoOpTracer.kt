@@ -8,6 +8,10 @@ import io.github.devmugi.arize.tracing.models.TokenUsage
  */
 internal class NoOpTracer : ArizeTracer {
 
+    override fun startAgentSpan(block: AgentSpanBuilder.() -> Unit): AgentSpan {
+        return NoOpAgentSpan
+    }
+
     override fun startLlmSpan(block: LlmSpanBuilder.() -> Unit): TracingSpan {
         return NoOpTracingSpan
     }
@@ -18,6 +22,14 @@ internal class NoOpTracer : ArizeTracer {
 
     override fun shutdown() {
         // No-op
+    }
+
+    @Suppress("EmptyFunctionBlock")
+    private object NoOpAgentSpan : AgentSpan {
+        override suspend fun <T> withContext(block: suspend () -> T): T = block()
+        override fun complete() {}
+        override fun error(exception: Throwable) {}
+        override fun addMetadata(key: String, value: Any) {}
     }
 
     @Suppress("EmptyFunctionBlock")

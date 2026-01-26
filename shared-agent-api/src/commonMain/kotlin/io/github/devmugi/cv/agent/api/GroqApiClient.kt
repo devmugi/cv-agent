@@ -50,6 +50,7 @@ open class GroqApiClient(
     ) {
         Logger.d(TAG) { "Starting chat completion - messages: ${messages.size}, turn: $turnNumber" }
         val span = tracer.startLlmSpan {
+            spanName("ChatGroq")
             model(MODEL)
             provider("groq")
             systemPrompt(systemPrompt)

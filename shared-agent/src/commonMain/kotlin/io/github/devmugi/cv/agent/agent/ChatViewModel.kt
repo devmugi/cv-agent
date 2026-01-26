@@ -4,6 +4,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import co.touchlab.kermit.Logger
+import io.github.devmugi.arize.tracing.ArizeTracer
 import io.github.devmugi.cv.agent.api.GroqApiClient
 import io.github.devmugi.cv.agent.api.GroqApiException
 import io.github.devmugi.cv.agent.api.models.ChatMessage
@@ -30,6 +31,7 @@ class ChatViewModel(
     private val suggestionExtractor: SuggestionExtractor,
     private val dataProvider: AgentDataProvider?,
     private val analytics: Analytics = Analytics.NOOP,
+    private val tracer: ArizeTracer = ArizeTracer.NOOP,
 ) : ViewModel() {
 
     companion object {
@@ -228,7 +230,14 @@ class ChatViewModel(
 
         var streamedContent = ""
 
-        apiClient.streamChatCompletion(
+        // Start agent span to wrap the LLM call
+        val agentSpan = tracer.startAgentSpan {
+            name("ChatAgent")
+            sessionId(currentSessionId)
+        }
+
+        agentSpan.withContext {
+            apiClient.streamChatCompletion(
             messages = apiMessages,
             systemPrompt = systemPrompt,
             sessionId = currentSessionId,
@@ -283,6 +292,9 @@ class ChatViewModel(
                         streamingMessageId = null
                     )
                 }
+
+                // Complete the agent span
+                agentSpan.complete()
             },
             onError = { exception ->
                 Logger.w(TAG) { "Stream error: ${exception.javaClass.simpleName}" }
@@ -320,8 +332,12 @@ class ChatViewModel(
                         error = error
                     )
                 }
+
+                // Error the agent span
+                agentSpan.error(exception)
             }
         )
+        } // End of agentSpan.withContext
     }
 
     private fun buildApiMessages(systemPrompt: String): List<ChatMessage> {

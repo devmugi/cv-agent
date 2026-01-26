@@ -9,6 +9,7 @@ import io.github.devmugi.arize.tracing.models.TokenPricing
  */
 @Suppress("TooManyFunctions")
 class LlmSpanBuilder {
+    internal var spanName: String? = null
     internal var model: String? = null
     internal var provider: String? = null
     internal var systemPrompt: String? = null
@@ -25,6 +26,15 @@ class LlmSpanBuilder {
     internal var tags: MutableList<String> = mutableListOf()
     internal var temperature: Double? = null
     internal var maxTokens: Int? = null
+
+    /**
+     * Sets a custom span name for display in Phoenix/Arize UI.
+     * If not set, defaults to the model name.
+     * Example: "ChatGroq", "ChatOpenAI", "EmbeddingModel"
+     */
+    fun spanName(name: String) {
+        spanName = name
+    }
 
     /**
      * Sets the model name (required).

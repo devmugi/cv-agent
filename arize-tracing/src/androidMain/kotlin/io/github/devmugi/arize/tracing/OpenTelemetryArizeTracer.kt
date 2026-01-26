@@ -33,16 +33,51 @@ class OpenTelemetryArizeTracer private constructor(
     private val mode: TracingMode
 ) : ArizeTracer {
 
+    override fun startAgentSpan(block: AgentSpanBuilder.() -> Unit): AgentSpan {
+        val builder = AgentSpanBuilder().apply(block)
+
+        Logger.d(TAG) {
+            "Starting Agent span - name: ${builder.name}, session: ${builder.sessionId}"
+        }
+
+        val spanBuilder = tracer.spanBuilder(builder.name)
+            .setSpanKind(SpanKind.INTERNAL)
+
+        // OpenInference semantic conventions for AGENT
+        spanBuilder.setAttribute("openinference.span.kind", "AGENT")
+
+        // Session tracking
+        builder.sessionId?.let { spanBuilder.setAttribute("session.id", it) }
+
+        // User identification
+        builder.userId?.let { spanBuilder.setAttribute("user.id", it) }
+        builder.installationId?.let { spanBuilder.setAttribute("device.installation_id", it) }
+
+        // Metadata
+        builder.metadata.forEach { (key, value) ->
+            spanBuilder.setAttributeAny("metadata.$key", value)
+        }
+
+        // Tags
+        if (builder.tags.isNotEmpty()) {
+            spanBuilder.setAttribute("tag.tags", builder.tags.toJsonArray())
+        }
+
+        return OpenTelemetryAgentSpan(spanBuilder.startSpan())
+    }
+
     override fun startLlmSpan(block: LlmSpanBuilder.() -> Unit): TracingSpan {
         val builder = LlmSpanBuilder().apply(block)
         builder.validate()
 
         Logger.d(TAG) {
-            "Starting LLM span - model: ${builder.model}, provider: ${builder.provider}, " +
+            "Starting LLM span - name: ${builder.spanName ?: builder.model}, " +
+                "model: ${builder.model}, provider: ${builder.provider}, " +
                 "messages: ${builder.messages.size}, session: ${builder.sessionId}, turn: ${builder.turnNumber}"
         }
 
-        val spanBuilder = tracer.spanBuilder("LLM")
+        val displayName = builder.spanName ?: builder.model!!
+        val spanBuilder = tracer.spanBuilder(displayName)
             .setSpanKind(SpanKind.CLIENT)
 
         // OpenInference semantic conventions
@@ -227,6 +262,31 @@ class OpenTelemetryArizeTracer private constructor(
         override fun addTags(vararg tags: String) {
             // Note: OTEL doesn't support appending to arrays, so we just set new tags
             span.setAttribute("tag.tags", tags.toList().toJsonArray())
+        }
+    }
+
+    private class OpenTelemetryAgentSpan(
+        private val span: Span
+    ) : AgentSpan {
+        override suspend fun <T> withContext(block: suspend () -> T): T {
+            return span.makeCurrent().use { block() }
+        }
+
+        override fun complete() {
+            Logger.d(TAG) { "Completing Agent span" }
+            span.setStatus(StatusCode.OK)
+            span.end()
+        }
+
+        override fun error(exception: Throwable) {
+            Logger.e(TAG, exception) { "Agent span error" }
+            span.setStatus(StatusCode.ERROR, exception.message ?: "Unknown error")
+            span.recordException(exception)
+            span.end()
+        }
+
+        override fun addMetadata(key: String, value: Any) {
+            span.setAttributeAny("metadata.$key", value)
         }
     }
 

@@ -21,11 +21,36 @@ package io.github.devmugi.arize.tracing
 interface ArizeTracer {
 
     /**
+     * Starts a new Agent span for orchestrating multiple operations.
+     *
+     * Agent spans are parent spans that can contain child LLM spans,
+     * tool calls, or other operations. Use [AgentSpan.withContext] to
+     * ensure child spans are properly nested.
+     *
+     * Example usage:
+     * ```
+     * val agentSpan = tracer.startAgentSpan {
+     *     name("ChatAgent")
+     *     sessionId("abc-123")
+     * }
+     *
+     * agentSpan.withContext {
+     *     // LLM spans created here become children of the agent span
+     *     apiClient.streamChatCompletion(...)
+     * }
+     *
+     * agentSpan.complete()
+     * ```
+     */
+    fun startAgentSpan(block: AgentSpanBuilder.() -> Unit): AgentSpan
+
+    /**
      * Starts a new LLM span with the given configuration.
      *
      * Example usage:
      * ```
      * val span = tracer.startLlmSpan {
+     *     spanName("ChatGroq")  // Custom name for Phoenix UI
      *     model("llama-3.3-70b-versatile")
      *     provider("groq")
      *     systemPrompt(prompt)
