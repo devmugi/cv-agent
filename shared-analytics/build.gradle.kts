@@ -36,9 +36,7 @@ kotlin {
         }
 
         androidMain.dependencies {
-            // Firebase Analytics (Phase 2)
-            // implementation(platform(libs.firebase.bom))
-            // implementation(libs.firebase.analytics)
+            implementation(libs.firebase.analytics)
         }
     }
 }
