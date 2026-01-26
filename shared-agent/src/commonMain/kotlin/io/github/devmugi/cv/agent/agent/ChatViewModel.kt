@@ -14,6 +14,7 @@ import io.github.devmugi.cv.agent.domain.models.ChatError
 import io.github.devmugi.cv.agent.domain.models.ChatState
 import io.github.devmugi.cv.agent.domain.models.Message
 import io.github.devmugi.cv.agent.domain.models.MessageRole
+import io.github.devmugi.cv.agent.domain.repository.ChatRepository
 import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -30,6 +31,7 @@ class ChatViewModel(
     private val promptBuilder: SystemPromptBuilder,
     private val suggestionExtractor: SuggestionExtractor,
     private val dataProvider: AgentDataProvider?,
+    private val chatRepository: ChatRepository? = null,
     private val analytics: Analytics = Analytics.NOOP,
     private val tracer: ArizeTracer = ArizeTracer.NOOP,
 ) : ViewModel() {

@@ -62,6 +62,7 @@ class ChatViewModelTest {
 
     private lateinit var fakeApiClient: FakeGroqApiClient
     private lateinit var fakeAnalytics: FakeAnalytics
+    private lateinit var fakeChatRepository: FakeChatRepository
     private lateinit var viewModel: ChatViewModel
 
     @BeforeTest
@@ -72,11 +73,13 @@ class ChatViewModelTest {
         Dispatchers.setMain(testDispatcher)
         fakeApiClient = FakeGroqApiClient()
         fakeAnalytics = FakeAnalytics()
+        fakeChatRepository = FakeChatRepository()
         viewModel = ChatViewModel(
             apiClient = fakeApiClient,
             promptBuilder = SystemPromptBuilder(),
             suggestionExtractor = SuggestionExtractor(),
             dataProvider = null,
+            chatRepository = fakeChatRepository,
             analytics = fakeAnalytics
         )
     }
@@ -253,7 +256,8 @@ class ChatViewModelTest {
             apiClient = fakeApiClient,
             promptBuilder = SystemPromptBuilder(),
             suggestionExtractor = SuggestionExtractor(),
-            dataProvider = testDataProvider
+            dataProvider = testDataProvider,
+            chatRepository = FakeChatRepository()
         )
 
         viewModelWithData.sendMessage("Hi")
@@ -406,7 +410,8 @@ class FakeGroqApiClient : GroqApiClient(
         systemPrompt: String,
         sessionId: String?,
         turnNumber: Int?,
-        promptMetadata: io.github.devmugi.cv.agent.api.tracing.PromptMetadata?,
+        promptVersion: String?,
+        promptVariant: String?,
         onChunk: (String) -> Unit,
         onComplete: () -> Unit,
         onError: (GroqApiException) -> Unit
