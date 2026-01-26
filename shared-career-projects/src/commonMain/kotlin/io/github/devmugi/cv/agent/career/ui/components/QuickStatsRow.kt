@@ -38,18 +38,42 @@ fun QuickStatsRow(
     stats: List<MetricItem>,
     modifier: Modifier = Modifier
 ) {
-    Row(
-        modifier = modifier.fillMaxWidth().height(IntrinsicSize.Max),
-        horizontalArrangement = Arrangement.spacedBy(12.dp)
+    val items = stats.take(4)
+    Column(
+        modifier = modifier.fillMaxWidth(),
+        verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
-        stats.take(4).forEach { stat ->
-            QuickStatCard(
-                icon = getIconForStat(stat.icon),
-                value = stat.value ?: "",
-                label = stat.label ?: "",
-                highlight = stat.highlight == true,
-                modifier = Modifier.weight(1f).fillMaxHeight()
-            )
+        // First row: items 0-1
+        Row(
+            modifier = Modifier.fillMaxWidth().height(IntrinsicSize.Max),
+            horizontalArrangement = Arrangement.spacedBy(12.dp)
+        ) {
+            items.take(2).forEach { stat ->
+                QuickStatCard(
+                    icon = getIconForStat(stat.icon),
+                    value = stat.value ?: "",
+                    label = stat.label ?: "",
+                    highlight = stat.highlight == true,
+                    modifier = Modifier.weight(1f).fillMaxHeight()
+                )
+            }
+        }
+        // Second row: items 2-3
+        if (items.size > 2) {
+            Row(
+                modifier = Modifier.fillMaxWidth().height(IntrinsicSize.Max),
+                horizontalArrangement = Arrangement.spacedBy(12.dp)
+            ) {
+                items.drop(2).forEach { stat ->
+                    QuickStatCard(
+                        icon = getIconForStat(stat.icon),
+                        value = stat.value ?: "",
+                        label = stat.label ?: "",
+                        highlight = stat.highlight == true,
+                        modifier = Modifier.weight(1f).fillMaxHeight()
+                    )
+                }
+            }
         }
     }
 }

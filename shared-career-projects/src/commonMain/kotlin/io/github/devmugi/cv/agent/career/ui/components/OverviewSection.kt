@@ -34,38 +34,52 @@ fun OverviewSection(
 
         Spacer(modifier = Modifier.height(12.dp))
 
-        // First row: Company, Product, Role, Period
-        Row(
-            modifier = Modifier.fillMaxWidth().height(IntrinsicSize.Max),
-            horizontalArrangement = Arrangement.spacedBy(12.dp)
-        ) {
-            overview.company?.let { company ->
-                OverviewCard(
-                    label = "COMPANY",
-                    value = company,
-                    modifier = Modifier.weight(1f).fillMaxHeight()
-                )
+        // First row: Company, Product (2 columns)
+        val hasFirstRow = overview.company != null || overview.product != null
+        if (hasFirstRow) {
+            Row(
+                modifier = Modifier.fillMaxWidth().height(IntrinsicSize.Max),
+                horizontalArrangement = Arrangement.spacedBy(12.dp)
+            ) {
+                overview.company?.let { company ->
+                    OverviewCard(
+                        label = "COMPANY",
+                        value = company,
+                        modifier = Modifier.weight(1f).fillMaxHeight()
+                    )
+                }
+                overview.product?.let { product ->
+                    OverviewCard(
+                        label = "PRODUCT",
+                        value = product,
+                        modifier = Modifier.weight(1f).fillMaxHeight()
+                    )
+                }
             }
-            overview.product?.let { product ->
-                OverviewCard(
-                    label = "PRODUCT",
-                    value = product,
-                    modifier = Modifier.weight(1f).fillMaxHeight()
-                )
-            }
-            overview.role?.let { role ->
-                OverviewCard(
-                    label = "ROLE",
-                    value = role,
-                    modifier = Modifier.weight(1f).fillMaxHeight()
-                )
-            }
-            overview.period?.displayText?.let { period ->
-                OverviewCard(
-                    label = "PERIOD",
-                    value = period,
-                    modifier = Modifier.weight(1f).fillMaxHeight()
-                )
+        }
+
+        // Second row: Role, Period (2 columns)
+        val hasSecondRow = overview.role != null || overview.period?.displayText != null
+        if (hasSecondRow) {
+            if (hasFirstRow) Spacer(modifier = Modifier.height(12.dp))
+            Row(
+                modifier = Modifier.fillMaxWidth().height(IntrinsicSize.Max),
+                horizontalArrangement = Arrangement.spacedBy(12.dp)
+            ) {
+                overview.role?.let { role ->
+                    OverviewCard(
+                        label = "ROLE",
+                        value = role,
+                        modifier = Modifier.weight(1f).fillMaxHeight()
+                    )
+                }
+                overview.period?.displayText?.let { period ->
+                    OverviewCard(
+                        label = "PERIOD",
+                        value = period,
+                        modifier = Modifier.weight(1f).fillMaxHeight()
+                    )
+                }
             }
         }
 
