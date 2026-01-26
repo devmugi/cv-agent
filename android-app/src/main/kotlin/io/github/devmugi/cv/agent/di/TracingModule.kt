@@ -25,11 +25,17 @@ val tracingModule = module {
             val isArizeCloud = BuildConfig.ARIZE_API_KEY.isNotEmpty()
 
             if (isArizeCloud) {
-                Logger.d(TAG) { "Arize Cloud tracing ENABLED, endpoint: $endpoint" }
+                Logger.i(TAG) {
+                    "Arize Cloud tracing ENABLED\n" +
+                        "  endpoint: $endpoint\n" +
+                        "  space_id: ${BuildConfig.ARIZE_SPACE_ID.take(15)}...\n" +
+                        "  api_key: ${BuildConfig.ARIZE_API_KEY.take(15)}..."
+                }
                 OpenTelemetryArizeTracer.create(
                     endpoint = endpoint,
                     serviceName = "cv-agent-android",
-                    mode = TracingMode.PRODUCTION,
+                    projectName = "cv-agent", // Required for Arize Cloud
+                    mode = TracingMode.TESTING, // Use sync export for debugging
                     headers = mapOf(
                         "space_id" to BuildConfig.ARIZE_SPACE_ID,
                         "api_key" to BuildConfig.ARIZE_API_KEY
@@ -51,7 +57,8 @@ val tracingModule = module {
 
     // Override GroqApiClient to include the tracer
     single {
-        Logger.d(TAG) { "Creating GroqApiClient with tracer" }
-        GroqApiClient(get(), GroqConfig.apiKey, tracer = get<ArizeTracer>())
+        val tracer = get<ArizeTracer>()
+        Logger.i(TAG) { "Creating GroqApiClient with tracer: ${tracer::class.simpleName}" }
+        GroqApiClient(get(), GroqConfig.apiKey, tracer = tracer, rateLimiter = get())
     }
 }
