@@ -489,7 +489,12 @@ class FakeGroqApiClient : GroqApiClient(
         onComplete: () -> Unit,
         onError: (GroqApiException) -> Unit
     ) {
-        capturedMessages = messages
+        // Match real GroqApiClient behavior: prepend system prompt to messages
+        capturedMessages = if (systemPrompt.isNotEmpty()) {
+            listOf(ChatMessage(role = "system", content = systemPrompt)) + messages
+        } else {
+            messages
+        }
         if (delayResponse) {
             kotlinx.coroutines.delay(100)
         }

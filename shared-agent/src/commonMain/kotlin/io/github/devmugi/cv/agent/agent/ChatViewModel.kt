@@ -266,7 +266,7 @@ class ChatViewModel(
 
         val promptResult = dataProvider?.let { promptBuilder.buildWithMetadata(it) }
         val systemPrompt = promptResult?.prompt ?: ""
-        val apiMessages = buildApiMessages(systemPrompt)
+        val apiMessages = buildApiMessages()
         val assistantMessageId = Uuid.random().toString()
 
         val assistantMessage = Message(
@@ -398,12 +398,8 @@ class ChatViewModel(
         } // End of agentSpan.withContext
     }
 
-    private fun buildApiMessages(systemPrompt: String): List<ChatMessage> {
+    private fun buildApiMessages(): List<ChatMessage> {
         val messages = mutableListOf<ChatMessage>()
-
-        if (systemPrompt.isNotEmpty()) {
-            messages.add(ChatMessage(role = "system", content = systemPrompt))
-        }
 
         val recentMessages = _state.value.messages.takeLast(MAX_HISTORY)
         recentMessages.forEach { msg ->
