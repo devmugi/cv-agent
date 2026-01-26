@@ -42,7 +42,8 @@ class OpenTelemetryAgentTracer private constructor(
         maxTokens: Int,
         sessionId: String?,
         turnNumber: Int?,
-        promptMetadata: PromptMetadata?
+        promptMetadata: PromptMetadata?,
+        installationId: String?
     ): TracingSpan {
         Logger.d(TAG) { "Starting LLM span - model: $model, messages: ${messages.size}, session: $sessionId, turn: $turnNumber" }
         val spanBuilder = tracer.spanBuilder("LLM")
@@ -55,6 +56,9 @@ class OpenTelemetryAgentTracer private constructor(
         // Session tracking
         sessionId?.let { spanBuilder.setAttribute("session.id", it) }
         turnNumber?.let { spanBuilder.setAttribute("llm.turn_number", it.toLong()) }
+
+        // Device identification
+        installationId?.let { spanBuilder.setAttribute("device.installation_id", it) }
 
         // Prompt versioning
         promptMetadata?.let { meta ->
