@@ -11,7 +11,8 @@ interface AgentTracer {
         maxTokens: Int,
         sessionId: String? = null,
         turnNumber: Int? = null,
-        promptMetadata: PromptMetadata? = null
+        promptMetadata: PromptMetadata? = null,
+        installationId: String? = null
     ): TracingSpan
 
     companion object {
@@ -47,7 +48,8 @@ private class NoOpAgentTracer : AgentTracer {
         maxTokens: Int,
         sessionId: String?,
         turnNumber: Int?,
-        promptMetadata: PromptMetadata?
+        promptMetadata: PromptMetadata?,
+        installationId: String?
     ): TracingSpan = NoOpTracingSpan
 
     @Suppress("EmptyFunctionBlock")
