@@ -24,6 +24,7 @@ import kotlinx.serialization.json.Json
 open class GroqApiClient(
     private val httpClient: HttpClient,
     private val apiKey: String,
+    private val model: String = DEFAULT_MODEL,
     private val tracer: ArizeTracer = ArizeTracer.NOOP,
     private val rateLimiter: RateLimiter = RateLimiter.NOOP
 ) {
@@ -32,7 +33,7 @@ open class GroqApiClient(
     companion object {
         private const val TAG = "GroqApiClient"
         private const val BASE_URL = "https://api.groq.com/openai/v1/chat/completions"
-        const val MODEL = "llama-3.3-70b-versatile"
+        const val DEFAULT_MODEL = "openai/gpt-oss-120b"
         private const val DEFAULT_TEMPERATURE = 0.7
         private const val DEFAULT_MAX_TOKENS = 1024
     }
@@ -51,7 +52,7 @@ open class GroqApiClient(
         Logger.d(TAG) { "Starting chat completion - messages: ${messages.size}, turn: $turnNumber" }
         val span = tracer.startLlmSpan {
             spanName("ChatGroq")
-            model(MODEL)
+            model(this@GroqApiClient.model)
             provider("groq")
             systemPrompt(systemPrompt)
             messages(messages.map { TracingChatMessage(it.role, it.content) })
@@ -79,7 +80,7 @@ open class GroqApiClient(
             val response: HttpResponse = httpClient.post(BASE_URL) {
                 header(HttpHeaders.Authorization, "Bearer $apiKey")
                 contentType(ContentType.Application.Json)
-                setBody(ChatRequest(model = MODEL, messages = allMessages))
+                setBody(ChatRequest(model = this@GroqApiClient.model, messages = allMessages))
             }
 
             Logger.d(TAG) { "Response status: ${response.status}" }
@@ -150,7 +151,8 @@ open class GroqApiClient(
                         tokenUsage = TokenUsage(
                             promptTokens = usage.prompt_tokens,
                             completionTokens = usage.completion_tokens,
-                            totalTokens = usage.total_tokens
+                            totalTokens = usage.total_tokens,
+                            cachedTokens = usage.cached_tokens
                         )
                     }
 

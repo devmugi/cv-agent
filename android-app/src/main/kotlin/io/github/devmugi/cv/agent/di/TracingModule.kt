@@ -52,6 +52,6 @@ val tracingModule = module {
     // Override GroqApiClient to include the tracer
     single {
         Logger.d(TAG) { "Creating GroqApiClient with tracer" }
-        GroqApiClient(get(), GroqConfig.apiKey, get<ArizeTracer>())
+        GroqApiClient(get(), GroqConfig.apiKey, tracer = get<ArizeTracer>())
     }
 }
