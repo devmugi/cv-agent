@@ -24,6 +24,7 @@ kotlin {
         commonMain.dependencies {
             api(projects.sharedIdentity)
             implementation(libs.koin.core)
+            implementation(libs.kermit)
         }
 
         commonTest.dependencies {
