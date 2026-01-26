@@ -1,7 +1,7 @@
 package io.github.devmugi.cv.agent.crashlytics
 
-import com.google.firebase.crashlytics.ktx.crashlytics
-import com.google.firebase.ktx.Firebase
+import com.google.firebase.Firebase
+import com.google.firebase.crashlytics.crashlytics
 
 /**
  * Android implementation using Firebase Crashlytics.
