@@ -1,5 +1,6 @@
 package io.github.devmugi.cv.agent.di
 
+import io.github.devmugi.arize.tracing.ArizeTracer
 import io.github.devmugi.cv.agent.agent.AgentDataProvider
 import io.github.devmugi.cv.agent.agent.ChatViewModel
 import io.github.devmugi.cv.agent.analytics.Analytics
@@ -14,7 +15,8 @@ val viewModelModule = module {
             promptBuilder = get(),
             suggestionExtractor = get(),
             dataProvider = dataProvider,
-            analytics = getOrNull<Analytics>() ?: Analytics.NOOP
+            analytics = getOrNull<Analytics>() ?: Analytics.NOOP,
+            tracer = getOrNull<ArizeTracer>() ?: ArizeTracer.NOOP
         )
     }
 }
