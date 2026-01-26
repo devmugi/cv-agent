@@ -58,6 +58,9 @@ mockk = "1.13.14"
 turbine = "1.2.0"
 robolectric = "4.14.1"
 
+# DataStore
+datastore = "1.2.0"
+
 # CLI & Config
 clikt = "5.0.3"
 kaml = "0.72.0"
@@ -131,6 +134,10 @@ junit = { module = "junit:junit", version.ref = "junit" }
 mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
 turbine = { module = "app.cash.turbine:turbine", version.ref = "turbine" }
 robolectric = { module = "org.robolectric:robolectric", version.ref = "robolectric" }
+
+# DataStore
+datastore = { module = "androidx.datastore:datastore", version.ref = "datastore" }
+datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "datastore" }
 
 # Logging
 kermit = { module = "co.touchlab:kermit", version.ref = "kermit" }

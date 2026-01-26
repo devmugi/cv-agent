@@ -67,6 +67,10 @@ kotlin {
             // DI
             implementation(libs.koin.core)
 
+            // DataStore
+            implementation(libs.datastore)
+            implementation(libs.datastore.preferences)
+
             // Resources
             api(libs.compose.components.resources)
         }
