@@ -2,9 +2,13 @@ package io.github.devmugi.cv.agent.analytics
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import com.google.firebase.analytics.FirebaseAnalytics
 import io.github.devmugi.cv.agent.identity.InstallationIdentity
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.launch
 
 /**
  * Firebase Analytics implementation of [Analytics].
@@ -16,16 +20,18 @@ class FirebaseAnalyticsWrapper(
 ) : Analytics {
 
     private val firebaseAnalytics: FirebaseAnalytics = FirebaseAnalytics.getInstance(context)
+    private val scope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
 
     init {
-        // Set installation ID as user property for correlation with traces
+        // Set installation ID as user property for correlation with traces (async, non-blocking)
         installationIdentity?.let { identity ->
-            runBlocking {
+            scope.launch {
                 try {
                     val id = identity.getInstallationId()
                     firebaseAnalytics.setUserProperty("installation_id", id)
+                    Log.d("FirebaseAnalytics", "Installation ID set: ${id.take(8)}...")
                 } catch (e: Exception) {
-                    // Log but don't fail - analytics can work without this
+                    Log.w("FirebaseAnalytics", "Failed to set installation ID: ${e.message}")
                 }
             }
         }
