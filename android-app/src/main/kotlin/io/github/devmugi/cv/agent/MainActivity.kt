@@ -351,19 +351,13 @@ private fun AppContent(
                             onScreenChange(Screen.ProjectDetails)
                         }
                     },
-                    // Voice input
-                    isRecording = voiceState is VoiceInputState.Recording,
-                    isTranscribing = voiceState is VoiceInputState.Transcribing,
-                    onRecordingStart = { voiceController.startRecording() },
-                    onRecordingStop = {
-                        voiceController.stopRecordingAndTranscribe { transcribedText ->
-                            if (transcribedText.isNotBlank()) {
-                                viewModel.sendMessage(transcribedText)
-                            }
-                        }
-                    },
-                    onRequestMicPermission = { micPermissionState.launchPermissionRequest() },
-                    hasMicPermission = micPermissionState.status.isGranted
+                    // Voice input (disabled for now)
+                    isRecording = false,
+                    isTranscribing = false,
+                    onRecordingStart = { toastState.show("Voice input not implemented yet") },
+                    onRecordingStop = { },
+                    onRequestMicPermission = { toastState.show("Voice input not implemented yet") },
+                    hasMicPermission = false
                 )
                 Screen.CareerTimeline -> CareerProjectsTimelineScreen(
                     projects = careerProjects,
