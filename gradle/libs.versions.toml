@@ -49,6 +49,7 @@ opentelemetry-semconv = "1.25.0-alpha"
 # Firebase
 firebase-bom = "34.7.0"
 google-services = "4.4.2"
+firebase-crashlytics-plugin = "3.0.3"
 
 # Testing
 kotlinx-coroutines = "1.10.2"
@@ -159,6 +160,7 @@ opentelemetry-semconv = { module = "io.opentelemetry.semconv:opentelemetry-semco
 firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebase-bom" }
 firebase-analytics = { module = "com.google.firebase:firebase-analytics-ktx", version = "22.4.0" }
 firebase-installations = { module = "com.google.firebase:firebase-installations", version = "19.0.1" }
+firebase-crashlytics = { module = "com.google.firebase:firebase-crashlytics-ktx" }
 
 [plugins]
 # Kotlin
@@ -181,3 +183,4 @@ detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
 
 # Firebase
 google-services = { id = "com.google.gms.google-services", version.ref = "google-services" }
+firebase-crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "firebase-crashlytics-plugin" }
