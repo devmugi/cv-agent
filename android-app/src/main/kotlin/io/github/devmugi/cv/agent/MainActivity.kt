@@ -64,9 +64,11 @@ import io.github.devmugi.cv.agent.career.models.ProjectDataTimeline
 import io.github.devmugi.cv.agent.ui.CareerProjectDetailsScreen
 import io.github.devmugi.cv.agent.ui.CareerProjectsTimelineScreen
 import io.github.devmugi.cv.agent.ui.ChatScreen
+import io.github.devmugi.cv.agent.analytics.Analytics
 import kotlinx.serialization.json.Json
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.koin.androidx.compose.koinViewModel
+import org.koin.compose.koinInject
 import org.koin.core.parameter.parametersOf
 
 private enum class ThemeVariant(val displayName: String) {
@@ -139,6 +141,7 @@ private fun CVAgentApp(
     onThemeChange: (ThemeVariant) -> Unit
 ) {
     val toastState = rememberArcaneToastState()
+    val analytics: Analytics = koinInject()
     var agentDataResult by remember { mutableStateOf<AgentDataResult?>(null) }
     var currentScreen by remember { mutableStateOf(Screen.Chat) }
     var selectedProject by remember { mutableStateOf<CareerProject?>(null) }
@@ -169,7 +172,8 @@ private fun CVAgentApp(
         onProjectSelect = { selectedProject = it },
         onOpenUrl = onOpenUrl,
         currentTheme = currentTheme,
-        onThemeChange = onThemeChange
+        onThemeChange = onThemeChange,
+        analytics = analytics
     )
 }
 
@@ -224,7 +228,8 @@ private fun AppContent(
     onProjectSelect: (CareerProject?) -> Unit,
     onOpenUrl: (String) -> Unit,
     currentTheme: ThemeVariant,
-    onThemeChange: (ThemeVariant) -> Unit
+    onThemeChange: (ThemeVariant) -> Unit,
+    analytics: Analytics
 ) {
     // Handle system back gesture/button for custom navigation
     BackHandler(enabled = currentScreen != Screen.Chat) {
@@ -263,11 +268,17 @@ private fun AppContent(
                     state = state,
                     toastState = toastState,
                     onSendMessage = viewModel::sendMessage,
+                    analytics = analytics,
                     onSuggestionClick = viewModel::onSuggestionClicked,
+                    onCopyMessage = viewModel::onMessageCopied,
+                    onLikeMessage = viewModel::onMessageLiked,
+                    onDislikeMessage = viewModel::onMessageDisliked,
+                    onRegenerateMessage = viewModel::onRegenerateClicked,
                     onClearHistory = viewModel::clearHistory,
                     onNavigateToCareerTimeline = { onScreenChange(Screen.CareerTimeline) },
                     onNavigateToProject = { projectId ->
                         careerProjectsMap[projectId]?.let { project ->
+                            viewModel.onProjectSuggestionClicked(projectId, 0)
                             onProjectSelect(project)
                             onScreenChange(Screen.ProjectDetails)
                         }
@@ -279,13 +290,15 @@ private fun AppContent(
                         onProjectSelect(careerProjectsMap[timelineProject.id])
                         onScreenChange(Screen.ProjectDetails)
                     },
-                    onBackClick = { onScreenChange(Screen.Chat) }
+                    onBackClick = { onScreenChange(Screen.Chat) },
+                    analytics = analytics
                 )
                 Screen.ProjectDetails -> selectedProject?.let { project ->
                     CareerProjectDetailsScreen(
                         project = project,
                         onBackClick = { onScreenChange(Screen.CareerTimeline) },
-                        onLinkClick = onOpenUrl
+                        onLinkClick = onOpenUrl,
+                        analytics = analytics
                     )
                 }
             }
