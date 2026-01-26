@@ -57,6 +57,8 @@ kotlin {
             implementation(libs.turbine)
             implementation(libs.ktor.client.core)
             implementation(libs.ktor.client.mock)
+            implementation(libs.ktor.client.content.negotiation)
+            implementation(libs.ktor.serialization.kotlinx.json)
         }
     }
 }

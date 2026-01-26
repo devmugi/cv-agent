@@ -6,7 +6,7 @@ import android.os.Build
 import co.touchlab.kermit.Logger
 import java.io.File
 
-class AudioRecorder(private val context: Context) {
+class AudioRecorder(private val context: Context) : AudioRecorderInterface {
 
     companion object {
         private const val TAG = "AudioRecorder"
@@ -15,10 +15,10 @@ class AudioRecorder(private val context: Context) {
     private var recorder: MediaRecorder? = null
     private var outputFile: File? = null
 
-    val isRecording: Boolean
+    override val isRecording: Boolean
         get() = recorder != null
 
-    fun startRecording(): Result<Unit> {
+    override fun startRecording(): Result<Unit> {
         if (isRecording) {
             Logger.w(TAG) { "Already recording" }
             return Result.failure(IllegalStateException("Already recording"))
@@ -56,7 +56,7 @@ class AudioRecorder(private val context: Context) {
         }
     }
 
-    fun stopRecording(): Result<File> {
+    override fun stopRecording(): Result<File> {
         val currentRecorder = recorder
         val currentFile = outputFile
 
@@ -79,7 +79,7 @@ class AudioRecorder(private val context: Context) {
         }
     }
 
-    fun cancelRecording() {
+    override fun cancelRecording() {
         Logger.d(TAG) { "Cancelling recording" }
         cleanup()
     }

@@ -2,7 +2,7 @@ package io.github.devmugi.cv.agent.agent
 
 import co.touchlab.kermit.Logger
 import io.github.devmugi.cv.agent.api.GroqAudioClient
-import io.github.devmugi.cv.agent.api.audio.AudioRecorder
+import io.github.devmugi.cv.agent.api.audio.AudioRecorderInterface
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class VoiceInputController(
-    private val audioRecorder: AudioRecorder,
+    private val audioRecorder: AudioRecorderInterface,
     private val audioClient: GroqAudioClient,
     private val scope: CoroutineScope
 ) {
