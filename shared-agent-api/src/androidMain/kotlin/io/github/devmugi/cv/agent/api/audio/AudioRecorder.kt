@@ -10,6 +10,7 @@ class AudioRecorder(private val context: Context) : AudioRecorderInterface {
 
     companion object {
         private const val TAG = "AudioRecorder"
+        private const val SAMPLE_RATE_HZ = 16000
     }
 
     private var recorder: MediaRecorder? = null
@@ -39,7 +40,7 @@ class AudioRecorder(private val context: Context) : AudioRecorderInterface {
                 setAudioSource(MediaRecorder.AudioSource.MIC)
                 setOutputFormat(MediaRecorder.OutputFormat.MPEG_4)
                 setAudioEncoder(MediaRecorder.AudioEncoder.AAC)
-                setAudioSamplingRate(16000)
+                setAudioSamplingRate(SAMPLE_RATE_HZ)
                 setAudioChannels(1)
                 setOutputFile(file.absolutePath)
                 prepare()

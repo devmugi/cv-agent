@@ -16,6 +16,7 @@ class VoiceInputController(
 ) {
     companion object {
         private const val TAG = "VoiceInputController"
+        private const val LOG_PREVIEW_LENGTH = 50
     }
 
     private val _state = MutableStateFlow<VoiceInputState>(VoiceInputState.Idle)
@@ -61,7 +62,7 @@ class VoiceInputController(
             file.delete()
 
             result.onSuccess { text ->
-                Logger.d(TAG) { "Transcription successful: ${text.take(50)}..." }
+                Logger.d(TAG) { "Transcription successful: ${text.take(LOG_PREVIEW_LENGTH)}..." }
                 _state.value = VoiceInputState.Idle
                 onResult(text)
             }.onFailure { error ->
