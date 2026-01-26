@@ -182,6 +182,7 @@ dependencies {
     implementation(libs.arcane.components)
 
     implementation(libs.androidx.activity.compose)
+    implementation(libs.accompanist.permissions)
     implementation(libs.compose.foundation)
     implementation(libs.compose.material3)
     implementation(libs.compose.material.icons.extended)
