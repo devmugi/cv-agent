@@ -5,6 +5,9 @@ import io.github.devmugi.arize.tracing.ArizeTracer
 import io.github.devmugi.cv.agent.agent.AgentDataProvider
 import io.github.devmugi.cv.agent.agent.ChatViewModel
 import io.github.devmugi.cv.agent.analytics.Analytics
+import io.github.devmugi.cv.agent.GroqConfig
+import io.github.devmugi.cv.agent.api.GroqAudioClient
+import io.github.devmugi.cv.agent.api.audio.AudioRecorder
 import io.github.devmugi.cv.agent.domain.repository.ChatRepository
 import io.github.devmugi.cv.agent.repository.createDataStore
 import org.koin.android.ext.koin.androidContext
@@ -14,6 +17,10 @@ import org.koin.dsl.module
 val viewModelModule = module {
     // DataStore (singleton per app)
     single { createDataStore(androidContext()) }
+
+    // Voice input components
+    single { AudioRecorder(androidContext()) }
+    single { GroqAudioClient(get(), GroqConfig.apiKey) }
 
     viewModel { params ->
         val savedStateHandle: SavedStateHandle = params.get()
