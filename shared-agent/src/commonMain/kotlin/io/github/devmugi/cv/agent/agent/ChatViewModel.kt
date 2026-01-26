@@ -40,6 +40,7 @@ class ChatViewModel(
         private const val KEY_MESSAGES = "chat_messages"
         private const val KEY_SESSION_ID = "session_id"
         private const val KEY_TURN_NUMBER = "turn_number"
+        private const val KEY_HAS_EVER_OPENED = "has_ever_opened"
     }
 
     private val json = Json { ignoreUnknownKeys = true }
@@ -60,6 +61,29 @@ class ChatViewModel(
     private var turnNumber: Int = savedStateHandle?.get<Int>(KEY_TURN_NUMBER) ?: 0
 
     init {
+        // Track session start/resume
+        val restoredMessages = _state.value.messages
+        val isFirstEverOpen = savedStateHandle?.get<Boolean>(KEY_HAS_EVER_OPENED) != true
+
+        // Mark as opened (persists even after clearHistory)
+        savedStateHandle?.set(KEY_HAS_EVER_OPENED, true)
+
+        if (restoredMessages.isNotEmpty()) {
+            analytics.logEvent(
+                AnalyticsEvent.Session.SessionResume(
+                    sessionId = sessionId,
+                    messageCount = restoredMessages.size
+                )
+            )
+        } else {
+            analytics.logEvent(
+                AnalyticsEvent.Session.SessionStart(
+                    sessionId = sessionId,
+                    isNewInstall = isFirstEverOpen
+                )
+            )
+        }
+
         // Save session info on init if restored
         savedStateHandle?.let {
             it[KEY_SESSION_ID] = sessionId
