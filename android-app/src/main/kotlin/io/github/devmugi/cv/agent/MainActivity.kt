@@ -64,10 +64,15 @@ import io.github.devmugi.cv.agent.career.data.CareerProjectDataLoader
 import io.github.devmugi.cv.agent.career.models.CareerProject
 import io.github.devmugi.cv.agent.career.models.PersonalInfo
 import io.github.devmugi.cv.agent.career.models.ProjectDataTimeline
+import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import com.google.accompanist.permissions.isGranted
+import com.google.accompanist.permissions.rememberPermissionState
+import com.google.accompanist.permissions.shouldShowRationale
 import io.github.devmugi.cv.agent.ui.CareerProjectDetailsScreen
 import io.github.devmugi.cv.agent.ui.CareerProjectsTimelineScreen
-import io.github.devmugi.cv.agent.ui.ChatScreenWrapper
+import io.github.devmugi.cv.agent.ui.ChatScreen
 import io.github.devmugi.cv.agent.agent.VoiceInputController
+import io.github.devmugi.cv.agent.agent.VoiceInputState
 import io.github.devmugi.cv.agent.api.GroqAudioClient
 import io.github.devmugi.cv.agent.api.audio.AudioRecorder
 import io.github.devmugi.cv.agent.analytics.Analytics
@@ -243,6 +248,7 @@ private data class AgentDataResult(
     val projectsMap: Map<String, CareerProject>
 )
 
+@OptIn(ExperimentalPermissionsApi::class)
 @Suppress("FunctionNaming", "LongParameterList")
 @Composable
 private fun AppContent(
@@ -278,6 +284,29 @@ private fun AppContent(
         onScreenChange(nextScreen)
     }
 
+    // Accompanist permission state for microphone
+    val micPermissionState = rememberPermissionState(android.Manifest.permission.RECORD_AUDIO)
+
+    // Collect voice state
+    val voiceState by voiceController.state.collectAsState()
+
+    // Handle voice input errors
+    LaunchedEffect(voiceState) {
+        if (voiceState is VoiceInputState.Error) {
+            toastState.show((voiceState as VoiceInputState.Error).message)
+            voiceController.clearError()
+        }
+    }
+
+    // Handle permission denial
+    LaunchedEffect(micPermissionState.status) {
+        if (!micPermissionState.status.isGranted &&
+            micPermissionState.status.shouldShowRationale
+        ) {
+            toastState.show("Microphone permission required for voice input")
+        }
+    }
+
     Box {
         AnimatedContent(
             targetState = currentScreen,
@@ -302,12 +331,18 @@ private fun AppContent(
             label = "screenTransition"
         ) { screen ->
             when (screen) {
-                Screen.Chat -> ChatScreenWrapper(
-                    chatState = state,
-                    viewModel = viewModel,
-                    voiceController = voiceController,
+                Screen.Chat -> ChatScreen(
+                    state = state,
                     toastState = toastState,
+                    onSendMessage = viewModel::sendMessage,
                     analytics = analytics,
+                    onSuggestionClick = viewModel::onSuggestionClicked,
+                    onCopyMessage = viewModel::onMessageCopied,
+                    onShareMessage = { /* TODO */ },
+                    onLikeMessage = viewModel::onMessageLiked,
+                    onDislikeMessage = viewModel::onMessageDisliked,
+                    onRegenerateMessage = viewModel::onRegenerateClicked,
+                    onClearHistory = viewModel::clearHistory,
                     onNavigateToCareerTimeline = { onScreenChange(Screen.CareerTimeline) },
                     onNavigateToProject = { projectId ->
                         careerProjectsMap[projectId]?.let { project ->
@@ -315,7 +350,20 @@ private fun AppContent(
                             onProjectSelect(project)
                             onScreenChange(Screen.ProjectDetails)
                         }
-                    }
+                    },
+                    // Voice input
+                    isRecording = voiceState is VoiceInputState.Recording,
+                    isTranscribing = voiceState is VoiceInputState.Transcribing,
+                    onRecordingStart = { voiceController.startRecording() },
+                    onRecordingStop = {
+                        voiceController.stopRecordingAndTranscribe { transcribedText ->
+                            if (transcribedText.isNotBlank()) {
+                                viewModel.sendMessage(transcribedText)
+                            }
+                        }
+                    },
+                    onRequestMicPermission = { micPermissionState.launchPermissionRequest() },
+                    hasMicPermission = micPermissionState.status.isGranted
                 )
                 Screen.CareerTimeline -> CareerProjectsTimelineScreen(
                     projects = careerProjects,
