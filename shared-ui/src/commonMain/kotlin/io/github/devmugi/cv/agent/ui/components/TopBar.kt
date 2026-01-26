@@ -21,6 +21,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Language
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Phone
+import androidx.compose.material.icons.filled.PictureAsPdf
 import androidx.compose.material3.ripple
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -103,6 +104,9 @@ fun CVAgentTopBar(
                 },
                 onCVClick = {
                     uriHandler.openUri("https://devmugi.github.io/devmugi/")
+                },
+                onPdfClick = {
+                    uriHandler.openUri("https://raw.githubusercontent.com/devmugi/devmugi/main/cv/Denys%20Honcharenko%20CV.pdf")
                 }
             )
         }
@@ -130,6 +134,7 @@ private fun ContactBanner(
     onEmailClick: () -> Unit,
     onPhoneClick: () -> Unit,
     onCVClick: () -> Unit,
+    onPdfClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -140,7 +145,7 @@ private fun ContactBanner(
     ) {
         Text(
             text = "\uD83D\uDFE2 Open to Work \u00B7 Belgium, Remote",
-            style = ArcaneTheme.typography.bodyMedium,
+            style = ArcaneTheme.typography.titleSmall,
             color = ArcaneTheme.colors.textSecondary
         )
         Spacer(modifier = Modifier.height(8.dp))
@@ -173,6 +178,11 @@ private fun ContactBanner(
                 icon = Icons.Filled.Language,
                 contentDescription = "Website",
                 onClick = onCVClick
+            )
+            ContactIconButton(
+                icon = Icons.Filled.PictureAsPdf,
+                contentDescription = "PDF CV",
+                onClick = onPdfClick
             )
         }
     }

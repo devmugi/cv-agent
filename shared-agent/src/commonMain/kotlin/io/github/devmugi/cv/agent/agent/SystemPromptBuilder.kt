@@ -27,6 +27,7 @@ class SystemPromptBuilder {
     private fun buildPromptString(dataProvider: AgentDataProvider): String = buildString {
         appendLine(getInstructions(dataProvider.contextMode))
         appendLine()
+        appendClarifications(dataProvider)
         appendPersonalInfo(dataProvider)
         appendLine()
         appendSkills(dataProvider)
@@ -44,6 +45,17 @@ class SystemPromptBuilder {
         ProjectContextMode.PERSONAL_INFO_ONLY -> INSTRUCTIONS_PERSONAL_INFO_ONLY
         ProjectContextMode.MCDONALDS_JSON_FULL -> INSTRUCTIONS_JSON_PROJECTS
         ProjectContextMode.ALL_PROJECTS_JSON_FULL -> INSTRUCTIONS_JSON_PROJECTS
+    }
+
+    private fun StringBuilder.appendClarifications(dataProvider: AgentDataProvider) {
+        val clarifications = dataProvider.personalInfo.agentClarifications
+        if (clarifications.isNotBlank()) {
+            appendLine("# IMPORTANT CLARIFICATIONS")
+            appendLine("The following clarifications take precedence over any conflicting project data:")
+            appendLine()
+            appendLine(clarifications)
+            appendLine()
+        }
     }
 
     private fun StringBuilder.appendPersonalInfo(dataProvider: AgentDataProvider) {
