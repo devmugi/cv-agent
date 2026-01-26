@@ -1,0 +1,185 @@
+{
+    "runId": "45d73343",
+    "timestamp": "2026-01-26T15:41:35.475500Z",
+    "config": {
+        "promptVariant": "BASELINE",
+        "dataFormat": "TEXT",
+        "projectMode": "CURATED",
+        "model": "openai/gpt-oss-120b",
+        "temperature": 0.7,
+        "maxTokens": 1024,
+        "questionSet": "WELCOME",
+        "delayMs": 3000,
+        "phoenixEndpoint": "http://localhost:6006/v1/traces",
+        "reportsDir": "eval/reports"
+    },
+    "summary": {
+        "totalQuestions": 8,
+        "totalConversations": 0,
+        "successCount": 8,
+        "errorCount": 0,
+        "avgLatencyMs": 1009.375,
+        "avgTtftMs": 999.875,
+        "totalPromptTokens": 0,
+        "totalCompletionTokens": 0,
+        "totalTokens": 0,
+        "totalCachedTokens": 0,
+        "avgCacheHitRate": 0.0,
+        "p50LatencyMs": 954,
+        "p95LatencyMs": 1143
+    },
+    "questionResults": [
+        {
+            "questionId": "W1",
+            "questionText": "What's Denys's current role?",
+            "category": "personal",
+            "response": "Denys Honcharenko is currently working as a **Senior Android Engineer** based in Genk, Belgium.  \n\n```json\n{\"suggestions\": []}\n```",
+            "latencyMs": 954,
+            "ttftMs": 900,
+            "promptTokens": 0,
+            "completionTokens": 0,
+            "totalTokens": 0,
+            "cachedTokens": 0,
+            "cacheHitRate": 0.0,
+            "suggestions": [],
+            "success": true,
+            "errorMessage": null
+        },
+        {
+            "questionId": "W2",
+            "questionText": "Has he worked with Jetpack Compose?",
+            "category": "technology",
+            "response": "Yes. Denys has extensive experience with Jetpack Compose. He introduced Compose in the **McDonald’s Global App**, using it together with Kotlin Multiplatform to build modern, declarative UI for both Android and iOS. He also incorporated Compose in the **Android School** curriculum to teach modern Android development practices, and leveraged Compose Multiplatform in the **GEOSATIS Victim App** for a consistent UI across devices.\n\n```json\n{\"suggestions\": [\"mcdonalds\", \"android-school\", \"geosatis\"]}\n```",
+            "latencyMs": 766,
+            "ttftMs": 763,
+            "promptTokens": 0,
+            "completionTokens": 0,
+            "totalTokens": 0,
+            "cachedTokens": 0,
+            "cacheHitRate": 0.0,
+            "suggestions": [
+                "mcdonalds",
+                "android-school",
+                "geosatis"
+            ],
+            "success": true,
+            "errorMessage": null
+        },
+        {
+            "questionId": "W3",
+            "questionText": "What's his Kotlin Multiplatform experience?",
+            "category": "technology",
+            "response": "Denys has extensive Kotlin Multiplatform expertise built around large‑scale, production‑grade applications.  \n\n* **McDonald’s Global App** – As Lead Android Engineer and KMM developer, he designed and delivered shared Kotlin libraries for both Android and iOS, handling complex payment and delivery integrations for an app used by over 100 million users in 60+ countries. This is one of the biggest KMM implementations in the market.  \n\n* **GEOSATIS Victim App** – He created a full‑stack Kotlin Multiplatform solution (mobile app + backend) that includes real‑time location tracking, video capture, GraphQL subscriptions, and Samsung Knox security. The app runs on Android devices while sharing core business logic across platforms.  \n\n* **Skills & Tools** – Proficient with KMM, Compose Multiplatform, Coroutines, Ktor, and GraphQL. He also integrates AI‑assisted development tools (Claude Code, MCP Server) to accelerate KMP code generation and testing.  \n\nOverall, Denys’s KMP experience spans architecture design, cross‑platform library development, performance optimization, and leadership of multi‑disciplinary teams delivering high‑impact, globally distributed products.  \n\n```json\n{\"suggestions\": [\"mcdonalds\", \"geosatis\"]}\n```",
+            "latencyMs": 971,
+            "ttftMs": 964,
+            "promptTokens": 0,
+            "completionTokens": 0,
+            "totalTokens": 0,
+            "cachedTokens": 0,
+            "cacheHitRate": 0.0,
+            "suggestions": [
+                "mcdonalds",
+                "geosatis"
+            ],
+            "success": true,
+            "errorMessage": null
+        },
+        {
+            "questionId": "W4",
+            "questionText": "Tell me about the McDonald's app",
+            "category": "featured project",
+            "response": "Denys Honcharenko served as **Lead Android Engineer and Kotlin Multiplatform (KMM) Developer** for the **McDonald’s Global Mobile App (GMAL)** from **August 2021 to October 2022**. The app is the world’s most downloaded food‑and‑beverage application, reaching **100 M+ users across 60+ countries**.  \n\n**Key contributions**\n\n* **Feature streams** – Delivered the **Delivery (MDS)** and **Payments** modules, creating shared KMM libraries that run on both Android and iOS.  \n* **Architecture** – Designed a scalable architecture that integrates **20+ payment providers** (e.g., Adyen, Mastercard, Cybersource) and multiple delivery services (e.g., Loginext).  \n* **Migration & tooling** – Led a project‑wide **ViewBinding → Jetpack Compose** migration using IntelliJ SSR tooling, improving UI consistency and developer productivity.  \n* **Team leadership** – Initiated the **Android Talks** series and the **gmal‑lite‑rc Slack channel**, fostering knowledge sharing and streamlining the release process.  \n* **Innovation** – Pioneered one of the largest KMM deployments in production, demonstrating how shared code can be safely used at massive scale.\n\n**Technologies used**\n\n- Kotlin, Kotlin Multiplatform (KMM)  \n- Jetpack Compose, Coroutines, ViewBinding  \n- Android SDK, Gradle, CI/CD pipelines  \n\nDenys’s work on GMAL showcases his ability to handle high‑traffic, mission‑critical mobile products, combine cross‑platform development with complex payment and delivery integrations, and lead technical initiatives that improve both product quality and team collaboration.  \n\n```json\n{\"suggestions\": [\"mcdonalds\", \"geosatis\", \"adidas-gmr\"]}\n```",
+            "latencyMs": 1143,
+            "ttftMs": 1139,
+            "promptTokens": 0,
+            "completionTokens": 0,
+            "totalTokens": 0,
+            "cachedTokens": 0,
+            "cacheHitRate": 0.0,
+            "suggestions": [
+                "mcdonalds",
+                "geosatis",
+                "adidas-gmr"
+            ],
+            "success": true,
+            "errorMessage": null
+        },
+        {
+            "questionId": "W5",
+            "questionText": "What did he build at GEOSATIS?",
+            "category": "featured project",
+            "response": "At GEOSATIS, Denys designed and delivered a complete mobile‑first protection ecosystem for domestic‑violence victims. He built **VAP2**, a Kotlin Multiplatform Android app that provides real‑time GPS tracking, emergency video capture (auto‑uploaded to S3), one‑tap emergency calls, and push‑based alarm notifications via GraphQL subscriptions.  \n\nIn parallel, he created **VAP‑DSS**, a Spring Boot backend that exposes dual GraphQL APIs (victim and admin), leverages Kafka for event streaming, and uses Firebase Auth for secure access. The system enforces proximity alerts (e.g., 2 km zones) and integrates with Samsung Knox for device hardening. Denys also handled the DevOps pipeline, deploying services on AWS and incorporating AI‑assisted tools (MCP Server) to streamline development.\n\nThese efforts resulted in a fully owned, production‑grade solution that has already prevented real‑world incidents and supports victims across multiple regions.\n\n```json\n{\"suggestions\": [\"geosatis\"]}\n```",
+            "latencyMs": 1020,
+            "ttftMs": 1019,
+            "promptTokens": 0,
+            "completionTokens": 0,
+            "totalTokens": 0,
+            "cachedTokens": 0,
+            "cacheHitRate": 0.0,
+            "suggestions": [
+                "geosatis"
+            ],
+            "success": true,
+            "errorMessage": null
+        },
+        {
+            "questionId": "W6",
+            "questionText": "Tell me about the Adidas GMR project",
+            "category": "featured project",
+            "response": "Denys Honcharenko served as **Lead Software Engineer** on the **Adidas GMR** project (February 2020 – June 2020) while working at EPAM Systems. The initiative created a **smart insole** that leveraged Google’s **Jacquard** technology to capture real‑world soccer performance metrics—such as shot power, distance, speed, and kick detection—and translate them into rewards within the **FIFA Mobile** game.\n\nKey highlights of Denys’s contribution:\n\n* **Hardware‑software integration** – built the Android side of the BLE‑based insole, interfacing with Google Jacquard SDK to stream sensor data reliably.\n* **Cross‑platform impact** – enabled seamless communication between the insole, the mobile app, and EA Sports’ backend, supporting global leaderboards and real‑time reward updates.\n* **Performance at scale** – the solution recorded **7.4 M shots** and **215 M meters** of movement within the first weeks of launch.\n* **Problem‑solving under pressure** – when the project faced critical delays, Denys and his team rescued the effort, delivering a fully functional product on schedule.\n* **Innovation for testing** – created a BLE emulator that accelerated QA cycles by **10×**, reducing hardware‑dependency during development.\n\nThe project exemplifies Denys’s expertise in **IoT & hardware**, **Bluetooth Low Energy**, and **Kotlin‑based Android development**, as well as his ability to collaborate with high‑profile partners such as **Google**, **Adidas**, and **EA Sports**.\n\n```json\n{\"suggestions\": [\"adidas-gmr\", \"veev\"]}\n```",
+            "latencyMs": 1614,
+            "ttftMs": 1612,
+            "promptTokens": 0,
+            "completionTokens": 0,
+            "totalTokens": 0,
+            "cachedTokens": 0,
+            "cacheHitRate": 0.0,
+            "suggestions": [
+                "adidas-gmr",
+                "veev"
+            ],
+            "success": true,
+            "errorMessage": null
+        },
+        {
+            "questionId": "W7",
+            "questionText": "Has he trained other developers?",
+            "category": "teaching",
+            "response": "Denys has extensive experience training developers. He created and led the **Android School** program at EPAM Systems, an internal course that prepared junior developers and career‑changers for Android roles; over two iterations, 14 of the 20 participants (70 %) were hired by EPAM. During his time on the McDonald’s Global App, he also launched the **Android Talks** initiative and a dedicated Slack channel to share knowledge and improve the release process across the team.\n\n```json\n{\"suggestions\": [\"android-school\", \"mcdonalds\"]}\n```",
+            "latencyMs": 798,
+            "ttftMs": 796,
+            "promptTokens": 0,
+            "completionTokens": 0,
+            "totalTokens": 0,
+            "cachedTokens": 0,
+            "cacheHitRate": 0.0,
+            "suggestions": [
+                "android-school",
+                "mcdonalds"
+            ],
+            "success": true,
+            "errorMessage": null
+        },
+        {
+            "questionId": "W8",
+            "questionText": "Has Denys led teams before?",
+            "category": "leadership",
+            "response": "Yes. Denys has extensive experience leading teams and technical initiatives:\n\n* **McDonald’s Global App** – Served as **Lead Android Engineer / KMM Developer**, designing the architecture for payment and delivery streams, coordinating a multi‑disciplinary team, and launching internal initiatives such as Android Talks and the gmal‑lite‑rc Slack channel.  \n* **Adidas GMR** – Acted as **Lead Software Engineer**, steering a cross‑functional group that included hardware, Android, and backend developers to deliver a BLE‑based smart‑insole solution on a tight schedule.  \n* **Android School** – Created and ran the **Android School** program at EPAM, acting as lead instructor and mentor for junior developers, achieving a 70 % hiring rate for participants.\n\nThese roles demonstrate Denys’s ability to lead both product development teams and educational initiatives.\n\n```json\n{\"suggestions\": [\"mcdonalds\", \"adidas-gmr\", \"android-school\"]}\n```",
+            "latencyMs": 809,
+            "ttftMs": 806,
+            "promptTokens": 0,
+            "completionTokens": 0,
+            "totalTokens": 0,
+            "cachedTokens": 0,
+            "cacheHitRate": 0.0,
+            "suggestions": [
+                "mcdonalds",
+                "adidas-gmr",
+                "android-school"
+            ],
+            "success": true,
+            "errorMessage": null
+        }
+    ],
+    "conversationResults": []
+}
