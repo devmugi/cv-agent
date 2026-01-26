@@ -8,6 +8,8 @@ import io.github.devmugi.cv.agent.api.GroqApiClient
 import io.github.devmugi.cv.agent.api.GroqApiException
 import io.github.devmugi.cv.agent.api.models.ChatMessage
 import io.github.devmugi.cv.agent.api.tracing.PromptMetadata
+import io.github.devmugi.cv.agent.analytics.Analytics
+import io.github.devmugi.cv.agent.analytics.AnalyticsEvent
 import io.github.devmugi.cv.agent.domain.models.ChatError
 import io.github.devmugi.cv.agent.domain.models.ChatState
 import io.github.devmugi.cv.agent.domain.models.Message
@@ -28,6 +30,7 @@ class ChatViewModel(
     private val promptBuilder: SystemPromptBuilder,
     private val suggestionExtractor: SuggestionExtractor,
     private val dataProvider: AgentDataProvider?,
+    private val analytics: Analytics = Analytics.NOOP,
 ) : ViewModel() {
 
     companion object {

@@ -32,6 +32,7 @@ kotlin {
     sourceSets {
         commonMain.dependencies {
             api(projects.sharedDomain)
+            api(projects.sharedAnalytics)
             api(projects.sharedCareerProjects)
             api(projects.sharedAgentApi)
 
