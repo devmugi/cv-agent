@@ -163,6 +163,7 @@ class ChatViewModel(
         turnNumber++
         val currentTurn = turnNumber
         val currentSessionId = sessionId
+        val streamStartTime = System.currentTimeMillis()
         Logger.d(TAG) { "Starting turn $currentTurn in session $currentSessionId" }
 
         val promptResult = dataProvider?.let { promptBuilder.buildWithMetadata(it) }
@@ -212,7 +213,18 @@ class ChatViewModel(
                 }
             },
             onComplete = {
+                val responseTimeMs = System.currentTimeMillis() - streamStartTime
                 Logger.d(TAG) { "Stream completed - content length: ${streamedContent.length}" }
+
+                // Log analytics event
+                analytics.logEvent(
+                    AnalyticsEvent.Chat.ResponseCompleted(
+                        responseTimeMs = responseTimeMs,
+                        tokenCount = null,
+                        sessionId = currentSessionId
+                    )
+                )
+
                 val extractionResult = suggestionExtractor.extract(streamedContent)
                 _state.update { current ->
                     val newMessages = current.messages.map { msg ->
@@ -236,6 +248,23 @@ class ChatViewModel(
             },
             onError = { exception ->
                 Logger.w(TAG) { "Stream error: ${exception.javaClass.simpleName}" }
+
+                val errorType = when (exception) {
+                    is GroqApiException.NetworkError -> AnalyticsEvent.Error.ErrorType.NETWORK
+                    is GroqApiException.RateLimitError -> AnalyticsEvent.Error.ErrorType.RATE_LIMIT
+                    is GroqApiException.AuthError -> AnalyticsEvent.Error.ErrorType.AUTH
+                    is GroqApiException.ApiError -> AnalyticsEvent.Error.ErrorType.API
+                }
+
+                // Log analytics event
+                analytics.logEvent(
+                    AnalyticsEvent.Error.ErrorDisplayed(
+                        errorType = errorType,
+                        errorMessage = exception.message,
+                        sessionId = currentSessionId
+                    )
+                )
+
                 val error = when (exception) {
                     is GroqApiException.NetworkError -> ChatError.Network(exception.reason)
                     is GroqApiException.RateLimitError -> ChatError.RateLimit
