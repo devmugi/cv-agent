@@ -1,3 +1,4 @@
+import com.android.build.api.variant.BuildConfigField
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import java.util.Properties
 
@@ -7,6 +8,20 @@ val localProperties = Properties().apply {
         load(localPropertiesFile.inputStream())
     }
 }
+
+// Load credentials from local.properties
+val groqApiKey: String = localProperties.getProperty("GROQ_API_KEY")
+    ?: project.findProperty("GROQ_API_KEY")?.toString()
+    ?: ""
+val arizeApiKey: String = localProperties.getProperty("ARIZE_API_KEY") ?: ""
+val arizeSpaceId: String = localProperties.getProperty("ARIZE_SPACE_ID") ?: ""
+val arizeOtlpEndpoint: String = localProperties.getProperty("ARIZE_OTLP_ENDPOINT") ?: "https://otlp.arize.com/v1"
+
+// Load keystore properties for release signing
+val releaseStoreFile: String? = localProperties.getProperty("RELEASE_STORE_FILE")
+val releaseStorePassword: String? = localProperties.getProperty("RELEASE_STORE_PASSWORD")
+val releaseKeyAlias: String? = localProperties.getProperty("RELEASE_KEY_ALIAS")
+val releaseKeyPassword: String? = localProperties.getProperty("RELEASE_KEY_PASSWORD")
 
 plugins {
     alias(libs.plugins.android.application)
@@ -40,25 +55,56 @@ android {
         }
     }
 
+    signingConfigs {
+        if (releaseStoreFile != null) {
+            create("release") {
+                storeFile = file(releaseStoreFile)
+                storePassword = releaseStorePassword
+                keyAlias = releaseKeyAlias
+                keyPassword = releaseKeyPassword
+            }
+        }
+    }
+
+    flavorDimensions += "environment"
+
+    productFlavors {
+        create("dev") {
+            dimension = "environment"
+            applicationIdSuffix = ".dev"
+            versionNameSuffix = "-dev"
+
+            // Dev flavor: always collect to dev Firebase, always localhost Phoenix
+            buildConfigField("Boolean", "ENABLE_ANALYTICS", "true")
+            buildConfigField("Boolean", "ENABLE_CRASHLYTICS", "true")
+            buildConfigField("Boolean", "ENABLE_PHOENIX_TRACING", "true")
+            buildConfigField("String", "PHOENIX_ENDPOINT", "\"http://10.0.2.2:6006/v1/traces\"")
+            buildConfigField("String", "ARIZE_API_KEY", "\"\"")
+            buildConfigField("String", "ARIZE_SPACE_ID", "\"\"")
+        }
+        create("prod") {
+            dimension = "environment"
+
+            // Prod flavor: default to localhost Phoenix (overridden to Arize Cloud for prodRelease)
+            buildConfigField("Boolean", "ENABLE_PHOENIX_TRACING", "true")
+            buildConfigField("String", "PHOENIX_ENDPOINT", "\"http://10.0.2.2:6006/v1/traces\"")
+            buildConfigField("String", "ARIZE_API_KEY", "\"\"")
+            buildConfigField("String", "ARIZE_SPACE_ID", "\"\"")
+        }
+    }
+
     buildTypes {
         getByName("debug") {
-            buildConfigField("Boolean", "ENABLE_PHOENIX_TRACING", "true")
-            buildConfigField("Boolean", "ENABLE_ANALYTICS", "false")
+            // Debug-specific settings (analytics/crashlytics controlled by androidComponents below)
         }
         getByName("release") {
             isMinifyEnabled = false
-            buildConfigField("Boolean", "ENABLE_PHOENIX_TRACING", "false")
-            buildConfigField("Boolean", "ENABLE_ANALYTICS", "true")
+            if (releaseStoreFile != null) {
+                signingConfig = signingConfigs.getByName("release")
+            }
         }
         all {
-            val apiKey = localProperties.getProperty("GROQ_API_KEY")
-                ?: project.findProperty("GROQ_API_KEY")?.toString()
-                ?: ""
-            buildConfigField("String", "GROQ_API_KEY", "\"$apiKey\"")
-
-            // Phoenix tracing host (set in local.properties for real device testing)
-            val phoenixHost = localProperties.getProperty("PHOENIX_HOST") ?: ""
-            buildConfigField("String", "PHOENIX_HOST", "\"$phoenixHost\"")
+            buildConfigField("String", "GROQ_API_KEY", "\"$groqApiKey\"")
         }
     }
 
@@ -76,6 +122,51 @@ android {
     buildFeatures {
         buildConfig = true
         compose = true
+    }
+}
+
+// Handle prodDebug vs prodRelease: analytics/crashlytics OFF for prodDebug, ON for prodRelease
+androidComponents {
+    onVariants { variant ->
+        val isProd = variant.flavorName == "prod"
+        val isDebug = variant.buildType == "debug"
+
+        when {
+            isProd && isDebug -> {
+                // prodDebug: collection OFF (for local testing without polluting prod Firebase)
+                variant.buildConfigFields?.put(
+                    "ENABLE_ANALYTICS",
+                    BuildConfigField("Boolean", "false", "Analytics disabled for prodDebug")
+                )
+                variant.buildConfigFields?.put(
+                    "ENABLE_CRASHLYTICS",
+                    BuildConfigField("Boolean", "false", "Crashlytics disabled for prodDebug")
+                )
+            }
+            isProd && !isDebug -> {
+                // prodRelease: collection ON, Arize Cloud tracing
+                variant.buildConfigFields?.put(
+                    "ENABLE_ANALYTICS",
+                    BuildConfigField("Boolean", "true", "Analytics enabled for prodRelease")
+                )
+                variant.buildConfigFields?.put(
+                    "ENABLE_CRASHLYTICS",
+                    BuildConfigField("Boolean", "true", "Crashlytics enabled for prodRelease")
+                )
+                variant.buildConfigFields?.put(
+                    "PHOENIX_ENDPOINT",
+                    BuildConfigField("String", "\"${arizeOtlpEndpoint}/traces\"", "Arize Cloud endpoint")
+                )
+                variant.buildConfigFields?.put(
+                    "ARIZE_API_KEY",
+                    BuildConfigField("String", "\"$arizeApiKey\"", "Arize API key")
+                )
+                variant.buildConfigFields?.put(
+                    "ARIZE_SPACE_ID",
+                    BuildConfigField("String", "\"$arizeSpaceId\"", "Arize Space ID")
+                )
+            }
+        }
     }
 }
 
@@ -118,10 +209,24 @@ val copyCareerComposeResources by tasks.registering(Copy::class) {
     into(layout.buildDirectory.dir("careerComposeResources/composeResources/cvagent.career.generated.resources"))
 }
 
-// Ensure career module compose resources are prepared before merging assets
+// Ensure career module compose resources are prepared before merging assets and lint for all variants
 afterEvaluate {
-    tasks.named("mergeDebugAssets") {
+    // Asset merge tasks
+    listOf(
+        "mergeDevDebugAssets",
+        "mergeDevReleaseAssets",
+        "mergeProdDebugAssets",
+        "mergeProdReleaseAssets"
+    ).forEach { taskName ->
+        tasks.findByName(taskName)?.dependsOn(copyCareerComposeResources)
+    }
+
+    // Lint tasks that also need the career resources
+    tasks.matching { task ->
+        task.name.contains("lintVitalAnalyze") ||
+            task.name.contains("LintVitalReportModel") ||
+            task.name.contains("lintAnalyze")
+    }.configureEach {
         dependsOn(copyCareerComposeResources)
     }
-    tasks.findByName("mergeReleaseAssets")?.dependsOn(copyCareerComposeResources)
 }

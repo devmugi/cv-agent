@@ -3,10 +3,10 @@ package io.github.devmugi.cv.agent
 import android.app.Application
 import io.github.devmugi.cv.agent.crashlytics.CrashReporter
 import io.github.devmugi.cv.agent.crashlytics.CrashReporterInitializer
-import io.github.devmugi.cv.agent.crashlytics.crashlyticsModule
 import io.github.devmugi.cv.agent.crashlytics.createCrashlyticsLogWriter
 import io.github.devmugi.cv.agent.di.analyticsModule
 import io.github.devmugi.cv.agent.di.appModule
+import io.github.devmugi.cv.agent.di.crashlyticsModule
 import io.github.devmugi.cv.agent.di.tracingModule
 import io.github.devmugi.cv.agent.di.viewModelModule
 import co.touchlab.kermit.Logger
@@ -33,20 +33,22 @@ class CVAgentApplication : Application() {
             modules(appModule, viewModelModule, tracingModule, analyticsModule, crashlyticsModule)
         }
 
-        // Initialize crash reporter and breadcrumb logging
-        CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate).launch {
-            try {
-                val crashReporter = get<CrashReporter>()
-                get<CrashReporterInitializer>().initialize()
+        // Initialize crash reporter and breadcrumb logging (only when crashlytics is enabled)
+        if (BuildConfig.ENABLE_CRASHLYTICS) {
+            CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate).launch {
+                try {
+                    val crashReporter = get<CrashReporter>()
+                    get<CrashReporterInitializer>().initialize()
 
-                // Add Crashlytics breadcrumb logging
-                val logWriter = createCrashlyticsLogWriter(
-                    crashReporter = crashReporter,
-                    isDebug = BuildConfig.DEBUG
-                )
-                Logger.addLogWriter(logWriter)
-            } catch (e: Exception) {
-                Logger.e("CVAgentApplication") { "Failed to initialize crash reporter: ${e.message}" }
+                    // Add Crashlytics breadcrumb logging
+                    val logWriter = createCrashlyticsLogWriter(
+                        crashReporter = crashReporter,
+                        isDebug = BuildConfig.DEBUG
+                    )
+                    Logger.addLogWriter(logWriter)
+                } catch (e: Exception) {
+                    Logger.e("CVAgentApplication") { "Failed to initialize crash reporter: ${e.message}" }
+                }
             }
         }
     }

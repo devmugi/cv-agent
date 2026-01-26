@@ -14,25 +14,37 @@ private const val TAG = "TracingModule"
 /**
  * Android-specific DI module for OpenTelemetry tracing.
  *
- * When ENABLE_PHOENIX_TRACING is true (debug builds), traces are sent to Phoenix.
- *
- * Configure PHOENIX_HOST in local.properties:
- * - Emulator: Leave empty (defaults to 10.0.2.2)
- * - Real device: Set to your computer's IP (e.g., PHOENIX_HOST=192.168.1.100)
+ * Tracing targets:
+ * - dev flavor: Local Phoenix at localhost (http://10.0.2.2:6006/v1/traces)
+ * - prod flavor: Arize Cloud with API key authentication
  */
 val tracingModule = module {
     single<ArizeTracer> {
         if (BuildConfig.ENABLE_PHOENIX_TRACING) {
-            val host = BuildConfig.PHOENIX_HOST.ifEmpty { "10.0.2.2" }
-            val endpoint = "http://$host:6006/v1/traces"
-            Logger.d(TAG) { "Phoenix tracing ENABLED, endpoint: $endpoint" }
-            OpenTelemetryArizeTracer.create(
-                endpoint = endpoint,
-                serviceName = "cv-agent-android",
-                mode = TracingMode.PRODUCTION
-            )
+            val endpoint = BuildConfig.PHOENIX_ENDPOINT
+            val isArizeCloud = BuildConfig.ARIZE_API_KEY.isNotEmpty()
+
+            if (isArizeCloud) {
+                Logger.d(TAG) { "Arize Cloud tracing ENABLED, endpoint: $endpoint" }
+                OpenTelemetryArizeTracer.create(
+                    endpoint = endpoint,
+                    serviceName = "cv-agent-android",
+                    mode = TracingMode.PRODUCTION,
+                    headers = mapOf(
+                        "space_id" to BuildConfig.ARIZE_SPACE_ID,
+                        "api_key" to BuildConfig.ARIZE_API_KEY
+                    )
+                )
+            } else {
+                Logger.d(TAG) { "Local Phoenix tracing ENABLED, endpoint: $endpoint" }
+                OpenTelemetryArizeTracer.create(
+                    endpoint = endpoint,
+                    serviceName = "cv-agent-android",
+                    mode = TracingMode.PRODUCTION
+                )
+            }
         } else {
-            Logger.d(TAG) { "Phoenix tracing DISABLED" }
+            Logger.d(TAG) { "Tracing DISABLED" }
             ArizeTracer.NOOP
         }
     }
