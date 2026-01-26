@@ -47,6 +47,7 @@ opentelemetry = "1.40.0"
 opentelemetry-semconv = "1.25.0-alpha"
 
 # Firebase
+firebase-bom = "34.7.0"
 google-services = "4.4.2"
 
 # Testing
@@ -155,6 +156,7 @@ opentelemetry-exporter-otlp = { module = "io.opentelemetry:opentelemetry-exporte
 opentelemetry-semconv = { module = "io.opentelemetry.semconv:opentelemetry-semconv", version.ref = "opentelemetry-semconv" }
 
 # Firebase
+firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebase-bom" }
 firebase-analytics = { module = "com.google.firebase:firebase-analytics-ktx", version = "22.4.0" }
 
 [plugins]

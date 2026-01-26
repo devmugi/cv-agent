@@ -99,6 +99,10 @@ dependencies {
     implementation(libs.compose.components.resources)
     implementation(libs.kotlinx.serialization.json)
 
+    // Firebase
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.analytics)
+
     debugImplementation(libs.compose.ui.tooling)
     androidTestImplementation(libs.androidx.compose.ui.test.junit4)
     debugImplementation(libs.androidx.compose.ui.test.manifest)
