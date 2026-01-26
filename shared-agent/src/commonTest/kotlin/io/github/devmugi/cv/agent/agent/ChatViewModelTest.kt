@@ -328,6 +328,65 @@ class ChatViewModelTest {
         assertNotNull(event, "ErrorDisplayed event should be logged")
         assertEquals(AnalyticsEvent.Error.ErrorType.NETWORK, event.errorType)
     }
+
+    @Test
+    fun onMessageCopiedLogsEvent() = runTest {
+        fakeApiClient.responseChunks = listOf("Response content here")
+        viewModel.sendMessage("Test")
+        advanceUntilIdle()
+
+        val assistantMessage = viewModel.state.value.messages.find { it.role == MessageRole.ASSISTANT }
+        assertNotNull(assistantMessage)
+        fakeAnalytics.clear()
+
+        viewModel.onMessageCopied(assistantMessage.id)
+
+        val event = fakeAnalytics.findEvent<AnalyticsEvent.Chat.MessageCopied>()
+        assertNotNull(event, "MessageCopied event should be logged")
+        assertEquals(assistantMessage.id, event.messageId)
+    }
+
+    @Test
+    fun onMessageLikedLogsEvent() = runTest {
+        viewModel.onMessageLiked("test-message-id")
+
+        val event = fakeAnalytics.findEvent<AnalyticsEvent.Chat.MessageLiked>()
+        assertNotNull(event)
+        assertEquals("test-message-id", event.messageId)
+    }
+
+    @Test
+    fun onMessageDislikedLogsEvent() = runTest {
+        viewModel.onMessageDisliked("test-message-id")
+
+        val event = fakeAnalytics.findEvent<AnalyticsEvent.Chat.MessageDisliked>()
+        assertNotNull(event)
+        assertEquals("test-message-id", event.messageId)
+    }
+
+    @Test
+    fun onRegenerateClickedLogsEventAndRetries() = runTest {
+        fakeApiClient.responseChunks = listOf("First response")
+        viewModel.sendMessage("Test")
+        advanceUntilIdle()
+        fakeAnalytics.clear()
+
+        viewModel.onRegenerateClicked("test-id")
+        advanceUntilIdle()
+
+        val event = fakeAnalytics.findEvent<AnalyticsEvent.Chat.RegenerateClicked>()
+        assertNotNull(event)
+    }
+
+    @Test
+    fun onProjectSuggestionClickedLogsEvent() = runTest {
+        viewModel.onProjectSuggestionClicked("mcdonalds", 0)
+
+        val event = fakeAnalytics.findEvent<AnalyticsEvent.Chat.SuggestionClicked>()
+        assertNotNull(event)
+        assertEquals("mcdonalds", event.projectId)
+        assertEquals(0, event.position)
+    }
 }
 
 // Test doubles

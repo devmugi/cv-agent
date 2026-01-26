@@ -158,6 +158,45 @@ class ChatViewModel(
         saveSessionState()
     }
 
+    // ============ Analytics Callback Wrappers ============
+
+    fun onMessageCopied(messageId: String) {
+        val message = _state.value.messages.find { it.id == messageId }
+        analytics.logEvent(
+            AnalyticsEvent.Chat.MessageCopied(
+                messageId = messageId,
+                messageLength = message?.content?.length ?: 0
+            )
+        )
+    }
+
+    fun onMessageLiked(messageId: String) {
+        analytics.logEvent(AnalyticsEvent.Chat.MessageLiked(messageId = messageId))
+    }
+
+    fun onMessageDisliked(messageId: String) {
+        analytics.logEvent(AnalyticsEvent.Chat.MessageDisliked(messageId = messageId))
+    }
+
+    fun onRegenerateClicked(messageId: String) {
+        analytics.logEvent(
+            AnalyticsEvent.Chat.RegenerateClicked(
+                messageId = messageId,
+                turnNumber = turnNumber
+            )
+        )
+        retry()
+    }
+
+    fun onProjectSuggestionClicked(projectId: String, position: Int) {
+        analytics.logEvent(
+            AnalyticsEvent.Chat.SuggestionClicked(
+                projectId = projectId,
+                position = position
+            )
+        )
+    }
+
     @OptIn(ExperimentalUuidApi::class)
     private suspend fun streamResponse() {
         turnNumber++
