@@ -22,6 +22,7 @@ import io.github.devmugi.cv.agent.eval.questions.McdonaldsQuestions
 import io.github.devmugi.cv.agent.eval.questions.ProfileQuestions
 import io.github.devmugi.cv.agent.eval.questions.Question
 import io.github.devmugi.cv.agent.eval.questions.SimpleQuestions
+import io.github.devmugi.cv.agent.eval.questions.WelcomeQuestions
 import io.github.devmugi.cv.agent.eval.report.ConversationResult
 import io.github.devmugi.cv.agent.eval.report.EvalReport
 import io.github.devmugi.cv.agent.eval.report.QuestionResult
@@ -220,6 +221,7 @@ class EvalRunner(private val config: EvalConfig) {
 
     private fun getQuestions(): List<Question> {
         return when (config.questionSet) {
+            QuestionSet.WELCOME -> WelcomeQuestions.questions
             QuestionSet.SIMPLE -> SimpleQuestions.questions
             QuestionSet.MCDONALDS -> McdonaldsQuestions.questions
             QuestionSet.ALL_PROJECTS -> AllProjectsQuestions.questions
@@ -234,6 +236,7 @@ class EvalRunner(private val config: EvalConfig) {
     private fun getConversations(): List<Conversation> {
         return when (config.questionSet) {
             QuestionSet.CONVERSATIONS, QuestionSet.ALL -> Conversations.conversations
+            QuestionSet.WELCOME,
             QuestionSet.SIMPLE,
             QuestionSet.MCDONALDS,
             QuestionSet.ALL_PROJECTS,
