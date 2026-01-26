@@ -27,6 +27,7 @@ kotlin {
         commonMain.dependencies {
             implementation(projects.sharedDomain)
             implementation(projects.sharedCareerProjects)
+            implementation(projects.sharedAnalytics)
 
             // Arcane Design System
             implementation(libs.arcane.foundation)

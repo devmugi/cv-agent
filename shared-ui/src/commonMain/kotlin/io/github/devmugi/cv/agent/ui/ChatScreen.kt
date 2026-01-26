@@ -57,6 +57,8 @@ import io.github.devmugi.cv.agent.ui.components.FloatingInputContainer
 import io.github.devmugi.cv.agent.ui.components.FeedbackState
 import io.github.devmugi.cv.agent.ui.components.MessageActions
 import io.github.devmugi.cv.agent.ui.components.SuggestionChip
+import io.github.devmugi.cv.agent.analytics.Analytics
+import io.github.devmugi.cv.agent.analytics.AnalyticsEvent
 import io.github.devmugi.cv.agent.ui.components.WelcomeSection
 
 @OptIn(ExperimentalLayoutApi::class)
@@ -65,6 +67,7 @@ fun ChatScreen(
     state: ChatState,
     toastState: ArcaneToastState,
     onSendMessage: (String) -> Unit,
+    analytics: Analytics = Analytics.NOOP,
     modifier: Modifier = Modifier,
     onSuggestionClick: (String) -> Unit = onSendMessage,
     onCopyMessage: (String) -> Unit = {},
@@ -82,6 +85,15 @@ fun ChatScreen(
     val isKeyboardVisible = WindowInsets.isImeVisible
 
     val showWelcome = state.messages.isEmpty() && !state.isLoading && !state.isStreaming
+
+    // Log screen view once on first composition
+    LaunchedEffect(Unit) {
+        analytics.logEvent(
+            AnalyticsEvent.Navigation.ScreenView(
+                screenName = AnalyticsEvent.Navigation.Screen.CHAT
+            )
+        )
+    }
 
     // Track cumulative scroll offset to show/hide contact banner
     var cumulativeScroll by remember { mutableFloatStateOf(0f) }
