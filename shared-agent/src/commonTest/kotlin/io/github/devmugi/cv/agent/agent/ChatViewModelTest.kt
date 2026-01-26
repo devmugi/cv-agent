@@ -11,6 +11,8 @@ import io.github.devmugi.cv.agent.career.models.SkillCategory
 import io.github.devmugi.cv.agent.domain.models.ChatError
 import io.github.devmugi.cv.agent.domain.models.MessageRole
 import io.github.devmugi.cv.agent.domain.models.defaultSuggestions
+import io.github.devmugi.cv.agent.analytics.Analytics
+import io.github.devmugi.cv.agent.analytics.AnalyticsEvent
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.mock.MockEngine
 import io.ktor.client.engine.mock.respond
@@ -59,6 +61,7 @@ class ChatViewModelTest {
     )
 
     private lateinit var fakeApiClient: FakeGroqApiClient
+    private lateinit var fakeAnalytics: FakeAnalytics
     private lateinit var viewModel: ChatViewModel
 
     @BeforeTest
@@ -68,11 +71,13 @@ class ChatViewModelTest {
 
         Dispatchers.setMain(testDispatcher)
         fakeApiClient = FakeGroqApiClient()
+        fakeAnalytics = FakeAnalytics()
         viewModel = ChatViewModel(
             apiClient = fakeApiClient,
             promptBuilder = SystemPromptBuilder(),
             suggestionExtractor = SuggestionExtractor(),
-            dataProvider = null
+            dataProvider = null,
+            analytics = fakeAnalytics
         )
     }
 
@@ -272,6 +277,33 @@ class ChatViewModelTest {
         assertEquals("Here is some info.", assistantMsg.content.trim())
         assertEquals(listOf("test-project"), assistantMsg.suggestions)
     }
+
+    // ============ Analytics Tests ============
+
+    @Test
+    fun sendMessageLogsMessageSentEvent() = runTest {
+        viewModel.sendMessage("Hello world")
+        advanceUntilIdle()
+
+        val event = fakeAnalytics.findEvent<AnalyticsEvent.Chat.MessageSent>()
+        assertNotNull(event, "MessageSent event should be logged")
+        assertEquals(11, event.messageLength)
+        assertEquals(1, event.turnNumber)
+    }
+
+    @Test
+    fun clearHistoryLogsHistoryClearedEvent() = runTest {
+        // Send a message first to have history
+        viewModel.sendMessage("Test message")
+        advanceUntilIdle()
+        fakeAnalytics.clear()
+
+        viewModel.clearHistory()
+
+        val event = fakeAnalytics.findEvent<AnalyticsEvent.Chat.HistoryCleared>()
+        assertNotNull(event, "HistoryCleared event should be logged")
+        assertTrue(event.messageCount >= 1)
+    }
 }
 
 // Test doubles
@@ -312,4 +344,24 @@ class FakeGroqApiClient : GroqApiClient(
         }
         onComplete()
     }
+}
+
+class FakeAnalytics : Analytics {
+    val loggedEvents = mutableListOf<AnalyticsEvent>()
+
+    override fun logEvent(event: AnalyticsEvent) {
+        loggedEvents.add(event)
+    }
+
+    override fun setUserId(userId: String?) {}
+    override fun setUserProperty(name: String, value: String?) {}
+    override fun setCurrentScreen(screenName: String, screenClass: String?) {}
+
+    fun clear() = loggedEvents.clear()
+
+    inline fun <reified T : AnalyticsEvent> findEvent(): T? =
+        loggedEvents.filterIsInstance<T>().firstOrNull()
+
+    inline fun <reified T : AnalyticsEvent> hasEvent(): Boolean =
+        loggedEvents.any { it is T }
 }
