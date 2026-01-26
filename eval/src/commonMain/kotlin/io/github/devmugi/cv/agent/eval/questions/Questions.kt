@@ -1,6 +1,23 @@
 package io.github.devmugi.cv.agent.eval.questions
 
 /**
+ * Welcome screen suggestion chip questions for evaluation.
+ * These are the default questions shown to users when they first open the chat.
+ */
+object WelcomeQuestions {
+    val questions = listOf(
+        Question("W1", "What's Denys's current role?", "personal"),
+        Question("W2", "Has he worked with Jetpack Compose?", "technology"),
+        Question("W3", "What's his Kotlin Multiplatform experience?", "technology"),
+        Question("W4", "Tell me about the McDonald's app", "featured project"),
+        Question("W5", "What did he build at GEOSATIS?", "featured project"),
+        Question("W6", "Tell me about the Adidas GMR project", "featured project"),
+        Question("W7", "Has he trained other developers?", "teaching"),
+        Question("W8", "Has Denys led teams before?", "leadership")
+    )
+}
+
+/**
  * Simple single-turn questions for evaluation.
  */
 object SimpleQuestions {

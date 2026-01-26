@@ -61,6 +61,9 @@ enum class DataFormat {
  * Question sets for evaluation.
  */
 enum class QuestionSet {
+    /** Welcome screen suggestion chip questions W1-W8 */
+    WELCOME,
+
     /** Simple questions Q1-Q10 */
     SIMPLE,
 
