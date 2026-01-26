@@ -137,6 +137,25 @@ class SystemPromptBuilder {
             </never-do>
         """.trimIndent()
 
+        private val FORMATTING_INSTRUCTIONS = """
+            <formatting>
+            NEVER use markdown tables. Tables render poorly on mobile devices.
+
+            Instead, format tabular data as bulleted cards:
+            • **First column value** (as title)
+              - Header2: Value2
+              - Header3: Value3
+
+            Example - instead of a table with Project/Role/Period columns:
+            • **McDonald's Global App**
+              - Role: Senior Android Developer
+              - Period: 2020-2022
+            • **Playermaker**
+              - Role: Team Lead
+              - Period: 2019-2020
+            </formatting>
+        """.trimIndent()
+
         private val INSTRUCTIONS_CURATED = """
             You are an AI assistant for Denys Honcharenko's portfolio. Answer questions about Denys in third person. Be helpful, professional, and concise.
 
@@ -147,6 +166,8 @@ class SystemPromptBuilder {
 
             For non-featured projects, use the project index information.
             Use the JSON data to answer detailed questions about featured projects.
+
+            $FORMATTING_INSTRUCTIONS
 
             $BOUNDARY_INSTRUCTIONS
         """.trimIndent()
@@ -161,6 +182,8 @@ class SystemPromptBuilder {
 
             Use the JSON data to answer detailed questions about projects.
 
+            $FORMATTING_INSTRUCTIONS
+
             $BOUNDARY_INSTRUCTIONS
         """.trimIndent()
 
@@ -172,6 +195,8 @@ class SystemPromptBuilder {
             - A project index with all projects (id, name, role, period, tagline)
 
             Note: Detailed project information is not available. Use the project index for basic project info.
+
+            $FORMATTING_INSTRUCTIONS
 
             $BOUNDARY_INSTRUCTIONS
         """.trimIndent()
@@ -185,6 +210,8 @@ class SystemPromptBuilder {
             - Full project data in JSON format (contains all fields from the original data)
 
             Use the JSON data to answer detailed questions about projects.
+
+            $FORMATTING_INSTRUCTIONS
 
             $BOUNDARY_INSTRUCTIONS
         """.trimIndent()
