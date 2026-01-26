@@ -3,14 +3,33 @@ package io.github.devmugi.cv.agent.analytics
 import android.content.Context
 import android.os.Bundle
 import com.google.firebase.analytics.FirebaseAnalytics
+import io.github.devmugi.cv.agent.identity.InstallationIdentity
+import kotlinx.coroutines.runBlocking
 
 /**
  * Firebase Analytics implementation of [Analytics].
  * Wraps Firebase Analytics SDK to provide analytics tracking.
  */
-class FirebaseAnalyticsWrapper(context: Context) : Analytics {
+class FirebaseAnalyticsWrapper(
+    context: Context,
+    private val installationIdentity: InstallationIdentity? = null
+) : Analytics {
 
     private val firebaseAnalytics: FirebaseAnalytics = FirebaseAnalytics.getInstance(context)
+
+    init {
+        // Set installation ID as user property for correlation with traces
+        installationIdentity?.let { identity ->
+            runBlocking {
+                try {
+                    val id = identity.getInstallationId()
+                    firebaseAnalytics.setUserProperty("installation_id", id)
+                } catch (e: Exception) {
+                    // Log but don't fail - analytics can work without this
+                }
+            }
+        }
+    }
 
     override fun logEvent(event: AnalyticsEvent) {
         val bundle = Bundle().apply {
