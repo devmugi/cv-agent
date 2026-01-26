@@ -125,8 +125,8 @@ fun ChatScreen(
         state.error?.let { error ->
             toastState.show(
                 message = when (error) {
-                    is ChatError.Network -> error.message
-                    is ChatError.Api -> error.message
+                    is ChatError.Network -> "Unable to connect. Please check your internet connection."
+                    is ChatError.Api -> "Something went wrong. Please try again."
                     ChatError.RateLimit -> "Too many requests. Please wait a moment."
                 },
                 style = ArcaneToastStyle.Error
