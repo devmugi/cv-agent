@@ -364,9 +364,9 @@
     {
       "type": "article",
       "icon": "fas fa-newspaper",
-      "label": "Launch Announcement (TechCrunch)",
-      "url": "https://techcrunch.com/2019/10/30/discovery-launches-food-network-kitchen/",
-      "source": "TechCrunch",
+      "label": "Launch Announcement (PR Newswire)",
+      "url": "https://www.prnewswire.com/news-releases/discovery-incs-food-network-kitchen-officially-launches-in-us-300942984.html",
+      "source": "PR Newswire",
       "active": true
     }
   ],
