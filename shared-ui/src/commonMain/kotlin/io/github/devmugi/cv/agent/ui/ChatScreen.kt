@@ -77,7 +77,14 @@ fun ChatScreen(
     onRegenerateMessage: (String) -> Unit = {},
     onClearHistory: (() -> Unit)? = null,
     onNavigateToCareerTimeline: () -> Unit = {},
-    onNavigateToProject: (String) -> Unit = {}
+    onNavigateToProject: (String) -> Unit = {},
+    // Voice input
+    isRecording: Boolean = false,
+    isTranscribing: Boolean = false,
+    onRecordingStart: () -> Unit = {},
+    onRecordingStop: () -> Unit = {},
+    onRequestMicPermission: () -> Unit = {},
+    hasMicPermission: Boolean = false
 ) {
     var inputText by remember { mutableStateOf("") }
     var isInputFocused by remember { mutableStateOf(false) }
@@ -204,8 +211,16 @@ fun ChatScreen(
                     },
                     placeholder = "Ask about my experience...",
                     enabled = !(state.isLoading || state.isStreaming),
+                    isRecording = isRecording,
+                    isTranscribing = isTranscribing,
+                    onRecordingStart = onRecordingStart,
+                    onRecordingStop = onRecordingStop,
                     onVoiceToTextClick = {
-                        toastState.show("Voice to text not implemented yet")
+                        if (hasMicPermission) {
+                            onRecordingStart()
+                        } else {
+                            onRequestMicPermission()
+                        }
                     },
                     onAudioRecordClick = {
                         toastState.show("Voice conversation not implemented yet")
