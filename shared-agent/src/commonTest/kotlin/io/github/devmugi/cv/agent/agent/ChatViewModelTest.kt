@@ -304,6 +304,30 @@ class ChatViewModelTest {
         assertNotNull(event, "HistoryCleared event should be logged")
         assertTrue(event.messageCount >= 1)
     }
+
+    @Test
+    fun streamResponseLogsResponseCompletedEvent() = runTest {
+        fakeApiClient.responseChunks = listOf("Hello", " world")
+
+        viewModel.sendMessage("Test")
+        advanceUntilIdle()
+
+        val event = fakeAnalytics.findEvent<AnalyticsEvent.Chat.ResponseCompleted>()
+        assertNotNull(event, "ResponseCompleted event should be logged")
+        assertTrue(event.responseTimeMs >= 0)
+    }
+
+    @Test
+    fun streamResponseErrorLogsErrorDisplayedEvent() = runTest {
+        fakeApiClient.shouldFail = GroqApiException.NetworkError("Test error")
+
+        viewModel.sendMessage("Test")
+        advanceUntilIdle()
+
+        val event = fakeAnalytics.findEvent<AnalyticsEvent.Error.ErrorDisplayed>()
+        assertNotNull(event, "ErrorDisplayed event should be logged")
+        assertEquals(AnalyticsEvent.Error.ErrorType.NETWORK, event.errorType)
+    }
 }
 
 // Test doubles
