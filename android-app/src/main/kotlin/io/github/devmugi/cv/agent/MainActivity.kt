@@ -249,7 +249,7 @@ private data class AgentDataResult(
 )
 
 @OptIn(ExperimentalPermissionsApi::class)
-@Suppress("FunctionNaming", "LongParameterList")
+@Suppress("FunctionNaming", "LongParameterList", "LongMethod")
 @Composable
 private fun AppContent(
     currentScreen: Screen,
