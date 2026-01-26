@@ -1,6 +1,7 @@
 package io.github.devmugi.cv.agent
 
 import android.app.Application
+import io.github.devmugi.cv.agent.crashlytics.crashlyticsModule
 import io.github.devmugi.cv.agent.di.analyticsModule
 import io.github.devmugi.cv.agent.di.appModule
 import io.github.devmugi.cv.agent.di.tracingModule
@@ -20,7 +21,7 @@ class CVAgentApplication : Application() {
             androidLogger()
             androidContext(this@CVAgentApplication)
             allowOverride(true) // Allow tracingModule to override appModule definitions
-            modules(appModule, viewModelModule, tracingModule, analyticsModule)
+            modules(appModule, viewModelModule, tracingModule, analyticsModule, crashlyticsModule)
         }
     }
 }
