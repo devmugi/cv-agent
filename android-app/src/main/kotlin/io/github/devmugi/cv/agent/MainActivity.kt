@@ -42,6 +42,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.core.view.WindowCompat
@@ -65,7 +66,10 @@ import io.github.devmugi.cv.agent.career.models.PersonalInfo
 import io.github.devmugi.cv.agent.career.models.ProjectDataTimeline
 import io.github.devmugi.cv.agent.ui.CareerProjectDetailsScreen
 import io.github.devmugi.cv.agent.ui.CareerProjectsTimelineScreen
-import io.github.devmugi.cv.agent.ui.ChatScreen
+import io.github.devmugi.cv.agent.ui.ChatScreenWrapper
+import io.github.devmugi.cv.agent.agent.VoiceInputController
+import io.github.devmugi.cv.agent.api.GroqAudioClient
+import io.github.devmugi.cv.agent.api.audio.AudioRecorder
 import io.github.devmugi.cv.agent.analytics.Analytics
 import io.github.devmugi.cv.agent.analytics.AnalyticsEvent
 import kotlinx.serialization.json.Json
@@ -162,6 +166,14 @@ private fun CVAgentApp(
     var currentScreen by remember { mutableStateOf(Screen.Chat) }
     var selectedProject by remember { mutableStateOf<CareerProject?>(null) }
 
+    // Voice input components
+    val audioRecorder: AudioRecorder = koinInject()
+    val audioClient: GroqAudioClient = koinInject()
+    val voiceControllerScope = rememberCoroutineScope()
+    val voiceController = remember {
+        VoiceInputController(audioRecorder, audioClient, voiceControllerScope)
+    }
+
     LaunchedEffect(Unit) {
         if (agentDataResult == null) {
             agentDataResult = loadAgentData()
@@ -181,6 +193,7 @@ private fun CVAgentApp(
         state = state,
         toastState = toastState,
         viewModel = viewModel,
+        voiceController = voiceController,
         careerProjects = dataResult.timelineProjects,
         careerProjectsMap = dataResult.projectsMap,
         selectedProject = selectedProject,
@@ -237,6 +250,7 @@ private fun AppContent(
     state: io.github.devmugi.cv.agent.domain.models.ChatState,
     toastState: ArcaneToastState,
     viewModel: ChatViewModel,
+    voiceController: VoiceInputController,
     careerProjects: List<ProjectDataTimeline>,
     careerProjectsMap: Map<String, CareerProject>,
     selectedProject: CareerProject?,
@@ -288,17 +302,12 @@ private fun AppContent(
             label = "screenTransition"
         ) { screen ->
             when (screen) {
-                Screen.Chat -> ChatScreen(
-                    state = state,
+                Screen.Chat -> ChatScreenWrapper(
+                    chatState = state,
+                    viewModel = viewModel,
+                    voiceController = voiceController,
                     toastState = toastState,
-                    onSendMessage = viewModel::sendMessage,
                     analytics = analytics,
-                    onSuggestionClick = viewModel::onSuggestionClicked,
-                    onCopyMessage = viewModel::onMessageCopied,
-                    onLikeMessage = viewModel::onMessageLiked,
-                    onDislikeMessage = viewModel::onMessageDisliked,
-                    onRegenerateMessage = viewModel::onRegenerateClicked,
-                    onClearHistory = viewModel::clearHistory,
                     onNavigateToCareerTimeline = { onScreenChange(Screen.CareerTimeline) },
                     onNavigateToProject = { projectId ->
                         careerProjectsMap[projectId]?.let { project ->
