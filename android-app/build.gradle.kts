@@ -13,6 +13,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.compose.multiplatform)
     alias(libs.plugins.kotlin.compose.compiler)
+    alias(libs.plugins.google.services)
 }
 
 android {
@@ -41,10 +42,12 @@ android {
     buildTypes {
         getByName("debug") {
             buildConfigField("Boolean", "ENABLE_PHOENIX_TRACING", "true")
+            buildConfigField("Boolean", "ENABLE_ANALYTICS", "false")
         }
         getByName("release") {
             isMinifyEnabled = false
             buildConfigField("Boolean", "ENABLE_PHOENIX_TRACING", "false")
+            buildConfigField("Boolean", "ENABLE_ANALYTICS", "true")
         }
         all {
             val apiKey = localProperties.getProperty("GROQ_API_KEY")
@@ -77,6 +80,7 @@ android {
 
 dependencies {
     implementation(projects.shared)
+    implementation(projects.sharedAnalytics)
     implementation(projects.sharedCareerProjects)
     implementation(projects.sharedAgentApi)
 

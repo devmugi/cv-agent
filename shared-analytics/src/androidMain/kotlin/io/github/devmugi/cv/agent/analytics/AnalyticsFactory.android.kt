@@ -1,21 +1,17 @@
 package io.github.devmugi.cv.agent.analytics
 
+import android.content.Context
+
 /**
  * Android implementation of [createPlatformAnalytics].
  *
- * Phase 1: Returns NOOP implementation
- * Phase 2: Will return FirebaseAnalyticsWrapper when Firebase is integrated
- *
  * @param context Android Context (required for Firebase Analytics)
- * @return Analytics implementation (NOOP in Phase 1, Firebase in Phase 2)
+ * @return FirebaseAnalyticsWrapper if context provided, NOOP otherwise
  */
 actual fun createPlatformAnalytics(context: Any?): Analytics {
-    // Phase 1: Return NOOP
-    // Phase 2: Uncomment and return FirebaseAnalyticsWrapper
-    // return if (context != null) {
-    //     FirebaseAnalyticsWrapper(context as android.content.Context)
-    // } else {
-    //     Analytics.NOOP
-    // }
-    return Analytics.NOOP
+    return if (context != null) {
+        FirebaseAnalyticsWrapper(context as Context)
+    } else {
+        Analytics.NOOP
+    }
 }

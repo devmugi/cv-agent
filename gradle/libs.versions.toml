@@ -46,6 +46,9 @@ detekt = "1.23.8"
 opentelemetry = "1.40.0"
 opentelemetry-semconv = "1.25.0-alpha"
 
+# Firebase
+google-services = "4.4.2"
+
 # Testing
 kotlinx-coroutines = "1.10.2"
 junit = "4.13.2"
@@ -151,6 +154,9 @@ opentelemetry-sdk = { module = "io.opentelemetry:opentelemetry-sdk", version.ref
 opentelemetry-exporter-otlp = { module = "io.opentelemetry:opentelemetry-exporter-otlp", version.ref = "opentelemetry" }
 opentelemetry-semconv = { module = "io.opentelemetry.semconv:opentelemetry-semconv", version.ref = "opentelemetry-semconv" }
 
+# Firebase
+firebase-analytics = { module = "com.google.firebase:firebase-analytics-ktx", version = "22.4.0" }
+
 [plugins]
 # Kotlin
 kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
@@ -169,3 +175,6 @@ compose-multiplatform = { id = "org.jetbrains.compose", version.ref = "compose-m
 # Quality
 ktlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlint" }
 detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
+
+# Firebase
+google-services = { id = "com.google.gms.google-services", version.ref = "google-services" }
