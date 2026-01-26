@@ -33,3 +33,31 @@ class CrashlyticsLogWriter(
         }
     }
 }
+
+/**
+ * Creates a [CrashlyticsLogWriter] configured for the build type.
+ *
+ * Debug builds: All logs, no redaction
+ * Release builds: Info+ only, redaction enabled
+ *
+ * @param crashReporter The crash reporter to forward logs to
+ * @param isDebug Whether this is a debug build
+ */
+fun createCrashlyticsLogWriter(
+    crashReporter: CrashReporter,
+    isDebug: Boolean
+): CrashlyticsLogWriter {
+    return if (isDebug) {
+        CrashlyticsLogWriter(
+            crashReporter = crashReporter,
+            minSeverity = Severity.Verbose,
+            redactMessages = false
+        )
+    } else {
+        CrashlyticsLogWriter(
+            crashReporter = crashReporter,
+            minSeverity = Severity.Info,
+            redactMessages = true
+        )
+    }
+}
