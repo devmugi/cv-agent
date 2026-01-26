@@ -158,7 +158,7 @@ opentelemetry-semconv = { module = "io.opentelemetry.semconv:opentelemetry-semco
 # Firebase
 firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebase-bom" }
 firebase-analytics = { module = "com.google.firebase:firebase-analytics-ktx", version = "22.4.0" }
-firebase-installations = { module = "com.google.firebase:firebase-installations" }
+firebase-installations = { module = "com.google.firebase:firebase-installations", version = "19.0.1" }
 
 [plugins]
 # Kotlin
