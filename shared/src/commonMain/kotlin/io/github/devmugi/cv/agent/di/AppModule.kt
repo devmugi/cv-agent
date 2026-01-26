@@ -4,6 +4,8 @@ import io.github.devmugi.cv.agent.GroqConfig
 import io.github.devmugi.cv.agent.agent.SuggestionExtractor
 import io.github.devmugi.cv.agent.agent.SystemPromptBuilder
 import io.github.devmugi.cv.agent.api.GroqApiClient
+import io.github.devmugi.cv.agent.domain.repository.ChatRepository
+import io.github.devmugi.cv.agent.repository.DataStoreChatRepository
 import io.github.devmugi.cv.agent.api.RateLimiter
 import io.github.devmugi.cv.agent.api.TokenBucketRateLimiter
 import io.ktor.client.HttpClient
@@ -36,6 +38,9 @@ val appModule = module {
     // Agent Layer
     single { SystemPromptBuilder() }
     single { SuggestionExtractor() }
+
+    // Repository Layer
+    single<ChatRepository> { DataStoreChatRepository(get()) }
 
     // Note: ChatViewModel is registered in platform-specific viewModelModule
     // to properly handle SavedStateHandle injection
