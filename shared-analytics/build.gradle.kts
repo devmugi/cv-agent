@@ -28,7 +28,7 @@ kotlin {
 
     sourceSets {
         commonMain.dependencies {
-            // No dependencies - pure analytics abstraction
+            api(projects.sharedIdentity)
         }
 
         commonTest.dependencies {
