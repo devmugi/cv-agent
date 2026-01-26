@@ -37,12 +37,14 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.core.view.WindowCompat
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -94,6 +96,11 @@ private fun ThemeVariant.toColors(): ArcaneColors = when (this) {
     ThemeVariant.AGENT2L -> ArcaneColors.agent2Light()
 }
 
+private fun ThemeVariant.isLight(): Boolean = when (this) {
+    ThemeVariant.P2L, ThemeVariant.CLAUDE_L, ThemeVariant.AGENT2L -> true
+    else -> false
+}
+
 private enum class Screen { Chat, CareerTimeline, ProjectDetails }
 
 private val projectJsonFiles = listOf(
@@ -119,6 +126,14 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             var currentTheme by rememberSaveable { mutableStateOf(ThemeVariant.AGENT2L) }
+
+            // Update status bar icons based on theme (dark icons for light themes)
+            val isLightTheme = currentTheme.isLight()
+            SideEffect {
+                val windowInsetsController = WindowCompat.getInsetsController(window, window.decorView)
+                windowInsetsController.isAppearanceLightStatusBars = isLightTheme
+                windowInsetsController.isAppearanceLightNavigationBars = isLightTheme
+            }
 
             ArcaneTheme(colors = currentTheme.toColors()) {
                 CVAgentApp(
