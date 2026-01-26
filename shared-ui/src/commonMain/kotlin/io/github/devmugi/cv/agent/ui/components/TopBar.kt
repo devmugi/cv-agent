@@ -42,6 +42,8 @@ import compose.icons.simpleicons.Github
 import compose.icons.simpleicons.Linkedin
 import io.github.devmugi.arcane.design.foundation.primitives.ArcaneSurface
 import io.github.devmugi.arcane.design.foundation.theme.ArcaneTheme
+import io.github.devmugi.cv.agent.analytics.Analytics
+import io.github.devmugi.cv.agent.analytics.AnalyticsEvent
 
 fun buildTopBarTitle(): String = "<DH/> Denys Honcharenko CV"
 
@@ -50,7 +52,8 @@ private val LinkedInBlue = Color(0xFF0A66C2)
 @Composable
 fun CVAgentTopBar(
     onCareerClick: () -> Unit = {},
-    showContactBanner: Boolean = true
+    showContactBanner: Boolean = true,
+    analytics: Analytics = Analytics.NOOP
 ) {
     val uriHandler = LocalUriHandler.current
 
@@ -77,7 +80,15 @@ fun CVAgentTopBar(
                 Spacer(modifier = Modifier.weight(1f))
                 ArcaneTextButton(
                     text = "Career",
-                    onClick = onCareerClick,
+                    onClick = {
+                        analytics.logEvent(
+                            AnalyticsEvent.Navigation.ScreenView(
+                                screenName = AnalyticsEvent.Navigation.Screen.CAREER_TIMELINE,
+                                previousScreen = AnalyticsEvent.Navigation.Screen.CHAT
+                            )
+                        )
+                        onCareerClick()
+                    },
                     style = ArcaneButtonStyle.Outlined(),
                     size = ArcaneButtonSize.Medium
                 )
@@ -107,7 +118,8 @@ fun CVAgentTopBar(
                 },
                 onPdfClick = {
                     uriHandler.openUri("https://raw.githubusercontent.com/devmugi/devmugi/main/cv/Denys%20Honcharenko%20CV.pdf")
-                }
+                },
+                analytics = analytics
             )
         }
 
@@ -135,8 +147,19 @@ private fun ContactBanner(
     onPhoneClick: () -> Unit,
     onCVClick: () -> Unit,
     onPdfClick: () -> Unit,
+    analytics: Analytics,
     modifier: Modifier = Modifier
 ) {
+    fun logAndOpen(linkType: AnalyticsEvent.Link.LinkType, url: String, action: () -> Unit) {
+        analytics.logEvent(
+            AnalyticsEvent.Link.ExternalLinkClicked(
+                linkType = linkType,
+                url = url
+            )
+        )
+        action()
+    }
+
     Column(
         modifier = modifier
             .fillMaxWidth()
@@ -156,33 +179,57 @@ private fun ContactBanner(
             ContactIconButton(
                 icon = SimpleIcons.Linkedin,
                 contentDescription = "LinkedIn",
-                onClick = onLinkedInClick,
+                onClick = {
+                    logAndOpen(AnalyticsEvent.Link.LinkType.LINKEDIN, "linkedin.com/in/denyshoncharenko") {
+                        onLinkedInClick()
+                    }
+                },
                 tint = LinkedInBlue
             )
             ContactIconButton(
                 icon = SimpleIcons.Github,
                 contentDescription = "GitHub",
-                onClick = onGitHubClick
+                onClick = {
+                    logAndOpen(AnalyticsEvent.Link.LinkType.GITHUB, "github.com/devmugi") {
+                        onGitHubClick()
+                    }
+                }
             )
             ContactIconButton(
                 icon = Icons.Filled.Email,
                 contentDescription = "Email",
-                onClick = onEmailClick
+                onClick = {
+                    logAndOpen(AnalyticsEvent.Link.LinkType.EMAIL, "aidevmugi@gmail.com") {
+                        onEmailClick()
+                    }
+                }
             )
             ContactIconButton(
                 icon = Icons.Filled.Phone,
                 contentDescription = "Phone",
-                onClick = onPhoneClick
+                onClick = {
+                    logAndOpen(AnalyticsEvent.Link.LinkType.PHONE, "+32470383388") {
+                        onPhoneClick()
+                    }
+                }
             )
             ContactIconButton(
                 icon = Icons.Filled.Language,
                 contentDescription = "Website",
-                onClick = onCVClick
+                onClick = {
+                    logAndOpen(AnalyticsEvent.Link.LinkType.CV_WEBSITE, "devmugi.github.io") {
+                        onCVClick()
+                    }
+                }
             )
             ContactIconButton(
                 icon = Icons.Filled.PictureAsPdf,
                 contentDescription = "PDF CV",
-                onClick = onPdfClick
+                onClick = {
+                    logAndOpen(AnalyticsEvent.Link.LinkType.CV_PDF, "cv.pdf") {
+                        onPdfClick()
+                    }
+                }
             )
         }
     }
