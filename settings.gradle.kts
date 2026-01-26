@@ -33,6 +33,7 @@ dependencyResolutionManagement {
 include(":shared-domain")
 include(":shared-identity")
 include(":shared-analytics")
+include(":shared-crashlytics")
 include(":shared-career-projects")
 include(":shared-agent-api")
 include(":shared-agent")
