@@ -30,6 +30,7 @@ kotlin {
     sourceSets {
         commonMain.dependencies {
             api(projects.sharedDomain)
+            api(projects.sharedIdentity)
 
             // Networking - api because GroqApiClient constructor exposes HttpClient
             api(libs.ktor.client.core)
