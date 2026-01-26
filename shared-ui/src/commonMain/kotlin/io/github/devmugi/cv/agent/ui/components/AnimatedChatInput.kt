@@ -16,10 +16,10 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusChanged
-import androidx.compose.ui.unit.dp
 import io.github.devmugi.arcane.chat.components.input.ArcaneAgentChatInput
 import io.github.devmugi.arcane.design.foundation.theme.ArcaneTheme
 
+@Suppress("UnusedParameter") // onRecordingStart/onRecordingStop reserved for future press-and-hold gesture
 @Composable
 fun AnimatedChatInput(
     value: String,

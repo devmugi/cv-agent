@@ -22,6 +22,7 @@ class GroqAudioClient(
     companion object {
         private const val TAG = "GroqAudioClient"
         private const val BASE_URL = "https://api.groq.com/openai/v1/audio/transcriptions"
+        private const val LOG_PREVIEW_LENGTH = 50
         const val DEFAULT_MODEL = "whisper-large-v3-turbo"
     }
 
@@ -61,7 +62,7 @@ class GroqAudioClient(
                 HttpStatusCode.OK -> {
                     val body = response.bodyAsText()
                     val transcription = json.decodeFromString<TranscriptionResponse>(body)
-                    Logger.d(TAG) { "Transcription successful: ${transcription.text.take(50)}..." }
+                    Logger.d(TAG) { "Transcription successful: ${transcription.text.take(LOG_PREVIEW_LENGTH)}..." }
                     Result.success(transcription.text)
                 }
                 HttpStatusCode.TooManyRequests -> {
