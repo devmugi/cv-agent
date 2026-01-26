@@ -26,7 +26,16 @@ fun CareerProjectDetailsScreen(
 
     CareerProjectDetailsScreenScaffold(
         project = project,
-        onBackClick = onBackClick,
+        onBackClick = {
+            analytics.logEvent(
+                AnalyticsEvent.Navigation.BackNavigation(
+                    fromScreen = "project_details",
+                    toScreen = "career_timeline",
+                    method = AnalyticsEvent.Navigation.NavigationMethod.BUTTON
+                )
+            )
+            onBackClick()
+        },
         onLinkClick = { url ->
             analytics.logEvent(
                 AnalyticsEvent.Link.ProjectLinkClicked(

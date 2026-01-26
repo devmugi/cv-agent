@@ -35,7 +35,16 @@ fun CareerProjectsTimelineScreen(
             )
             onProjectClick(project)
         },
-        onBackClick = onBackClick,
+        onBackClick = {
+            analytics.logEvent(
+                AnalyticsEvent.Navigation.BackNavigation(
+                    fromScreen = "career_timeline",
+                    toScreen = "chat",
+                    method = AnalyticsEvent.Navigation.NavigationMethod.BUTTON
+                )
+            )
+            onBackClick()
+        },
         modifier = modifier
     )
 }

@@ -65,6 +65,7 @@ import io.github.devmugi.cv.agent.ui.CareerProjectDetailsScreen
 import io.github.devmugi.cv.agent.ui.CareerProjectsTimelineScreen
 import io.github.devmugi.cv.agent.ui.ChatScreen
 import io.github.devmugi.cv.agent.analytics.Analytics
+import io.github.devmugi.cv.agent.analytics.AnalyticsEvent
 import kotlinx.serialization.json.Json
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.koin.androidx.compose.koinViewModel
@@ -233,11 +234,19 @@ private fun AppContent(
 ) {
     // Handle system back gesture/button for custom navigation
     BackHandler(enabled = currentScreen != Screen.Chat) {
-        when (currentScreen) {
-            Screen.ProjectDetails -> onScreenChange(Screen.CareerTimeline)
-            Screen.CareerTimeline -> onScreenChange(Screen.Chat)
-            Screen.Chat -> { /* Let system handle - exits app */ }
+        val (fromScreen, toScreen, nextScreen) = when (currentScreen) {
+            Screen.ProjectDetails -> Triple("project_details", "career_timeline", Screen.CareerTimeline)
+            Screen.CareerTimeline -> Triple("career_timeline", "chat", Screen.Chat)
+            Screen.Chat -> return@BackHandler // Let system handle - exits app
         }
+        analytics.logEvent(
+            AnalyticsEvent.Navigation.BackNavigation(
+                fromScreen = fromScreen,
+                toScreen = toScreen,
+                method = AnalyticsEvent.Navigation.NavigationMethod.GESTURE
+            )
+        )
+        onScreenChange(nextScreen)
     }
 
     Box {
