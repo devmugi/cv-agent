@@ -15,9 +15,14 @@ import io.opentelemetry.api.trace.Tracer
 import io.opentelemetry.exporter.otlp.http.trace.OtlpHttpSpanExporter
 import io.opentelemetry.exporter.otlp.http.trace.OtlpHttpSpanExporterBuilder
 import io.opentelemetry.sdk.OpenTelemetrySdk
+import io.opentelemetry.sdk.common.CompletableResultCode
+import io.opentelemetry.sdk.resources.Resource
 import io.opentelemetry.sdk.trace.SdkTracerProvider
+import io.opentelemetry.sdk.trace.data.SpanData
 import io.opentelemetry.sdk.trace.export.BatchSpanProcessor
 import io.opentelemetry.sdk.trace.export.SimpleSpanProcessor
+import io.opentelemetry.sdk.trace.export.SpanExporter
+import io.opentelemetry.semconv.ServiceAttributes
 import java.util.concurrent.TimeUnit
 
 /**
@@ -30,7 +35,8 @@ import java.util.concurrent.TimeUnit
 class OpenTelemetryArizeTracer private constructor(
     private val tracer: Tracer,
     private val tracerProvider: SdkTracerProvider,
-    private val mode: TracingMode
+    private val mode: TracingMode,
+    private val projectName: String?
 ) : ArizeTracer {
 
     override fun startAgentSpan(block: AgentSpanBuilder.() -> Unit): AgentSpan {
@@ -45,6 +51,9 @@ class OpenTelemetryArizeTracer private constructor(
 
         // OpenInference semantic conventions for AGENT
         spanBuilder.setAttribute("openinference.span.kind", "AGENT")
+
+        // Arize project name (required for Arize Cloud)
+        projectName?.let { spanBuilder.setAttribute("arize.project.name", it) }
 
         // Session tracking
         builder.sessionId?.let { spanBuilder.setAttribute("session.id", it) }
@@ -83,6 +92,9 @@ class OpenTelemetryArizeTracer private constructor(
         // OpenInference semantic conventions
         spanBuilder.setAttribute("openinference.span.kind", "LLM")
         spanBuilder.setAttribute("llm.model_name", builder.model!!)
+
+        // Arize project name (required for Arize Cloud)
+        projectName?.let { spanBuilder.setAttribute("arize.project.name", it) }
 
         // Provider
         builder.provider?.let { spanBuilder.setAttribute("llm.provider", it) }
@@ -290,6 +302,39 @@ class OpenTelemetryArizeTracer private constructor(
         }
     }
 
+    /**
+     * Wrapper around SpanExporter that logs export success/failure for debugging.
+     */
+    private class LoggingSpanExporter(
+        private val delegate: SpanExporter,
+        private val endpoint: String
+    ) : SpanExporter {
+        override fun export(spans: Collection<SpanData>): CompletableResultCode {
+            val spanNames = spans.map { it.name }
+            Logger.d(TAG) { "Exporting ${spans.size} span(s) to $endpoint: $spanNames" }
+
+            val result = delegate.export(spans)
+            result.whenComplete {
+                if (result.isSuccess) {
+                    Logger.i(TAG) { "SUCCESS: Exported ${spans.size} span(s) to Arize Cloud" }
+                } else {
+                    Logger.e(TAG) { "FAILED: Export to Arize Cloud failed for ${spans.size} span(s)" }
+                }
+            }
+            return result
+        }
+
+        override fun flush(): CompletableResultCode {
+            Logger.d(TAG) { "Flushing exporter..." }
+            return delegate.flush()
+        }
+
+        override fun shutdown(): CompletableResultCode {
+            Logger.d(TAG) { "Shutting down exporter..." }
+            return delegate.shutdown()
+        }
+    }
+
     companion object {
         private const val TAG = "ArizeTracer"
         private const val MAX_CONTENT_LENGTH = 4000
@@ -306,17 +351,20 @@ class OpenTelemetryArizeTracer private constructor(
          *
          * @param endpoint The OTLP endpoint URL. Default: Phoenix local (http://localhost:6006/v1/traces)
          * @param serviceName The service name for traces. Default: "app"
+         * @param projectName The Arize project name (required for Arize Cloud)
          * @param mode Tracing mode: PRODUCTION (batch, async) or TESTING (simple, sync)
          * @param headers Optional HTTP headers (e.g., for Arize Cloud authentication)
          */
         fun create(
             endpoint: String = DEFAULT_ENDPOINT,
             serviceName: String = "app",
+            projectName: String? = null,
             mode: TracingMode = TracingMode.PRODUCTION,
             headers: Map<String, String>? = null
         ): OpenTelemetryArizeTracer {
             Logger.d(TAG) {
-                "Creating Arize tracer - endpoint: $endpoint, service: $serviceName, mode: $mode"
+                "Creating Arize tracer - endpoint: $endpoint, service: $serviceName, " +
+                    "project: $projectName, mode: $mode"
             }
 
             val exporterBuilder: OtlpHttpSpanExporterBuilder = OtlpHttpSpanExporter.builder()
@@ -324,9 +372,12 @@ class OpenTelemetryArizeTracer private constructor(
 
             headers?.forEach { (key, value) ->
                 exporterBuilder.addHeader(key, value)
+                Logger.d(TAG) { "Added header: $key=${value.take(20)}..." }
             }
 
-            val exporter = exporterBuilder.build()
+            val baseExporter = exporterBuilder.build()
+            // Wrap with logging to see export success/failure
+            val exporter = LoggingSpanExporter(baseExporter, endpoint)
 
             val spanProcessor = when (mode) {
                 TracingMode.PRODUCTION -> BatchSpanProcessor.builder(exporter)
@@ -337,7 +388,17 @@ class OpenTelemetryArizeTracer private constructor(
                 TracingMode.TESTING -> SimpleSpanProcessor.create(exporter)
             }
 
+            // Build resource with required attributes for Arize Cloud
+            val resourceBuilder = Resource.builder()
+                .put(ServiceAttributes.SERVICE_NAME, serviceName)
+            projectName?.let {
+                resourceBuilder.put("arize.project.name", it)
+                Logger.d(TAG) { "Set arize.project.name resource attribute: $it" }
+            }
+            val resource = resourceBuilder.build()
+
             val tracerProvider = SdkTracerProvider.builder()
+                .setResource(resource)
                 .addSpanProcessor(spanProcessor)
                 .build()
 
@@ -346,7 +407,7 @@ class OpenTelemetryArizeTracer private constructor(
                 .build()
 
             Logger.d(TAG) { "Arize tracer created successfully" }
-            return OpenTelemetryArizeTracer(openTelemetry.getTracer(serviceName), tracerProvider, mode)
+            return OpenTelemetryArizeTracer(openTelemetry.getTracer(serviceName), tracerProvider, mode, projectName)
         }
     }
 }
