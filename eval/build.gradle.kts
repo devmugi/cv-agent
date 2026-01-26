@@ -109,10 +109,15 @@ tasks.withType<Test>().configureEach {
         environment("VARIANT_RUN_ID", project.findProperty("variantRun") ?: "")
 
         // Filter based on which task is requested
-        val runEval = project.gradle.startParameter.taskNames.any { it.contains("eval") && !it.contains("compare") }
+        val runEval = project.gradle.startParameter.taskNames.any { it.contains("eval") && !it.contains("compare") && !it.contains("caching") }
         val runCompare = project.gradle.startParameter.taskNames.any { it.contains("compare") }
+        val runCaching = project.gradle.startParameter.taskNames.any { it.contains("caching") }
 
-        if (runEval) {
+        if (runCaching) {
+            filter {
+                includeTestsMatching("*PromptCachingTest*")
+            }
+        } else if (runEval) {
             filter {
                 includeTestsMatching("*EvalRunnerTest*")
             }
@@ -136,6 +141,12 @@ tasks.register("compare") {
     group = "verification"
 }
 
+// Convenience task to run prompt caching evaluation
+tasks.register("caching") {
+    description = "Evaluate Groq prompt caching with GPT-OSS models"
+    group = "verification"
+}
+
 // Wire up dependencies after evaluation
 afterEvaluate {
     tasks.findByName("testAndroidUnitTest")?.let { testTask ->
@@ -143,6 +154,9 @@ afterEvaluate {
             dependsOn(testTask)
         }
         tasks.named("compare") {
+            dependsOn(testTask)
+        }
+        tasks.named("caching") {
             dependsOn(testTask)
         }
     }

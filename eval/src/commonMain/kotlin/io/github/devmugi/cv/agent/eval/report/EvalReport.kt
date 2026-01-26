@@ -17,6 +17,8 @@ data class QuestionResult(
     val promptTokens: Int = 0,
     val completionTokens: Int = 0,
     val totalTokens: Int = 0,
+    val cachedTokens: Int = 0,
+    val cacheHitRate: Double = 0.0, // cachedTokens / promptTokens
     val suggestions: List<String> = emptyList(),
     val success: Boolean,
     val errorMessage: String? = null
@@ -48,6 +50,8 @@ data class TurnResult(
     val promptTokens: Int = 0,
     val completionTokens: Int = 0,
     val totalTokens: Int = 0,
+    val cachedTokens: Int = 0,
+    val cacheHitRate: Double = 0.0,
     val suggestions: List<String> = emptyList()
 )
 
@@ -65,6 +69,8 @@ data class RunSummary(
     val totalPromptTokens: Int,
     val totalCompletionTokens: Int,
     val totalTokens: Int,
+    val totalCachedTokens: Int = 0,
+    val avgCacheHitRate: Double = 0.0,
     val p50LatencyMs: Long,
     val p95LatencyMs: Long
 )

@@ -54,7 +54,10 @@ enum class DataFormat {
     JSON,
 
     /** Markdown with headers */
-    MARKDOWN
+    MARKDOWN,
+
+    /** Uses production SystemPromptBuilder - exact match to app */
+    APP_DEFAULT
 }
 
 /**

@@ -3,6 +3,7 @@ package io.github.devmugi.cv.agent.eval.runner
 import co.touchlab.kermit.Logger
 import io.github.devmugi.cv.agent.agent.AgentDataProvider
 import io.github.devmugi.cv.agent.agent.ProjectContextMode
+import io.github.devmugi.cv.agent.agent.SystemPromptBuilder
 import io.github.devmugi.arize.tracing.OpenTelemetryArizeTracer
 import io.github.devmugi.arize.tracing.models.TracingMode
 import io.github.devmugi.cv.agent.api.GroqApiClient
@@ -97,11 +98,10 @@ class EvalRunner(private val config: EvalConfig) {
             }
         }
 
-        // Note: GroqApiClient uses hardcoded model (llama-3.3-70b-versatile)
-        // To test different models, modify GroqApiClient.MODEL constant
         apiClient = GroqApiClient(
             httpClient = httpClient,
             apiKey = apiKey,
+            model = config.model,
             tracer = tracer
         )
 
@@ -514,6 +514,13 @@ class EvalRunner(private val config: EvalConfig) {
 
     private fun buildSystemPrompt(): String {
         val dataProvider = createDataProvider()
+
+        // For APP_DEFAULT, use production SystemPromptBuilder (exact match to app)
+        if (config.dataFormat == DataFormat.APP_DEFAULT) {
+            return SystemPromptBuilder().build(dataProvider)
+        }
+
+        // Otherwise use existing custom formatting
         val hasFeaturedOnly = config.projectMode == ProjectContextMode.CURATED
 
         val instructions = PromptVariants.getInstructions(config.promptVariant, hasFeaturedOnly)
@@ -550,6 +557,14 @@ class EvalRunner(private val config: EvalConfig) {
                 appendLine("GitHub: ${personalInfo.github}")
                 appendLine()
                 appendLine("Summary: ${personalInfo.summary}")
+                // Include agentClarifications if present
+                if (personalInfo.agentClarifications.isNotBlank()) {
+                    appendLine()
+                    appendLine("# IMPORTANT CLARIFICATIONS")
+                    appendLine("The following clarifications take precedence over any conflicting project data:")
+                    appendLine()
+                    appendLine(personalInfo.agentClarifications)
+                }
             }
 
             DataFormat.JSON -> buildString {
@@ -573,7 +588,17 @@ class EvalRunner(private val config: EvalConfig) {
                 appendLine()
                 appendLine("## Summary")
                 appendLine(personalInfo.summary)
+                // Include agentClarifications if present
+                if (personalInfo.agentClarifications.isNotBlank()) {
+                    appendLine()
+                    appendLine("## Important Clarifications")
+                    appendLine("The following clarifications take precedence over any conflicting project data:")
+                    appendLine()
+                    appendLine(personalInfo.agentClarifications)
+                }
             }
+
+            DataFormat.APP_DEFAULT -> error("APP_DEFAULT uses SystemPromptBuilder directly")
         }
     }
 
@@ -610,6 +635,8 @@ class EvalRunner(private val config: EvalConfig) {
                     appendLine()
                 }
             }
+
+            DataFormat.APP_DEFAULT -> error("APP_DEFAULT uses SystemPromptBuilder directly")
         }
     }
 
