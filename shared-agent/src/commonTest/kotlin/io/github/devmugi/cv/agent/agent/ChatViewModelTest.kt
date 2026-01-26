@@ -9,6 +9,7 @@ import io.github.devmugi.cv.agent.career.models.CareerProject
 import io.github.devmugi.cv.agent.career.models.PersonalInfo
 import io.github.devmugi.cv.agent.career.models.SkillCategory
 import io.github.devmugi.cv.agent.domain.models.ChatError
+import io.github.devmugi.cv.agent.domain.models.Message
 import io.github.devmugi.cv.agent.domain.models.MessageRole
 import io.github.devmugi.cv.agent.domain.models.defaultSuggestions
 import io.github.devmugi.cv.agent.analytics.Analytics
@@ -390,6 +391,78 @@ class ChatViewModelTest {
         assertNotNull(event)
         assertEquals("mcdonalds", event.projectId)
         assertEquals(0, event.position)
+    }
+
+    // ============ Repository Persistence Tests ============
+
+    @Test
+    fun sendMessageSavesMessagesToRepository() = runTest {
+        fakeApiClient.responseChunks = listOf("Response")
+        viewModel.sendMessage("Hello")
+        advanceUntilIdle()
+
+        assertTrue(fakeChatRepository.saveMessagesCalled)
+        val savedMessages = fakeChatRepository.getMessages()
+        assertEquals(2, savedMessages.size) // user + assistant
+    }
+
+    @Test
+    fun clearHistoryClearsRepository() = runTest {
+        fakeApiClient.responseChunks = listOf("Response")
+        viewModel.sendMessage("Hello")
+        advanceUntilIdle()
+
+        viewModel.clearHistory()
+        advanceUntilIdle()
+
+        assertTrue(fakeChatRepository.clearAllCalled)
+    }
+
+    @Test
+    fun viewModelRestoresMessagesFromRepository() = runTest {
+        val preloadedMessages = listOf(
+            Message(role = MessageRole.USER, content = "Restored message"),
+            Message(role = MessageRole.ASSISTANT, content = "Restored response")
+        )
+        fakeChatRepository.preloadMessages(preloadedMessages)
+
+        // Create new ViewModel that should load from repository
+        val restoredViewModel = ChatViewModel(
+            apiClient = fakeApiClient,
+            promptBuilder = SystemPromptBuilder(),
+            suggestionExtractor = SuggestionExtractor(),
+            dataProvider = null,
+            chatRepository = fakeChatRepository,
+            analytics = fakeAnalytics
+        )
+        advanceUntilIdle()
+
+        assertEquals(2, restoredViewModel.state.value.messages.size)
+        assertEquals("Restored message", restoredViewModel.state.value.messages[0].content)
+    }
+
+    @Test
+    fun viewModelRestoresSessionFromRepository() = runTest {
+        fakeChatRepository.preloadSession(sessionId = "test-session-123", turnNumber = 5)
+
+        val restoredViewModel = ChatViewModel(
+            apiClient = fakeApiClient,
+            promptBuilder = SystemPromptBuilder(),
+            suggestionExtractor = SuggestionExtractor(),
+            dataProvider = null,
+            chatRepository = fakeChatRepository,
+            analytics = fakeAnalytics
+        )
+        advanceUntilIdle()
+
+        // Send a message and verify turnNumber continues from restored value
+        fakeApiClient.responseChunks = listOf("Response")
+        restoredViewModel.sendMessage("New message")
+        advanceUntilIdle()
+
+        val event = fakeAnalytics.findEvent<AnalyticsEvent.Chat.MessageSent>()
+        assertNotNull(event)
+        assertEquals(6, event.turnNumber) // Should be 5 + 1
     }
 }
 
