@@ -12,7 +12,8 @@ data class PersonalInfo(
     val github: String,
     val portfolio: String,
     val summary: String,
-    val skills: List<SkillCategory>
+    val skills: List<SkillCategory>,
+    val agentClarifications: String = ""
 )
 
 @Serializable
