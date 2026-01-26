@@ -14,6 +14,7 @@ plugins {
     alias(libs.plugins.compose.multiplatform)
     alias(libs.plugins.kotlin.compose.compiler)
     alias(libs.plugins.google.services)
+    alias(libs.plugins.firebase.crashlytics)
 }
 
 android {
@@ -83,6 +84,7 @@ dependencies {
     implementation(projects.sharedAnalytics)
     implementation(projects.sharedCareerProjects)
     implementation(projects.sharedAgentApi)
+    implementation(projects.sharedCrashlytics)
 
     // Arcane Design System (needed for ArcaneTheme and ArcaneToastHost in MainActivity)
     implementation(libs.arcane.foundation)
