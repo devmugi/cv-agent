@@ -41,11 +41,12 @@ fun QuickStatsRow(
     val items = stats.take(4)
     Column(
         modifier = modifier.fillMaxWidth(),
+        horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         // First row: items 0-1
         Row(
-            modifier = Modifier.fillMaxWidth().height(IntrinsicSize.Max),
+            modifier = Modifier.height(IntrinsicSize.Max),
             horizontalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             items.take(2).forEach { stat ->
@@ -54,14 +55,14 @@ fun QuickStatsRow(
                     value = stat.value ?: "",
                     label = stat.label ?: "",
                     highlight = stat.highlight == true,
-                    modifier = Modifier.weight(1f).fillMaxHeight()
+                    modifier = Modifier.fillMaxHeight()
                 )
             }
         }
         // Second row: items 2-3
         if (items.size > 2) {
             Row(
-                modifier = Modifier.fillMaxWidth().height(IntrinsicSize.Max),
+                modifier = Modifier.height(IntrinsicSize.Max),
                 horizontalArrangement = Arrangement.spacedBy(12.dp)
             ) {
                 items.drop(2).forEach { stat ->
@@ -70,7 +71,7 @@ fun QuickStatsRow(
                         value = stat.value ?: "",
                         label = stat.label ?: "",
                         highlight = stat.highlight == true,
-                        modifier = Modifier.weight(1f).fillMaxHeight()
+                        modifier = Modifier.fillMaxHeight()
                     )
                 }
             }
