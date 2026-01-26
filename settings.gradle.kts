@@ -31,6 +31,7 @@ dependencyResolutionManagement {
 }
 
 include(":shared-domain")
+include(":shared-analytics")
 include(":shared-career-projects")
 include(":shared-agent-api")
 include(":shared-agent")
