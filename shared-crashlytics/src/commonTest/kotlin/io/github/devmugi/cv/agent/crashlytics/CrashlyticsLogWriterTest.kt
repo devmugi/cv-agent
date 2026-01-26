@@ -102,3 +102,48 @@ class CrashlyticsLogWriterTest {
         assertEquals(1, testReporter.loggedMessages.size)
     }
 }
+
+class CreateCrashlyticsLogWriterTest {
+    private lateinit var testReporter: TestCrashReporter
+
+    @BeforeTest
+    fun setup() {
+        testReporter = TestCrashReporter()
+    }
+
+    @Test
+    fun debugModeAllowsAllSeverities() {
+        val writer = createCrashlyticsLogWriter(testReporter, isDebug = true)
+
+        assertTrue(writer.isLoggable("TAG", Severity.Verbose))
+        assertTrue(writer.isLoggable("TAG", Severity.Debug))
+        assertTrue(writer.isLoggable("TAG", Severity.Info))
+    }
+
+    @Test
+    fun debugModeDoesNotRedact() {
+        val writer = createCrashlyticsLogWriter(testReporter, isDebug = true)
+        writer.log(Severity.Info, "User test@email.com", "TAG", null)
+
+        assertTrue(testReporter.loggedMessages.first().contains("test@email.com"))
+    }
+
+    @Test
+    fun releaseModeFiltersDebugLogs() {
+        val writer = createCrashlyticsLogWriter(testReporter, isDebug = false)
+
+        assertFalse(writer.isLoggable("TAG", Severity.Verbose))
+        assertFalse(writer.isLoggable("TAG", Severity.Debug))
+        assertTrue(writer.isLoggable("TAG", Severity.Info))
+        assertTrue(writer.isLoggable("TAG", Severity.Warn))
+    }
+
+    @Test
+    fun releaseModeRedactsMessages() {
+        val writer = createCrashlyticsLogWriter(testReporter, isDebug = false)
+        writer.log(Severity.Info, "User test@email.com", "TAG", null)
+
+        assertTrue(testReporter.loggedMessages.first().contains("[EMAIL]"))
+        assertFalse(testReporter.loggedMessages.first().contains("test@email.com"))
+    }
+}
