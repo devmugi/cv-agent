@@ -41,9 +41,10 @@ interface CrashReporter {
  * No-op implementation that discards all crash reports.
  * Used for testing and as default when crash reporting is unavailable.
  */
+@Suppress("EmptyFunctionBlock")
 internal class NoOpCrashReporter : CrashReporter {
-    override fun recordException(throwable: Throwable) {}
-    override fun log(message: String) {}
-    override fun setCustomKey(key: String, value: String) {}
-    override fun setUserId(userId: String) {}
+    override fun recordException(throwable: Throwable) = Unit
+    override fun log(message: String) = Unit
+    override fun setCustomKey(key: String, value: String) = Unit
+    override fun setUserId(userId: String) = Unit
 }
