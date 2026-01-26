@@ -30,6 +30,7 @@ dependencyResolutionManagement {
     }
 }
 
+include(":arize-tracing")
 include(":shared-domain")
 include(":shared-identity")
 include(":shared-analytics")

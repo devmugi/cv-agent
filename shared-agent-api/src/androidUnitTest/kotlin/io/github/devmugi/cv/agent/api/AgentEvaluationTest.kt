@@ -6,8 +6,9 @@ import co.touchlab.kermit.Severity
 import io.github.devmugi.cv.agent.agent.AgentDataProvider
 import io.github.devmugi.cv.agent.agent.ProjectContextMode
 import io.github.devmugi.cv.agent.agent.SystemPromptBuilder
+import io.github.devmugi.arize.tracing.OpenTelemetryArizeTracer
+import io.github.devmugi.arize.tracing.models.TracingMode
 import io.github.devmugi.cv.agent.api.models.ChatMessage
-import io.github.devmugi.cv.agent.api.tracing.OpenTelemetryAgentTracer
 import io.github.devmugi.cv.agent.career.data.CareerProjectDataLoader
 import io.github.devmugi.cv.agent.career.models.PersonalInfo
 import io.ktor.client.HttpClient
@@ -69,7 +70,7 @@ class AgentEvaluationTest {
         private val TEST_DELAY_MS = System.getenv("GROQ_TEST_DELAY_MS")?.toLongOrNull() ?: 2000L
     }
 
-    private lateinit var tracer: OpenTelemetryAgentTracer
+    private lateinit var tracer: OpenTelemetryArizeTracer
     private lateinit var apiClient: GroqApiClient
     private lateinit var promptBuilder: SystemPromptBuilder
     private lateinit var personalInfo: PersonalInfo
@@ -98,9 +99,10 @@ class AgentEvaluationTest {
         apiKey = System.getenv("GROQ_API_KEY") ?: loadApiKeyFromProperties() ?: ""
         assumeTrue("GROQ_API_KEY not set - skipping evaluation tests", apiKey.isNotEmpty())
 
-        tracer = OpenTelemetryAgentTracer.create(
+        tracer = OpenTelemetryArizeTracer.create(
             endpoint = "http://localhost:6006/v1/traces",
-            serviceName = "cv-agent-evaluation"
+            serviceName = "cv-agent-evaluation",
+            mode = TracingMode.TESTING
         )
 
         val httpClient = HttpClient(OkHttp) {

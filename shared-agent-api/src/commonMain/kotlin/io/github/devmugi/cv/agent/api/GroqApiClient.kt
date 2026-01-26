@@ -1,13 +1,13 @@
 package io.github.devmugi.cv.agent.api
 
 import co.touchlab.kermit.Logger
+import io.github.devmugi.arize.tracing.ArizeTracer
+import io.github.devmugi.arize.tracing.TracingSpan
+import io.github.devmugi.arize.tracing.models.ChatMessage as TracingChatMessage
+import io.github.devmugi.arize.tracing.models.TokenUsage
 import io.github.devmugi.cv.agent.api.models.ChatMessage
 import io.github.devmugi.cv.agent.api.models.ChatRequest
 import io.github.devmugi.cv.agent.api.models.StreamChunk
-import io.github.devmugi.cv.agent.api.tracing.AgentTracer
-import io.github.devmugi.cv.agent.api.tracing.PromptMetadata
-import io.github.devmugi.cv.agent.api.tracing.TokenUsage
-import io.github.devmugi.cv.agent.api.tracing.TracingSpan
 import io.ktor.client.HttpClient
 import io.ktor.client.request.header
 import io.ktor.client.request.post
@@ -24,7 +24,7 @@ import kotlinx.serialization.json.Json
 open class GroqApiClient(
     private val httpClient: HttpClient,
     private val apiKey: String,
-    private val tracer: AgentTracer = AgentTracer.NOOP,
+    private val tracer: ArizeTracer = ArizeTracer.NOOP,
     private val rateLimiter: RateLimiter = RateLimiter.NOOP
 ) {
     private val json = Json { ignoreUnknownKeys = true }
@@ -42,22 +42,27 @@ open class GroqApiClient(
         systemPrompt: String = "",
         sessionId: String? = null,
         turnNumber: Int? = null,
-        promptMetadata: PromptMetadata? = null,
+        promptVersion: String? = null,
+        promptVariant: String? = null,
         onChunk: (String) -> Unit,
         onComplete: () -> Unit,
         onError: (GroqApiException) -> Unit
     ) {
-        Logger.d(TAG) { "Starting chat completion - messages: ${messages.size}, session: $sessionId, turn: $turnNumber" }
-        val span = tracer.startLlmSpan(
-            model = MODEL,
-            systemPrompt = systemPrompt,
-            messages = messages,
-            temperature = DEFAULT_TEMPERATURE,
-            maxTokens = DEFAULT_MAX_TOKENS,
-            sessionId = sessionId,
-            turnNumber = turnNumber,
-            promptMetadata = promptMetadata
-        )
+        Logger.d(TAG) { "Starting chat completion - messages: ${messages.size}, turn: $turnNumber" }
+        val span = tracer.startLlmSpan {
+            model(MODEL)
+            provider("groq")
+            systemPrompt(systemPrompt)
+            messages(messages.map { TracingChatMessage(it.role, it.content) })
+            temperature(DEFAULT_TEMPERATURE)
+            maxTokens(DEFAULT_MAX_TOKENS)
+            sessionId?.let { sessionId(it) }
+            turnNumber?.let { turnNumber(it) }
+            promptVersion?.let { promptVersion(it) }
+            promptVariant?.let { promptVariant(it) }
+            // Groq pricing as of Jan 2025
+            pricing(promptPerMillion = 0.59, completionPerMillion = 0.79)
+        }
 
         try {
             // Wait for rate limiter before making request

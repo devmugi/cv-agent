@@ -3,10 +3,10 @@ package io.github.devmugi.cv.agent.eval.runner
 import co.touchlab.kermit.Logger
 import io.github.devmugi.cv.agent.agent.AgentDataProvider
 import io.github.devmugi.cv.agent.agent.ProjectContextMode
+import io.github.devmugi.arize.tracing.OpenTelemetryArizeTracer
+import io.github.devmugi.arize.tracing.models.TracingMode
 import io.github.devmugi.cv.agent.api.GroqApiClient
 import io.github.devmugi.cv.agent.api.models.ChatMessage
-import io.github.devmugi.cv.agent.api.tracing.OpenTelemetryAgentTracer
-import io.github.devmugi.cv.agent.api.tracing.PromptMetadata
 import io.github.devmugi.cv.agent.career.data.CareerProjectDataLoader
 import io.github.devmugi.cv.agent.career.models.CareerProject
 import io.github.devmugi.cv.agent.career.models.PersonalInfo
@@ -55,7 +55,7 @@ class EvalRunner(private val config: EvalConfig) {
     private val json = Json { ignoreUnknownKeys = true }
     private val projectLoader = CareerProjectDataLoader()
 
-    private lateinit var tracer: OpenTelemetryAgentTracer
+    private lateinit var tracer: OpenTelemetryArizeTracer
     private lateinit var apiClient: GroqApiClient
     private lateinit var personalInfo: PersonalInfo
     private lateinit var projects: List<CareerProject>
@@ -84,9 +84,10 @@ class EvalRunner(private val config: EvalConfig) {
         Logger.i(TAG) { "  Delay: ${config.delayMs}ms" }
         Logger.i(TAG) { "  Run ID: $runId" }
 
-        tracer = OpenTelemetryAgentTracer.create(
+        tracer = OpenTelemetryArizeTracer.create(
             endpoint = config.phoenixEndpoint,
-            serviceName = "cv-agent-eval-$runId"
+            serviceName = "cv-agent-eval-$runId",
+            mode = TracingMode.TESTING
         )
 
         val httpClient = HttpClient(OkHttp) {
@@ -186,10 +187,8 @@ class EvalRunner(private val config: EvalConfig) {
                     systemPrompt = systemPrompt,
                     sessionId = "$runId-single",
                     turnNumber = 1,
-                    promptMetadata = PromptMetadata(
-                        version = "eval-1.0",
-                        variant = "${config.promptVariant}-${config.projectMode}"
-                    ),
+                    promptVersion = "eval-1.0",
+                    promptVariant = "${config.promptVariant}-${config.projectMode}",
                     onChunk = { chunk -> responseBuilder.append(chunk) },
                     onComplete = { latch.countDown() },
                     onError = { e ->
@@ -266,10 +265,8 @@ class EvalRunner(private val config: EvalConfig) {
                     systemPrompt = systemPrompt,
                     sessionId = "$runId-${question.id}",
                     turnNumber = 1,
-                    promptMetadata = PromptMetadata(
-                        version = "eval-1.0",
-                        variant = "${config.promptVariant}-${config.projectMode}"
-                    ),
+                    promptVersion = "eval-1.0",
+                    promptVariant = "${config.promptVariant}-${config.projectMode}",
                     onChunk = { chunk ->
                         if (!firstChunkReceived) {
                             ttftMs = System.currentTimeMillis() - startTime
@@ -376,10 +373,8 @@ class EvalRunner(private val config: EvalConfig) {
                         systemPrompt = systemPrompt,
                         sessionId = sessionId,
                         turnNumber = index + 1,
-                        promptMetadata = PromptMetadata(
-                            version = "eval-1.0",
-                            variant = "${config.promptVariant}-${config.projectMode}"
-                        ),
+                        promptVersion = "eval-1.0",
+                        promptVariant = "${config.promptVariant}-${config.projectMode}",
                         onChunk = { chunk ->
                             if (!firstChunkReceived) {
                                 ttftMs = System.currentTimeMillis() - turnStartTime

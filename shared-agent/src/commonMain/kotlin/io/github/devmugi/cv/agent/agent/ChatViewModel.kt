@@ -7,7 +7,6 @@ import co.touchlab.kermit.Logger
 import io.github.devmugi.cv.agent.api.GroqApiClient
 import io.github.devmugi.cv.agent.api.GroqApiException
 import io.github.devmugi.cv.agent.api.models.ChatMessage
-import io.github.devmugi.cv.agent.api.tracing.PromptMetadata
 import io.github.devmugi.cv.agent.analytics.Analytics
 import io.github.devmugi.cv.agent.analytics.AnalyticsEvent
 import io.github.devmugi.cv.agent.domain.models.ChatError
@@ -207,7 +206,6 @@ class ChatViewModel(
 
         val promptResult = dataProvider?.let { promptBuilder.buildWithMetadata(it) }
         val systemPrompt = promptResult?.prompt ?: ""
-        val promptMetadata = promptResult?.let { PromptMetadata(it.version, it.variant) }
         val apiMessages = buildApiMessages(systemPrompt)
         val assistantMessageId = Uuid.random().toString()
 
@@ -235,7 +233,8 @@ class ChatViewModel(
             systemPrompt = systemPrompt,
             sessionId = currentSessionId,
             turnNumber = currentTurn,
-            promptMetadata = promptMetadata,
+            promptVersion = promptResult?.version,
+            promptVariant = promptResult?.variant,
             onChunk = { chunk ->
                 Logger.d(TAG) { "ON_CHUNK: ${chunk.length} chars at ${System.currentTimeMillis()}" }
                 streamedContent += chunk

@@ -2,8 +2,9 @@ package io.github.devmugi.cv.agent.api
 
 import co.touchlab.kermit.Logger
 import co.touchlab.kermit.Severity
+import io.github.devmugi.arize.tracing.OpenTelemetryArizeTracer
+import io.github.devmugi.arize.tracing.models.TracingMode
 import io.github.devmugi.cv.agent.api.models.ChatMessage
-import io.github.devmugi.cv.agent.api.tracing.OpenTelemetryAgentTracer
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.okhttp.OkHttp
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
@@ -56,7 +57,7 @@ class GroqApiClientIntegrationTest {
         private val TEST_DELAY_MS = System.getenv("GROQ_TEST_DELAY_MS")?.toLongOrNull() ?: 2000L
     }
 
-    private lateinit var tracer: OpenTelemetryAgentTracer
+    private lateinit var tracer: OpenTelemetryArizeTracer
     private lateinit var apiClient: GroqApiClient
     private var apiKey: String = ""
 
@@ -77,9 +78,10 @@ class GroqApiClientIntegrationTest {
         assumeTrue("GROQ_API_KEY not set - skipping integration tests", apiKey.isNotEmpty())
 
         // Create tracer pointing to Phoenix (HTTP OTLP endpoint)
-        tracer = OpenTelemetryAgentTracer.create(
+        tracer = OpenTelemetryArizeTracer.create(
             endpoint = "http://localhost:6006/v1/traces",
-            serviceName = "cv-agent-integration-test"
+            serviceName = "cv-agent-integration-test",
+            mode = TracingMode.TESTING
         )
 
         // Create real HTTP client with OkHttp engine
