@@ -140,7 +140,8 @@ fun ChatScreen(
         topBar = {
             CVAgentTopBar(
                 onCareerClick = onNavigateToCareerTimeline,
-                showContactBanner = showContactBanner
+                showContactBanner = showContactBanner,
+                analytics = analytics
             )
         }
     ) { padding ->
