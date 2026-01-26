@@ -63,52 +63,77 @@ class ChatViewModel(
     private var turnNumber: Int = savedStateHandle?.get<Int>(KEY_TURN_NUMBER) ?: 0
 
     init {
-        // Track session start/resume
-        val restoredMessages = _state.value.messages
-        val isFirstEverOpen = savedStateHandle?.get<Boolean>(KEY_HAS_EVER_OPENED) != true
+        // Load from repository if available (async)
+        viewModelScope.launch {
+            chatRepository?.let { repo ->
+                val repoMessages = repo.getMessages()
+                val repoSessionId = repo.getSessionId()
+                val repoTurnNumber = repo.getTurnNumber()
 
-        // Mark as opened (persists even after clearHistory)
-        savedStateHandle?.set(KEY_HAS_EVER_OPENED, true)
+                if (repoMessages.isNotEmpty()) {
+                    _state.update { it.copy(messages = repoMessages) }
+                }
+                repoSessionId?.let { sessionId = it }
+                if (repoTurnNumber > 0) {
+                    turnNumber = repoTurnNumber
+                }
+            }
 
-        if (restoredMessages.isNotEmpty()) {
-            analytics.logEvent(
-                AnalyticsEvent.Session.SessionResume(
-                    sessionId = sessionId,
-                    messageCount = restoredMessages.size
+            // Track session start/resume
+            val currentMessages = _state.value.messages
+            val isFirstEverOpen = savedStateHandle?.get<Boolean>(KEY_HAS_EVER_OPENED) != true
+
+            // Mark as opened (persists even after clearHistory)
+            savedStateHandle?.set(KEY_HAS_EVER_OPENED, true)
+
+            if (currentMessages.isNotEmpty()) {
+                analytics.logEvent(
+                    AnalyticsEvent.Session.SessionResume(
+                        sessionId = sessionId,
+                        messageCount = currentMessages.size
+                    )
                 )
-            )
-        } else {
-            analytics.logEvent(
-                AnalyticsEvent.Session.SessionStart(
-                    sessionId = sessionId,
-                    isNewInstall = isFirstEverOpen
+            } else {
+                analytics.logEvent(
+                    AnalyticsEvent.Session.SessionStart(
+                        sessionId = sessionId,
+                        isNewInstall = isFirstEverOpen
+                    )
                 )
-            )
-        }
+            }
 
-        // Save session info on init if restored
-        savedStateHandle?.let {
-            it[KEY_SESSION_ID] = sessionId
-            it[KEY_TURN_NUMBER] = turnNumber
+            // Save session info
+            savedStateHandle?.let {
+                it[KEY_SESSION_ID] = sessionId
+                it[KEY_TURN_NUMBER] = turnNumber
+            }
         }
     }
 
     private fun restoreMessages(): List<Message> {
+        // Repository-based restore happens in init block via coroutine
+        // This synchronous version is fallback for SavedStateHandle only
         val messagesJson = savedStateHandle?.get<String>(KEY_MESSAGES) ?: return emptyList()
         return try {
             json.decodeFromString<List<Message>>(messagesJson)
         } catch (e: Exception) {
-            Logger.w(TAG) { "Failed to restore messages: ${e.message}" }
+            Logger.w(TAG) { "Failed to restore messages from SavedStateHandle: ${e.message}" }
             emptyList()
         }
     }
 
     private fun saveMessages(messages: List<Message>) {
-        savedStateHandle ?: return
-        try {
-            savedStateHandle[KEY_MESSAGES] = json.encodeToString(messages)
-        } catch (e: Exception) {
-            Logger.w(TAG) { "Failed to save messages: ${e.message}" }
+        // Save to SavedStateHandle (process death)
+        savedStateHandle?.let {
+            try {
+                it[KEY_MESSAGES] = json.encodeToString(messages)
+            } catch (e: Exception) {
+                Logger.w(TAG) { "Failed to save messages to SavedStateHandle: ${e.message}" }
+            }
+        }
+        // Save to repository (app restart)
+        viewModelScope.launch {
+            chatRepository?.saveMessages(messages)
         }
     }
 
@@ -116,6 +141,10 @@ class ChatViewModel(
         savedStateHandle?.let {
             it[KEY_SESSION_ID] = sessionId
             it[KEY_TURN_NUMBER] = turnNumber
+        }
+        viewModelScope.launch {
+            chatRepository?.saveSessionId(sessionId)
+            chatRepository?.saveTurnNumber(turnNumber)
         }
     }
 
@@ -182,6 +211,9 @@ class ChatViewModel(
         turnNumber = 0
         // Clear saved state
         savedStateHandle?.remove<String>(KEY_MESSAGES)
+        viewModelScope.launch {
+            chatRepository?.clearAll()
+        }
         saveSessionState()
     }
 
