@@ -95,6 +95,16 @@ class ChatViewModel(
     fun sendMessage(content: String) {
         Logger.d(TAG) { "Sending message - length: ${content.length}" }
         lastUserMessage = content
+
+        // Log analytics event
+        analytics.logEvent(
+            AnalyticsEvent.Chat.MessageSent(
+                messageLength = content.length,
+                sessionId = sessionId,
+                turnNumber = turnNumber + 1
+            )
+        )
+
         val userMessage = Message(role = MessageRole.USER, content = content)
 
         _state.update { current ->
@@ -128,7 +138,17 @@ class ChatViewModel(
 
     @OptIn(ExperimentalUuidApi::class)
     fun clearHistory() {
+        val messageCount = _state.value.messages.size
         Logger.d(TAG) { "Clearing chat history" }
+
+        // Log analytics event
+        analytics.logEvent(
+            AnalyticsEvent.Chat.HistoryCleared(
+                messageCount = messageCount,
+                sessionId = sessionId
+            )
+        )
+
         _state.update { current -> ChatState(projectNames = current.projectNames) }
         lastUserMessage = null
         sessionId = Uuid.random().toString()
