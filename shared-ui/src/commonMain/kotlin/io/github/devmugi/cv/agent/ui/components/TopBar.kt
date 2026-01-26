@@ -117,7 +117,9 @@ fun CVAgentTopBar(
                     uriHandler.openUri("https://devmugi.github.io/devmugi/")
                 },
                 onPdfClick = {
-                    uriHandler.openUri("https://raw.githubusercontent.com/devmugi/devmugi/main/cv/Denys%20Honcharenko%20CV.pdf")
+                    val pdfUrl = "https://raw.githubusercontent.com/devmugi/devmugi/" +
+                        "main/cv/Denys%20Honcharenko%20CV.pdf"
+                    uriHandler.openUri(pdfUrl)
                 },
                 analytics = analytics
             )
