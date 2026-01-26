@@ -1,7 +1,12 @@
 package io.github.devmugi.cv.agent.agent
 
+import io.github.devmugi.cv.agent.career.models.CareerProject
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.json.buildJsonObject
+import kotlinx.serialization.json.encodeToJsonElement
+import kotlinx.serialization.json.put
 
 data class SystemPromptResult(
     val prompt: String,
@@ -105,15 +110,29 @@ class SystemPromptBuilder {
             appendLine()
             appendLine("## ${project.name} (${project.id})")
             appendLine("```json")
-            appendLine(prettyJson.encodeToString(project))
+            appendLine(compactJson.encodeToString(project.toSlimJson()))
             appendLine("```")
         }
+    }
+
+    private fun CareerProject.toSlimJson(): JsonObject = buildJsonObject {
+        put("id", id)
+        put("name", name)
+        put("slug", slug)
+        tagline?.let { put("tagline", it) }
+        overview?.let { put("overview", compactJson.encodeToJsonElement(it)) }
+        companies?.let { put("companies", compactJson.encodeToJsonElement(it)) }
+        description?.full?.let { put("description", it) }
+        achievements?.let { put("achievements", compactJson.encodeToJsonElement(it)) }
+        team?.let { put("team", compactJson.encodeToJsonElement(it)) }
+        metrics?.let { put("metrics", compactJson.encodeToJsonElement(it)) }
+        technologies?.let { put("technologies", compactJson.encodeToJsonElement(it)) }
     }
 
     companion object {
         const val PROMPT_VERSION = "1.0.0"
 
-        private val prettyJson = Json { prettyPrint = true }
+        private val compactJson = Json { prettyPrint = false }
 
         private val BOUNDARY_INSTRUCTIONS = """
             <response-tiers>
