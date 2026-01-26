@@ -46,7 +46,7 @@ fun QuickStatsRow(
     ) {
         // First row: items 0-1
         Row(
-            modifier = Modifier.height(IntrinsicSize.Max),
+            modifier = Modifier.fillMaxWidth().height(IntrinsicSize.Max),
             horizontalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             items.take(2).forEach { stat ->
@@ -55,14 +55,14 @@ fun QuickStatsRow(
                     value = stat.value ?: "",
                     label = stat.label ?: "",
                     highlight = stat.highlight == true,
-                    modifier = Modifier.fillMaxHeight()
+                    modifier = Modifier.weight(1f).fillMaxHeight()
                 )
             }
         }
         // Second row: items 2-3
         if (items.size > 2) {
             Row(
-                modifier = Modifier.height(IntrinsicSize.Max),
+                modifier = Modifier.fillMaxWidth().height(IntrinsicSize.Max),
                 horizontalArrangement = Arrangement.spacedBy(12.dp)
             ) {
                 items.drop(2).forEach { stat ->
@@ -71,7 +71,7 @@ fun QuickStatsRow(
                         value = stat.value ?: "",
                         label = stat.label ?: "",
                         highlight = stat.highlight == true,
-                        modifier = Modifier.fillMaxHeight()
+                        modifier = Modifier.weight(1f).fillMaxHeight()
                     )
                 }
             }
@@ -95,7 +95,7 @@ private fun QuickStatCard(
             .border(1.dp, borderColor, RoundedCornerShape(12.dp))
     ) {
         Column(
-            modifier = Modifier.padding(12.dp),
+            modifier = Modifier.fillMaxWidth().padding(12.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Icon(
