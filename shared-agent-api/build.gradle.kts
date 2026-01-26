@@ -29,6 +29,7 @@ kotlin {
 
     sourceSets {
         commonMain.dependencies {
+            api(projects.arizeTracing)
             api(projects.sharedDomain)
             api(projects.sharedIdentity)
 
@@ -49,11 +50,7 @@ kotlin {
         }
 
         androidMain.dependencies {
-            // OpenTelemetry (JVM only for now)
-            implementation(libs.opentelemetry.api)
-            implementation(libs.opentelemetry.sdk)
-            implementation(libs.opentelemetry.exporter.otlp)
-            implementation(libs.opentelemetry.semconv)
+            // OpenTelemetry dependencies now come from arize-tracing module
         }
 
         commonTest.dependencies {

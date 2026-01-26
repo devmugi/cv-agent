@@ -1,11 +1,12 @@
 package io.github.devmugi.cv.agent.di
 
 import co.touchlab.kermit.Logger
+import io.github.devmugi.arize.tracing.ArizeTracer
+import io.github.devmugi.arize.tracing.OpenTelemetryArizeTracer
+import io.github.devmugi.arize.tracing.models.TracingMode
 import io.github.devmugi.cv.agent.BuildConfig
 import io.github.devmugi.cv.agent.GroqConfig
 import io.github.devmugi.cv.agent.api.GroqApiClient
-import io.github.devmugi.cv.agent.api.tracing.AgentTracer
-import io.github.devmugi.cv.agent.api.tracing.OpenTelemetryAgentTracer
 import org.koin.dsl.module
 
 private const val TAG = "TracingModule"
@@ -20,24 +21,25 @@ private const val TAG = "TracingModule"
  * - Real device: Set to your computer's IP (e.g., PHOENIX_HOST=192.168.1.100)
  */
 val tracingModule = module {
-    single<AgentTracer> {
+    single<ArizeTracer> {
         if (BuildConfig.ENABLE_PHOENIX_TRACING) {
             val host = BuildConfig.PHOENIX_HOST.ifEmpty { "10.0.2.2" }
             val endpoint = "http://$host:6006/v1/traces"
             Logger.d(TAG) { "Phoenix tracing ENABLED, endpoint: $endpoint" }
-            OpenTelemetryAgentTracer.create(
+            OpenTelemetryArizeTracer.create(
                 endpoint = endpoint,
-                serviceName = "cv-agent-android"
+                serviceName = "cv-agent-android",
+                mode = TracingMode.PRODUCTION
             )
         } else {
             Logger.d(TAG) { "Phoenix tracing DISABLED" }
-            AgentTracer.NOOP
+            ArizeTracer.NOOP
         }
     }
 
     // Override GroqApiClient to include the tracer
     single {
         Logger.d(TAG) { "Creating GroqApiClient with tracer" }
-        GroqApiClient(get(), GroqConfig.apiKey, get<AgentTracer>())
+        GroqApiClient(get(), GroqConfig.apiKey, get<ArizeTracer>())
     }
 }

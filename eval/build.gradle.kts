@@ -50,11 +50,8 @@ kotlin {
             implementation(libs.ktor.client.content.negotiation)
             implementation(libs.ktor.serialization.kotlinx.json)
 
-            // OpenTelemetry
-            implementation(libs.opentelemetry.api)
-            implementation(libs.opentelemetry.sdk)
-            implementation(libs.opentelemetry.exporter.otlp)
-            implementation(libs.opentelemetry.semconv)
+            // Tracing (via arize-tracing module)
+            implementation(projects.arizeTracing)
 
             // CLI
             implementation(libs.clikt)
