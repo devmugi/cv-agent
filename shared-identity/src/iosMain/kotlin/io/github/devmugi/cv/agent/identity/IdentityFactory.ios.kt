@@ -1,13 +1,19 @@
 package io.github.devmugi.cv.agent.identity
 
+import platform.Foundation.NSUUID
+
 /**
  * iOS implementation - uses locally persisted UUID.
- * TODO: Implement LocalInstallationIdentity when iOS targets enabled
+ *
+ * Note: This is a simple in-memory stub. For production, implement
+ * persistence using NSUserDefaults or Keychain.
  */
 actual fun createPlatformInstallationIdentity(context: Any?): InstallationIdentity {
     return object : InstallationIdentity {
+        private var cachedId: String? = null
+
         override suspend fun getInstallationId(): String {
-            throw NotImplementedError("iOS InstallationIdentity not yet implemented")
+            return cachedId ?: NSUUID().UUIDString.also { cachedId = it }
         }
     }
 }

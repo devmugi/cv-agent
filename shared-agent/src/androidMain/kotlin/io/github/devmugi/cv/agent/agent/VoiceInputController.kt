@@ -8,6 +8,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import java.io.File
 
 class VoiceInputController(
     private val audioRecorder: AudioRecorderInterface,
@@ -40,9 +41,9 @@ class VoiceInputController(
     fun stopRecordingAndTranscribe(onResult: (String) -> Unit) {
         Logger.d(TAG) { "Stopping recording and transcribing" }
 
-        val fileResult = audioRecorder.stopRecording()
+        val pathResult = audioRecorder.stopRecording()
 
-        fileResult.onFailure { error ->
+        pathResult.onFailure { error ->
             Logger.e(TAG, error) { "Failed to stop recording" }
             _state.value = VoiceInputState.Error(
                 error.message ?: "Failed to stop recording"
@@ -50,7 +51,8 @@ class VoiceInputController(
             return
         }
 
-        val file = fileResult.getOrNull() ?: return
+        val filePath = pathResult.getOrNull() ?: return
+        val file = File(filePath)
 
         _state.value = VoiceInputState.Transcribing
 

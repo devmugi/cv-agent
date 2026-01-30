@@ -81,7 +81,7 @@ class VoiceInputControllerTest {
         }
 
         val fakeRecorder = FakeAudioRecorder(
-            stopRecordingResult = Result.success(tempFile)
+            stopRecordingResult = Result.success(tempFile.absolutePath)
         )
         val fakeClient = createFakeAudioClient("""{"text": "Hello world"}""")
         val controller = VoiceInputController(fakeRecorder, fakeClient, testScope)
@@ -112,7 +112,7 @@ class VoiceInputControllerTest {
         }
 
         val fakeRecorder = FakeAudioRecorder(
-            stopRecordingResult = Result.success(tempFile)
+            stopRecordingResult = Result.success(tempFile.absolutePath)
         )
         val fakeClient = createFakeAudioClient(
             response = """{"error": {"message": "API error"}}""",
@@ -183,11 +183,11 @@ class VoiceInputControllerTest {
 
 class FakeAudioRecorder(
     private val startRecordingResult: Result<Unit> = Result.success(Unit),
-    private val stopRecordingResult: Result<File> = Result.success(
+    private val stopRecordingResult: Result<String> = Result.success(
         File.createTempFile("test", ".m4a").apply {
             writeBytes(ByteArray(100))
             deleteOnExit()
-        }
+        }.absolutePath
     )
 ) : AudioRecorderInterface {
 
@@ -207,7 +207,7 @@ class FakeAudioRecorder(
         }
     }
 
-    override fun stopRecording(): Result<File> {
+    override fun stopRecording(): Result<String> {
         stopRecordingCalled = true
         _isRecording = false
         return stopRecordingResult

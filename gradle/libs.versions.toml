@@ -30,7 +30,7 @@ kotlinx-serialization = "1.7.3"
 multiplatform-markdown = "0.29.0"
 
 # Design System
-arcane = "0.3.2"
+arcane = "0.3.3"
 
 # Icons
 compose-icons = "1.1.1"

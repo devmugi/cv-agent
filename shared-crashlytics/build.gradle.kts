@@ -15,10 +15,12 @@ kotlin {
         }
     }
 
-    // iOS targets disabled - enable when needed
-    // listOf(iosArm64(), iosSimulatorArm64()).forEach {
-    //     it.binaries.framework { baseName = "SharedCrashlytics" }
-    // }
+    listOf(iosArm64(), iosSimulatorArm64()).forEach {
+        it.binaries.framework {
+            baseName = "SharedCrashlytics"
+            isStatic = true
+        }
+    }
 
     sourceSets {
         commonMain.dependencies {

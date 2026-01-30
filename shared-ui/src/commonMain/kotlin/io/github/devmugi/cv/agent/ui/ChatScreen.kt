@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.imePadding
-import androidx.compose.foundation.layout.isImeVisible
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -60,6 +59,7 @@ import io.github.devmugi.cv.agent.ui.components.SuggestionChip
 import io.github.devmugi.cv.agent.analytics.Analytics
 import io.github.devmugi.cv.agent.analytics.AnalyticsEvent
 import io.github.devmugi.cv.agent.ui.components.WelcomeSection
+import io.github.devmugi.cv.agent.ui.util.isKeyboardVisible
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
@@ -89,7 +89,7 @@ fun ChatScreen(
     var inputText by remember { mutableStateOf("") }
     var isInputFocused by remember { mutableStateOf(false) }
     val focusManager = LocalFocusManager.current
-    val isKeyboardVisible = WindowInsets.isImeVisible
+    val isKeyboardVisible = isKeyboardVisible()
 
     val showWelcome = state.messages.isEmpty() && !state.isLoading && !state.isStreaming
 

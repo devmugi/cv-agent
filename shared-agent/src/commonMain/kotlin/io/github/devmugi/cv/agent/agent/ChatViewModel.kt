@@ -10,6 +10,7 @@ import io.github.devmugi.cv.agent.api.GroqApiException
 import io.github.devmugi.cv.agent.api.models.ChatMessage
 import io.github.devmugi.cv.agent.analytics.Analytics
 import io.github.devmugi.cv.agent.analytics.AnalyticsEvent
+import io.github.devmugi.cv.agent.domain.currentTimeMillis
 import io.github.devmugi.cv.agent.domain.models.ChatError
 import io.github.devmugi.cv.agent.domain.models.ChatState
 import io.github.devmugi.cv.agent.domain.models.Message
@@ -261,7 +262,7 @@ class ChatViewModel(
         turnNumber++
         val currentTurn = turnNumber
         val currentSessionId = sessionId
-        val streamStartTime = System.currentTimeMillis()
+        val streamStartTime = currentTimeMillis()
         Logger.d(TAG) { "Starting turn $currentTurn in session $currentSessionId" }
 
         val promptResult = dataProvider?.let { promptBuilder.buildWithMetadata(it) }
@@ -303,7 +304,7 @@ class ChatViewModel(
             promptVersion = promptResult?.version,
             promptVariant = promptResult?.variant,
             onChunk = { chunk ->
-                Logger.d(TAG) { "ON_CHUNK: ${chunk.length} chars at ${System.currentTimeMillis()}" }
+                Logger.d(TAG) { "ON_CHUNK: ${chunk.length} chars at ${currentTimeMillis()}" }
                 streamedContent += chunk
                 _state.update { current ->
                     current.copy(
@@ -318,7 +319,7 @@ class ChatViewModel(
                 }
             },
             onComplete = {
-                val responseTimeMs = System.currentTimeMillis() - streamStartTime
+                val responseTimeMs = currentTimeMillis() - streamStartTime
                 Logger.d(TAG) { "Stream completed - content length: ${streamedContent.length}" }
 
                 // Log analytics event
@@ -355,7 +356,7 @@ class ChatViewModel(
                 agentSpan.complete()
             },
             onError = { exception ->
-                Logger.w(TAG) { "Stream error: ${exception.javaClass.simpleName}" }
+                Logger.w(TAG) { "Stream error: ${exception::class.simpleName}" }
 
                 val errorType = when (exception) {
                     is GroqApiException.NetworkError -> AnalyticsEvent.Error.ErrorType.NETWORK
