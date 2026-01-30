@@ -15,16 +15,15 @@ kotlin {
         }
     }
 
-    // iOS targets disabled - enable when needed
-    // listOf(
-    //     iosArm64(),
-    //     iosSimulatorArm64()
-    // ).forEach { iosTarget ->
-    //     iosTarget.binaries.framework {
-    //         baseName = "SharedAnalytics"
-    //         isStatic = true
-    //     }
-    // }
+    listOf(
+        iosArm64(),
+        iosSimulatorArm64()
+    ).forEach { iosTarget ->
+        iosTarget.binaries.framework {
+            baseName = "SharedAnalytics"
+            isStatic = true
+        }
+    }
 
     sourceSets {
         commonMain.dependencies {

@@ -57,7 +57,7 @@ class AudioRecorder(private val context: Context) : AudioRecorderInterface {
         }
     }
 
-    override fun stopRecording(): Result<File> {
+    override fun stopRecording(): Result<String> {
         val currentRecorder = recorder
         val currentFile = outputFile
 
@@ -72,7 +72,7 @@ class AudioRecorder(private val context: Context) : AudioRecorderInterface {
             recorder = null
 
             Logger.d(TAG) { "Recording stopped: ${currentFile.length()} bytes" }
-            Result.success(currentFile)
+            Result.success(currentFile.absolutePath)
         } catch (e: Exception) {
             Logger.e(TAG, e) { "Failed to stop recording" }
             cleanup()

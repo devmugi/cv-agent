@@ -6,6 +6,7 @@ import io.github.devmugi.arize.tracing.TracingSpan
 import io.github.devmugi.arize.tracing.models.ChatMessage as TracingChatMessage
 import io.github.devmugi.arize.tracing.models.TokenUsage
 import io.github.devmugi.cv.agent.api.models.ChatMessage
+import io.github.devmugi.cv.agent.domain.currentTimeMillis
 import io.github.devmugi.cv.agent.api.models.ChatRequest
 import io.github.devmugi.cv.agent.api.models.StreamChunk
 import io.ktor.client.HttpClient
@@ -110,10 +111,10 @@ open class GroqApiClient(
         } catch (e: Exception) {
             Logger.e(TAG, e) { "Request failed: ${e.message}" }
             val error = if (e is GroqApiException) e else GroqApiException.NetworkError(e.message ?: "Unknown error")
-            val errorType = when (e) {
-                is java.net.SocketTimeoutException -> "timeout"
-                is java.net.UnknownHostException -> "network"
-                is GroqApiException -> "api"
+            val errorType = when {
+                e is GroqApiException -> "api"
+                e.message?.contains("timeout", ignoreCase = true) == true -> "timeout"
+                e.message?.contains("host", ignoreCase = true) == true -> "network"
                 else -> "network"
             }
             span.error(error, errorType = errorType, retryable = true)
@@ -127,7 +128,7 @@ open class GroqApiClient(
         onChunk: (String) -> Unit,
         onComplete: () -> Unit
     ) {
-        Logger.d(TAG) { "PARSE_STREAM_START at ${System.currentTimeMillis()}" }
+        Logger.d(TAG) { "PARSE_STREAM_START at ${currentTimeMillis()}" }
         val fullResponse = StringBuilder()
         val channel = response.bodyAsChannel()
         var isFirstContent = true
@@ -157,9 +158,9 @@ open class GroqApiClient(
                     }
 
                     chunk.choices.firstOrNull()?.delta?.content?.takeIf { it.isNotEmpty() }?.let { content ->
-                        Logger.d(TAG) { "CHUNK_ARRIVED: '${content.take(20)}' at ${System.currentTimeMillis()}" }
+                        Logger.d(TAG) { "CHUNK_ARRIVED: '${content.take(20)}' at ${currentTimeMillis()}" }
                         if (isFirstContent) {
-                            Logger.d(TAG) { "FIRST_CHUNK at ${System.currentTimeMillis()}" }
+                            Logger.d(TAG) { "FIRST_CHUNK at ${currentTimeMillis()}" }
                             span.recordFirstToken()
                             isFirstContent = false
                         }

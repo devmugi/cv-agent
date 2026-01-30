@@ -20,10 +20,13 @@ import io.github.devmugi.cv.agent.agent.AgentDataProvider
 import io.github.devmugi.cv.agent.agent.ChatViewModel
 import io.github.devmugi.cv.agent.career.data.CareerProjectDataLoader
 import io.github.devmugi.cv.agent.career.models.PersonalInfo
+import io.github.devmugi.cv.agent.di.appModule
+import io.github.devmugi.cv.agent.di.iosModule
 import io.github.devmugi.cv.agent.ui.ChatScreen
 import kotlinx.serialization.json.Json
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
+import org.koin.core.context.startKoin
 import org.koin.core.parameter.parametersOf
 
 private val projectJsonFiles = listOf(
@@ -41,6 +44,16 @@ private val projectJsonFiles = listOf(
     "files/projects/aitweb_details_data.json",
     "files/projects/kntu_it_details_data.json"
 )
+
+/**
+ * Initialize Koin for iOS.
+ * Call this from Swift before creating the MainViewController.
+ */
+fun initKoin() {
+    startKoin {
+        modules(appModule, iosModule)
+    }
+}
 
 object ViewControllerFactory : KoinComponent {
     private val json = Json { ignoreUnknownKeys = true }
