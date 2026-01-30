@@ -1,236 +1,169 @@
 # CV Agent
 
-A Kotlin Multiplatform mobile app that provides an AI-powered chat interface for exploring CV/resume data. Uses Groq's LLM API with streaming responses.
+> AI-powered mobile app that lets recruiters and developers explore my professional experience through natural conversation.
 
-## Module Structure
+[![Kotlin](https://img.shields.io/badge/Kotlin-2.1.0-purple.svg)](https://kotlinlang.org)
+[![Compose Multiplatform](https://img.shields.io/badge/Compose-Multiplatform-blue.svg)](https://www.jetbrains.com/lp/compose-multiplatform/)
+[![License](https://img.shields.io/badge/License-Apache%202.0-green.svg)](LICENSE)
+
+<p align="center">
+  <img src="docs/screenshots/v1.0.0/chat-welcome.png" width="270" alt="Chat Welcome"/>
+  <img src="docs/screenshots/v1.0.0/chat-conversation.png" width="270" alt="AI Response"/>
+  <img src="docs/screenshots/v1.0.0/career-timeline.png" width="270" alt="Career Timeline"/>
+</p>
+
+<p align="center">
+  <a href="https://play.google.com/store/apps/details?id=io.github.devmugi.cv.agent">📱 Google Play</a> •
+  <a href="https://devmugi.github.io/devmugi/">🌐 Web Version</a> •
+  <a href="https://github.com/devmugi">👤 GitHub Profile</a>
+</p>
+
+<p align="center">
+  <img src="docs/media/demo.gif" width="300" alt="Demo"/>
+</p>
+
+## Features
+
+- 🤖 **AI Chat Interface** - Ask anything about my experience, skills, or projects
+- 📱 **Kotlin Multiplatform** - Shared business logic across Android & iOS
+- ⚡ **Streaming Responses** - Real-time token streaming from Groq LLM
+- 🎯 **Smart Suggestions** - AI extracts relevant project recommendations
+- 📊 **Career Timeline** - Visual journey through 19 years of experience
+- 🔍 **LLM Observability** - OpenTelemetry tracing with Arize Phoenix
+
+## Architecture
 
 ```
-shared-domain/           Pure domain models (ChatState, Message, etc.)
-shared-career-projects/  Career/CV data models and UI components
-shared-agent-api/        LLM API client with OpenTelemetry tracing
-shared-agent/            Agent business logic (ViewModel, prompts)
-shared-ui/               Shared UI components
-shared/                  DI wiring and platform configuration
-android-app/             Android application entry point
-iosApp/                  iOS application (Xcode project)
-eval/                    Evaluation framework for prompt testing
+┌─────────────────────────────────────────────────────────────┐
+│                        android-app                          │
+│                      (Entry Point, DI)                      │
+└─────────────────────────┬───────────────────────────────────┘
+                          │
+┌─────────────────────────▼───────────────────────────────────┐
+│                         shared                              │
+│                    (Koin DI Wiring)                         │
+└───┬─────────┬─────────┬─────────┬─────────┬─────────┬───────┘
+    │         │         │         │         │         │
+┌───▼───┐ ┌───▼───┐ ┌───▼────┐ ┌──▼──┐ ┌───▼────┐ ┌───▼────┐
+│shared │ │shared │ │shared  │ │shared│ │shared  │ │shared  │
+│-agent │ │-agent │ │-career │ │-ui   │ │-analytics│-crash │
+│       │ │-api   │ │-projects│       │ │        │ │-lytics │
+└───┬───┘ └───┬───┘ └───┬────┘ └──┬──┘ └────────┘ └────────┘
+    │         │         │         │
+    └─────────┴─────────┴─────────┘
+                  │
+        ┌─────────▼─────────┐
+        │   shared-domain   │
+        │  (Pure Models)    │
+        └───────────────────┘
 ```
 
-## Build Commands
+| Module | Purpose |
+|--------|---------|
+| `shared-domain` | Pure domain models (ChatState, Message) - zero dependencies |
+| `shared-agent-api` | Groq LLM client with streaming SSE + OpenTelemetry tracing |
+| `shared-agent` | ChatViewModel, system prompts, suggestion extraction |
+| `shared-career-projects` | CV data models and career UI components |
+| `shared-ui` | Reusable Compose UI components |
+| `shared-analytics` | Firebase Analytics integration |
+| `shared-crashlytics` | Crash reporting |
+| `shared` | Koin dependency injection wiring |
+
+## Getting Started
+
+### Prerequisites
+
+- Android Studio Ladybug (2024.2.1) or later
+- JDK 11+
+- Android SDK 36
+- [Groq API key](https://console.groq.com/) (free tier available)
+
+### Setup
+
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/devmugi/cv-agent.git
+   cd cv-agent
+   ```
+
+2. **Configure API key**
+   ```bash
+   echo "GROQ_API_KEY=your_api_key_here" >> local.properties
+   ```
+
+3. **Build and run**
+   ```bash
+   ./gradlew :android-app:installDevDebug
+   ```
+
+### Build Variants
+
+| Variant | App ID | Use Case |
+|---------|--------|----------|
+| `devDebug` | `io.github.devmugi.cv.agent.dev` | Development with local Phoenix tracing |
+| `devRelease` | `io.github.devmugi.cv.agent.dev` | Testing release builds locally |
+| `prodRelease` | `io.github.devmugi.cv.agent` | Production build for Play Store |
 
 ```bash
-# Build Android app
-./gradlew :android-app:assembleDebug
+# Development
+./gradlew :android-app:installDevDebug
 
-# Run all tests
-./gradlew allTests
+# Production bundle
+./gradlew :android-app:bundleProdRelease
+```
 
-# Run agent tests only
+## Tech Stack
+
+| Category | Technology |
+|----------|------------|
+| **UI** | [Compose Multiplatform](https://www.jetbrains.com/lp/compose-multiplatform/), [Arcane Design System](https://github.com/nicemui/arcane) |
+| **LLM** | [Groq](https://groq.com/) (llama-3.3-70b-versatile) |
+| **Observability** | [OpenTelemetry](https://opentelemetry.io/), [Arize Phoenix](https://docs.arize.com/phoenix) |
+| **DI** | [Koin](https://insert-koin.io/) |
+| **Networking** | [Ktor](https://ktor.io/) with SSE streaming |
+| **Analytics** | Firebase Analytics, Crashlytics |
+
+> 📊 **Prompt Evaluation**: This project includes a framework for testing prompt variants and comparing LLM performance. See [docs/evaluation.md](docs/evaluation.md) for details.
+
+> 🔍 **LLM Observability**: Traces are collected via OpenTelemetry and can be viewed in Arize Phoenix. See [docs/observability.md](docs/observability.md) for setup.
+
+## Development
+
+```bash
+# Run tests
 ./gradlew :shared-agent:testAndroidUnitTest
 
-# Quality checks
+# Code quality checks
 ./gradlew qualityCheck
+
+# Format code
+./gradlew ktlintFormat
 ```
 
-## Agent Module
+## Contributing
 
-The agent functionality is split into two modules for better testability:
+Contributions are welcome! Please:
 
-### shared-agent-api
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes using [conventional commits](https://www.conventionalcommits.org/)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
 
-Contains the LLM API client with OpenTelemetry tracing support:
-- `GroqApiClient` - Streaming chat completions via Groq API
-- `RateLimiter` / `TokenBucketRateLimiter` - Rate limiting for API calls
-- `AgentTracer` - Tracing interface for LLM observability
-- `OpenTelemetryAgentTracer` - OTEL implementation (Android)
+## License
 
-### shared-agent
+This project is licensed under the Apache License 2.0 - see the [LICENSE](LICENSE) file for details.
 
-Contains the agent business logic:
-- `ChatViewModel` - State management and message flow
-- `SystemPromptBuilder` - Builds system prompts from CV data
-- `AgentDataProvider` - Provides CV data to the agent
-- `SuggestionExtractor` - Extracts project suggestions from responses
+## Author
 
-## Evaluation Framework
+**Denys Honcharenko** - Lead Android Developer & AI Agent Engineer
 
-The `eval/` module provides a framework for testing prompt variants and comparing agent performance.
+- 🌐 [Portfolio](https://devmugi.github.io/devmugi/)
+- 💼 [LinkedIn](https://www.linkedin.com/in/denyshoncharenko/)
+- 🐙 [GitHub](https://github.com/devmugi)
 
-### Running Evaluations
+---
 
-```bash
-# Start Phoenix for trace collection
-phoenix serve
-
-# Run baseline evaluation (SIMPLE questions)
-./gradlew :eval:eval -PevalVariant=BASELINE -PevalQuestions=SIMPLE
-
-# Run with a different prompt variant
-./gradlew :eval:eval -PevalVariant=PERSONA_CONCISE
-
-# Run all questions including conversations
-./gradlew :eval:eval -PevalQuestions=ALL
-
-# Custom delay between API calls (default: 5000ms)
-./gradlew :eval:eval -PevalDelayMs=10000
-```
-
-### Configuration Options
-
-| Property | Values | Default |
-|----------|--------|---------|
-| `evalVariant` | BASELINE, PERSONA_CONCISE, PERSONA_RECRUITER, PERSONA_DETAILED, ROLE_FIRST_PERSON | BASELINE |
-| `evalModel` | Any Groq model ID | llama-3.3-70b-versatile |
-| `evalProjectMode` | CURATED, ALL_PROJECTS | CURATED |
-| `evalFormat` | TEXT, JSON, MARKDOWN | TEXT |
-| `evalQuestions` | SIMPLE, CONVERSATIONS, ALL | SIMPLE |
-| `evalDelayMs` | Milliseconds between API calls | 5000 |
-
-### Comparing Runs
-
-After running evaluations with different variants, compare them:
-
-```bash
-# Compare baseline vs a variant
-./gradlew :eval:compare -PbaselineRun=<run-id-1> -PvariantRun=<run-id-2>
-```
-
-Run IDs are printed at the end of each evaluation and appear in report filenames.
-
-### Reports
-
-Reports are saved to `eval/reports/`:
-
-```
-eval/reports/
-├── 2026-01-24_222440_95f36218_BASELINE_TEXT.json   # Full structured data
-├── 2026-01-24_222440_95f36218_BASELINE_TEXT.md     # Human-readable summary
-└── comparisons/
-    └── baseline_vs_concise.json                     # Comparison results
-```
-
-### Report Contents
-
-Each report includes:
-- **Summary**: Success rate, avg latency, TTFT, P50/P95 latency
-- **Per-question results**: Latency, TTFT, suggested projects, response text
-- **Configuration**: Variant, model, format, project mode
-
-Example markdown report:
-
-| ID | Category | Latency | TTFT | Suggestions | Status |
-|----|----------|---------|------|-------------|--------|
-| Q1 | personal info | 846ms | 819ms | - | OK |
-| Q2 | skills | 613ms | 605ms | mcdonalds, geosatis | OK |
-| Q3 | featured project | 923ms | 916ms | mcdonalds, android-school | OK |
-
-## LLM Observability with Arize Phoenix
-
-The agent module includes OpenTelemetry instrumentation for evaluating prompts and responses.
-
-### Setup Phoenix
-
-```bash
-# Install Phoenix
-pipx install arize-phoenix
-
-# Start Phoenix server
-phoenix serve
-```
-
-Phoenix UI will be available at `http://localhost:6006`
-
-### Enable Tracing
-
-To enable tracing in the app, inject `OpenTelemetryAgentTracer` when creating the `GroqApiClient`:
-
-```kotlin
-val tracer = OpenTelemetryAgentTracer.create(
-    endpoint = "http://localhost:4317",  // OTLP gRPC endpoint
-    serviceName = "cv-agent"
-)
-
-val apiClient = GroqApiClient(
-    httpClient = httpClient,
-    apiKey = apiKey,
-    tracer = tracer,
-    rateLimiter = TokenBucketRateLimiter()  // Optional, enabled by default via DI
-)
-```
-
-### What Gets Traced
-
-Each LLM request creates a span with:
-- Model name, temperature, max tokens
-- System prompt content
-- User messages
-- Full response content
-- Latency and token counts
-- Errors with exception details
-
-### Running Evaluation Tests
-
-Evaluation and integration tests make real Groq API calls and are **excluded from regular test runs** to avoid rate limits. They have a dedicated Gradle task:
-
-```bash
-# Start Phoenix first
-phoenix serve
-
-# Run evaluation tests (2s delay between tests by default)
-./gradlew :shared-agent-api:evaluationTests
-
-# Run with custom delay (in milliseconds)
-GROQ_TEST_DELAY_MS=3000 ./gradlew :shared-agent-api:evaluationTests
-
-# Run a single test (no delay needed)
-GROQ_TEST_DELAY_MS=0 ./gradlew :shared-agent-api:evaluationTests --tests "*Q1 CURATED*"
-
-# View traces in Phoenix UI
-open http://localhost:6006
-```
-
-## Rate Limiting
-
-The app includes built-in rate limiting to respect Groq API limits (30 RPM on free tier).
-
-### How It Works
-
-- `TokenBucketRateLimiter` enforces a minimum 2-second delay between API requests
-- On 429 (rate limit exceeded) responses, the `Retry-After` header is respected
-- Falls back to 60-second backoff if no `Retry-After` header is provided
-
-### Configuration
-
-Rate limiting is enabled by default in production. To customize:
-
-```kotlin
-// Custom rate limiter with different delay
-val rateLimiter = TokenBucketRateLimiter(minDelayMs = 1000) // 1 second
-
-val apiClient = GroqApiClient(
-    httpClient = httpClient,
-    apiKey = apiKey,
-    rateLimiter = rateLimiter
-)
-
-// Or disable rate limiting entirely (not recommended for production)
-val apiClient = GroqApiClient(
-    httpClient = httpClient,
-    apiKey = apiKey,
-    rateLimiter = RateLimiter.NOOP
-)
-```
-
-## API Key Configuration
-
-Set your Groq API key in `local.properties`:
-
-```properties
-GROQ_API_KEY=your_api_key_here
-```
-
-## Learn More
-
-- [Kotlin Multiplatform](https://www.jetbrains.com/help/kotlin-multiplatform-dev/get-started.html)
-- [Arize Phoenix](https://docs.arize.com/phoenix)
-- [OpenTelemetry](https://opentelemetry.io/)
+<p align="center">
+  Built with ❤️ using Kotlin Multiplatform
+</p>
