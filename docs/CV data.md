@@ -3,11 +3,11 @@
 ## Personal Information
 - **Name:** Denys Honcharenko
 - **Location:** Genk, Belgium
-- **Email:** anry200@gmail.com
+- **Email:** aidevmugi@gmail.com
 - **Phone:** +32 470 383 388
 - **LinkedIn:** https://www.linkedin.com/in/denyshoncharenko/
 - **GitHub:** https://github.com/devmugi
-- **Portfolio:** https://devmugi.github.io
+- **Portfolio:** https://devmugi.github.io/devmugi/
 
 ## Professional Summary
 Result-oriented Software Engineer with **15+ years** of experience building apps that reach **100M+ users** across **60+ countries**. Specializing in Kotlin Multiplatform, Jetpack Compose, IoT solutions, and AI-powered development. Creator of open-source KMM libraries. Passionate about building apps that reach millions of users.
@@ -287,7 +287,7 @@ class AndroidDeveloper {
 ---
 
 ## Contact
-- **Email:** anry200@gmail.com
+- **Email:** aidevmugi@gmail.com
 - **Phone:** +32 470 383 388
 - **LinkedIn:** https://www.linkedin.com/in/denyshoncharenko/
 - **GitHub:** https://github.com/devmugi
