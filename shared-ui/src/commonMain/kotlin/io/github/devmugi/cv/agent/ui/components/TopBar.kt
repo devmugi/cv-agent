@@ -36,6 +36,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalUriHandler
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import compose.icons.SimpleIcons
 import compose.icons.simpleicons.Github
@@ -63,7 +64,9 @@ fun CVAgentTopBar(
             showBorder = false
         ) {
             Row(
-                modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp, vertical = 12.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
@@ -75,9 +78,12 @@ fun CVAgentTopBar(
                 Text(
                     text = "Denys Honcharenko CV",
                     style = ArcaneTheme.typography.headlineLarge,
-                    color = ArcaneTheme.colors.text
+                    color = ArcaneTheme.colors.text,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                    modifier = Modifier.weight(1f)
                 )
-                Spacer(modifier = Modifier.weight(1f))
+                Spacer(modifier = Modifier.width(8.dp))
                 ArcaneTextButton(
                     text = "Career",
                     onClick = {
@@ -90,7 +96,7 @@ fun CVAgentTopBar(
                         onCareerClick()
                     },
                     style = ArcaneButtonStyle.Outlined(),
-                    size = ArcaneButtonSize.Medium
+                    size = ArcaneButtonSize.Small
                 )
             }
         }
