@@ -48,6 +48,9 @@ kotlin {
             // Lifecycle (for collectAsState)
             implementation(libs.androidx.lifecycle.runtime.compose)
 
+            // Navigation
+            implementation(libs.navigation.compose)
+
             // Markdown
             implementation(libs.multiplatform.markdown.renderer)
             implementation(libs.multiplatform.markdown.renderer.m3)
