@@ -4,17 +4,10 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import androidx.activity.ComponentActivity
-import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
-import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.core.Spring
-import androidx.compose.animation.core.spring
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
-import androidx.compose.animation.slideInHorizontally
-import androidx.compose.animation.slideOutHorizontally
-import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -22,6 +15,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -38,55 +32,37 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.SideEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
-import androidx.core.view.WindowCompat
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
+import androidx.core.view.WindowCompat
 import co.touchlab.kermit.Logger
 import cvagent.career.generated.resources.Res as CareerRes
-import io.github.devmugi.arcane.design.components.feedback.ArcaneToastHost
-import io.github.devmugi.arcane.design.components.feedback.ArcaneToastPosition
-import io.github.devmugi.arcane.design.components.feedback.ArcaneToastState
 import io.github.devmugi.arcane.design.components.feedback.rememberArcaneToastState
 import io.github.devmugi.arcane.design.foundation.theme.ArcaneTheme
-import io.github.devmugi.cv.agent.ui.theme.DEFAULT_THEME
-import io.github.devmugi.cv.agent.ui.theme.ThemeVariant
-import io.github.devmugi.cv.agent.ui.theme.isLight
-import io.github.devmugi.cv.agent.ui.theme.toColors
 import io.github.devmugi.cv.agent.agent.AgentDataProvider
 import io.github.devmugi.cv.agent.agent.ChatViewModel
+import io.github.devmugi.cv.agent.analytics.Analytics
 import io.github.devmugi.cv.agent.career.data.CareerProjectDataLoader
 import io.github.devmugi.cv.agent.career.models.CareerProject
 import io.github.devmugi.cv.agent.career.models.PersonalInfo
 import io.github.devmugi.cv.agent.career.models.ProjectDataTimeline
-import com.google.accompanist.permissions.ExperimentalPermissionsApi
-import com.google.accompanist.permissions.isGranted
-import com.google.accompanist.permissions.rememberPermissionState
-import com.google.accompanist.permissions.shouldShowRationale
-import io.github.devmugi.cv.agent.ui.CareerProjectDetailsScreen
-import io.github.devmugi.cv.agent.ui.CareerProjectsTimelineScreen
-import io.github.devmugi.cv.agent.ui.ChatScreen
-import io.github.devmugi.cv.agent.agent.VoiceInputController
-import io.github.devmugi.cv.agent.agent.VoiceInputState
-import io.github.devmugi.cv.agent.api.GroqAudioClient
-import io.github.devmugi.cv.agent.api.audio.AudioRecorder
-import io.github.devmugi.cv.agent.analytics.Analytics
-import io.github.devmugi.cv.agent.analytics.AnalyticsEvent
+import io.github.devmugi.cv.agent.ui.navigation.AppNavHost
+import io.github.devmugi.cv.agent.ui.theme.DEFAULT_THEME
+import io.github.devmugi.cv.agent.ui.theme.ThemeVariant
+import io.github.devmugi.cv.agent.ui.theme.isLight
+import io.github.devmugi.cv.agent.ui.theme.toColors
 import kotlinx.serialization.json.Json
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.koin.androidx.compose.koinViewModel
 import org.koin.compose.koinInject
 import org.koin.core.parameter.parametersOf
-
-private enum class Screen { Chat, CareerTimeline, ProjectDetails }
 
 private val projectJsonFiles = listOf(
     "files/projects/geosatis_details_data.json",
@@ -112,7 +88,6 @@ class MainActivity : ComponentActivity() {
         setContent {
             var currentTheme by rememberSaveable { mutableStateOf(DEFAULT_THEME) }
 
-            // Update status bar icons based on theme (dark icons for light themes)
             val isLightTheme = currentTheme.isLight()
             SideEffect {
                 val windowInsetsController = WindowCompat.getInsetsController(window, window.decorView)
@@ -144,16 +119,6 @@ private fun CVAgentApp(
     val toastState = rememberArcaneToastState()
     val analytics: Analytics = koinInject()
     var agentDataResult by remember { mutableStateOf<AgentDataResult?>(null) }
-    var currentScreen by remember { mutableStateOf(Screen.Chat) }
-    var selectedProject by remember { mutableStateOf<CareerProject?>(null) }
-
-    // Voice input components
-    val audioRecorder: AudioRecorder = koinInject()
-    val audioClient: GroqAudioClient = koinInject()
-    val voiceControllerScope = rememberCoroutineScope()
-    val voiceController = remember {
-        VoiceInputController(audioRecorder, audioClient, voiceControllerScope)
-    }
 
     LaunchedEffect(Unit) {
         if (agentDataResult == null) {
@@ -161,30 +126,38 @@ private fun CVAgentApp(
         }
     }
 
-    // Wait for data to load before creating ViewModel
     val dataResult = agentDataResult ?: return
 
-    // ViewModel is only created after dataProvider is available
-    // Uses koinViewModel for proper lifecycle scoping and SavedStateHandle support
     val viewModel: ChatViewModel = koinViewModel { parametersOf(dataResult.dataProvider) }
-    val state by viewModel.state.collectAsState()
 
-    AppContent(
-        currentScreen = currentScreen,
-        state = state,
-        toastState = toastState,
-        viewModel = viewModel,
-        voiceController = voiceController,
-        careerProjects = dataResult.timelineProjects,
-        careerProjectsMap = dataResult.projectsMap,
-        selectedProject = selectedProject,
-        onScreenChange = { currentScreen = it },
-        onProjectSelect = { selectedProject = it },
-        onOpenUrl = onOpenUrl,
-        currentTheme = currentTheme,
-        onThemeChange = onThemeChange,
-        analytics = analytics
-    )
+    Box(modifier = Modifier.fillMaxSize()) {
+        AppNavHost(
+            chatState = viewModel.state,
+            careerProjects = dataResult.timelineProjects,
+            careerProjectsMap = dataResult.projectsMap,
+            toastState = toastState,
+            analytics = analytics,
+            onSendMessage = viewModel::sendMessage,
+            onSuggestionClick = viewModel::onSuggestionClicked,
+            onCopyMessage = viewModel::onMessageCopied,
+            onLikeMessage = viewModel::onMessageLiked,
+            onDislikeMessage = viewModel::onMessageDisliked,
+            onRegenerateMessage = viewModel::onRegenerateClicked,
+            onClearHistory = viewModel::clearHistory,
+            onProjectSuggestionClicked = viewModel::onProjectSuggestionClicked,
+            onOpenUrl = onOpenUrl
+        )
+
+        if (BuildConfig.DEBUG) {
+            DebugThemePickerFab(
+                currentTheme = currentTheme,
+                onThemeChange = onThemeChange,
+                modifier = Modifier
+                    .align(Alignment.BottomEnd)
+                    .padding(end = 16.dp, bottom = 240.dp)
+            )
+        }
+    }
 }
 
 @OptIn(ExperimentalResourceApi::class)
@@ -223,155 +196,6 @@ private data class AgentDataResult(
     val timelineProjects: List<ProjectDataTimeline>,
     val projectsMap: Map<String, CareerProject>
 )
-
-@OptIn(ExperimentalPermissionsApi::class)
-@Suppress("FunctionNaming", "LongParameterList", "LongMethod")
-@Composable
-private fun AppContent(
-    currentScreen: Screen,
-    state: io.github.devmugi.cv.agent.domain.models.ChatState,
-    toastState: ArcaneToastState,
-    viewModel: ChatViewModel,
-    voiceController: VoiceInputController,
-    careerProjects: List<ProjectDataTimeline>,
-    careerProjectsMap: Map<String, CareerProject>,
-    selectedProject: CareerProject?,
-    onScreenChange: (Screen) -> Unit,
-    onProjectSelect: (CareerProject?) -> Unit,
-    onOpenUrl: (String) -> Unit,
-    currentTheme: ThemeVariant,
-    onThemeChange: (ThemeVariant) -> Unit,
-    analytics: Analytics
-) {
-    // Handle system back gesture/button for custom navigation
-    BackHandler(enabled = currentScreen != Screen.Chat) {
-        val (fromScreen, toScreen, nextScreen) = when (currentScreen) {
-            Screen.ProjectDetails -> Triple("project_details", "career_timeline", Screen.CareerTimeline)
-            Screen.CareerTimeline -> Triple("career_timeline", "chat", Screen.Chat)
-            Screen.Chat -> return@BackHandler // Let system handle - exits app
-        }
-        analytics.logEvent(
-            AnalyticsEvent.Navigation.BackNavigation(
-                fromScreen = fromScreen,
-                toScreen = toScreen,
-                method = AnalyticsEvent.Navigation.NavigationMethod.GESTURE
-            )
-        )
-        onScreenChange(nextScreen)
-    }
-
-    // Accompanist permission state for microphone
-    val micPermissionState = rememberPermissionState(android.Manifest.permission.RECORD_AUDIO)
-
-    // Collect voice state
-    val voiceState by voiceController.state.collectAsState()
-
-    // Handle voice input errors
-    LaunchedEffect(voiceState) {
-        if (voiceState is VoiceInputState.Error) {
-            toastState.show((voiceState as VoiceInputState.Error).message)
-            voiceController.clearError()
-        }
-    }
-
-    // Handle permission denial
-    LaunchedEffect(micPermissionState.status) {
-        if (!micPermissionState.status.isGranted &&
-            micPermissionState.status.shouldShowRationale
-        ) {
-            toastState.show("Microphone permission required for voice input")
-        }
-    }
-
-    Box {
-        AnimatedContent(
-            targetState = currentScreen,
-            transitionSpec = {
-                val direction = if (targetState.ordinal > initialState.ordinal) 1 else -1
-
-                (fadeIn(animationSpec = spring(stiffness = Spring.StiffnessMedium)) +
-                    slideInHorizontally(
-                        initialOffsetX = { fullWidth -> direction * fullWidth / 3 },
-                        animationSpec = spring(
-                            dampingRatio = Spring.DampingRatioLowBouncy,
-                            stiffness = Spring.StiffnessMedium
-                        )
-                    )).togetherWith(
-                    fadeOut(animationSpec = spring(stiffness = Spring.StiffnessHigh)) +
-                        slideOutHorizontally(
-                            targetOffsetX = { fullWidth -> -direction * fullWidth / 3 },
-                            animationSpec = spring(stiffness = Spring.StiffnessMedium)
-                        )
-                )
-            },
-            label = "screenTransition"
-        ) { screen ->
-            when (screen) {
-                Screen.Chat -> ChatScreen(
-                    state = state,
-                    toastState = toastState,
-                    onSendMessage = viewModel::sendMessage,
-                    analytics = analytics,
-                    onSuggestionClick = viewModel::onSuggestionClicked,
-                    onCopyMessage = viewModel::onMessageCopied,
-                    onShareMessage = { /* TODO */ },
-                    onLikeMessage = viewModel::onMessageLiked,
-                    onDislikeMessage = viewModel::onMessageDisliked,
-                    onRegenerateMessage = viewModel::onRegenerateClicked,
-                    onClearHistory = viewModel::clearHistory,
-                    onNavigateToCareerTimeline = { onScreenChange(Screen.CareerTimeline) },
-                    onNavigateToProject = { projectId ->
-                        careerProjectsMap[projectId]?.let { project ->
-                            viewModel.onProjectSuggestionClicked(projectId, 0)
-                            onProjectSelect(project)
-                            onScreenChange(Screen.ProjectDetails)
-                        }
-                    },
-                    // Voice input (disabled for now)
-                    isRecording = false,
-                    isTranscribing = false,
-                    onRecordingStart = { toastState.show("Voice input not implemented yet") },
-                    onRecordingStop = { },
-                    onRequestMicPermission = { toastState.show("Voice input not implemented yet") },
-                    hasMicPermission = false
-                )
-                Screen.CareerTimeline -> CareerProjectsTimelineScreen(
-                    projects = careerProjects,
-                    onProjectClick = { timelineProject ->
-                        onProjectSelect(careerProjectsMap[timelineProject.id])
-                        onScreenChange(Screen.ProjectDetails)
-                    },
-                    onBackClick = { onScreenChange(Screen.Chat) },
-                    analytics = analytics
-                )
-                Screen.ProjectDetails -> selectedProject?.let { project ->
-                    CareerProjectDetailsScreen(
-                        project = project,
-                        onBackClick = { onScreenChange(Screen.CareerTimeline) },
-                        onLinkClick = onOpenUrl,
-                        analytics = analytics
-                    )
-                }
-            }
-        }
-        ArcaneToastHost(
-            state = toastState,
-            position = ArcaneToastPosition.BottomCenter,
-            modifier = Modifier.padding(bottom = 160.dp)
-        )
-
-        // Debug-only theme picker FAB
-        if (BuildConfig.DEBUG) {
-            DebugThemePickerFab(
-                currentTheme = currentTheme,
-                onThemeChange = onThemeChange,
-                modifier = Modifier
-                    .align(Alignment.BottomEnd)
-                    .padding(end = 16.dp, bottom = 240.dp)
-            )
-        }
-    }
-}
 
 @Composable
 private fun DebugThemePickerFab(
