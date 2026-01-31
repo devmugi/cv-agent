@@ -20,7 +20,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -29,8 +28,7 @@ import io.github.devmugi.arcane.design.foundation.primitives.ArcaneSurface
 import io.github.devmugi.arcane.design.foundation.primitives.SurfaceVariant
 import io.github.devmugi.arcane.design.foundation.theme.ArcaneTheme
 import io.github.devmugi.cv.agent.career.models.Standout
-
-private val AmberColor = Color(0xFFFFC107)
+import io.github.devmugi.cv.agent.career.theme.CareerColors
 
 @Composable
 fun StandoutSection(
@@ -78,14 +76,14 @@ private fun StandoutCard(
             Icon(
                 imageVector = icon,
                 contentDescription = null,
-                tint = AmberColor,
+                tint = CareerColors.Amber,
                 modifier = Modifier.size(32.dp)
             )
             Spacer(modifier = Modifier.height(12.dp))
             Text(
                 text = title,
                 style = ArcaneTheme.typography.labelLarge,
-                color = AmberColor,
+                color = CareerColors.Amber,
                 fontWeight = FontWeight.SemiBold,
                 textAlign = TextAlign.Center,
                 modifier = Modifier.fillMaxWidth()
