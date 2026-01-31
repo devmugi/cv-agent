@@ -25,6 +25,9 @@ node_modules/
 **/google-services.json
 **/GoogleService-Info.plist
 
+# iOS Info.plist (contains API keys)
+iosApp/iosApp/Info.plist
+
 # Roborazzi comparison output (generated, not committed)
 **/snapshots/images/*_compare.png
 **/snapshots/images/*_actual.png
