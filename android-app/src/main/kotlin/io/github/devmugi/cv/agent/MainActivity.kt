@@ -80,9 +80,6 @@ import io.github.devmugi.cv.agent.api.GroqAudioClient
 import io.github.devmugi.cv.agent.api.audio.AudioRecorder
 import io.github.devmugi.cv.agent.analytics.Analytics
 import io.github.devmugi.cv.agent.analytics.AnalyticsEvent
-import io.github.devmugi.cv.agent.ui.adaptive.AdaptiveScaffold
-import io.github.devmugi.cv.agent.ui.adaptive.WindowWidthSizeClass
-import io.github.devmugi.cv.agent.ui.adaptive.calculateWindowSizeClass
 import io.github.devmugi.cv.agent.ui.navigation.Route
 import kotlinx.serialization.json.Json
 import org.jetbrains.compose.resources.ExperimentalResourceApi
@@ -147,7 +144,6 @@ private fun CVAgentApp(
     val analytics: Analytics = koinInject()
     var agentDataResult by remember { mutableStateOf<AgentDataResult?>(null) }
     var currentRoute by remember { mutableStateOf<Route>(Route.Chat) }
-    val windowSizeClass = calculateWindowSizeClass()
 
     // Voice input components
     val audioRecorder: AudioRecorder = koinInject()
@@ -172,7 +168,6 @@ private fun CVAgentApp(
     val state by viewModel.state.collectAsState()
 
     AppContent(
-        windowSizeClass = windowSizeClass,
         currentRoute = currentRoute,
         state = state,
         toastState = toastState,
@@ -229,7 +224,6 @@ private data class AgentDataResult(
 @Suppress("FunctionNaming", "LongParameterList", "LongMethod")
 @Composable
 private fun AppContent(
-    windowSizeClass: WindowWidthSizeClass,
     currentRoute: Route,
     state: io.github.devmugi.cv.agent.domain.models.ChatState,
     toastState: ArcaneToastState,
@@ -283,105 +277,98 @@ private fun AppContent(
         }
     }
 
-    AdaptiveScaffold(
-        windowSizeClass = windowSizeClass,
-        currentRoute = currentRoute,
-        onNavigate = onNavigate
-    ) {
-        Box {
-            AnimatedContent(
-                targetState = currentRoute,
-                transitionSpec = {
-                    val direction = when {
-                        targetState is Route.ProjectDetails -> 1
-                        targetState is Route.CareerTimeline && initialState is Route.Chat -> 1
-                        targetState is Route.Chat -> -1
-                        targetState is Route.CareerTimeline && initialState is Route.ProjectDetails -> -1
-                        else -> 1
-                    }
+    Box {
+        AnimatedContent(
+            targetState = currentRoute,
+            transitionSpec = {
+                val direction = when {
+                    targetState is Route.ProjectDetails -> 1
+                    targetState is Route.CareerTimeline && initialState is Route.Chat -> 1
+                    targetState is Route.Chat -> -1
+                    targetState is Route.CareerTimeline && initialState is Route.ProjectDetails -> -1
+                    else -> 1
+                }
 
-                    (fadeIn(animationSpec = spring(stiffness = Spring.StiffnessMedium)) +
-                        slideInHorizontally(
-                            initialOffsetX = { fullWidth -> direction * fullWidth / 3 },
-                            animationSpec = spring(
-                                dampingRatio = Spring.DampingRatioLowBouncy,
-                                stiffness = Spring.StiffnessMedium
-                            )
-                        )).togetherWith(
-                        fadeOut(animationSpec = spring(stiffness = Spring.StiffnessHigh)) +
-                            slideOutHorizontally(
-                                targetOffsetX = { fullWidth -> -direction * fullWidth / 3 },
-                                animationSpec = spring(stiffness = Spring.StiffnessMedium)
-                            )
-                    )
-                },
-                label = "screenTransition"
-            ) { route ->
-                when (route) {
-                    is Route.Chat -> ChatScreen(
-                        state = state,
-                        toastState = toastState,
-                        onSendMessage = viewModel::sendMessage,
-                        analytics = analytics,
-                        onSuggestionClick = viewModel::onSuggestionClicked,
-                        onCopyMessage = viewModel::onMessageCopied,
-                        onShareMessage = { /* TODO */ },
-                        onLikeMessage = viewModel::onMessageLiked,
-                        onDislikeMessage = viewModel::onMessageDisliked,
-                        onRegenerateMessage = viewModel::onRegenerateClicked,
-                        onClearHistory = viewModel::clearHistory,
-                        onNavigateToCareerTimeline = { onNavigate(Route.CareerTimeline) },
-                        onNavigateToProject = { projectId ->
-                            careerProjectsMap[projectId]?.let {
-                                viewModel.onProjectSuggestionClicked(projectId, 0)
-                                onNavigate(Route.ProjectDetails(projectId))
-                            }
-                        },
-                        // Voice input (disabled for now)
-                        isRecording = false,
-                        isTranscribing = false,
-                        onRecordingStart = { toastState.show("Voice input not implemented yet") },
-                        onRecordingStop = { },
-                        onRequestMicPermission = { toastState.show("Voice input not implemented yet") },
-                        hasMicPermission = false
-                    )
-                    is Route.CareerTimeline -> CareerProjectsTimelineScreen(
-                        projects = careerProjects,
-                        onProjectClick = { timelineProject ->
-                            onNavigate(Route.ProjectDetails(timelineProject.id))
-                        },
-                        onBackClick = { onNavigate(Route.Chat) },
-                        analytics = analytics
-                    )
-                    is Route.ProjectDetails -> {
-                        val project = careerProjectsMap[route.projectId]
-                        if (project != null) {
-                            CareerProjectDetailsScreen(
-                                project = project,
-                                onBackClick = { onNavigate(Route.CareerTimeline) },
-                                onLinkClick = onOpenUrl,
-                                analytics = analytics
-                            )
+                (fadeIn(animationSpec = spring(stiffness = Spring.StiffnessMedium)) +
+                    slideInHorizontally(
+                        initialOffsetX = { fullWidth -> direction * fullWidth / 3 },
+                        animationSpec = spring(
+                            dampingRatio = Spring.DampingRatioLowBouncy,
+                            stiffness = Spring.StiffnessMedium
+                        )
+                    )).togetherWith(
+                    fadeOut(animationSpec = spring(stiffness = Spring.StiffnessHigh)) +
+                        slideOutHorizontally(
+                            targetOffsetX = { fullWidth -> -direction * fullWidth / 3 },
+                            animationSpec = spring(stiffness = Spring.StiffnessMedium)
+                        )
+                )
+            },
+            label = "screenTransition"
+        ) { route ->
+            when (route) {
+                is Route.Chat -> ChatScreen(
+                    state = state,
+                    toastState = toastState,
+                    onSendMessage = viewModel::sendMessage,
+                    analytics = analytics,
+                    onSuggestionClick = viewModel::onSuggestionClicked,
+                    onCopyMessage = viewModel::onMessageCopied,
+                    onShareMessage = { /* TODO */ },
+                    onLikeMessage = viewModel::onMessageLiked,
+                    onDislikeMessage = viewModel::onMessageDisliked,
+                    onRegenerateMessage = viewModel::onRegenerateClicked,
+                    onClearHistory = viewModel::clearHistory,
+                    onNavigateToCareerTimeline = { onNavigate(Route.CareerTimeline) },
+                    onNavigateToProject = { projectId ->
+                        careerProjectsMap[projectId]?.let {
+                            viewModel.onProjectSuggestionClicked(projectId, 0)
+                            onNavigate(Route.ProjectDetails(projectId))
                         }
+                    },
+                    // Voice input (disabled for now)
+                    isRecording = false,
+                    isTranscribing = false,
+                    onRecordingStart = { toastState.show("Voice input not implemented yet") },
+                    onRecordingStop = { },
+                    onRequestMicPermission = { toastState.show("Voice input not implemented yet") },
+                    hasMicPermission = false
+                )
+                is Route.CareerTimeline -> CareerProjectsTimelineScreen(
+                    projects = careerProjects,
+                    onProjectClick = { timelineProject ->
+                        onNavigate(Route.ProjectDetails(timelineProject.id))
+                    },
+                    onBackClick = { onNavigate(Route.Chat) },
+                    analytics = analytics
+                )
+                is Route.ProjectDetails -> {
+                    careerProjectsMap[route.projectId]?.let { project ->
+                        CareerProjectDetailsScreen(
+                            project = project,
+                            onBackClick = { onNavigate(Route.CareerTimeline) },
+                            onLinkClick = onOpenUrl,
+                            analytics = analytics
+                        )
                     }
                 }
             }
-            ArcaneToastHost(
-                state = toastState,
-                position = ArcaneToastPosition.BottomCenter,
-                modifier = Modifier.padding(bottom = 160.dp)
-            )
+        }
+        ArcaneToastHost(
+            state = toastState,
+            position = ArcaneToastPosition.BottomCenter,
+            modifier = Modifier.padding(bottom = 160.dp)
+        )
 
-            // Debug-only theme picker FAB
-            if (BuildConfig.DEBUG) {
-                DebugThemePickerFab(
-                    currentTheme = currentTheme,
-                    onThemeChange = onThemeChange,
-                    modifier = Modifier
-                        .align(Alignment.BottomEnd)
-                        .padding(end = 16.dp, bottom = 240.dp)
-                )
-            }
+        // Debug-only theme picker FAB
+        if (BuildConfig.DEBUG) {
+            DebugThemePickerFab(
+                currentTheme = currentTheme,
+                onThemeChange = onThemeChange,
+                modifier = Modifier
+                    .align(Alignment.BottomEnd)
+                    .padding(end = 16.dp, bottom = 240.dp)
+            )
         }
     }
 }
