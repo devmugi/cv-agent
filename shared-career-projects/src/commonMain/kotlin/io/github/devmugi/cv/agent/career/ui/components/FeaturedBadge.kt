@@ -20,8 +20,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import io.github.devmugi.arcane.design.foundation.theme.ArcaneTheme
-
-private val AmberColor = Color(0xFFFFC107)
+import io.github.devmugi.cv.agent.career.theme.CareerColors
 
 @Composable
 fun FeaturedBadge(
@@ -31,7 +30,7 @@ fun FeaturedBadge(
     Box(
         modifier = modifier
             .clip(RoundedCornerShape(4.dp))
-            .background(AmberColor)
+            .background(CareerColors.Amber)
             .padding(horizontal = 8.dp, vertical = 4.dp)
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
