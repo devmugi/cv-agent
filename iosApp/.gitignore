@@ -1,0 +1,13 @@
+# Xcode build
+build/
+DerivedData/
+
+# Firebase config (copied by build phase)
+iosApp/GoogleService-Info.plist
+
+# Xcode user-specific files
+*.xcuserdatad
+*.xcuserstate
+*.xcworkspace/xcuserdata/
+*.xcodeproj/xcuserdata/
+*.xcodeproj/project.xcworkspace/xcuserdata/
