@@ -14,9 +14,11 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import io.github.devmugi.arcane.design.components.feedback.ArcaneToastHost
 import io.github.devmugi.arcane.design.components.feedback.ArcaneToastPosition
 import io.github.devmugi.arcane.design.components.feedback.ArcaneToastState
@@ -149,14 +151,11 @@ fun AppNavHost(
                 )
             }
 
-            composable(Routes.DETAILS) { backStackEntry ->
-                // Extract projectId from the current destination route
-                val currentRoute = backStackEntry.destination.route ?: ""
-                val projectId = if (currentRoute.startsWith("details/")) {
-                    currentRoute.removePrefix("details/")
-                } else {
-                    null
-                }
+            composable(
+                route = Routes.DETAILS,
+                arguments = listOf(navArgument("projectId") { type = NavType.StringType })
+            ) { backStackEntry ->
+                val projectId = backStackEntry.arguments?.getString("projectId")
                 val project = projectId?.let { careerProjectsMap[it] }
 
                 PlatformBackHandler(enabled = true) {
