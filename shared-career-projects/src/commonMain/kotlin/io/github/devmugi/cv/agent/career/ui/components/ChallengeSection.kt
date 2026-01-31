@@ -17,15 +17,13 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import io.github.devmugi.arcane.design.foundation.primitives.ArcaneSurface
 import io.github.devmugi.arcane.design.foundation.primitives.SurfaceVariant
 import io.github.devmugi.arcane.design.foundation.theme.ArcaneTheme
 import io.github.devmugi.cv.agent.career.models.Challenge
-
-private val AmberColor = Color(0xFFFFC107)
+import io.github.devmugi.cv.agent.career.theme.CareerColors
 
 @Composable
 fun ChallengeSection(
@@ -44,7 +42,7 @@ fun ChallengeSection(
             variant = SurfaceVariant.Container,
             modifier = Modifier
                 .fillMaxWidth()
-                .border(1.dp, AmberColor.copy(alpha = 0.3f), RoundedCornerShape(12.dp))
+                .border(1.dp, CareerColors.Amber.copy(alpha = 0.3f), RoundedCornerShape(12.dp))
         ) {
             Column(modifier = Modifier.padding(16.dp)) {
                 // Header with icon and title
@@ -55,7 +53,7 @@ fun ChallengeSection(
                     Icon(
                         imageVector = Icons.Default.Warning,
                         contentDescription = null,
-                        tint = AmberColor,
+                        tint = CareerColors.Amber,
                         modifier = Modifier.size(24.dp)
                     )
                     Text(
@@ -73,7 +71,7 @@ fun ChallengeSection(
                     Text(
                         text = "Context:",
                         style = ArcaneTheme.typography.bodyMedium,
-                        color = AmberColor,
+                        color = CareerColors.Amber,
                         fontWeight = FontWeight.SemiBold,
                         modifier = Modifier.padding(bottom = 4.dp)
                     )
@@ -90,7 +88,7 @@ fun ChallengeSection(
                     Text(
                         text = "Response:",
                         style = ArcaneTheme.typography.bodyMedium,
-                        color = AmberColor,
+                        color = CareerColors.Amber,
                         fontWeight = FontWeight.SemiBold,
                         modifier = Modifier.padding(bottom = 4.dp)
                     )
