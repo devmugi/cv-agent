@@ -56,8 +56,11 @@ import io.github.devmugi.arcane.design.components.feedback.ArcaneToastHost
 import io.github.devmugi.arcane.design.components.feedback.ArcaneToastPosition
 import io.github.devmugi.arcane.design.components.feedback.ArcaneToastState
 import io.github.devmugi.arcane.design.components.feedback.rememberArcaneToastState
-import io.github.devmugi.arcane.design.foundation.theme.ArcaneColors
 import io.github.devmugi.arcane.design.foundation.theme.ArcaneTheme
+import io.github.devmugi.cv.agent.ui.theme.DEFAULT_THEME
+import io.github.devmugi.cv.agent.ui.theme.ThemeVariant
+import io.github.devmugi.cv.agent.ui.theme.isLight
+import io.github.devmugi.cv.agent.ui.theme.toColors
 import io.github.devmugi.cv.agent.agent.AgentDataProvider
 import io.github.devmugi.cv.agent.agent.ChatViewModel
 import io.github.devmugi.cv.agent.career.data.CareerProjectDataLoader
@@ -83,33 +86,6 @@ import org.koin.androidx.compose.koinViewModel
 import org.koin.compose.koinInject
 import org.koin.core.parameter.parametersOf
 
-private enum class ThemeVariant(val displayName: String) {
-    ARCANE("Arcane"),
-    PERPLEXITY("Perplexity"),
-    P2D("P2D"),
-    P2L("P2L"),
-    CLAUDE_D("Claude Dark"),
-    CLAUDE_L("Claude Light"),
-    AGENT2D("Agent2 Dark"),
-    AGENT2L("Agent2 Light")
-}
-
-private fun ThemeVariant.toColors(): ArcaneColors = when (this) {
-    ThemeVariant.ARCANE -> ArcaneColors.default()
-    ThemeVariant.PERPLEXITY -> ArcaneColors.perplexity()
-    ThemeVariant.P2D -> ArcaneColors.p2d()
-    ThemeVariant.P2L -> ArcaneColors.p2l()
-    ThemeVariant.CLAUDE_D -> ArcaneColors.claudeD()
-    ThemeVariant.CLAUDE_L -> ArcaneColors.claudeL()
-    ThemeVariant.AGENT2D -> ArcaneColors.agent2Dark()
-    ThemeVariant.AGENT2L -> ArcaneColors.agent2Light()
-}
-
-private fun ThemeVariant.isLight(): Boolean = when (this) {
-    ThemeVariant.P2L, ThemeVariant.CLAUDE_L, ThemeVariant.AGENT2L -> true
-    else -> false
-}
-
 private enum class Screen { Chat, CareerTimeline, ProjectDetails }
 
 private val projectJsonFiles = listOf(
@@ -134,7 +110,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            var currentTheme by rememberSaveable { mutableStateOf(ThemeVariant.AGENT2L) }
+            var currentTheme by rememberSaveable { mutableStateOf(DEFAULT_THEME) }
 
             // Update status bar icons based on theme (dark icons for light themes)
             val isLightTheme = currentTheme.isLight()
