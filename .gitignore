@@ -24,3 +24,8 @@ node_modules/
 # Firebase config (contains API keys)
 **/google-services.json
 **/GoogleService-Info.plist
+
+# Roborazzi comparison output (generated, not committed)
+**/snapshots/images/*_compare.png
+**/snapshots/images/*_actual.png
+**/build/outputs/roborazzi/
