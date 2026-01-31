@@ -31,7 +31,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import io.github.devmugi.arcane.design.components.controls.ArcaneButtonStyle
 import io.github.devmugi.arcane.design.components.controls.ArcaneTextButton
@@ -44,8 +43,6 @@ import io.github.devmugi.cv.agent.career.ui.components.ImpactBadgeChip
 import io.github.devmugi.cv.agent.career.ui.components.ProjectGradientHeader
 import io.github.devmugi.cv.agent.career.ui.components.StandoutCallout
 import io.github.devmugi.cv.agent.career.ui.components.TechnologyTag
-
-private val AmberColor = Color(0xFFFFC107)
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
