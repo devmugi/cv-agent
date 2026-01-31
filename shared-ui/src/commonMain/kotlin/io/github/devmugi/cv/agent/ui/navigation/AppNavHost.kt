@@ -150,7 +150,13 @@ fun AppNavHost(
             }
 
             composable(Routes.DETAILS) { backStackEntry ->
-                val projectId = backStackEntry.arguments?.getString("projectId")
+                // Extract projectId from the current destination route
+                val currentRoute = backStackEntry.destination.route ?: ""
+                val projectId = if (currentRoute.startsWith("details/")) {
+                    currentRoute.removePrefix("details/")
+                } else {
+                    null
+                }
                 val project = projectId?.let { careerProjectsMap[it] }
 
                 PlatformBackHandler(enabled = true) {
