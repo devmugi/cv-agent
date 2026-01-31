@@ -7,6 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onRoot
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.github.takahirom.roborazzi.RoborazziOptions
 import com.github.takahirom.roborazzi.captureRoboImage
@@ -19,9 +20,27 @@ import org.robolectric.annotation.Config
 import org.robolectric.annotation.GraphicsMode
 
 /**
- * Base class for screenshot tests.
+ * Base class for screenshot tests using Roborazzi.
  *
  * Provides helpers for capturing screenshots with consistent theming and naming.
+ *
+ * ## Snapshot File Location
+ *
+ * Snapshots are stored in: `shared-ui-screenshots/src/test/snapshots/images/`
+ *
+ * File naming convention: `{TestClassName}_{name}_{theme}.png`
+ * - Example: `ChatMessageScreenshotTest_user_short_light.png`
+ *
+ * ## Workflow
+ *
+ * 1. **Record new snapshots**: `./gradlew :shared-ui-screenshots:recordRoborazziDebug`
+ * 2. **Verify snapshots**: `./gradlew :shared-ui-screenshots:verifyRoborazziDebug`
+ * 3. **Compare changes**: `./gradlew :shared-ui-screenshots:compareRoborazziDebug`
+ *
+ * ## Customization
+ *
+ * Subclasses can override [roborazziOptions] to customize comparison behavior
+ * (e.g., different threshold for specific component tests).
  */
 @RunWith(RobolectricTestRunner::class)
 @GraphicsMode(GraphicsMode.Mode.NATIVE)
@@ -31,14 +50,39 @@ abstract class ScreenshotTest {
     @get:Rule
     val composeRule = createComposeRule()
 
-    private val roborazziOptions = RoborazziOptions(
+    /**
+     * Roborazzi options for screenshot comparison.
+     *
+     * Override in subclasses to customize comparison behavior.
+     */
+    protected open val roborazziOptions = RoborazziOptions(
         compareOptions = RoborazziOptions.CompareOptions(
-            changeThreshold = 0.01f // 1% pixel difference tolerance
+            changeThreshold = CHANGE_THRESHOLD_PERCENT
         )
     )
 
+    companion object {
+        /**
+         * Pixel difference tolerance for screenshot comparison.
+         * 1% allows for minor anti-aliasing differences across environments.
+         */
+        const val CHANGE_THRESHOLD_PERCENT = 0.01f
+
+        /**
+         * Padding around captured components to prevent edge clipping
+         * and provide visual breathing room in snapshot images.
+         */
+        val SNAPSHOT_PADDING: Dp = 8.dp
+
+        /** Directory path for snapshot images relative to module root. */
+        private const val SNAPSHOTS_DIR = "src/test/snapshots/images"
+    }
+
     /**
      * Capture a screenshot with the given name and theme.
+     *
+     * The snapshot will be saved to [SNAPSHOTS_DIR] with the naming convention:
+     * `{TestClassName}_{name}_{light|dark}.png`
      *
      * @param name Test name suffix (e.g., "user_short")
      * @param darkTheme Whether to use dark theme
@@ -50,7 +94,7 @@ abstract class ScreenshotTest {
         content: @Composable () -> Unit
     ) {
         val themeSuffix = if (darkTheme) "dark" else "light"
-        val fileName = "src/test/snapshots/images/${this::class.simpleName}_${name}_$themeSuffix.png"
+        val fileName = "$SNAPSHOTS_DIR/${this::class.simpleName}_${name}_$themeSuffix.png"
 
         val colors = if (darkTheme) ArcaneColors.agent2Dark() else ArcaneColors.agent2Light()
 
@@ -59,7 +103,7 @@ abstract class ScreenshotTest {
                 Box(
                     modifier = Modifier
                         .background(ArcaneTheme.colors.surfaceContainerLow)
-                        .padding(8.dp)
+                        .padding(SNAPSHOT_PADDING)
                 ) {
                     content()
                 }
