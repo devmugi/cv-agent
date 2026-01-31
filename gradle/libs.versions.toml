@@ -27,7 +27,7 @@ ktor = "3.0.3"
 kotlinx-serialization = "1.7.3"
 
 # Markdown
-multiplatform-markdown = "0.29.0"
+multiplatform-markdown = "0.39.0"
 
 # Design System
 arcane = "0.3.3"

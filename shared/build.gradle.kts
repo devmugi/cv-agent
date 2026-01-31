@@ -35,6 +35,9 @@ kotlin {
             export(projects.sharedCareerProjects)
             export(projects.sharedAgentApi)
             export(projects.sharedAgent)
+            export(projects.sharedAnalytics)
+            export(projects.sharedCrashlytics)
+            export(projects.sharedIdentity)
         }
     }
 
@@ -45,6 +48,9 @@ kotlin {
             api(projects.sharedCareerProjects)
             api(projects.sharedAgentApi)
             api(projects.sharedAgent)
+            api(projects.sharedAnalytics)
+            api(projects.sharedCrashlytics)
+            api(projects.sharedIdentity)
 
             // Compose (for ViewModel)
             implementation(libs.compose.runtime)
