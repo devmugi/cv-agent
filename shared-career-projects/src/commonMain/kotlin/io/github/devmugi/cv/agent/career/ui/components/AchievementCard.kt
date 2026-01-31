@@ -33,8 +33,8 @@ import io.github.devmugi.arcane.design.foundation.primitives.ArcaneSurface
 import io.github.devmugi.arcane.design.foundation.primitives.SurfaceVariant
 import io.github.devmugi.arcane.design.foundation.theme.ArcaneTheme
 import io.github.devmugi.cv.agent.career.models.Achievement
+import io.github.devmugi.cv.agent.career.theme.CareerColors
 
-private val AmberColor = Color(0xFFFFC107)
 private val GreenColor = Color(0xFF4CAF50)
 
 @Composable
@@ -46,7 +46,7 @@ fun AchievementCard(
         variant = SurfaceVariant.Container,
         modifier = modifier
             .fillMaxWidth()
-            .border(1.dp, AmberColor.copy(alpha = 0.3f), RoundedCornerShape(12.dp))
+            .border(1.dp, CareerColors.Amber.copy(alpha = 0.3f), RoundedCornerShape(12.dp))
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             // Header with icon and title
@@ -57,7 +57,7 @@ fun AchievementCard(
                 Icon(
                     imageVector = getAchievementIcon(achievement.icon),
                     contentDescription = null,
-                    tint = AmberColor,
+                    tint = CareerColors.Amber,
                     modifier = Modifier.size(24.dp)
                 )
                 Text(
@@ -75,7 +75,7 @@ fun AchievementCard(
                 Text(
                     text = "Problem: ",
                     style = ArcaneTheme.typography.bodyMedium,
-                    color = AmberColor,
+                    color = CareerColors.Amber,
                     fontWeight = FontWeight.SemiBold,
                     modifier = Modifier.padding(bottom = 4.dp)
                 )
@@ -92,7 +92,7 @@ fun AchievementCard(
                 Text(
                     text = "Solution: ",
                     style = ArcaneTheme.typography.bodyMedium,
-                    color = AmberColor,
+                    color = CareerColors.Amber,
                     fontWeight = FontWeight.SemiBold,
                     modifier = Modifier.padding(bottom = 4.dp)
                 )
