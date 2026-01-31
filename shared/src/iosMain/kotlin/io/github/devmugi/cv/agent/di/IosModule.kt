@@ -8,22 +8,50 @@ import io.github.devmugi.cv.agent.agent.AgentDataProvider
 import io.github.devmugi.cv.agent.agent.ChatViewModel
 import io.github.devmugi.cv.agent.analytics.Analytics
 import io.github.devmugi.cv.agent.api.GroqApiClient
+import io.github.devmugi.cv.agent.crashlytics.CrashReporter
 import io.github.devmugi.cv.agent.domain.repository.ChatRepository
+import io.github.devmugi.cv.agent.identity.InstallationIdentity
 import io.github.devmugi.cv.agent.repository.createDataStore
-import org.koin.core.parameter.parametersOf
+import org.koin.core.module.Module
 import org.koin.dsl.module
 
 /**
- * iOS-specific Koin module.
+ * Creates iOS-specific Koin module with optional Firebase implementations.
+ *
+ * @param installationIdentity Optional Firebase Installation ID provider (null = in-memory stub)
+ * @param analytics Optional Firebase Analytics provider (null = NOOP)
+ * @param crashReporter Optional Firebase Crashlytics provider (null = NOOP)
  *
  * Provides:
  * - ArizeTracer.NOOP (tracing disabled on iOS)
  * - DataStore with iOS file path
  * - GroqApiClient with NOOP tracer
  * - ChatViewModel factory
+ * - InstallationIdentity (from Swift or stub)
+ * - Analytics (from Swift or NOOP)
+ * - CrashReporter (from Swift or NOOP)
  */
-val iosModule = module {
-    // Tracing - use NOOP on iOS
+fun createIosModule(
+    installationIdentity: InstallationIdentity?,
+    analytics: Analytics?,
+    crashReporter: CrashReporter?
+): Module = module {
+    // Installation Identity - from Swift or fallback to stub
+    single<InstallationIdentity> {
+        installationIdentity ?: createStubInstallationIdentity()
+    }
+
+    // Analytics - from Swift or NOOP
+    single<Analytics> {
+        analytics ?: Analytics.NOOP
+    }
+
+    // Crash Reporter - from Swift or NOOP
+    single<CrashReporter> {
+        crashReporter ?: CrashReporter.NOOP
+    }
+
+    // Tracing - use NOOP on iOS (future: OpenTelemetry iOS)
     single<ArizeTracer> { ArizeTracer.NOOP }
 
     // DataStore with iOS path
@@ -49,8 +77,22 @@ val iosModule = module {
             suggestionExtractor = get(),
             dataProvider = dataProvider,
             chatRepository = get<ChatRepository>(),
-            analytics = getOrNull<Analytics>() ?: Analytics.NOOP,
-            tracer = getOrNull<ArizeTracer>() ?: ArizeTracer.NOOP
+            analytics = get<Analytics>(),
+            tracer = get<ArizeTracer>()
         )
+    }
+}
+
+/**
+ * Creates a simple in-memory stub for InstallationIdentity.
+ * The ID is stable for the app session but not persisted across restarts.
+ */
+private fun createStubInstallationIdentity(): InstallationIdentity {
+    return object : InstallationIdentity {
+        private var cachedId: String? = null
+
+        override suspend fun getInstallationId(): String {
+            return cachedId ?: platform.Foundation.NSUUID().UUIDString.also { cachedId = it }
+        }
     }
 }
