@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.android.kotlin.multiplatform.library)
     alias(libs.plugins.compose.multiplatform)
     alias(libs.plugins.kotlin.compose.compiler)
+    alias(libs.plugins.kotlin.serialization)
 }
 
 kotlin {
@@ -51,6 +52,12 @@ kotlin {
             // Markdown
             implementation(libs.multiplatform.markdown.renderer)
             implementation(libs.multiplatform.markdown.renderer.m3)
+
+            // Navigation 3
+            implementation(libs.navigation3.ui)
+
+            // Serialization (for type-safe routes)
+            implementation(libs.kotlinx.serialization.json)
         }
 
         commonTest.dependencies {
