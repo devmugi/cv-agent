@@ -91,7 +91,12 @@ object ViewControllerFactory : KoinComponent {
 
         LaunchedEffect(Unit) {
             if (agentDataResult == null) {
-                agentDataResult = loadAgentData()
+                try {
+                    agentDataResult = loadAgentData()
+                } catch (e: Exception) {
+                    toastState.show("Error loading data: ${e.message}")
+                    e.printStackTrace()
+                }
             }
         }
 

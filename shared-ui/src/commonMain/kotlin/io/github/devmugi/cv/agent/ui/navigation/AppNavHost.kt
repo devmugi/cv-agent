@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavType
@@ -56,6 +57,9 @@ fun AppNavHost(
 ) {
     val navController = rememberNavController()
     val state by chatState.collectAsState()
+
+    // Store selected project ID for Details screen
+    val selectedProjectIdHolder = remember { mutableMapOf<String, String>() }
 
     Box(modifier = modifier.fillMaxSize()) {
         NavHost(
@@ -115,6 +119,7 @@ fun AppNavHost(
                     onNavigateToProject = { projectId ->
                         careerProjectsMap[projectId]?.let {
                             onProjectSuggestionClicked(projectId, 0)
+                            selectedProjectIdHolder["current"] = projectId
                             navController.navigate(Routes.details(projectId))
                         }
                     },
@@ -142,6 +147,7 @@ fun AppNavHost(
                 CareerProjectsTimelineScreen(
                     projects = careerProjects,
                     onProjectClick = { timelineProject ->
+                        selectedProjectIdHolder["current"] = timelineProject.id
                         navController.navigate(Routes.details(timelineProject.id))
                     },
                     onBackClick = {
@@ -154,8 +160,9 @@ fun AppNavHost(
             composable(
                 route = Routes.DETAILS,
                 arguments = listOf(navArgument("projectId") { type = NavType.StringType })
-            ) { backStackEntry ->
-                val projectId = backStackEntry.arguments?.getString("projectId")
+            ) {
+                // Get project ID from our holder - more reliable than route parsing
+                val projectId = selectedProjectIdHolder["current"]
                 val project = projectId?.let { careerProjectsMap[it] }
 
                 PlatformBackHandler(enabled = true) {
