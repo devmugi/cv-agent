@@ -29,8 +29,8 @@ import io.github.devmugi.arcane.design.foundation.primitives.ArcaneSurface
 import io.github.devmugi.arcane.design.foundation.primitives.SurfaceVariant
 import io.github.devmugi.arcane.design.foundation.theme.ArcaneTheme
 import io.github.devmugi.cv.agent.career.models.Lifecycle
+import io.github.devmugi.cv.agent.career.theme.CareerColors
 
-private val AmberColor = Color(0xFFFFC107)
 private val GrayColor = Color(0xFF9E9E9E)
 private val BlueColor = Color(0xFF2196F3)
 
@@ -56,7 +56,7 @@ fun LifecycleTimeline(
                     val isLast = index == (lifecycle.events?.lastIndex ?: 0)
                     val dotColor = when (event.status) {
                         "discontinued" -> GrayColor
-                        else -> AmberColor
+                        else -> CareerColors.Amber
                     }
 
                     Row(modifier = Modifier.fillMaxWidth()) {
