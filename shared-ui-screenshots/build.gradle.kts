@@ -51,10 +51,9 @@ dependencies {
     implementation(libs.arcane.components)
     implementation(libs.arcane.chat)
 
-    // Screenshot testing
+    // Screenshot testing (using captureRoboImage directly, no JUnit rule needed)
     testImplementation(libs.roborazzi)
     testImplementation(libs.roborazzi.compose)
-    testImplementation(libs.roborazzi.junit.rule)
     testImplementation(libs.robolectric)
     testImplementation(libs.junit)
     testImplementation(libs.kotlin.test)
