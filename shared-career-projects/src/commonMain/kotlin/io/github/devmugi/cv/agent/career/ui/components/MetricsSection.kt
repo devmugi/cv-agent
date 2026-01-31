@@ -21,7 +21,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -29,8 +28,7 @@ import io.github.devmugi.arcane.design.foundation.primitives.ArcaneSurface
 import io.github.devmugi.arcane.design.foundation.primitives.SurfaceVariant
 import io.github.devmugi.arcane.design.foundation.theme.ArcaneTheme
 import io.github.devmugi.cv.agent.career.models.MetricItem
-
-private val AmberColor = Color(0xFFFFC107)
+import io.github.devmugi.cv.agent.career.theme.CareerColors
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
@@ -70,7 +68,7 @@ private fun MetricCard(
     highlight: Boolean,
     modifier: Modifier = Modifier
 ) {
-    val borderColor = if (highlight) AmberColor else ArcaneTheme.colors.surfaceContainerLow
+    val borderColor = if (highlight) CareerColors.Amber else ArcaneTheme.colors.surfaceContainerLow
 
     ArcaneSurface(
         variant = SurfaceVariant.Container,
@@ -83,7 +81,7 @@ private fun MetricCard(
             Icon(
                 imageVector = icon,
                 contentDescription = null,
-                tint = AmberColor,
+                tint = CareerColors.Amber,
                 modifier = Modifier.size(28.dp)
             )
             Spacer(modifier = Modifier.height(8.dp))
