@@ -28,10 +28,10 @@ import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import io.github.devmugi.arcane.design.foundation.theme.ArcaneTheme
+import io.github.devmugi.cv.agent.career.theme.CareerColors
 import io.github.devmugi.cv.agent.career.models.CareerProject
 import io.github.devmugi.cv.agent.career.ui.components.AchievementCard
 import io.github.devmugi.cv.agent.career.ui.components.ChallengeSection
@@ -47,8 +47,6 @@ import io.github.devmugi.cv.agent.career.ui.components.SectionHeader
 import io.github.devmugi.cv.agent.career.ui.components.StandoutSection
 import io.github.devmugi.cv.agent.career.ui.components.TeamStructureSection
 import io.github.devmugi.cv.agent.career.ui.components.TechnologiesSection
-
-private val AmberColor = Color(0xFFFFC107)
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -90,7 +88,7 @@ fun CareerProjectDetailsScreenScaffold(
                                 Text(
                                     text = role,
                                     style = ArcaneTheme.typography.bodySmall,
-                                    color = AmberColor,
+                                    color = CareerColors.Amber,
                                     maxLines = 1,
                                     overflow = TextOverflow.Ellipsis
                                 )
