@@ -6,7 +6,7 @@ import org.junit.Test
 class SuggestionChipScreenshots : ScreenshotTest() {
 
     @Test
-    fun chip_short() = snapshot("short") {
+    fun chip_short() = snapshotBothThemes("short") {
         SuggestionChip(
             text = "Skills",
             onClick = {}
@@ -14,7 +14,7 @@ class SuggestionChipScreenshots : ScreenshotTest() {
     }
 
     @Test
-    fun chip_medium() = snapshot("medium") {
+    fun chip_medium() = snapshotBothThemes("medium") {
         SuggestionChip(
             text = "Tell me about your experience",
             onClick = {}
@@ -22,7 +22,7 @@ class SuggestionChipScreenshots : ScreenshotTest() {
     }
 
     @Test
-    fun chip_long() = snapshot("long") {
+    fun chip_long() = snapshotBothThemes("long") {
         SuggestionChip(
             text = "What challenging projects have you worked on recently?",
             onClick = {}

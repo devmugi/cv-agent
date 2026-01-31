@@ -4,6 +4,9 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onRoot
@@ -119,6 +122,9 @@ abstract class ScreenshotTest {
     /**
      * Capture both light and dark theme variants.
      *
+     * Uses a mutable state to switch themes without calling setContent twice,
+     * which is not allowed by the Compose test rule.
+     *
      * @param name Test name suffix
      * @param content Composable content to capture
      */
@@ -126,7 +132,36 @@ abstract class ScreenshotTest {
         name: String,
         content: @Composable () -> Unit
     ) {
-        snapshot(name, darkTheme = false, content = content)
-        snapshot(name, darkTheme = true, content = content)
+        var darkTheme by mutableStateOf(false)
+
+        composeRule.setContent {
+            val colors = if (darkTheme) ArcaneColors.agent2Dark() else ArcaneColors.agent2Light()
+            ArcaneTheme(colors = colors) {
+                Box(
+                    modifier = Modifier
+                        .background(ArcaneTheme.colors.surfaceContainerLow)
+                        .padding(SNAPSHOT_PADDING)
+                ) {
+                    content()
+                }
+            }
+        }
+
+        // Capture light theme
+        val lightFileName = "$SNAPSHOTS_DIR/${this::class.simpleName}_${name}_light.png"
+        composeRule.onRoot().captureRoboImage(
+            filePath = lightFileName,
+            roborazziOptions = roborazziOptions
+        )
+
+        // Switch to dark theme and capture
+        darkTheme = true
+        composeRule.waitForIdle()
+
+        val darkFileName = "$SNAPSHOTS_DIR/${this::class.simpleName}_${name}_dark.png"
+        composeRule.onRoot().captureRoboImage(
+            filePath = darkFileName,
+            roborazziOptions = roborazziOptions
+        )
     }
 }
