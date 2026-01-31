@@ -37,8 +37,8 @@ import io.github.devmugi.arcane.design.foundation.primitives.ArcaneSurface
 import io.github.devmugi.arcane.design.foundation.primitives.SurfaceVariant
 import io.github.devmugi.arcane.design.foundation.theme.ArcaneTheme
 import io.github.devmugi.cv.agent.career.models.Course
+import io.github.devmugi.cv.agent.career.theme.CareerColors
 
-private val AmberColor = Color(0xFFFFC107)
 private val GreenColor = Color(0xFF4CAF50)
 
 @Composable
@@ -99,7 +99,7 @@ private fun CourseCard(
                         Text(
                             text = role,
                             style = ArcaneTheme.typography.bodyMedium,
-                            color = AmberColor
+                            color = CareerColors.Amber
                         )
                     }
                 }
