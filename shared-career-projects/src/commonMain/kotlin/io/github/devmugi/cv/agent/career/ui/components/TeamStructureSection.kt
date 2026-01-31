@@ -26,10 +26,10 @@ import io.github.devmugi.arcane.design.foundation.primitives.SurfaceVariant
 import io.github.devmugi.arcane.design.foundation.theme.ArcaneTheme
 import io.github.devmugi.cv.agent.career.models.Team
 import io.github.devmugi.cv.agent.career.models.Trainer
+import io.github.devmugi.cv.agent.career.theme.CareerColors
 import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.intOrNull
 
-private val AmberColor = Color(0xFFFFC107)
 private val LinkedInBlue = Color(0xFF0A66C2)
 
 @Composable
@@ -103,7 +103,7 @@ fun TeamStructureSection(
                             else -> size?.toString() ?: ""
                         }
 
-                        val textColor = if (structure.myRole == true) AmberColor else ArcaneTheme.colors.text
+                        val textColor = if (structure.myRole == true) CareerColors.Amber else ArcaneTheme.colors.text
 
                         Row(
                             modifier = Modifier
@@ -195,7 +195,7 @@ private fun TrainerRow(
             Text(
                 text = trainer.name ?: "",
                 style = ArcaneTheme.typography.bodyMedium,
-                color = if (isOwner) AmberColor else ArcaneTheme.colors.text,
+                color = if (isOwner) CareerColors.Amber else ArcaneTheme.colors.text,
                 fontWeight = if (isOwner) FontWeight.SemiBold else FontWeight.Normal
             )
             trainer.note?.let { note ->
