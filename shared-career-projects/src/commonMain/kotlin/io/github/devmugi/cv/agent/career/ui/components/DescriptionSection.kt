@@ -27,8 +27,7 @@ import io.github.devmugi.arcane.design.foundation.primitives.ArcaneSurface
 import io.github.devmugi.arcane.design.foundation.primitives.SurfaceVariant
 import io.github.devmugi.arcane.design.foundation.theme.ArcaneTheme
 import io.github.devmugi.cv.agent.career.models.Description
-
-private val AmberColor = Color(0xFFFFC107)
+import io.github.devmugi.cv.agent.career.theme.CareerColors
 
 @Composable
 fun DescriptionSection(
@@ -94,7 +93,7 @@ private fun HowItWorkedStep(
                 modifier = Modifier
                     .size(32.dp)
                     .clip(CircleShape)
-                    .background(AmberColor),
+                    .background(CareerColors.Amber),
                 contentAlignment = Alignment.Center
             ) {
                 Text(
@@ -120,7 +119,7 @@ private fun HowItWorkedStep(
             Text(
                 text = title,
                 style = ArcaneTheme.typography.labelLarge,
-                color = AmberColor,
+                color = CareerColors.Amber,
                 fontWeight = FontWeight.SemiBold
             )
             Spacer(modifier = Modifier.height(4.dp))
@@ -150,7 +149,7 @@ internal fun SectionHeader(
         Icon(
             imageVector = icon,
             contentDescription = null,
-            tint = AmberColor,
+            tint = CareerColors.Amber,
             modifier = Modifier.size(24.dp)
         )
         Text(
