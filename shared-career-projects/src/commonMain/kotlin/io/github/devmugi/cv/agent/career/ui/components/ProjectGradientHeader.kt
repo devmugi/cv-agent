@@ -22,9 +22,8 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import io.github.devmugi.arcane.design.foundation.theme.ArcaneTheme
+import io.github.devmugi.cv.agent.career.theme.CareerColors
 import io.github.devmugi.cv.agent.career.ui.util.parseHexColor
-
-private val AmberColor = Color(0xFFFFC107)
 
 @Composable
 fun ProjectGradientHeader(
@@ -82,7 +81,7 @@ fun ProjectGradientHeader(
                         Text(
                             text = it,
                             style = ArcaneTheme.typography.bodyMedium,
-                            color = AmberColor
+                            color = CareerColors.Amber
                         )
                     }
                 }
