@@ -14,13 +14,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import io.github.devmugi.arcane.design.foundation.theme.ArcaneTheme
-
-private val AmberColor = Color(0xFFFFC107)
+import io.github.devmugi.cv.agent.career.theme.CareerColors
 
 @Composable
 fun BulletListItem(
     text: String,
-    bulletColor: Color = AmberColor,
+    bulletColor: Color = CareerColors.Amber,
     modifier: Modifier = Modifier
 ) {
     Row(
