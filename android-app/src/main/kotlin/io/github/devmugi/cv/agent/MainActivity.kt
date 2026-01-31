@@ -80,13 +80,12 @@ import io.github.devmugi.cv.agent.api.GroqAudioClient
 import io.github.devmugi.cv.agent.api.audio.AudioRecorder
 import io.github.devmugi.cv.agent.analytics.Analytics
 import io.github.devmugi.cv.agent.analytics.AnalyticsEvent
+import io.github.devmugi.cv.agent.ui.navigation.Route
 import kotlinx.serialization.json.Json
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.koin.androidx.compose.koinViewModel
 import org.koin.compose.koinInject
 import org.koin.core.parameter.parametersOf
-
-private enum class Screen { Chat, CareerTimeline, ProjectDetails }
 
 private val projectJsonFiles = listOf(
     "files/projects/geosatis_details_data.json",
@@ -144,8 +143,7 @@ private fun CVAgentApp(
     val toastState = rememberArcaneToastState()
     val analytics: Analytics = koinInject()
     var agentDataResult by remember { mutableStateOf<AgentDataResult?>(null) }
-    var currentScreen by remember { mutableStateOf(Screen.Chat) }
-    var selectedProject by remember { mutableStateOf<CareerProject?>(null) }
+    var currentRoute by remember { mutableStateOf<Route>(Route.Chat) }
 
     // Voice input components
     val audioRecorder: AudioRecorder = koinInject()
@@ -170,16 +168,14 @@ private fun CVAgentApp(
     val state by viewModel.state.collectAsState()
 
     AppContent(
-        currentScreen = currentScreen,
+        currentRoute = currentRoute,
         state = state,
         toastState = toastState,
         viewModel = viewModel,
         voiceController = voiceController,
         careerProjects = dataResult.timelineProjects,
         careerProjectsMap = dataResult.projectsMap,
-        selectedProject = selectedProject,
-        onScreenChange = { currentScreen = it },
-        onProjectSelect = { selectedProject = it },
+        onNavigate = { currentRoute = it },
         onOpenUrl = onOpenUrl,
         currentTheme = currentTheme,
         onThemeChange = onThemeChange,
@@ -228,27 +224,25 @@ private data class AgentDataResult(
 @Suppress("FunctionNaming", "LongParameterList", "LongMethod")
 @Composable
 private fun AppContent(
-    currentScreen: Screen,
+    currentRoute: Route,
     state: io.github.devmugi.cv.agent.domain.models.ChatState,
     toastState: ArcaneToastState,
     viewModel: ChatViewModel,
     voiceController: VoiceInputController,
     careerProjects: List<ProjectDataTimeline>,
     careerProjectsMap: Map<String, CareerProject>,
-    selectedProject: CareerProject?,
-    onScreenChange: (Screen) -> Unit,
-    onProjectSelect: (CareerProject?) -> Unit,
+    onNavigate: (Route) -> Unit,
     onOpenUrl: (String) -> Unit,
     currentTheme: ThemeVariant,
     onThemeChange: (ThemeVariant) -> Unit,
     analytics: Analytics
 ) {
     // Handle system back gesture/button for custom navigation
-    BackHandler(enabled = currentScreen != Screen.Chat) {
-        val (fromScreen, toScreen, nextScreen) = when (currentScreen) {
-            Screen.ProjectDetails -> Triple("project_details", "career_timeline", Screen.CareerTimeline)
-            Screen.CareerTimeline -> Triple("career_timeline", "chat", Screen.Chat)
-            Screen.Chat -> return@BackHandler // Let system handle - exits app
+    BackHandler(enabled = currentRoute !is Route.Chat) {
+        val (fromScreen, toScreen, nextRoute) = when (currentRoute) {
+            is Route.ProjectDetails -> Triple("project_details", "career_timeline", Route.CareerTimeline)
+            is Route.CareerTimeline -> Triple("career_timeline", "chat", Route.Chat)
+            is Route.Chat -> return@BackHandler // Let system handle - exits app
         }
         analytics.logEvent(
             AnalyticsEvent.Navigation.BackNavigation(
@@ -257,7 +251,7 @@ private fun AppContent(
                 method = AnalyticsEvent.Navigation.NavigationMethod.GESTURE
             )
         )
-        onScreenChange(nextScreen)
+        onNavigate(nextRoute)
     }
 
     // Accompanist permission state for microphone
@@ -285,9 +279,15 @@ private fun AppContent(
 
     Box {
         AnimatedContent(
-            targetState = currentScreen,
+            targetState = currentRoute,
             transitionSpec = {
-                val direction = if (targetState.ordinal > initialState.ordinal) 1 else -1
+                val direction = when {
+                    targetState is Route.ProjectDetails -> 1
+                    targetState is Route.CareerTimeline && initialState is Route.Chat -> 1
+                    targetState is Route.Chat -> -1
+                    targetState is Route.CareerTimeline && initialState is Route.ProjectDetails -> -1
+                    else -> 1
+                }
 
                 (fadeIn(animationSpec = spring(stiffness = Spring.StiffnessMedium)) +
                     slideInHorizontally(
@@ -305,9 +305,9 @@ private fun AppContent(
                 )
             },
             label = "screenTransition"
-        ) { screen ->
-            when (screen) {
-                Screen.Chat -> ChatScreen(
+        ) { route ->
+            when (route) {
+                is Route.Chat -> ChatScreen(
                     state = state,
                     toastState = toastState,
                     onSendMessage = viewModel::sendMessage,
@@ -319,12 +319,11 @@ private fun AppContent(
                     onDislikeMessage = viewModel::onMessageDisliked,
                     onRegenerateMessage = viewModel::onRegenerateClicked,
                     onClearHistory = viewModel::clearHistory,
-                    onNavigateToCareerTimeline = { onScreenChange(Screen.CareerTimeline) },
+                    onNavigateToCareerTimeline = { onNavigate(Route.CareerTimeline) },
                     onNavigateToProject = { projectId ->
-                        careerProjectsMap[projectId]?.let { project ->
+                        careerProjectsMap[projectId]?.let {
                             viewModel.onProjectSuggestionClicked(projectId, 0)
-                            onProjectSelect(project)
-                            onScreenChange(Screen.ProjectDetails)
+                            onNavigate(Route.ProjectDetails(projectId))
                         }
                     },
                     // Voice input (disabled for now)
@@ -335,22 +334,24 @@ private fun AppContent(
                     onRequestMicPermission = { toastState.show("Voice input not implemented yet") },
                     hasMicPermission = false
                 )
-                Screen.CareerTimeline -> CareerProjectsTimelineScreen(
+                is Route.CareerTimeline -> CareerProjectsTimelineScreen(
                     projects = careerProjects,
                     onProjectClick = { timelineProject ->
-                        onProjectSelect(careerProjectsMap[timelineProject.id])
-                        onScreenChange(Screen.ProjectDetails)
+                        onNavigate(Route.ProjectDetails(timelineProject.id))
                     },
-                    onBackClick = { onScreenChange(Screen.Chat) },
+                    onBackClick = { onNavigate(Route.Chat) },
                     analytics = analytics
                 )
-                Screen.ProjectDetails -> selectedProject?.let { project ->
-                    CareerProjectDetailsScreen(
-                        project = project,
-                        onBackClick = { onScreenChange(Screen.CareerTimeline) },
-                        onLinkClick = onOpenUrl,
-                        analytics = analytics
-                    )
+                is Route.ProjectDetails -> {
+                    val project = careerProjectsMap[route.projectId]
+                    if (project != null) {
+                        CareerProjectDetailsScreen(
+                            project = project,
+                            onBackClick = { onNavigate(Route.CareerTimeline) },
+                            onLinkClick = onOpenUrl,
+                            analytics = analytics
+                        )
+                    }
                 }
             }
         }
