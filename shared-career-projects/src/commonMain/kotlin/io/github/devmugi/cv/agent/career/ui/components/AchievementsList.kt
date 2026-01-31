@@ -15,12 +15,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import io.github.devmugi.arcane.design.foundation.theme.ArcaneTheme
-
-private val AmberColor = Color(0xFFFFC107)
+import io.github.devmugi.cv.agent.career.theme.CareerColors
 
 @Composable
 fun AchievementsList(
@@ -36,14 +34,14 @@ fun AchievementsList(
             Icon(
                 imageVector = Icons.Default.EmojiEvents,
                 contentDescription = "Achievements",
-                tint = AmberColor,
+                tint = CareerColors.Amber,
                 modifier = Modifier.size(24.dp)
             )
             Spacer(modifier = Modifier.width(8.dp))
             Text(
                 text = "KEY ACHIEVEMENTS",
                 style = ArcaneTheme.typography.labelLarge,
-                color = AmberColor,
+                color = CareerColors.Amber,
                 fontWeight = FontWeight.Bold
             )
         }
