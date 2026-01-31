@@ -11,6 +11,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.unit.dp
 import io.github.devmugi.arcane.design.foundation.theme.ArcaneTheme
+import io.github.devmugi.cv.agent.career.theme.CareerColors
 
 enum class TechnologyCategory {
     PRIMARY,
@@ -37,8 +38,8 @@ fun TechnologyTag(
         } else {
             Triple(
                 Color(0xFF3D3520), // Warm amber background
-                Color(0xFFFFC107), // Amber border
-                Color(0xFFFFD54F)  // Bright amber text
+                CareerColors.Amber, // Amber border
+                CareerColors.AmberLight  // Bright amber text
             )
         }
         TechnologyCategory.SECONDARY -> if (isLightTheme) {
