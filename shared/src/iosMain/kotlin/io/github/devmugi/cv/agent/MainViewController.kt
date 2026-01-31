@@ -16,12 +16,23 @@ import io.github.devmugi.arcane.design.components.feedback.ArcaneToastHost
 import io.github.devmugi.arcane.design.components.feedback.ArcaneToastPosition
 import io.github.devmugi.arcane.design.components.feedback.rememberArcaneToastState
 import io.github.devmugi.arcane.design.foundation.theme.ArcaneTheme
+import io.github.devmugi.cv.agent.ui.theme.DEFAULT_THEME
+import io.github.devmugi.cv.agent.ui.theme.toColors
 import io.github.devmugi.cv.agent.agent.AgentDataProvider
 import io.github.devmugi.cv.agent.agent.ChatViewModel
+import io.github.devmugi.cv.agent.analytics.Analytics
+import io.github.devmugi.cv.agent.analytics.AnalyticsProvider
+import io.github.devmugi.cv.agent.analytics.SwiftAnalytics
 import io.github.devmugi.cv.agent.career.data.CareerProjectDataLoader
 import io.github.devmugi.cv.agent.career.models.PersonalInfo
+import io.github.devmugi.cv.agent.crashlytics.CrashReporter
+import io.github.devmugi.cv.agent.crashlytics.CrashReporterProvider
+import io.github.devmugi.cv.agent.crashlytics.SwiftCrashReporter
 import io.github.devmugi.cv.agent.di.appModule
-import io.github.devmugi.cv.agent.di.iosModule
+import io.github.devmugi.cv.agent.di.createIosModule
+import io.github.devmugi.cv.agent.identity.InstallationIdentity
+import io.github.devmugi.cv.agent.identity.InstallationIdentityProvider
+import io.github.devmugi.cv.agent.identity.SwiftInstallationIdentity
 import io.github.devmugi.cv.agent.ui.ChatScreen
 import kotlinx.serialization.json.Json
 import org.koin.core.component.KoinComponent
@@ -48,10 +59,23 @@ private val projectJsonFiles = listOf(
 /**
  * Initialize Koin for iOS.
  * Call this from Swift before creating the MainViewController.
+ *
+ * @param identityProvider Optional Firebase Installations provider from Swift
+ * @param analyticsProvider Optional Firebase Analytics provider from Swift
+ * @param crashReporterProvider Optional Firebase Crashlytics provider from Swift
  */
-fun initKoin() {
+fun initKoin(
+    identityProvider: InstallationIdentityProvider? = null,
+    analyticsProvider: AnalyticsProvider? = null,
+    crashReporterProvider: CrashReporterProvider? = null
+) {
+    // Wrap Swift providers in Kotlin implementations
+    val identity: InstallationIdentity? = identityProvider?.let { SwiftInstallationIdentity(it) }
+    val analytics: Analytics? = analyticsProvider?.let { SwiftAnalytics(it) }
+    val crashReporter: CrashReporter? = crashReporterProvider?.let { SwiftCrashReporter(it) }
+
     startKoin {
-        modules(appModule, iosModule)
+        modules(appModule, createIosModule(identity, analytics, crashReporter))
     }
 }
 
@@ -99,7 +123,7 @@ object ViewControllerFactory : KoinComponent {
         val viewModel: ChatViewModel by inject { parametersOf(dataProvider) }
         val state by viewModel.state.collectAsState()
 
-        ArcaneTheme {
+        ArcaneTheme(colors = DEFAULT_THEME.toColors()) {
             Box(modifier = Modifier.fillMaxSize()) {
                 ChatScreen(
                     state = state,
